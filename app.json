@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Sugar Quit",
+    "slug": "sugar-quit",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "sugarquit",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.gazetastreet.sugarquit"
+    },
+    "android": {
+      "package": "com.gazetastreet.sugarquit",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-haptics"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
