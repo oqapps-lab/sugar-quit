@@ -1,204 +1,115 @@
 # Research Brief: Sugar Quit
 
-**Дата:** 13 апреля 2026
-**Статус:** Синтез Research Stage
-**Companion Documents:** [Market Research](./MARKET-RESEARCH.md), [Competitors](./COMPETITORS.md), [User Personas](./USER-PERSONAS.md), [Domain Research](./DOMAIN-RESEARCH.md)
+**Дата:** 13 апреля 2026  
+**Статус:** Синтез research stage  
+**Основа:** [DOMAIN-RESEARCH](./DOMAIN-RESEARCH.md), [MARKET-RESEARCH](./MARKET-RESEARCH.md), [COMPETITORS](./COMPETITORS.md), [USER-PERSONAS](./USER-PERSONAS.md), [PRODUCT-BRIEF](./PRODUCT-BRIEF.md), [SCORING-SUMMARY](./SCORING-SUMMARY.md)
+
+> Примечание по источникам: в цифрах рынка есть расхождения между [MARKET-RESEARCH](./MARKET-RESEARCH.md) и [PRODUCT-BRIEF](./PRODUCT-BRIEF.md). Для этого brief базовой моделью считаю более свежий и консервативный [MARKET-RESEARCH](./MARKET-RESEARCH.md); более агрессивные оценки из [PRODUCT-BRIEF](./PRODUCT-BRIEF.md) трактую как upside. [SCORING-SUMMARY](./SCORING-SUMMARY.md) прочитан, но не содержит Sugar Quit и не использовался как количественная база для verdict.
 
 ---
 
-## 1. Elevator Pitch
+## Elevator Pitch
 
-**Sugar Quit — первый AI-коуч, который разговаривает с вами в момент тяги к сахару и предсказывает, когда она наступит.** 195 миллионов американцев хотят снизить потребление сахара, но лучшее приложение в категории имеет 805 отзывов в App Store — рынок фактически пуст, а технология AI впервые делает real-time коучинг экономически жизнеспособным.
-
----
-
-## 2. Scoring Table
-
-| # | Критерий | Оценка | Обоснование |
-|---|----------|--------|-------------|
-| 1 | **Размер рынка** | 9/10 | TAM ~$20B, SAM ~$1.76B. 75% американцев (195M) активно пытаются снизить сахар. Diet & Nutrition Apps — $5.95B рынок с CAGR 16.64%. Sugar-free food & beverage — $67.48B |
-| 2 | **Рост рынка** | 9/10 | Diet apps CAGR 16.64%. Sugar-free market CAGR 8.27%. Доля пытающихся снизить сахар: 66% (2024) → 75% (2025). TikTok "No Sugar Challenge" — вирусный рост. 116 стран ввели sugar tax |
-| 3 | **Конкуренция** (10 = мало) | 9/10 | Лидер категории (Sugarfree) — 805 iOS-отзывов, ~81K загрузок. Суммарные загрузки всех sugar-apps <200K. Для сравнения: I Am Sober — 10M+, Reframe — 3.2M. Нет venture-funded игрока. Market Saturation Score: 2/10 |
-| 4 | **Ясность проблемы** | 10/10 | Подтверждена нейронаукой (сахар активирует те же reward pathways, что и наркотики). 53% взрослых США потребляют избыточный сахар. r/sugarfree — 100K+ участников. Топ-жалоба: "Ничто не помогает в МОМЕНТ тяги" |
-| 5 | **Монетизация** | 8/10 | $9.99/мес — validated аналогами (Reframe $14/мес, Sunnyside $12/мес, I Am Sober $9.99/мес). Все 3 персоны готовы платить $9.99+/мес. B2B wellness + insurance — дополнительные каналы. Риск: sugar воспринимается как "менее серьёзная" проблема, чем алкоголь |
-| 6 | **Техническая сложность** (10 = просто) | 7/10 | Стек proven (React Native + Supabase + Claude API). AI cost $0.007/разговор — 1.8% от revenue. Но: prediction ML, food database, community moderation, health integrations — нетривиальный объём работы |
-| 7 | **Уникальность** | 9/10 | Real-time AI craving coaching — нет ни у кого. Predictive triggers — нет ни у кого. "Eat This Instead" engine — нет ни у кого. Ближайший аналог Reframe Melody — для алкоголя, не сахара |
-
-**Средний балл: 8.7/10**
+**Sugar Quit — AI wellness-коуч для взрослых, который помогает заметить и пережить тягу к сладкому в моменте, снизить added sugar и вернуться в рутину без стыда.**
 
 ---
 
-## 3. Top-5 Insights
+## Скоринг по 7 критериям
 
-### Insight 1: Момент тяги — единственное, что имеет значение
+| Критерий | Оценка | Комментарий | Данные |
+|---|---:|---|---|
+| **1. Сила проблемы** | **9/10** | Проблема массовая и частая: `75%` американцев пытаются сократить или избегать сахар, а у всех 3 ключевых персон повторяется один и тот же JTBD — нужна помощь именно в момент тяги, а не постфактум. | [MR], [UP] |
+| **2. Размер рынка** | **8/10** | Problem-side TAM очень большой (`200.2M` взрослых в США, которые уже хотят снизить сахар), но реалистичный monetizable SAM заметно уже — около `$406.6M` в North America paid diet/nutrition apps. Для нишевого B2C-продукта этого достаточно, но это не бездонный рынок. | [MR] |
+| **3. Рост и тайминг** | **8/10** | Категория diet & nutrition apps растет с `13.4% CAGR`, paid behavior уже существует, а search intent по `sugar cravings` и `quit sugar` устойчив. При этом окно входа завязано на январский seasonality spike и не бесконечно. | [MR], [PB] |
+| **4. Конкурентное окно** | **9/10** | Ниша открыта: прямые конкуренты маленькие, фрагментированные и страдают от слабых данных, hard paywall или отсутствия глубокой behavior-change логики. Явного category leader нет. | [CP] |
+| **5. Дифференциация wedge** | **8/10** | Комбинация `SOS AI + predictive triggers + added-sugar intelligence + recovery loop` хорошо бьет в незакрытые боли. Но часть прямых игроков уже копирует отдельные элементы, поэтому выиграет не наличие фичи, а качество исполнения. | [CP], [UP], [PB] |
+| **6. Монетизация** | **7/10** | Персоны показывают willingness to pay, а смежные приложения доказали subscription-модель. Но dedicated sugar-app willingness to pay пока не подтвержден на реальном paywall, а рынок уже показывает недоверие к weekly-first и paywall-first монетизации. | [UP], [CP], [MR] |
+| **7. Исполнимость и risk profile** | **6/10** | Wellness positioning жизнеспособно, но execution сложный: accurate sugar data, moderation, privacy-by-design, AI guardrails и риск disordered eating делают проект не "простым health app", а дисциплинированным safety-first продуктом. | [DR], [CP], [PB] |
 
-Все 3 персоны, все конкуренты, все Reddit-темы сходятся в одном: существующие инструменты работают ретроспективно (трекинг после еды) или превентивно (общие советы). **Никто не помогает в 3pm, когда рука тянется к candy bowl.** SOS AI — не просто фича, это entire reason to exist.
-
-> Источники: [User Personas](./USER-PERSONAS.md) — Common Patterns; [Market Research](./MARKET-RESEARCH.md) — Pain Point 1; App Store reviews: "Просто таймер, не реальная помощь" — самая частая жалоба
-
-### Insight 2: Категория в зачаточном состоянии — окно 12-18 месяцев
-
-Суммарные загрузки **всех** sugar-specific приложений — <200K. Reframe (алкоголь) имеет 3.2M. Sunnyside — 250K users при $23.7M revenue. Рынок сахара в 3-5x больше, чем рынок алкоголя (75% vs 15% хотят снизить). Но волна новых игроков (STOPPR, No Sugar Challenge, QuitSugar — все 2025-2026) сигнализирует, что окно сужается. Если Noom или MyFitnessPal добавят sugar-модуль — окно закроется.
-
-> Источники: [Competitors](./COMPETITORS.md) — Market Saturation Score 2/10; [Market Research](./MARKET-RESEARCH.md) — Section 14.4
-
-### Insight 3: AI стоимость впервые делает модель жизнеспособной
-
-Claude Haiku 4.5 при $0.007 за SOS-разговор = 1.8% от revenue ($9.99/мес подписка). С prompt caching — ещё ниже (~$0.003). 2 года назад стоимость была бы 10-50x выше, делая unlimited AI conversations финансово невозможными. **Технологическое окно совпало с рыночным.**
-
-> Источники: [Product Brief](./PRODUCT-BRIEF.md) — AI Cost Analysis; [Market Research](./MARKET-RESEARCH.md) — Section 14.1
-
-### Insight 4: "Что есть вместо?" — #1 неотвеченный вопрос
-
-Сахар отличается от алкоголя и сигарет: нельзя избежать еды. Вопрос "What do I eat when I'm craving something sweet RIGHT NOW?" — самый частый на r/sugarfree. MyFitnessPal не может отличить added sugar от natural. **"Eat This Instead" engine — вторая по важности фича после SOS.**
-
-> Источники: [User Personas](./USER-PERSONAS.md) — Common Pattern #2; [Market Research](./MARKET-RESEARCH.md) — Reddit Analysis; [Competitors](./COMPETITORS.md) — Gap Analysis
-
-### Insight 5: Reframe — готовый playbook для копирования
-
-Reframe (quit drinking): $10M+ ARR, 3.2M загрузок, $12.5M инвестиций. Их формула: 160-day neuroscience curriculum + AI chatbot (Melody) + Cravings Mode + community + gamification. Sunnyside: $23.7M revenue, $14.6M инвестиций. Оба обслуживают рынок в 3-5x меньший, чем sugar. **Плейбук доказан — нужно адаптировать, а не изобретать.**
-
-> Источники: [Competitors](./COMPETITORS.md) — Reframe + Sunnyside profiles; [Market Research](./MARKET-RESEARCH.md) — Sections 7.2, 12.4
+**Итоговый балл: 7.9/10.**
 
 ---
 
-## 4. Key Risks
+## Топ-5 инсайтов
 
-### Риск 1: Вход крупного игрока (Noom, MyFitnessPal, Apple)
-
-- **Вероятность:** Средняя
-- **Severity:** Высокая
-- **Митигация:** Первые 12-18 месяцев — окно. Data moat: история тяги пользователя непереносима. Community lock-in. Стать "THE sugar app" до того, как инкумбенты заметят. Noom уже партнёрится с Highmark Health для diabetes prevention (2M members, 2026) — sugar-модуль логичен для них.
-
-### Риск 2: Готовность платить ниже, чем за алкоголь
-
-- **Вероятность:** Средняя
-- **Severity:** Средняя
-- **Митигация:** Sugar воспринимается как "менее серьёзная" проблема. Но: 3 персоны все подтвердили willingness to pay $9.99+/мес. Фреймить через здоровье: "$80/год vs $10K+/год лечение диабета". B2B/insurance subsidies для Pre-Diabetic Paul. Убийственный free tier → SOS experience конвертирует.
-
-### Риск 3: Научная контроверсия ("сахарная зависимость не существует")
-
-- **Вероятность:** Средняя
-- **Severity:** Средняя
-- **Митигация:** Сахарная зависимость НЕ признана в DSM-5/ICD-11. Но поведенческие паттерны (тяга, bingeing, withdrawal) задокументированы. Позиционирование: "behavior change for sugar habits, backed by neuroscience" — НИКОГДА "addiction treatment". Reframe успешно навигировал идентичный риск с алкоголем.
-
-### Риск 4: Retention / высокий churn
-
-- **Вероятность:** Высокая
-- **Severity:** Высокая
-- **Митигация:** Health apps churn 8-15%/мес. Ответ: gamification (streaks, community challenges), community lock-in, AI personalization (чем дольше пользуешься → тем точнее predictions → тем выше switching costs), stage-based curriculum (90-day journey даёт structure). Reframe retention: 91% пользователей снизили алкоголь за 3 месяца.
-
-### Риск 5: Расстройства пищевого поведения (eating disorders)
-
-- **Вероятность:** Средняя
-- **Severity:** Высокая
-- **Митигация:** Chloe-персона уже в binge-restrict цикле. AI **никогда** не должен стыдить, поддерживать extreme restriction, или reinforce all-or-nothing мышление. Anti-pattern detection в community. Автоматический referral к профессионалам при red flags. Advisory board включает клинического психолога. Reduction (не только abstinence) как option.
+1. **Ключевая ценность живет в окне 3-5 минут, когда craving уже начался.** Все источники сходятся в том, что существующие решения в основном retrospective: логирование, советы, челленджи, но не помощь в критический момент. Это делает `SOS AI` не nice-to-have, а core wedge. Опора: [UP], [CP], [PB].
+2. **Самый сильный научный и продуктовый угол — не "лечить зависимость", а `craving management + trigger detection + SSB reduction + added sugar literacy`.** Именно в этой рамке у продукта сильная evidence base и меньше regulatory риска. Опора: [DR], [MR].
+3. **Рынок открыт не потому, что спроса нет, а потому что текущие продукты плохо заслуживают доверие.** У конкурентов повторяются одни и те же проблемы: неточный sugar data layer, ранний paywall, слабая персонализация и узкие community-модели. Опора: [CP].
+4. **Primary wedge для MVP — Stress Sarah, а не сразу "все, кто боится сахара".** Sarah чаще сталкивается с проблемой, понятнее монетизируется и лучше совпадает с realtime/SOS promise; Paul — хороший annual-plan expansion сегмент; Chloe — сильный acquisition segment, но и safety/churn risk. Опора: [UP].
+5. **Нужно сознательно держать две модели рынка в голове: conservative base case и upside.** Conservative case из [MR] уже достаточен для `CAUTIOUS GO`, а агрессивные цифры из [PB] полезны только как upside-сценарий после доказанного retention и conversion. Опора: [MR], [PB].
 
 ---
 
-## 5. Hypotheses to Test
+## Основные риски
 
-### H1: SOS AI конвертирует лучше, чем static panic button
-- **Тест:** A/B тест в beta — SOS AI vs. breathing exercise. Метрика: craving defeated rate (% тяг, которые не привели к consumption)
-- **Порог:** SOS AI > 60% craving defeated rate (vs estimated 20-30% для breathing exercise)
-
-### H2: Пользователи готовы платить $9.99/мес за sugar-specific app
-- **Тест:** Landing page с ценой → email signup conversion. Или: free tier с 3 SOS/мес → upgrade conversion rate
-- **Порог:** Free → Paid conversion > 8% (benchmark для health apps: 5-10%)
-
-### H3: Predictive triggers повышают retention
-- **Тест:** Когорта с predictions vs. без. Метрика: D30 retention
-- **Порог:** D30 retention с predictions > 35% (vs typical health app D30: 15-25%)
-
-### H4: Community — ключевой retention driver
-- **Тест:** Community participants vs. solo users. Метрика: D90 retention
-- **Порог:** Community users D90 retention > 2x solo users
-
-### H5: "Eat This Instead" — top requested feature
-- **Тест:** Beta user surveys + feature usage tracking
-- **Порог:** >50% активных пользователей используют feature еженедельно
+1. **Retention и willingness to pay могут оказаться слабее ожиданий.** Люди хотят "меньше сахара", но это еще не доказывает готовность платить за отдельное приложение годами. Главный вопрос не в спросе на идею, а в том, станет ли Sugar Quit устойчивой привычкой. Опора: [MR], [UP].
+2. **Риск disordered eating — core product risk, а не edge case.** Особенно для аудитории типа Chloe AI может усилить shame, restriction или binge-restrict loop, если язык, streak-механики и community будут спроектированы неаккуратно. Опора: [DR], [UP].
+3. **Claims, privacy и consumer health data требуют дисциплины с первого дня.** Продукту нельзя скатываться в "лечим зависимость", "разворачиваем prediabetes" или скрытый сбор sensitive data без clear consent и delete/export flows. Опора: [DR].
+4. **Инкумбенты могут быстро зайти в категорию.** Noom, MyFitnessPal или другой крупный nutrition player могут добавить sugar layer, если увидят traction. Поэтому позиционирование и data moat важнее, чем просто "успеть сделать фичу". Опора: [CP], [PB].
+5. **Trust gap по food/sugar data легко убьет продукт.** Конкуренты уже показали, что broken scanner и неточный added sugar tracking быстро уничтожают доверие и ценность подписки. Опора: [CP].
 
 ---
 
-## 6. Recommendations для Product Stage
+## Гипотезы для проверки
 
-### 6.1 Приоритеты MVP
-
-| Приоритет | Фича | Обоснование |
-|-----------|------|-------------|
-| P0 (must-have) | SOS AI button | Единственный дифференциатор. Core conversion mechanic. Всё начинается здесь |
-| P0 | Daily check-in + streak | Минимальный engagement loop. Кормит prediction engine |
-| P0 | 90-day curriculum (первые 14 дней) | Hook. Первые 2 недели — withdrawal period, максимальная потребность в support |
-| P1 (should-have) | "Eat This Instead" engine | #1 unmet need. Но можно начать с curated list, AI позже |
-| P1 | Community (read + post) | Retention driver. Но можно запустить как r/sugarfree-style форум |
-| P1 | Progress dashboard | Money saved + cravings defeated + streak — мотивация |
-| P2 (nice-to-have) | Craving predictor | Killer feature, но требует 7+ дней данных. Не для Day 1 |
-| P2 | Food scanner | Не core loop. Sugarfree провалился с quality. Лучше сделать позже и хорошо |
-| P2 | Apple Watch integration | Дифференциатор, но малая аудитория |
-
-### 6.2 Target Timeline
-
-- **Запуск: Январь 2027** — non-negotiable. January spike = 10x органических установок
-- **Beta: Октябрь-Ноябрь 2026** — 500-1000 beta-тестеров из r/sugarfree
-- **Content production: Май-Сентябрь 2026** — 90-day curriculum должен быть готов до beta
-- **Advisory board: Май 2026** — 3-5 экспертов для научной кредибильности
-
-### 6.3 Позиционирование
-
-**"Reframe for sugar"** — the first AI-powered sugar reduction coach.
-
-- **Язык:** "sugar habits", "cravings", "behavior change", "backed by neuroscience"
-- **Не использовать:** "addiction treatment", "cure", "clinical intervention", "medical"
-- **Tone:** Эмпатичный коуч, не калькулятор. Поддержка, не стыд. Прогресс, не perfection.
-
-### 6.4 Команда для следующего этапа
-
-| Роль | Приоритет | Обоснование |
-|------|-----------|-------------|
-| Content Lead | Критично | 90-day curriculum — главный production bottleneck |
-| Advisory Board (3-5 экспертов) | Критично | Нейроучёный, диетолог, психолог, эндокринолог — кредибильность |
-| Health-tech regulatory attorney | Важно | Проверить claims, disclaimers, FDA guidance compliance |
-| Community moderator (1-2) | Для beta | Eating disorder detection, content moderation |
-
-### 6.5 Метрики успеха для Product Stage
-
-| Метрика | Target |
-|---------|--------|
-| Beta user NPS | >50 |
-| SOS craving defeated rate | >60% |
-| Free → Paid conversion | >8% |
-| D7 retention | >45% |
-| D30 retention | >30% |
-| Average SOS conversations/user/week | >3 |
+| Гипотеза | Почему это важно | Как проверить | Опора |
+|---|---|---|---|
+| **1. SOS AI побеждает static coping tools** | Если realtime-коучинг не помогает лучше, чем breathing/timer flow, то главный wedge не работает. | A/B: `SOS AI` vs. простой panic flow; метрика — craving defeated rate и повторное использование. | [UP], [CP], [PB] |
+| **2. Predictive nudges повышают D30 retention** | Предсказание тяги — потенциальный moat, но только если реально меняет поведение и возвращаемость. | Cohort test: пользователи с trigger reminders vs. без них; метрики — D7/D30 retention, SOS opens. | [UP], [PB] |
+| **3. SSB-first onboarding конвертирует лучше, чем "quit all sugar"** | SSB reduction и sweet coffee — самый доказуемый и понятный entry point, особенно для MVP. | Тест 2 onboarding flows и 2 landing pages; сравнить activation, first-week completion, paywall conversion. | [DR], [MR], [UP] |
+| **4. Прозрачный free layer + annual-first pricing выигрывают у hard paywall** | Конкуренты сами показывают, что ранний paywall и weekly pricing разрушают trust. | Тест paywall: limited free SOS + annual plan vs. quiz-first / weekly-first. | [CP], [MR] |
+| **5. Recovery loop после lapse снижает churn сильнее, чем streak-only подход** | Для этой категории важно не только "держаться", но и быстро возвращаться после срыва. | Сравнить churn и week-4 retention у пользователей с anti-shame recovery flow vs. обычным streak flow. | [UP], [DR], [CP] |
 
 ---
 
-## 7. Verdict
+## Рекомендации для MVP
 
-### CAUTIOUS GO
+### Делать
 
-**Рекомендация: GO с условиями.**
+- **Фокус на взрослых `18+` и на primary persona Stress Sarah.** Это самый чистый и частый use case для realtime craving support. Опора: [UP].
+- **Строить MVP вокруг `SOS AI`, daily check-ins, trigger logging и recovery loop.** Это минимальный пакет, который соответствует ключевой боли и не превращает продукт в очередной tracker. Опора: [UP], [CP], [PB].
+- **Заходить через SSB reduction, sweet coffee, office snacks и added sugar literacy.** Это и доказуемо с научной точки зрения, и понятно пользователю с первого дня. Опора: [DR], [MR].
+- **Сразу заложить safety и privacy baseline:** explicit consent, delete/export, anti-ED guardrails, moderation rules, disclaimers. Опора: [DR].
 
-Все 7 критериев scoring table показывают сильные оценки (средний балл 8.7/10). Рынок огромен (TAM $20B), категория практически пуста (saturation 2/10), playbook доказан (Reframe/Sunnyside), AI costs жизнеспособны (1.8% от revenue), уникальность высока (real-time AI craving coaching не существует).
+### Не делать
 
-**Почему CAUTIOUS GO, а не безусловный GO:**
+- **Не позиционировать продукт как лечение "sugar addiction", prediabetes или любой болезни.** Это и научно, и регуляторно слабое место. Опора: [DR].
+- **Не строить core UX вокруг calories, weight loss, shame и all-or-nothing detox framing.** Это повышает ED risk и ломает tone of voice. Опора: [DR], [UP].
+- **Не выпускать сырой scanner или database-driven продукт, если нет trust-grade качества данных.** В этой категории broken data быстро обнуляет доверие. Опора: [CP].
+- **Не ставить hard paywall до первого wow-moment.** У конкурентов это уже повторяющаяся причина раздражения и отказа от покупки. Опора: [CP].
 
-1. **Готовность платить не проверена.** Все аналоги — в "серьёзных" категориях (алкоголь, курение). Sugar — "мягкая" проблема для большинства. H2 (willingness to pay) — критическая гипотеза
-2. **Retention — главный риск.** Health apps churn 8-15%/мес. Без exceptional retention все projections рассыпаются
-3. **Eating disorder liability.** Binge-restrict персона (Chloe) — реальный риск. AI, работающий с food behavior, может навредить. Требуется clinical advisory
+### Монетизация
 
-**Условия перехода к разработке:**
-
-| Условие | Дедлайн | Критерий выполнения |
-|---------|---------|---------------------|
-| Landing page validation | Май 2026 | >5% email signup conversion при указании цены $9.99/мес |
-| Advisory board (минимум 2 эксперта) | Июнь 2026 | Нейроучёный/психолог + диетолог подтвердили участие |
-| Regulatory review | Июнь 2026 | Health-tech attorney подтвердил: позиционирование safe, disclaimers достаточны |
-| Content plan для curriculum | Июль 2026 | Первые 14 дней curriculum — draft ready, reviewed by advisory |
-| Seed funding plan | Июль 2026 | $2-3M seed roadmap (angels, VC, bootstrapping — определён путь) |
-
-**При выполнении всех условий → полный GO на разработку с target запуска Январь 2027.**
+- **Базовая модель:** annual-first subscription около `$79.99/год` как baseline, плюс monthly tier `$9.99-14.99/мес`. Это лучше совпадает и с персонами, и с market sizing из [MR]. Опора: [MR], [UP].
+- **Free layer должен доказывать value до оплаты:** ограниченные SOS-сессии, daily check-in, первые уроки, базовый progress loop. Опора: [CP], [PB].
+- **B2B/insurance — не стартовый костыль, а stage-2 expansion.** Сначала нужно доказать consumer retention и claim-safe positioning. Опора: [MR], [DR], [PB].
 
 ---
 
-*Данный документ является синтезом [Market Research](./MARKET-RESEARCH.md), [Competitors](./COMPETITORS.md), [User Personas](./USER-PERSONAS.md) и [Domain Research](./DOMAIN-RESEARCH.md). Каждый companion document содержит детальные данные и источники.*
+## Verdict
+
+**CAUTIOUS GO**
+
+**Почему не NO GO:** проблема массовая, market timing хороший, категория фрагментирована, а wedge `SOS AI + trigger prediction + sugar-specific behavior change` действительно отличается от текущего рынка. У проекта есть и научная, и рыночная база, если держаться рамки `general wellness + behavior change`. Опора: [DR], [MR], [CP].
+
+**Почему не full GO:** monetizable pool меньше, чем кажется по broad TAM narrative; willingness to pay за standalone sugar app еще не доказан; а safety/claims/privacy риски достаточно серьезны, чтобы плохой scope быстро сломал и продукт, и GTM. Опора: [MR], [DR], [UP].
+
+**Рекомендация:** идти в разработку как narrow wedge MVP, если команда готова валидировать до масштабирования четыре вещи:
+
+1. `Free -> Paid conversion >= 5-8%`
+2. `D30 retention >= 30%`
+3. `SOS` становится реальным привычным поведением, а не novelty feature
+4. Safety baseline выдерживает реальный пользовательский язык без вредных сценариев
+
+Если эти условия подтверждаются на beta, проект можно повышать из `CAUTIOUS GO` в `GO`. Если нет, правильнее не масштабировать broad subscription thesis, а сузить продукт до более легкого coaching/content wedge.
+
+---
+
+## Ссылки на источники
+
+[MR]: ./MARKET-RESEARCH.md  
+[DR]: ./DOMAIN-RESEARCH.md  
+[CP]: ./COMPETITORS.md  
+[UP]: ./USER-PERSONAS.md  
+[PB]: ./PRODUCT-BRIEF.md  
+[SS]: ./SCORING-SUMMARY.md
