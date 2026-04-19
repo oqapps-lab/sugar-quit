@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
  * Milestone Celebration — presented as full-screen modal.
@@ -40,7 +40,7 @@ export default function Milestone() {
       </View>
 
       <View style={[styles.content, { paddingTop: insets.top + spacing.xxl }]}>
-        <Pressable onPress={() => router.back()} style={styles.closeBtn}>
+        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
           <Text style={styles.closeX}>×</Text>
         </Pressable>
 
@@ -84,7 +84,7 @@ export default function Milestone() {
         <Pressable style={styles.shareBtn}>
           <Text style={styles.shareLabel}>Share this chapter</Text>
         </Pressable>
-        <PillCTA label="Back to today" onPress={() => router.back()} />
+        <PillCTA label="Back to today" onPress={() => router.dismiss()} />
       </View>
     </AtmosphericGradient>
   );

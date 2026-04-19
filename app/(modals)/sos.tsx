@@ -2,8 +2,8 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 type Msg = { role: 'ai' | 'user'; text: string };
 
@@ -49,14 +49,14 @@ export default function ChatScreen() {
       >
         {/* Header */}
         <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable onPress={() => router.back()} style={styles.backBtn}>
+          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
             <Text style={styles.backArrow}>←</Text>
           </Pressable>
           <View style={styles.headerCenter}>
             <View style={styles.headerDot} />
             <Text style={styles.headerLabel}>COACH IS HERE</Text>
           </View>
-          <Pressable onPress={() => router.back()} style={styles.endBtn}>
+          <Pressable onPress={() => router.dismiss()} style={styles.endBtn}>
             <Text style={styles.endLabel}>End</Text>
           </Pressable>
         </View>

@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { PillCTA } from '../components/ui/PillCTA';
-import { TokenDot } from '../components/ui/TokenDot';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { TokenDot } from '../../components/ui/TokenDot';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
  * Welcome — first screen of onboarding flow (screen 1.1 from SCREEN-MAP).
@@ -49,7 +49,7 @@ export default function Welcome() {
         <PillCTA
           label="Begin"
           variant="onboarding"
-          onPress={() => router.push('/')}
+          onPress={() => router.push('/(onboarding)/quiz/goal')}
           style={styles.cta}
         />
         <Pressable onPress={() => {}} style={styles.signInRow}>

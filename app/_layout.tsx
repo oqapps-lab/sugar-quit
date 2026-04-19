@@ -16,15 +16,18 @@ import {
   Manrope_500Medium,
   Manrope_600SemiBold,
 } from '@expo-google-fonts/manrope';
-import {
-  PlayfairDisplay_400Regular,
-  PlayfairDisplay_400Regular_Italic,
-  PlayfairDisplay_700Bold,
-  PlayfairDisplay_700Bold_Italic,
-} from '@expo-google-fonts/playfair-display';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 
+/**
+ * Root Stack. Three groups:
+ *  - (onboarding) — linear new-user flow (welcome → quiz → result → paywall → auth → home)
+ *  - (tabs)       — main app with bottom tabs (home / curriculum / progress / profile)
+ *  - (modals)     — contextual overlays (sos / checkin / paywall-contextual / milestone / …)
+ *
+ * Entry point: app/index.tsx routes new users to (onboarding)/welcome,
+ * returning users to (tabs)/home.
+ */
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     PlusJakartaSans_300Light,
@@ -38,10 +41,6 @@ export default function RootLayout() {
     Manrope_400Regular,
     Manrope_500Medium,
     Manrope_600SemiBold,
-    PlayfairDisplay_400Regular,
-    PlayfairDisplay_400Regular_Italic,
-    PlayfairDisplay_700Bold,
-    PlayfairDisplay_700Bold_Italic,
   });
 
   if (!fontsLoaded) {
@@ -59,29 +58,10 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="welcome" />
-        <Stack.Screen name="progress" />
-        <Stack.Screen name="profile" />
-        <Stack.Screen name="curriculum" />
-        <Stack.Screen name="lesson" />
+        <Stack.Screen name="(onboarding)" />
+        <Stack.Screen name="(tabs)" />
         <Stack.Screen
-          name="paywall"
-          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-        />
-        <Stack.Screen
-          name="milestone"
-          options={{ presentation: 'modal', animation: 'fade' }}
-        />
-        <Stack.Screen
-          name="sos"
-          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-        />
-        <Stack.Screen
-          name="chat"
-          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
-        />
-        <Stack.Screen
-          name="checkin"
+          name="(modals)"
           options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
         />
       </Stack>

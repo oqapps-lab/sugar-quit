@@ -2,9 +2,9 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 type Tier = 'annual' | 'monthly';
 
@@ -95,7 +95,7 @@ export default function Paywall() {
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
         <PillCTA
           label="Start 7 days free"
-          onPress={() => router.push('/')}
+          onPress={() => router.push('/(onboarding)/auth')}
           style={styles.cta}
         />
         <View style={styles.trialTimeline}>

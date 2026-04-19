@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { GlassCard } from '../components/ui/GlassCard';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { GlassCard } from '../../../components/ui/GlassCard';
+import { PillCTA } from '../../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 
 /**
  * Lesson screen — Day 8 example. Editorial reading.

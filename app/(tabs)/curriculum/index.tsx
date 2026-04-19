@@ -1,10 +1,9 @@
 import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { BottomNav } from '../components/ui/BottomNav';
-import { GlassCard } from '../components/ui/GlassCard';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { GlassCard } from '../../../components/ui/GlassCard';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 
 type LessonState = 'done' | 'current' | 'upcoming' | 'locked';
 type Lesson = { day: number; title: string; minutes: number; state: LessonState };
@@ -101,7 +100,7 @@ export default function Curriculum() {
               ) : (
                 <View style={styles.lessonsList}>
                   {phase.lessons.map((lesson) => (
-                    <Pressable key={lesson.day} onPress={() => router.push('/lesson')}>
+                    <Pressable key={lesson.day} onPress={() => router.push('/(tabs)/curriculum/8')}>
                       <GlassCard
                         tint={lesson.state === 'current' ? 'peach' : 'default'}
                         style={[
@@ -150,19 +149,6 @@ export default function Curriculum() {
         </View>
       </ScrollView>
 
-      <BottomNav
-        tabs={[
-          { key: 'home', label: 'Home', icon: '◉' },
-          { key: 'curriculum', label: 'Journey', icon: '≡', active: true },
-          { key: 'sos-tab', label: 'SOS', icon: '!' },
-          { key: 'profile', label: 'Profile', icon: '◯' },
-        ]}
-        onPress={(key) => {
-          if (key === 'home') router.push('/');
-          if (key === 'profile') router.push('/profile');
-          if (key === 'sos-tab') router.push('/sos');
-        }}
-      />
     </AtmosphericGradient>
   );
 }

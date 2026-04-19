@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { GlassCard } from '../components/ui/GlassCard';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { GlassCard } from '../../components/ui/GlassCard';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 type Step = 'sugar' | 'mood' | 'done';
 type Sugar = 'free' | 'some' | 'relapse';
@@ -47,7 +47,7 @@ export default function CheckIn() {
     <AtmosphericGradient theme="dawn">
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
+        <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Daily check-in</Text>
@@ -129,7 +129,7 @@ export default function CheckIn() {
           </View>
 
           <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-            <PillCTA label="Back to today" onPress={() => router.back()} />
+            <PillCTA label="Back to today" onPress={() => router.dismiss()} />
           </View>
         </View>
       )}

@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { GlassCard } from '../components/ui/GlassCard';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { GlassCard } from '../../components/ui/GlassCard';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
  * Profile — Your Craving Profile (post-onboarding result).
@@ -106,7 +106,7 @@ export default function ProfileScreen() {
       </ScrollView>
 
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Begin the program" onPress={() => router.push('/')} />
+        <PillCTA label="Begin the program" onPress={() => router.push('/(onboarding)/paywall')} />
       </View>
     </AtmosphericGradient>
   );

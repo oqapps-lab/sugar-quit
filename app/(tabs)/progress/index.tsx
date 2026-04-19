@@ -1,10 +1,9 @@
 import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
-import { BottomNav } from '../components/ui/BottomNav';
-import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../constants/tokens';
+import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../../components/ui/PillCTA';
+import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
 
 /**
  * Progress — 90-Day Journey on Dark Horizon gradient.
@@ -118,7 +117,7 @@ export default function ProgressScreen() {
           <PillCTA
             label="Begin session"
             variant="lightOnDark"
-            onPress={() => router.push('/sos')}
+            onPress={() => router.push('/(modals)/sos')}
             style={styles.sessionCTA}
           />
         </View>
@@ -142,20 +141,6 @@ export default function ProgressScreen() {
         </View>
       </ScrollView>
 
-      <BottomNav
-        dark
-        tabs={[
-          { key: 'home', label: 'Home', icon: '◉' },
-          { key: 'progress', label: 'Progress', icon: '≋', active: true },
-          { key: 'sos-tab', label: 'SOS', icon: '!' },
-          { key: 'profile', label: 'Profile', icon: '◯' },
-        ]}
-        onPress={(key) => {
-          if (key === 'home') router.push('/');
-          if (key === 'profile') router.push('/profile');
-          if (key === 'sos-tab') router.push('/sos');
-        }}
-      />
     </AtmosphericGradient>
   );
 }
