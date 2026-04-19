@@ -84,19 +84,51 @@ export const radius = {
   full: 9999,
 } as const;
 
+/**
+ * Typography — modern mobile app.
+ * No italic serif display (not a magazine).
+ * Headline: Plus Jakarta Sans — confident geometric sans.
+ * Body/label: Manrope — softer humanist sans, good for reading.
+ */
 export const fonts = {
-  headline: 'PlusJakartaSans_700Bold',
-  headlineExtraBold: 'PlusJakartaSans_800ExtraBold',
+  // Plus Jakarta Sans — for headlines, numbers, CTAs
   headlineLight: 'PlusJakartaSans_300Light',
   headlineRegular: 'PlusJakartaSans_400Regular',
-  body: 'Manrope_400Regular',
+  headlineMedium: 'PlusJakartaSans_500Medium',
+  headlineSemibold: 'PlusJakartaSans_600SemiBold',
+  headlineBold: 'PlusJakartaSans_700Bold',
+  headlineExtraBold: 'PlusJakartaSans_800ExtraBold',
+  // Backwards compat aliases
+  headline: 'PlusJakartaSans_600SemiBold',
+  // Manrope — body + labels
   bodyLight: 'Manrope_300Light',
-  bodyThin: 'Manrope_200ExtraLight',
+  body: 'Manrope_400Regular',
   bodyMedium: 'Manrope_500Medium',
+  bodySemibold: 'Manrope_600SemiBold',
   label: 'Manrope_500Medium',
-  serif: 'PlayfairDisplay_400Regular',
-  serifItalic: 'PlayfairDisplay_400Regular_Italic',
-  serifBoldItalic: 'PlayfairDisplay_700Bold_Italic',
+} as const;
+
+/**
+ * Type scale — sane mobile app sizes, not magazine.
+ */
+export const typeScale = {
+  // Hero number — streak, big counts. Large but not absurd.
+  heroNumber: 72,
+  // Section hero — "Today is Light" on Home
+  displayLarge: 36,
+  displayMedium: 28,
+  displaySmall: 22,
+  // Card titles
+  titleLarge: 20,
+  titleMedium: 17,
+  titleSmall: 15,
+  // Body
+  bodyLarge: 16,
+  bodyMedium: 14,
+  bodySmall: 13,
+  // Labels
+  label: 12,
+  labelSmall: 10,
 } as const;
 
 export const opacity = {

@@ -3,22 +3,19 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
 import { GlassCard } from '../components/ui/GlassCard';
-import { GradientText } from '../components/ui/GradientText';
 import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking } from '../constants/tokens';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../constants/tokens';
 
 /**
- * Profile — Your Craving Profile (post-onboarding Result screen).
- * Mirror of screen 05 (stitch-export/05-craving-profile.png).
- * Theme: cravingProfile — 5-stop soft linear gradient.
+ * Profile — Your Craving Profile (post-onboarding result).
+ * Clean modern typography. No serif italic.
  */
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
 
   return (
     <AtmosphericGradient theme="cravingProfile">
-      {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
           <View style={styles.logoMark} />
           <Text style={styles.brandWord}>Sugar Quit</Text>
@@ -32,14 +29,13 @@ export default function ProfileScreen() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero */}
+        {/* Hero — clean app style */}
         <View style={styles.heroSection}>
           <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
-          <Text style={styles.youAreA}>You are a</Text>
-          <GradientText style={styles.heroName} gradient="heroHorizontal">
-            Stress Eater
-          </GradientText>
-          <Text style={styles.heroSuffix}>with a 3pm crash.</Text>
+          <Text style={styles.heroTitle}>
+            You're a <Text style={styles.heroTitleAccent}>Stress Eater</Text>
+          </Text>
+          <Text style={styles.heroSubtitle}>with a 3pm crash</Text>
           <Text style={styles.heroBody}>
             Your body seeks rapid energy drops to counter cortisol peaks.
             We'll replace the spike with steady emotional grounding.
@@ -48,48 +44,67 @@ export default function ProfileScreen() {
 
         {/* Cards */}
         <View style={styles.cardsCol}>
-          {/* Card 1 — peak window */}
           <GlassCard tint="default" style={styles.insightCard}>
-            <View style={styles.cardIcon}>
-              <Text style={styles.cardIconGlyph}>◷</Text>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardIcon}>
+                <Text style={styles.cardIconGlyph}>⧗</Text>
+              </View>
+              <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
             </View>
-            <Text style={styles.cardTitle}>Your peak window is 3:00–5:00 PM.</Text>
+            <Text style={styles.cardTitle}>3:00 – 5:00 PM</Text>
             <Text style={styles.cardBody}>
               Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
               breath protocol right before the craving hits.
             </Text>
           </GlassCard>
 
-          {/* Card 2 — Week 1 (bigger, anchor) */}
           <GlassCard tint="peach" style={styles.insightCardLarge}>
-            <View style={styles.cardIconLarge}>
-              <Text style={styles.cardIconGlyphLarge}>↯</Text>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardIconAccent}>
+                <Text style={styles.cardIconGlyphAccent}>◈</Text>
+              </View>
+              <Text style={styles.cardEyebrowAccent}>WEEK 1</Text>
             </View>
-            <Text style={styles.cardTitleLarge}>
-              Week 1 — Withdrawal, then clarity.
-            </Text>
-            <Text style={styles.cardBodyLarge}>
+            <Text style={styles.cardTitleLarge}>Withdrawal, then clarity</Text>
+            <Text style={styles.cardBody}>
               The first 4 days are a physiological unbinding. By day 7, the mental
               fog lifts and the deep fatigue subsides. Expect emotional turbulence,
               met with soft interventions.
             </Text>
+            <View style={styles.timelineRow}>
+              <View style={styles.timelineDay}>
+                <Text style={styles.timelineDayNumber}>1–4</Text>
+                <Text style={styles.timelineDayLabel}>unbind</Text>
+              </View>
+              <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+              <View style={styles.timelineDay}>
+                <Text style={styles.timelineDayNumber}>5–6</Text>
+                <Text style={styles.timelineDayLabel}>turbulence</Text>
+              </View>
+              <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+              <View style={styles.timelineDay}>
+                <Text style={[styles.timelineDayNumber, { color: colors.primary }]}>7</Text>
+                <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>clarity</Text>
+              </View>
+            </View>
           </GlassCard>
 
-          {/* Card 3 — Day 30 */}
           <GlassCard tint="mint" style={styles.insightCard}>
-            <View style={styles.cardIconMint}>
-              <Text style={styles.cardIconGlyph}>△</Text>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardIconMint}>
+                <Text style={[styles.cardIconGlyph, { color: colors.tertiary }]}>△</Text>
+              </View>
+              <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>BY DAY 30</Text>
             </View>
-            <Text style={styles.cardTitle}>By Day 30, taste buds reset.</Text>
+            <Text style={styles.cardTitle}>Taste buds reset</Text>
             <Text style={styles.cardBody}>
-              Natural foods will taste vibrant again. The compulsion will fade into
+              Natural foods will taste vibrant again. The compulsion fades into
               a gentle, manageable whisper.
             </Text>
           </GlassCard>
         </View>
       </ScrollView>
 
-      {/* Bottom CTA */}
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="Begin the program" onPress={() => router.push('/')} />
       </View>
@@ -105,164 +120,150 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.sm,
   },
-  brandRow: {
+  brandRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  logoMark: { width: 10, height: 10, borderRadius: radius.full, backgroundColor: colors.primary },
+  brandWord: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.titleSmall,
+    color: colors.onSurface,
+    letterSpacing: -0.2,
+  },
+  skipLabel: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+  },
+
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.xl },
+
+  heroSection: { gap: spacing.xs },
+  eyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.sm,
+  },
+  heroTitle: {
+    fontFamily: fonts.headlineExtraBold,
+    fontSize: typeScale.displayLarge + 4,
+    color: colors.onSurface,
+    letterSpacing: -1.2,
+    lineHeight: 44,
+  },
+  heroTitleAccent: {
+    color: colors.primary,
+  },
+  heroSubtitle: {
+    fontFamily: fonts.headlineLight,
+    fontSize: typeScale.displaySmall,
+    color: colors.onSurfaceVariant,
+    letterSpacing: -0.5,
+    marginBottom: spacing.sm,
+  },
+  heroBody: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurfaceVariant,
+    lineHeight: 22,
+    marginTop: spacing.xs,
+    maxWidth: 360,
+  },
+
+  cardsCol: { gap: spacing.md },
+  insightCard: { padding: spacing.lg, gap: spacing.sm },
+  insightCardLarge: { padding: spacing.lg, gap: spacing.sm },
+  cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-  },
-  logoMark: {
-    width: 22,
-    height: 22,
-    borderRadius: radius.full,
-    backgroundColor: colors.primary,
-  },
-  brandWord: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: 20,
-    color: colors.primary,
-    letterSpacing: tracking.tight,
-    fontWeight: '800',
-  },
-  skipLabel: {
-    fontFamily: fonts.bodyLight,
-    fontSize: 15,
-    color: colors.onSurfaceVariant,
-    fontWeight: '300',
-  },
-  scroll: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    gap: spacing.xxxl,
-  },
-  heroSection: {
-    gap: spacing.sm,
-    paddingLeft: spacing.xs,
-  },
-  eyebrow: {
-    fontFamily: fonts.label,
-    fontSize: 11,
-    color: '#d87158',
-    letterSpacing: tracking.labelWide,
-    fontWeight: '600',
-    marginBottom: spacing.sm,
-  },
-  youAreA: {
-    fontFamily: fonts.bodyLight,
-    fontSize: 20,
-    color: colors.tertiaryDim,
-    fontWeight: '300',
-  },
-  heroName: {
-    fontFamily: fonts.serifBoldItalic,
-    fontSize: 64,
-    lineHeight: 68,
-    fontWeight: '700',
-    fontStyle: 'italic',
-    letterSpacing: tracking.tight,
-    marginTop: -4,
-    height: 68,
-  },
-  heroSuffix: {
-    fontFamily: fonts.serifItalic,
-    fontSize: 28,
-    fontStyle: 'italic',
-    color: colors.secondaryDim,
-    fontWeight: '400',
-    marginTop: 4,
-  },
-  heroBody: {
-    fontFamily: fonts.bodyLight,
-    fontSize: 17,
-    color: colors.onSurfaceVariant,
-    lineHeight: 26,
-    marginTop: spacing.md,
-    maxWidth: 360,
-    fontWeight: '300',
-  },
-  cardsCol: {
-    gap: spacing.lg,
-  },
-  insightCard: {
-    padding: spacing.xl,
-    gap: spacing.md,
-  },
-  insightCardLarge: {
-    padding: spacing.xl + spacing.xs,
-    gap: spacing.md,
+    marginBottom: spacing.xs,
   },
   cardIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(255, 151, 136, 0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
+    width: 32, height: 32, borderRadius: radius.full,
+    backgroundColor: 'rgba(165,60,48,0.1)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  cardIconLarge: {
-    width: 56,
-    height: 56,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(165, 60, 48, 0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
+  cardIconAccent: {
+    width: 32, height: 32, borderRadius: radius.full,
+    backgroundColor: colors.primary,
+    alignItems: 'center', justifyContent: 'center',
   },
   cardIconMint: {
-    width: 48,
-    height: 48,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(207, 224, 223, 0.6)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.sm,
+    width: 32, height: 32, borderRadius: radius.full,
+    backgroundColor: 'rgba(207,224,223,0.6)',
+    alignItems: 'center', justifyContent: 'center',
   },
   cardIconGlyph: {
-    fontSize: 22,
-    color: colors.primaryDim,
-    fontWeight: '300',
-  },
-  cardIconGlyphLarge: {
-    fontSize: 28,
+    fontSize: 16,
     color: colors.primary,
-    fontWeight: '300',
+    fontFamily: fonts.headlineBold,
+  },
+  cardIconGlyphAccent: {
+    fontSize: 16,
+    color: colors.onPrimary,
+    fontFamily: fonts.headlineBold,
+  },
+  cardEyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+  },
+  cardEyebrowAccent: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
   },
   cardTitle: {
-    fontFamily: fonts.serifItalic,
-    fontSize: 22,
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.titleLarge + 2,
     color: colors.onSurface,
+    letterSpacing: -0.4,
     lineHeight: 28,
-    fontStyle: 'italic',
-    fontWeight: '500',
   },
   cardTitleLarge: {
-    fontFamily: fonts.serifItalic,
-    fontSize: 30,
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.displaySmall,
     color: colors.onSurface,
-    lineHeight: 36,
-    fontStyle: 'italic',
-    fontWeight: '500',
+    letterSpacing: -0.6,
+    lineHeight: 30,
   },
   cardBody: {
     fontFamily: fonts.bodyLight,
-    fontSize: 15,
+    fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
-    lineHeight: 22,
-    fontWeight: '300',
+    lineHeight: 20,
   },
-  cardBodyLarge: {
-    fontFamily: fonts.bodyLight,
-    fontSize: 17,
+
+  timelineRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(49,51,47,0.08)',
+  },
+  timelineDay: { alignItems: 'center', gap: 2 },
+  timelineDayNumber: {
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.titleMedium,
+    color: colors.onSurface,
+  },
+  timelineDayLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
-    lineHeight: 26,
-    maxWidth: 440,
-    fontWeight: '300',
+    letterSpacing: tracking.wide,
   },
+  timelineArrow: { opacity: 0.3 },
+  timelineArrowText: { fontSize: 14, color: colors.onSurfaceVariant },
+
   ctaWrap: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 0, left: 0, right: 0,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },

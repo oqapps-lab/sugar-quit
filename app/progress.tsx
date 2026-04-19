@@ -4,48 +4,51 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../components/ui/AtmosphericGradient';
 import { BottomNav } from '../components/ui/BottomNav';
 import { PillCTA } from '../components/ui/PillCTA';
-import { colors, fonts, radius, shadows, spacing, tracking } from '../constants/tokens';
+import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../constants/tokens';
 
 /**
- * Progress — The 90-Day Horizon (Dark mode).
- * Mirror of screen 08 (stitch-export/08-90-day-horizon.png).
- * Theme: Dark Horizon gradient (navy → lavender → rust → cream).
+ * Progress — 90-Day Journey on Dark Horizon gradient.
+ * Modern app typography — no serif italic.
  */
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
 
   const nodes = [
-    { label: 'Arrival', phase: 'Phase 01', state: 'done' as const },
-    { label: 'Detox', phase: null, state: 'done' as const },
-    { label: 'The Exhale', phase: 'Current', state: 'current' as const },
-    { label: 'Clarity', phase: 'Phase 02', state: 'upcoming' as const },
-    { label: 'Resonance', phase: null, state: 'upcoming' as const },
-    { label: 'New Horizon', phase: 'Day 90', state: 'goal' as const },
+    { label: 'Arrival', phase: 'Week 1', state: 'done' as const },
+    { label: 'Detox', phase: 'Week 2', state: 'done' as const },
+    { label: 'Exhale', phase: 'Now', state: 'current' as const },
+    { label: 'Clarity', phase: 'Week 4', state: 'upcoming' as const },
+    { label: 'Horizon', phase: 'Day 90', state: 'goal' as const },
   ];
 
   return (
     <AtmosphericGradient theme="darkHorizon">
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
           <View style={styles.logoMark} />
-          <Text style={styles.brandWord}>THE EXHALE</Text>
+          <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
-        <Text style={styles.roadmapLabel}>Roadmap</Text>
-        <View style={styles.avatar} />
+        <Text style={styles.roadmapLabel}>Journey</Text>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarInitial}>S</Text>
+        </View>
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 180 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
         <View style={styles.heroSection}>
-          <Text style={styles.dayNumber}>Day 14</Text>
-          <Text style={styles.daySubtitle}>THE SUBTLE SHIFT</Text>
+          <Text style={styles.heroEyebrow}>DAY 14 OF 90</Text>
+          <Text style={styles.heroTitle}>The subtle shift</Text>
+          <Text style={styles.heroBody}>
+            Two weeks in. The storm has passed and the quiet is starting to feel normal.
+          </Text>
         </View>
 
-        {/* Horizon timeline */}
+        {/* Timeline */}
         <View style={styles.timelineSection}>
           <View style={styles.horizonLine} />
           <View style={styles.nodesRow}>
@@ -62,7 +65,6 @@ export default function ProgressScreen() {
                   {n.label}
                 </Text>
 
-                {/* Node dot */}
                 <View style={styles.nodeWrap}>
                   {n.state === 'current' && <View style={styles.nodeGlow} />}
                   <View
@@ -76,11 +78,9 @@ export default function ProgressScreen() {
                   />
                 </View>
 
-                {n.phase && (
-                  <Text style={[styles.nodePhase, n.state === 'current' && styles.nodePhaseActive]}>
-                    {n.phase}
-                  </Text>
-                )}
+                <Text style={[styles.nodePhase, n.state === 'current' && styles.nodePhaseActive]}>
+                  {n.phase}
+                </Text>
               </View>
             ))}
           </View>
@@ -89,41 +89,56 @@ export default function ProgressScreen() {
         {/* Details card */}
         <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
-            <View>
-              <Text style={styles.detailsTitle}>Today's Focus</Text>
-              <Text style={styles.detailsSub}>Deepening the rhythmic pattern.</Text>
-            </View>
-            <Text style={styles.detailsIcon}>✧</Text>
+            <Text style={styles.detailsLabel}>TODAY'S FOCUS</Text>
           </View>
 
-          <View style={styles.detailsList}>
+          <Text style={styles.detailsTitle}>Deepening the rhythmic pattern</Text>
+          <Text style={styles.detailsSub}>
+            Your body is learning a new cadence. Two practices to support the shift.
+          </Text>
+
+          <View style={styles.practicesList}>
             <View style={styles.practiceRow}>
-              <View style={styles.practiceIcon}>
-                <Text style={styles.practiceIconGlyph}>~</Text>
-              </View>
+              <View style={styles.practiceNumber}><Text style={styles.practiceNumberText}>1</Text></View>
               <View style={styles.practiceContent}>
-                <Text style={styles.practiceTitle}>Conscious Breathwork</Text>
-                <Text style={styles.practiceBody}>15 minutes · Morning session</Text>
+                <Text style={styles.practiceTitle}>Conscious breathwork</Text>
+                <Text style={styles.practiceBody}>15 min · morning session</Text>
               </View>
             </View>
 
             <View style={styles.practiceRow}>
-              <View style={styles.practiceIcon}>
-                <Text style={styles.practiceIconGlyph}>✎</Text>
-              </View>
+              <View style={styles.practiceNumber}><Text style={styles.practiceNumberText}>2</Text></View>
               <View style={styles.practiceContent}>
-                <Text style={styles.practiceTitle}>Mental Mapping</Text>
-                <Text style={styles.practiceBody}>Reflect on the transition points.</Text>
+                <Text style={styles.practiceTitle}>Mental mapping</Text>
+                <Text style={styles.practiceBody}>Reflect on transition points</Text>
               </View>
             </View>
           </View>
 
           <PillCTA
-            label="Begin Session"
+            label="Begin session"
             variant="lightOnDark"
             onPress={() => router.push('/sos')}
             style={styles.sessionCTA}
           />
+        </View>
+
+        {/* Quick stats row */}
+        <View style={styles.statsRow}>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>42</Text>
+            <Text style={styles.statLabel}>cravings met</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>$72</Text>
+            <Text style={styles.statLabel}>saved</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>89%</Text>
+            <Text style={styles.statLabel}>success</Text>
+          </View>
         </View>
       </ScrollView>
 
@@ -145,6 +160,10 @@ export default function ProgressScreen() {
   );
 }
 
+const DARK_TEXT = 'rgba(255,255,255,0.95)';
+const DARK_BODY = 'rgba(255,255,255,0.6)';
+const DARK_WHISPER = 'rgba(255,255,255,0.35)';
+
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
@@ -154,243 +173,217 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.sm,
     zIndex: 10,
   },
-  brandRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
+  brandRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   logoMark: {
-    width: 18,
-    height: 18,
-    borderRadius: radius.full,
-    backgroundColor: colors.darkHorizonRose100,
-    opacity: 0.7,
+    width: 10, height: 10, borderRadius: radius.full,
+    backgroundColor: colors.primaryFixedDim,
   },
   brandWord: {
-    fontFamily: fonts.headlineLight,
-    fontSize: 10,
-    color: colors.darkHorizonRose100,
-    letterSpacing: tracking.labelWidest,
-    opacity: 0.7,
-    fontWeight: '300',
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.titleSmall,
+    color: DARK_TEXT,
+    letterSpacing: -0.2,
   },
   roadmapLabel: {
-    fontFamily: fonts.headline,
-    fontSize: 18,
-    color: colors.darkHorizonRose100,
-    letterSpacing: tracking.tight,
-    fontWeight: '700',
+    fontFamily: fonts.headlineMedium,
+    fontSize: typeScale.bodyLarge,
+    color: DARK_TEXT,
   },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: 36, height: 36, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  scroll: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
-    alignItems: 'center',
+  avatarInitial: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.bodyMedium,
+    color: DARK_TEXT,
   },
-  heroSection: {
-    alignItems: 'center',
-    marginTop: spacing.xxl,
-    marginBottom: spacing.xxxl,
-  },
-  dayNumber: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: 80,
-    lineHeight: 80,
-    color: 'rgba(255,255,255,0.9)',
-    letterSpacing: tracking.tighter,
-    fontWeight: '800',
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowOffset: { width: 0, height: 8 },
-    textShadowRadius: 20,
-  },
-  daySubtitle: {
+
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
+
+  heroSection: { marginBottom: spacing.xxl, marginTop: spacing.lg },
+  heroEyebrow: {
     fontFamily: fonts.label,
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.6)',
-    letterSpacing: 5,
-    marginTop: spacing.md,
-    fontWeight: '500',
-    textTransform: 'uppercase',
+    fontSize: typeScale.labelSmall,
+    color: colors.primaryFixedDim,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.sm,
   },
+  heroTitle: {
+    fontFamily: fonts.headlineExtraBold,
+    fontSize: typeScale.displayLarge + 6,
+    color: DARK_TEXT,
+    letterSpacing: -1.2,
+    lineHeight: 44,
+    marginBottom: spacing.md,
+  },
+  heroBody: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodyLarge,
+    color: DARK_BODY,
+    lineHeight: 22,
+    maxWidth: 320,
+  },
+
   timelineSection: {
-    width: '100%',
-    marginBottom: spacing.xxxl,
-    paddingHorizontal: spacing.md,
+    marginBottom: spacing.xxl,
     position: 'relative',
   },
   horizonLine: {
     position: 'absolute',
-    left: spacing.md,
-    right: spacing.md,
-    top: '50%',
+    left: 20, right: 20,
+    top: 54,
     height: 1,
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
   nodesRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    minHeight: 120,
-    paddingVertical: 30,
+    alignItems: 'flex-start',
+    paddingVertical: 24,
+    paddingHorizontal: spacing.xs,
   },
   nodeCol: {
     alignItems: 'center',
     flex: 1,
+    gap: spacing.sm,
   },
   nodeLabel: {
-    fontFamily: fonts.bodyThin,
-    fontSize: 10,
-    color: 'rgba(255,255,255,0.4)',
-    letterSpacing: tracking.wide,
-    marginBottom: spacing.lg,
-    fontWeight: '200',
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.labelSmall + 1,
+    color: 'rgba(255,255,255,0.5)',
+    marginBottom: spacing.xs,
   },
   nodeLabelActive: {
-    fontFamily: fonts.headlineLight,
-    fontSize: 14,
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.bodyMedium,
     color: '#ffffff',
-    letterSpacing: tracking.widest,
-    fontWeight: '300',
   },
-  nodeLabelDim: {
-    color: 'rgba(255,255,255,0.2)',
-  },
+  nodeLabelDim: { color: 'rgba(255,255,255,0.3)' },
   nodeWrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
+    alignItems: 'center', justifyContent: 'center',
+    width: 32, height: 32,
   },
   nodeGlow: {
     position: 'absolute',
-    width: 48,
-    height: 48,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 32, height: 32, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.15)',
   },
-  node: {
-    width: 8,
-    height: 8,
-    borderRadius: radius.full,
-  },
-  nodeDone: {
-    backgroundColor: 'rgba(255,255,255,0.45)',
-  },
+  node: { width: 8, height: 8, borderRadius: radius.full },
+  nodeDone: { backgroundColor: 'rgba(255,255,255,0.45)' },
   nodeCurrent: {
-    width: 16,
-    height: 16,
+    width: 14, height: 14,
     backgroundColor: '#ffffff',
-    borderWidth: 4,
-    borderColor: 'rgba(255,255,255,0.2)',
-    shadowColor: '#ffffff',
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 0 },
-    elevation: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.25)',
   },
   nodeUpcoming: {
-    width: 6,
-    height: 6,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: 6, height: 6,
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   nodeGoal: {
-    width: 8,
-    height: 8,
+    width: 8, height: 8,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255,255,255,0.3)',
     backgroundColor: 'transparent',
   },
   nodePhase: {
     fontFamily: fonts.label,
     fontSize: 9,
     color: 'rgba(255,255,255,0.3)',
-    letterSpacing: tracking.widest,
+    letterSpacing: tracking.wide,
     textTransform: 'uppercase',
-    marginTop: spacing.lg,
-    fontWeight: '500',
   },
-  nodePhaseActive: {
-    color: '#ffffff',
-    fontWeight: '700',
-  },
+  nodePhaseActive: { color: colors.primaryFixedDim, fontWeight: '700' },
+
   detailsCard: {
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: radius.sm,
-    padding: spacing.xl + spacing.xs,
+    padding: spacing.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-    ...shadows.cardWhisper,
-  },
-  detailsHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    borderColor: 'rgba(255,255,255,0.08)',
     marginBottom: spacing.xl,
+  },
+  detailsHeader: { marginBottom: spacing.sm },
+  detailsLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primaryFixedDim,
+    letterSpacing: tracking.labelWide,
   },
   detailsTitle: {
-    fontFamily: fonts.headlineLight,
-    fontSize: 22,
-    color: 'rgba(255,255,255,0.95)',
-    letterSpacing: tracking.tight,
-    fontWeight: '300',
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.titleLarge + 2,
+    color: DARK_TEXT,
+    letterSpacing: -0.5,
+    lineHeight: 28,
+    marginBottom: spacing.xs,
   },
   detailsSub: {
-    fontFamily: fonts.body,
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.5)',
-    marginTop: 4,
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodyMedium,
+    color: DARK_BODY,
+    lineHeight: 20,
+    marginBottom: spacing.lg,
   },
-  detailsIcon: {
-    fontSize: 28,
-    color: 'rgba(255,255,255,0.4)',
-  },
-  detailsList: {
-    gap: spacing.lg,
-    marginBottom: spacing.xl,
-  },
+  practicesList: { gap: spacing.md, marginBottom: spacing.lg },
   practiceRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.05)',
+    borderBottomColor: 'rgba(255,255,255,0.06)',
   },
-  practiceIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    alignItems: 'center',
-    justifyContent: 'center',
+  practiceNumber: {
+    width: 28, height: 28, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  practiceIconGlyph: {
-    fontSize: 18,
-    color: 'rgba(255,255,255,0.7)',
-    fontWeight: '300',
+  practiceNumberText: {
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.bodyMedium,
+    color: DARK_TEXT,
   },
-  practiceContent: {
-    flex: 1,
-  },
+  practiceContent: { flex: 1 },
   practiceTitle: {
     fontFamily: fonts.bodyMedium,
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: '500',
+    fontSize: typeScale.bodyLarge,
+    color: DARK_TEXT,
+    marginBottom: 2,
   },
   practiceBody: {
-    fontFamily: fonts.body,
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
-    marginTop: 2,
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodySmall,
+    color: DARK_WHISPER,
   },
-  sessionCTA: {
-    marginTop: spacing.md,
+  sessionCTA: { marginTop: spacing.xs },
+
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: radius.sm,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.md,
+  },
+  stat: { flex: 1, alignItems: 'center', gap: 2 },
+  statNumber: {
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.displaySmall,
+    color: DARK_TEXT,
+    letterSpacing: -0.5,
+  },
+  statLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: DARK_WHISPER,
+    letterSpacing: tracking.wide,
+  },
+  statDivider: {
+    width: 1, height: 32,
+    backgroundColor: 'rgba(255,255,255,0.1)',
   },
 });
