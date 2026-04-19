@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "zenith-blue": "#94a3b8",
+                        "soft-lavender": "#e0e7ff",
+                        "warm-peach": "#ffedd5",
+                        "horizon-rose": "#fecaca",
+                        "on-surface": "#1e293b",
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply min-h-screen font-body text-on-surface overflow-x-hidden;
+                background: linear-gradient(to bottom, #dbeafe 0%, #e0e7ff 25%, #ffedd5 70%, #fecaca 100%);
+            }
+        }
+        .glow-peak {
+            filter: blur(12px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+        }
+        .depth-1 { opacity: 1; }
+        .depth-2 { opacity: 0.6; }
+        .depth-3 { opacity: 0.35; }
+        .timeline-line {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(30, 41, 59, 0.1) 10%, rgba(30, 41, 59, 0.1) 90%, transparent);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body>
+<header class="flex justify-between items-center w-full px-8 py-8 z-50 absolute top-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-600/50" data-icon="bubble_chart">bubble_chart</span>
+<span class="text-sm font-bold tracking-tighter text-slate-600/80 font-headline uppercase">Sugar Quit</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden opacity-80">
+<img alt="User profile" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARRCmqIDqdEZ40i1QIykIytQ3k5kOjPHvsRATKy1ORxKeW8zYkYLadI1NDmb0xmOzQ2Yz8Z5b6TvFnV1avz9muQw6M08mVqsZIQGK8XAquHOA9BTzl5bMH2O266_vRInwunJ5eNaGZNwmtpKTQ3OyZvZpvTK61SYo-Nu9rqG3yPFqZHsI3V3p9pkZdJ0oHR99riZUCQIDuVHHJqhE2OD5tF9gdsV61bYSn4GQllO2w5sDsj2_3ionWywPolfDYR0ilKpEleMuowhU"/>
+</div>
+</header>
+<main class="flex flex-col items-center pt-32 pb-48 px-6 min-h-screen">
+<div class="w-full max-w-lg mb-32 relative py-20">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<p class="font-headline text-[11px] tracking-[0.3em] uppercase text-slate-800/40">24-Hour Forecast</p>
+</div>
+<div class="absolute left-[62%] bottom-[60%] -translate-x-1/2 mb-4">
+<span class="text-[13px] font-medium text-slate-800/70 tracking-tight">3pm — after meetings</span>
+</div>
+<div class="relative w-full h-[1px] timeline-line">
+<div class="absolute inset-0 flex justify-between px-2">
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+<div class="w-1 h-1 bg-slate-400/20 rounded-full -translate-y-1/2"></div>
+</div>
+<div class="absolute left-[35%] -translate-y-1/2">
+<div class="w-6 h-6 glow-peak absolute -left-2.5 -top-2.5"></div>
+<div class="w-1.5 h-1.5 bg-white shadow-sm rounded-full relative z-10"></div>
+</div>
+<div class="absolute left-[62%] -translate-y-1/2">
+<div class="w-10 h-10 glow-peak absolute -left-[17px] -top-[17px] opacity-100"></div>
+<div class="w-2 h-2 bg-white shadow-md rounded-full relative z-10 ring-4 ring-white/10"></div>
+</div>
+</div>
+</div>
+<div class="w-full max-w-lg text-center mb-40 flex flex-col items-center gap-4">
+<h2 class="text-7xl md:text-8xl font-headline font-light tracking-tighter text-slate-900 depth-1">2:45 PM</h2>
+<div class="flex flex-col gap-2">
+<p class="text-xl font-body font-light tracking-tight text-slate-800/60 depth-2">craving likely in 47 min</p>
+<p class="text-sm font-body font-medium text-slate-700/40 mt-2 tracking-wide depth-3 italic">
+                    Your plan: almonds + 5-minute walk
+                </p>
+</div>
+</div>
+<div class="w-full max-w-sm flex flex-col gap-10">
+<div class="flex flex-col gap-8">
+<div class="flex justify-between items-end border-b border-slate-900/5 pb-2">
+<span class="text-lg font-light text-slate-900/60 font-body">After team meetings</span>
+<span class="text-2xl font-headline font-semibold text-slate-900/90 tracking-tighter">78%</span>
+</div>
+<div class="flex justify-between items-end border-b border-slate-900/5 pb-2">
+<span class="text-lg font-light text-slate-900/60 font-body">Sunday evenings</span>
+<span class="text-2xl font-headline font-semibold text-slate-900/90 tracking-tighter">65%</span>
+</div>
+<div class="flex justify-between items-end border-b border-slate-900/5 pb-2">
+<span class="text-lg font-light text-slate-900/60 font-body">Poor sleep</span>
+<span class="text-2xl font-headline font-semibold text-slate-900/90 tracking-tighter">52%</span>
+</div>
+</div>
+<div class="text-center mt-4">
+<p class="text-[10px] uppercase tracking-[0.2em] font-headline text-slate-900/30">Patterns recognized by AI</p>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 flex gap-8 px-10 py-4 bg-white/5 rounded-full backdrop-blur-xl border border-white/10 shadow-sm">
+<div class="text-slate-900/30 hover:text-slate-900 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="grain">grain</span>
+</div>
+<div class="text-slate-900/30 hover:text-slate-900 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="text-slate-900 hover:text-slate-900 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="flare">flare</span>
+</div>
+<div class="text-slate-900/30 hover:text-slate-900 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+</nav>
+
+</body></html>

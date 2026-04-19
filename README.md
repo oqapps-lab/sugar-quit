@@ -30,4 +30,18 @@ Documentation lives in `/docs/`:
 - `08-deployment/` — store listings, release notes
 
 ## Current stage
-Research (Stage 3)
+Design (Stage 6) — дизайн-система собрана из 12 Stitch-экранов, 4 экрана реализованы в RN.
+
+## Screens (implemented)
+- `app/index.tsx` — **Home** (Daily Wellness Weather — forecast cards, streak hero, SOS FAB)
+- `app/sos.tsx` — **SOS: Breathe** (pulsing breathing circle, physical anchor card)
+- `app/progress.tsx` — **Progress: 90-Day Horizon** (dark mode, timeline with current node)
+- `app/profile.tsx` — **Craving Profile** (result page — Stress Eater 3pm crash)
+
+## Design system
+- `constants/tokens.ts` — colors, radius, fonts, gradients, shadows, spacing, tracking
+- `components/ui/` — `AtmosphericGradient`, `GlassCard`, `PillCTA`, `SOSFab`, `TokenDot`, `GradientText`, `BottomNav`
+- `docs/06-design/DESIGN-TOKENS.md` — full extraction with resolved conflicts (15 rejected drifts documented)
+- `docs/06-design/PROMPTS-ALL-SCREENS.md` — 35+ editorial prompts for remaining screens
+- `docs/06-design/stitch-export/` — 12 source PNGs + HTML + metadata
+

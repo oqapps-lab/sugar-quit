@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#9e9d9a",
+                        "surface-container": "#efeee9",
+                        "surface": "#fbf9f5",
+                        "on-tertiary-container": "#415151",
+                        "inverse-surface": "#0e0e0d",
+                        "secondary-dim": "#5e4b72",
+                        "background": "#fbf9f5",
+                        "secondary-fixed-dim": "#e3cbfa",
+                        "outline-variant": "#b2b2ad",
+                        "on-tertiary": "#eafdfc",
+                        "on-secondary-container": "#5c4a71",
+                        "on-secondary-fixed": "#49385d",
+                        "on-tertiary-fixed-variant": "#4b5b5b",
+                        "tertiary-container": "#cfe0df",
+                        "primary": "#a53c30",
+                        "on-primary": "#fff7f6",
+                        "error-container": "#f56965",
+                        "tertiary-fixed-dim": "#c1d2d1",
+                        "surface-container-highest": "#e3e3dd",
+                        "on-surface": "#31332f",
+                        "on-primary-fixed": "#570202",
+                        "tertiary": "#526262",
+                        "surface-variant": "#e3e3dd",
+                        "secondary": "#6a577f",
+                        "on-primary-fixed-variant": "#822219",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#66547b",
+                        "primary-container": "#ffaca0",
+                        "on-error-container": "#65000b",
+                        "primary-fixed": "#ffaca0",
+                        "surface-bright": "#fbf9f5",
+                        "tertiary-fixed": "#cfe0df",
+                        "on-background": "#31332f",
+                        "tertiary-dim": "#465656",
+                        "surface-container-low": "#f5f3ef",
+                        "error-dim": "#70030f",
+                        "surface-container-high": "#e9e8e3",
+                        "on-tertiary-fixed": "#2f3f3e",
+                        "secondary-fixed": "#efdbff",
+                        "on-secondary": "#fff6ff",
+                        "primary-dim": "#953025",
+                        "primary-fixed-dim": "#ff9788",
+                        "on-error": "#fff7f6",
+                        "outline": "#7a7b76",
+                        "surface-dim": "#dadad4",
+                        "surface-tint": "#a53c30",
+                        "on-primary-container": "#761911",
+                        "on-surface-variant": "#5e605b",
+                        "error": "#ac3434",
+                        "inverse-primary": "#fd7d6c",
+                        "secondary-container": "#efdbff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .atmospheric-gradient {
+            background: radial-gradient(circle at 10% 10%, #ffaca0 0%, transparent 40%),
+                        radial-gradient(circle at 90% 40%, #efdbff 0%, transparent 40%),
+                        radial-gradient(circle at 50% 90%, #cfe0df 0%, transparent 50%),
+                        #fbf9f5;
+        }
+        .glass-panel {
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+        .breathe-circle {
+            animation: breathe 8s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-x-hidden">
+<header class="flex justify-between items-center w-full px-8 py-6 z-40 full-width top-0 absolute bg-transparent">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-rose-900" data-icon="bubble_chart">bubble_chart</span>
+<span class="text-lg font-bold tracking-tighter text-rose-900 font-headline">The Exhale</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/10">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARRCmqIDqdEZ40i1QIykIytQ3k5kOjPHvsRATKy1ORxKeW8zYkYLadI1NDmb0xmOzQ2Yz8Z5b6TvFnV1avz9muQw6M08mVqsZIQGK8XAquHOA9BTzl5bMH2O266_vRInwunJ5eNaGZNwmtpKTQ3OyZvZpvTK61SYo-Nu9rqG3yPFqZHsI3V3p9pkZdJ0oHR99riZUCQIDuVHHJqhE2OD5tF9gdsV61bYSn4GQllO2w5sDsj2_3ionWywPolfDYR0ilKpEleMuowhU"/>
+</div>
+</header>
+<main class="atmospheric-gradient min-h-screen pt-32 pb-40 px-6 md:px-12 relative flex flex-col items-center">
+<div class="w-full max-w-5xl text-center mb-16">
+<p class="font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant opacity-60 mb-4">Body Weather Report</p>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface leading-[1.1]">
+            Day 5 — <span class="text-primary italic">the hardest part</span> is behind you.
+        </h1>
+<div class="mt-12 bg-white/30 glass-panel rounded-xl p-8 md:p-12 w-full max-w-2xl mx-auto shadow-sm border border-white/40">
+<div class="flex flex-col gap-6 items-start text-left">
+<div class="flex items-center gap-3 w-full group">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container shadow-[0_0_15px_rgba(255,172,160,0.8)]"></span>
+<p class="text-lg font-light text-on-surface">Insomnia <span class="opacity-40 mx-1">·</span> <span class="font-medium text-primary">peaking</span></p>
+</div>
+<div class="flex items-center gap-3 w-full group">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed shadow-[0_0_15px_rgba(239,219,255,0.6)]"></span>
+<p class="text-lg font-light text-on-surface opacity-80">Fatigue <span class="opacity-40 mx-1">·</span> peaked yesterday</p>
+</div>
+<div class="flex items-center gap-3 w-full group">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed shadow-[0_0_15px_rgba(207,224,223,0.5)]"></span>
+<p class="text-lg font-light text-on-surface opacity-60 italic">Headache <span class="opacity-40 mx-1">·</span> fading</p>
+</div>
+<div class="flex items-center gap-3 w-full group">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/40"></span>
+<p class="text-lg font-light text-on-surface opacity-40 italic">Mood swings <span class="opacity-40 mx-1">·</span> almost gone</p>
+</div>
+</div>
+<p class="mt-10 font-body text-sm font-light text-on-surface-variant italic opacity-70">
+                Temporary storms with clear skies approaching.
+            </p>
+</div>
+</div>
+<div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+<div class="bg-surface-container-lowest/40 glass-panel rounded-xl p-10 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
+<div class="breathe-circle w-64 h-64 rounded-full bg-gradient-to-br from-primary-container/30 to-secondary-container/30 flex flex-col items-center justify-center text-center p-8 border border-white/20">
+<p class="font-headline text-2xl font-bold text-on-primary-container leading-tight">847 people</p>
+<p class="text-sm font-light text-on-primary-fixed-variant opacity-80 mt-1">resisting a craving right now</p>
+</div>
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute top-10 left-10 text-[10px] uppercase tracking-widest text-secondary opacity-60">"Just survived a birthday party"</div>
+<div class="absolute bottom-12 right-12 text-[10px] uppercase tracking-widest text-primary opacity-60">"Day 30!"</div>
+<div class="absolute top-1/2 -right-4 rotate-90 text-[10px] uppercase tracking-widest text-tertiary opacity-60">"Walked past the candy aisle"</div>
+</div>
+<p class="mt-8 font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant opacity-50">You are never alone</p>
+</div>
+<div class="bg-white/20 glass-panel rounded-xl p-10 flex flex-col justify-between min-h-[400px]">
+<div class="relative h-48 w-full mt-4">
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 200 100">
+<path d="M0,50 C30,40 60,80 100,70 C140,60 170,90 200,85" fill="none" opacity="0.6" stroke="#6a577f" stroke-width="2"></path>
+<path d="M0,80 C40,90 70,20 100,30 C130,40 160,10 200,15" fill="none" opacity="0.8" stroke="#a53c30" stroke-width="2"></path>
+<circle class="animate-pulse" cx="78" cy="48" fill="#ffaca0" r="4">
+<filter id="glow"><feGaussianBlur result="coloredBlur" stdDeviation="2"></feGaussianBlur><feMerge><feMergeNode in="coloredBlur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+</circle>
+</svg>
+<div class="flex justify-between mt-4 text-[9px] uppercase tracking-widest opacity-40">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline text-2xl font-light text-on-surface">The Insight</h3>
+<p class="font-body text-sm font-light text-on-surface-variant mt-3 leading-relaxed">
+                    "When you sleep less, you crave more — last Tuesday proves it."
+                </p>
+<p class="text-[10px] font-label text-secondary px-3 py-1 bg-secondary-fixed rounded-full inline-block mt-4">Correlation Story</p>
+</div>
+</div>
+</div>
+<div class="absolute top-1/4 left-[-10%] w-64 h-64 bg-primary-container/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-0 right-[-5%] w-80 h-80 bg-tertiary-fixed/30 rounded-full blur-[120px] pointer-events-none"></div>
+</main>
+<nav class="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex gap-4 px-4 py-2 bg-white/10 rounded-full backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.05)] border border-white/20">
+<div class="flex items-center justify-center text-rose-900/40 w-12 h-12 hover:bg-white/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="grain">grain</span>
+</div>
+<div class="flex items-center justify-center text-rose-900/40 w-12 h-12 hover:bg-white/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+</div>
+<div class="flex items-center justify-center bg-white/40 text-rose-900 rounded-full w-12 h-12 hover:bg-white/50 transition-all cursor-pointer shadow-sm">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</div>
+<div class="flex items-center justify-center text-rose-900/40 w-12 h-12 hover:bg-white/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</div>
+</nav>
+
+</body></html>
