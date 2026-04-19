@@ -59,10 +59,21 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
+        <Stack.Screen name="welcome" />
         <Stack.Screen name="progress" />
         <Stack.Screen name="profile" />
+        <Stack.Screen name="curriculum" />
+        <Stack.Screen name="lesson" />
         <Stack.Screen
           name="sos"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen
+          name="chat"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen
+          name="checkin"
           options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
         />
       </Stack>

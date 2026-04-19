@@ -56,7 +56,7 @@ export function GlassCard({
         ]}
       >
         <View style={[StyleSheet.absoluteFill, { backgroundColor: TINT_BG[tint] }]} />
-        <View style={{ flex: 1 }}>{children}</View>
+        <View style={styles.content}>{children}</View>
       </BlurView>
     );
   }
@@ -89,5 +89,10 @@ const styles = StyleSheet.create({
   card: {
     borderWidth: 1,
     overflow: 'hidden',
+  },
+  content: {
+    // Full-width container. NO `flex: 1` — it collapses intrinsic height on
+    // BlurView when parent has no fixed height, making children vanish.
+    width: '100%',
   },
 });
