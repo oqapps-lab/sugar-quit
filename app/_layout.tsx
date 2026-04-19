@@ -65,6 +65,14 @@ export default function RootLayout() {
         <Stack.Screen name="curriculum" />
         <Stack.Screen name="lesson" />
         <Stack.Screen
+          name="paywall"
+          options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen
+          name="milestone"
+          options={{ presentation: 'modal', animation: 'fade' }}
+        />
+        <Stack.Screen
           name="sos"
           options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
         />
