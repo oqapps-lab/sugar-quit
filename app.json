@@ -16,11 +16,11 @@
     },
     "plugins": [
       "expo-router",
-      "expo-haptics",
-      "expo-font"
+      "expo-font",
+      "expo-image"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": false
     }
   }
 }
