@@ -26,23 +26,30 @@ import {
  */
 type ForecastTone = 'Welcome' | 'Light' | 'Calm' | 'Steady' | 'Storm';
 
-function computeForecast(streakDays: number, sosUsedToday: number, isCheckedInToday: boolean): { tone: ForecastTone; sub: string } {
+function computeForecast(
+  streakDays: number,
+  sosUsedToday: number,
+  isCheckedInToday: boolean,
+  peakHour: string | null,
+): { tone: ForecastTone; sub: string } {
+  const peakShort = (peakHour ?? '3 PM').replace(/:00/g, '').toLowerCase();
+
   if (streakDays === 0) {
-    return { tone: 'Welcome', sub: 'Three soft tasks for today. No rush. No perfect.' };
+    return { tone: 'Welcome', sub: "Three small tasks today. No rush, no perfect." };
   }
   if (sosUsedToday >= 2) {
-    return { tone: 'Storm', sub: 'Heavy day. Two SOS already. Be especially gentle with yourself.' };
+    return { tone: 'Storm', sub: "Heavy day — you've already used SOS twice. Be gentle with yourself." };
   }
   if (sosUsedToday === 1) {
-    return { tone: 'Steady', sub: 'You reached out once. Hold the line — the next hours get easier.' };
+    return { tone: 'Steady', sub: "You reached out once. The next hours get easier from here." };
   }
   if (streakDays >= 14) {
-    return { tone: 'Calm', sub: 'Two weeks in. Your body and brain found a rhythm.' };
+    return { tone: 'Calm', sub: "Two weeks in. Your body and brain have found their rhythm." };
   }
   if (isCheckedInToday) {
-    return { tone: 'Light', sub: 'Morning is calm. A small 3pm surge. Evening exhales into mint.' };
+    return { tone: 'Light', sub: `Easy morning. Watch out for a craving around ${peakShort}.` };
   }
-  return { tone: 'Light', sub: 'Today opens quietly. Mark a check-in tonight to track the shape of it.' };
+  return { tone: 'Light', sub: "A quiet start. Check in tonight so we can read the day." };
 }
 
 /**
@@ -107,7 +114,8 @@ export default function Home() {
 
   // Today's forecast — computed, not hardcoded "Light"
   const sosUsedToday = 0; // TODO: derive from sosLog when we add per-day filtering
-  const forecast = computeForecast(streakDays, sosUsedToday, isCheckedInToday);
+  const peakHour = useUserStore.getState().peakHour;
+  const forecast = computeForecast(streakDays, sosUsedToday, isCheckedInToday, peakHour);
 
   // Push re-permission banner: visible if denied >3 days ago
   let showPushBanner = false;
@@ -204,10 +212,10 @@ export default function Home() {
               <Text style={styles.heroOrbCaption}>{`DAY${streakDays === 1 ? '' : 'S'} CLEAN · BEST ${bestStreak}`}</Text>
               <View style={styles.heroDotsPill}>
                 {[...Array(14)].map((_, i) => (
-                  <TokenDot key={i} filled={i < streakDays} size={5} />
+                  <TokenDot key={i} filled={i < streakDays} size={7} />
                 ))}
               </View>
-              <Text style={styles.heroDotsLabel}>last 14 days</Text>
+              <Text style={styles.heroDotsLabel}>Last 14 days</Text>
             </View>
           </Animated.View>
         )}
@@ -640,21 +648,21 @@ const styles = StyleSheet.create({
   },
   heroDotsPill: {
     flexDirection: 'row',
-    gap: 4,
-    backgroundColor: 'rgba(255,255,255,0.55)',
+    gap: 5,
+    backgroundColor: 'rgba(255,255,255,0.6)',
     borderRadius: radius.full,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.65)',
+    borderColor: 'rgba(255,255,255,0.7)',
     marginTop: spacing.sm,
   },
   heroDotsLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-    marginTop: spacing.xs,
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurface,
+    letterSpacing: 0.3,
+    marginTop: spacing.xs + 2,
   },
 
   // Day 1 welcome card
