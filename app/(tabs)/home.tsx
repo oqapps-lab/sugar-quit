@@ -2,9 +2,12 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { SOSFab } from '../../components/ui/SOSFab';
+import { StreakOrb } from '../../components/ui/StreakOrb';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import {
@@ -200,120 +203,153 @@ export default function Home() {
           </GlassCard>
         )}
 
-        {/* First-time legend — shown during the acute phase (Days 0-3) so the
-            user has time to absorb what each block means. It's the highest-
-            density learning moment in the whole product. */}
+        {/* First-time legend — 4 distinct cards in a horizontal carousel,
+            each with its own decorative glyph and accent tint. Shown during
+            the acute phase (Days 0-3). */}
         {streakDays <= 3 && (
-          <GlassCard tint="default" style={styles.legendCard}>
-            <Text style={styles.legendLabel}>WHAT EVERYTHING MEANS</Text>
-            <View style={styles.legendRow}>
-              <Text style={styles.legendGlyph}>⛅</Text>
-              <View style={styles.legendText}>
-                <Text style={styles.legendTitle}>Forecast</Text>
-                <Text style={styles.legendBody}>Light / Calm / Storm — your day's craving weather, like a real forecast.</Text>
-              </View>
-            </View>
-            <View style={styles.legendRow}>
-              <Text style={styles.legendGlyph}>◉</Text>
-              <View style={styles.legendText}>
-                <Text style={styles.legendTitle}>SOS button</Text>
-                <Text style={styles.legendBody}>Tap when a craving hits. AI talks you through it. 3 free per month.</Text>
-              </View>
-            </View>
-            <View style={styles.legendRow}>
-              <Text style={styles.legendGlyph}>❄</Text>
-              <View style={styles.legendText}>
-                <Text style={styles.legendTitle}>Streak Freeze</Text>
-                <Text style={styles.legendBody}>One missed day forgiven per week — your streak doesn't break.</Text>
-              </View>
-            </View>
-            <View style={styles.legendRow}>
-              <Text style={styles.legendGlyph}>◆</Text>
-              <View style={styles.legendText}>
-                <Text style={styles.legendTitle}>Streak</Text>
-                <Text style={styles.legendBody}>Days in a row sugar-free. Builds with each check-in.</Text>
-              </View>
-            </View>
-          </GlassCard>
+          <Animated.View entering={FadeInUp.delay(200).duration(500)}>
+            <Text style={styles.legendSectionLabel}>WHAT EVERYTHING MEANS</Text>
+            <Text style={styles.legendSectionHint}>Swipe to learn the four concepts →</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.legendScroll}
+              snapToInterval={260 + 12}
+              decelerationRate="fast"
+            >
+              <GlassCard tint="peach" style={styles.legendCardHoriz}>
+                <View style={styles.legendHeaderRow}>
+                  <DecorGlyph variant="sun" size={52} />
+                  <View style={styles.legendBadge}><Text style={styles.legendBadgeText}>1</Text></View>
+                </View>
+                <Text style={styles.legendCardTitle}>Your day's forecast</Text>
+                <Text style={styles.legendCardBody}>
+                  Light, Calm, Storm — we predict how heavy cravings will feel today.
+                </Text>
+              </GlassCard>
+
+              <GlassCard tint="default" style={styles.legendCardHoriz}>
+                <View style={styles.legendHeaderRow}>
+                  <DecorGlyph variant="lightning" size={52} />
+                  <View style={styles.legendBadge}><Text style={styles.legendBadgeText}>2</Text></View>
+                </View>
+                <Text style={styles.legendCardTitle}>The SOS button</Text>
+                <Text style={styles.legendCardBody}>
+                  Tap when a craving hits. AI talks you through it. 3 free per month.
+                </Text>
+              </GlassCard>
+
+              <GlassCard tint="mint" style={styles.legendCardHoriz}>
+                <View style={styles.legendHeaderRow}>
+                  <DecorGlyph variant="snowflake" size={52} />
+                  <View style={styles.legendBadge}><Text style={styles.legendBadgeText}>3</Text></View>
+                </View>
+                <Text style={styles.legendCardTitle}>Streak Freeze</Text>
+                <Text style={styles.legendCardBody}>
+                  One missed day forgiven per week — your streak doesn't break.
+                </Text>
+              </GlassCard>
+
+              <GlassCard tint="lavender" style={styles.legendCardHoriz}>
+                <View style={styles.legendHeaderRow}>
+                  <DecorGlyph variant="flame" size={52} />
+                  <View style={styles.legendBadge}><Text style={styles.legendBadgeText}>4</Text></View>
+                </View>
+                <Text style={styles.legendCardTitle}>Your streak</Text>
+                <Text style={styles.legendCardBody}>
+                  Days in a row sugar-free. Builds with each daily check-in.
+                </Text>
+              </GlassCard>
+            </ScrollView>
+          </Animated.View>
         )}
 
         {/* Forecast cards — every one is tappable, opens the explainer modal
             with the slot context (morning / peak / evening). */}
         {!isDayOne && (
           <View style={styles.cardsCol}>
-            <Pressable
-              onPress={() => router.push('/(modals)/forecast-window?slot=morning')}
-              accessibilityRole="button"
-              accessibilityLabel="Calm morning window — tap to learn more"
-            >
-              <GlassCard tint="default" style={styles.forecastCard}>
-                <View style={styles.forecastRow}>
-                  <View style={styles.forecastText}>
-                    <Text style={styles.timeLabel}>08:00 — 12:00</Text>
-                    <Text style={styles.forecastTitle}>Calm</Text>
-                    <Text style={styles.forecastBody}>
-                      Low risk. Cortisol stable. Good for deep work.
-                    </Text>
+            <Animated.View entering={FadeInDown.delay(100).duration(500)}>
+              <Pressable
+                onPress={() => router.push('/(modals)/forecast-window?slot=morning')}
+                accessibilityRole="button"
+                accessibilityLabel="Calm morning window — tap to learn more"
+              >
+                <GlassCard tint="default" style={styles.forecastCard}>
+                  <View style={styles.forecastRow}>
+                    <View style={styles.forecastText}>
+                      <Text style={styles.timeLabel}>08:00 — 12:00</Text>
+                      <Text style={styles.forecastTitle}>Calm</Text>
+                      <Text style={styles.forecastBody}>
+                        Low risk. Cortisol stable. Good for deep work.
+                      </Text>
+                    </View>
+                    <DecorGlyph variant="sun" size={56} />
                   </View>
-                  <View style={[styles.dotLarge, { backgroundColor: colors.tertiaryContainer }]} />
-                </View>
-              </GlassCard>
-            </Pressable>
+                </GlassCard>
+              </Pressable>
+            </Animated.View>
 
-            <Pressable
-              onPress={() => router.push('/(modals)/forecast-window?slot=peak')}
-              accessibilityRole="button"
-              accessibilityLabel="Peak surge window — tap to see your plan"
-            >
-              <GlassCard tint="peach" style={styles.forecastCardPeak}>
-                <View style={styles.forecastRow}>
-                  <View style={styles.forecastText}>
-                    <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
-                    <Text style={styles.forecastTitlePeak}>High surge</Text>
-                    <Text style={styles.forecastBodyPeak}>
-                      Energy dip triggers craving response.
-                    </Text>
+            <Animated.View entering={FadeInDown.delay(200).duration(500)}>
+              <Pressable
+                onPress={() => router.push('/(modals)/forecast-window?slot=peak')}
+                accessibilityRole="button"
+                accessibilityLabel="Peak surge window — tap to see your plan"
+              >
+                <GlassCard tint="peach" style={styles.forecastCardPeak}>
+                  {/* decor glyph sits behind the text as a subtle background */}
+                  <View style={styles.peakGlyphBg} pointerEvents="none">
+                    <DecorGlyph variant="lightning" size={110} />
                   </View>
-                  {(() => {
-                    // Peak badge — split user's peakHour ("3:00 PM") into number + AM/PM.
-                    // Falls back to a sensible default if not set yet.
-                    const raw = useUserStore.getState().peakHour ?? '3:00 PM';
-                    const m = raw.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
-                    const num = m?.[1] ?? '3:00';
-                    const ampm = (m?.[2] ?? 'PM').toUpperCase();
-                    return (
-                      <View style={styles.peakBadge}>
-                        <Text style={styles.peakBadgeNumber}>{num}</Text>
-                        <Text style={styles.peakBadgeLabel}>{ampm}</Text>
-                      </View>
-                    );
-                  })()}
-                </View>
-                <View style={styles.peakActionRow}>
-                  <Text style={styles.peakAction}>See plan</Text>
-                  <Text style={styles.peakArrow}>→</Text>
-                </View>
-              </GlassCard>
-            </Pressable>
+                  <View style={styles.forecastRow}>
+                    <View style={styles.forecastText}>
+                      <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                      <Text style={styles.forecastTitlePeak}>High surge</Text>
+                      <Text style={styles.forecastBodyPeak}>
+                        Energy dip triggers craving response.
+                      </Text>
+                    </View>
+                    {(() => {
+                      // Peak badge — split user's peakHour ("3:00 PM") into number + AM/PM.
+                      const raw = useUserStore.getState().peakHour ?? '3:00 PM';
+                      const m = raw.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
+                      const num = m?.[1] ?? '3:00';
+                      const ampm = (m?.[2] ?? 'PM').toUpperCase();
+                      return (
+                        <View style={styles.peakBadge}>
+                          <Text style={styles.peakBadgeNumber}>{num}</Text>
+                          <Text style={styles.peakBadgeLabel}>{ampm}</Text>
+                        </View>
+                      );
+                    })()}
+                  </View>
+                  <View style={styles.peakActionRow}>
+                    <Text style={styles.peakAction}>See plan</Text>
+                    <Text style={styles.peakArrow}>→</Text>
+                  </View>
+                </GlassCard>
+              </Pressable>
+            </Animated.View>
 
-            <Pressable
-              onPress={() => router.push('/(modals)/forecast-window?slot=evening')}
-              accessibilityRole="button"
-              accessibilityLabel="Evening exhale window — tap to learn more"
-            >
-              <GlassCard tint="mint" style={styles.forecastCard}>
-                <View style={styles.forecastRow}>
-                  <View style={styles.forecastText}>
-                    <Text style={styles.timeLabel}>18:00 — 22:00</Text>
-                    <Text style={styles.forecastTitle}>The exhale</Text>
-                    <Text style={styles.forecastBody}>
-                      System resets. Prepare for deep restorative sleep.
-                    </Text>
+            <Animated.View entering={FadeInDown.delay(300).duration(500)}>
+              <Pressable
+                onPress={() => router.push('/(modals)/forecast-window?slot=evening')}
+                accessibilityRole="button"
+                accessibilityLabel="Evening exhale window — tap to learn more"
+              >
+                <GlassCard tint="mint" style={styles.forecastCard}>
+                  <View style={styles.forecastRow}>
+                    <View style={styles.forecastText}>
+                      <Text style={styles.timeLabel}>18:00 — 22:00</Text>
+                      <Text style={styles.forecastTitle}>The exhale</Text>
+                      <Text style={styles.forecastBody}>
+                        System resets. Prepare for deep restorative sleep.
+                      </Text>
+                    </View>
+                    <DecorGlyph variant="moon" size={56} />
                   </View>
-                  <View style={[styles.dotLarge, { backgroundColor: colors.secondaryFixedDim }]} />
-                </View>
-              </GlassCard>
-            </Pressable>
+                </GlassCard>
+              </Pressable>
+            </Animated.View>
           </View>
         )}
 
@@ -355,49 +391,76 @@ export default function Home() {
           </GlassCard>
         </Pressable>
 
-        {/* SOS counter chip — only if free + non-zero used.
-            Eyebrow makes clear this is a usage counter, not a weird label. */}
+        {/* SOS counter — card with 3 circle indicators, readable typography */}
         {sosRemaining !== null && sosUsedThisMonth > 0 && (
-          <View style={styles.sosCounter}>
-            <Text style={styles.sosCounterEyebrow}>SOS USAGE</Text>
-            <Text style={styles.sosCounterText}>
-              {sosUsedThisMonth} of {sosFreeLimit} used this month
-            </Text>
-            {sosRemaining === 0 && (
-              <Text style={styles.sosCounterHint}>Upgrade to Premium for unlimited</Text>
-            )}
-          </View>
+          <Animated.View entering={FadeInUp.delay(400).duration(500)}>
+            <GlassCard tint="peach" style={styles.sosCounterCard}>
+              <View style={styles.sosCounterHeader}>
+                <DecorGlyph variant="compass" size={36} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.sosCounterEyebrow}>SOS USAGE · THIS MONTH</Text>
+                  <Text style={styles.sosCounterText}>
+                    {sosUsedThisMonth} of {sosFreeLimit} sessions used
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.sosCounterDotsRow}>
+                {Number.isFinite(sosFreeLimit) &&
+                  [...Array(sosFreeLimit)].map((_, i) => (
+                    <View
+                      key={i}
+                      style={[
+                        styles.sosCounterSlot,
+                        i < sosUsedThisMonth && styles.sosCounterSlotUsed,
+                      ]}
+                    />
+                  ))}
+              </View>
+              {sosRemaining === 0 && (
+                <Text style={styles.sosCounterHint}>Upgrade to Premium for unlimited</Text>
+              )}
+            </GlassCard>
+          </Animated.View>
         )}
 
-        {/* Streak section — hidden on Day 1 to avoid mocking 0 */}
+        {/* Streak section — orb centerpiece with orbital ring animation */}
         {!isDayOne && (
-          <View
+          <Animated.View
+            entering={FadeInUp.delay(500).duration(600)}
             style={styles.streakSection}
             accessibilityRole="text"
             accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
           >
             <Text style={styles.streakEyebrow}>YOUR STREAK</Text>
-            <Text style={styles.streakNumber}>{streakDays}</Text>
+            <StreakOrb count={streakDays} size={200} />
             <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
-            <View style={styles.streakDots}>
-              {[...Array(14)].map((_, i) => (
-                <TokenDot key={i} filled={i < streakDays} size={6} />
-              ))}
+
+            <View style={styles.streakDotsBlock}>
+              <Text style={styles.streakDotsLabel}>LAST 14 DAYS</Text>
+              <View style={styles.streakDots}>
+                {[...Array(14)].map((_, i) => (
+                  <TokenDot key={i} filled={i < streakDays} size={8} />
+                ))}
+              </View>
             </View>
-            <Text style={styles.streakDotsHint}>last 14 days</Text>
-            {/* Streak freeze indicator — small chip under the streak */}
-            <View style={styles.freezeIndicator}>
-              <Text style={styles.freezeGlyph}>❄</Text>
-              <Text style={styles.freezeText}>
-                {freezesLeft === 0
-                  ? 'No freezes left this week'
-                  : `${freezesLeft} freeze${freezesLeft === 1 ? '' : 's'} left this week`}
-              </Text>
-            </View>
-            <Text style={styles.streakFreezeHint}>
-              A Freeze forgives one missed day per week — your streak stays intact.
-            </Text>
-          </View>
+
+            {/* Streak freeze card — richer presentation than a plain chip */}
+            <GlassCard tint="default" style={styles.freezeCard}>
+              <View style={styles.freezeHeaderRow}>
+                <DecorGlyph variant="snowflake" size={40} />
+                <View style={styles.freezeHeaderText}>
+                  <Text style={styles.freezeTitle}>
+                    {freezesLeft === 0
+                      ? 'No freezes left this week'
+                      : `${freezesLeft} freeze${freezesLeft === 1 ? '' : 's'} left this week`}
+                  </Text>
+                  <Text style={styles.freezeSubtitle}>
+                    Miss a day? A Freeze saves your streak.
+                  </Text>
+                </View>
+              </View>
+            </GlassCard>
+          </Animated.View>
         )}
       </ScrollView>
 
@@ -713,78 +776,172 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
-  sosCounter: {
-    alignSelf: 'center',
+  sosCounterCard: {
+    padding: spacing.md,
+    marginBottom: spacing.lg,
+    gap: spacing.sm,
+  },
+  sosCounterHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(165,60,48,0.08)',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.sm,
-    marginBottom: spacing.md,
-    gap: 2,
+    gap: spacing.md,
   },
   sosCounterEyebrow: {
     fontFamily: fonts.label,
-    fontSize: 9,
+    fontSize: typeScale.labelSmall,
     color: colors.primary,
-    letterSpacing: tracking.widest,
-    opacity: 0.8,
+    letterSpacing: tracking.labelWide,
+    marginBottom: 2,
   },
   sosCounterText: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurface,
+    letterSpacing: -0.2,
+  },
+  sosCounterDotsRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.xs,
+  },
+  sosCounterSlot: {
+    flex: 1,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(165,60,48,0.15)',
+  },
+  sosCounterSlotUsed: {
+    backgroundColor: colors.primary,
+  },
+  sosCounterHint: {
     fontFamily: fonts.bodyMedium,
     fontSize: typeScale.bodyMedium,
     color: colors.primary,
-  },
-  sosCounterHint: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
+    textAlign: 'center',
+    marginTop: spacing.xs,
   },
 
   streakSection: {
     alignItems: 'center',
     marginTop: spacing.xxl,
     marginBottom: spacing.xl,
+    gap: spacing.sm,
   },
   streakEyebrow: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginBottom: spacing.xs,
-  },
-  streakNumber: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.heroNumber,
-    color: colors.primary,
-    letterSpacing: -2,
-    lineHeight: 80,
   },
   streakCaption: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.labelWide,
-    marginTop: spacing.sm,
-    marginBottom: spacing.md,
   },
-  streakDots: { flexDirection: 'row', gap: 6 },
-  streakDotsHint: {
+  streakDotsBlock: {
+    alignItems: 'center',
+    marginTop: spacing.md,
+    gap: spacing.xs,
+  },
+  streakDotsLabel: {
     fontFamily: fonts.label,
-    fontSize: 9,
+    fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-    marginTop: spacing.xs,
-    opacity: 0.6,
+    letterSpacing: tracking.labelWide,
+    opacity: 0.7,
   },
-  streakFreezeHint: {
+  streakDots: { flexDirection: 'row', gap: 7 },
+
+  // Legend carousel
+  legendSectionLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: 2,
+    marginTop: spacing.sm,
+  },
+  legendSectionHint: {
     fontFamily: fonts.bodyLight,
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
-    textAlign: 'center',
-    maxWidth: 280,
-    marginTop: spacing.xs,
-    lineHeight: 16,
+    marginBottom: spacing.md,
+  },
+  legendScroll: {
+    paddingRight: spacing.lg,
+    gap: spacing.md,
+    paddingBottom: spacing.sm,
+  },
+  legendCardHoriz: {
+    width: 260,
+    padding: spacing.lg,
+    gap: spacing.sm,
+  },
+  legendHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.xs,
+  },
+  legendBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: radius.full,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.85,
+  },
+  legendBadgeText: {
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.labelSmall,
+    color: colors.onPrimary,
+  },
+  legendCardTitle: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.titleMedium,
+    color: colors.onSurface,
+    letterSpacing: -0.3,
+  },
+  legendCardBody: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+    lineHeight: 20,
+  },
+
+  // Freeze card
+  freezeCard: {
+    padding: spacing.md,
+    marginTop: spacing.sm,
+    alignSelf: 'stretch',
+  },
+  freezeHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  freezeHeaderText: { flex: 1, gap: 2 },
+  freezeTitle: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurface,
+    letterSpacing: -0.2,
+  },
+  freezeSubtitle: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+    lineHeight: 18,
+  },
+
+  // Peak glyph background
+  peakGlyphBg: {
+    position: 'absolute',
+    right: -20,
+    top: -20,
+    opacity: 0.4,
   },
 
   freezeIndicator: {
