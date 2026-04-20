@@ -119,17 +119,23 @@ export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Pro
 const OUTER = 72;
 const CORE = 52;
 
+const CORE_OFFSET = (OUTER - CORE) / 2;
+const RIM_INSET = 6;
+
 const styles = StyleSheet.create({
   root: {
     position: 'absolute',
     zIndex: 40,
     width: OUTER,
     height: OUTER,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
+  // Pulse rings + halo are absolute positioned with explicit top/left so they
+  // center inside root regardless of flex behaviour (absolute children ignore
+  // alignItems/justifyContent on the parent).
   pulseRing: {
     position: 'absolute',
+    top: CORE_OFFSET,
+    left: CORE_OFFSET,
     width: CORE,
     height: CORE,
     borderRadius: CORE / 2,
@@ -137,12 +143,17 @@ const styles = StyleSheet.create({
   },
   halo: {
     position: 'absolute',
+    top: 0,
+    left: 0,
     width: OUTER,
     height: OUTER,
     borderRadius: OUTER / 2,
     backgroundColor: 'rgba(165,60,48,0.15)',
   },
   pressable: {
+    position: 'absolute',
+    top: CORE_OFFSET,
+    left: CORE_OFFSET,
     width: CORE,
     height: CORE,
     borderRadius: CORE / 2,
@@ -158,11 +169,11 @@ const styles = StyleSheet.create({
   },
   innerRim: {
     position: 'absolute',
-    top: 6,
-    left: 6,
-    width: CORE - 12,
-    height: CORE - 12,
-    borderRadius: (CORE - 12) / 2,
+    top: RIM_INSET,
+    left: RIM_INSET,
+    right: RIM_INSET,
+    bottom: RIM_INSET,
+    borderRadius: (CORE - RIM_INSET * 2) / 2,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
   },

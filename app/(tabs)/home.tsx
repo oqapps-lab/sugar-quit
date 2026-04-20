@@ -628,38 +628,37 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginBottom: 2,
+    marginBottom: spacing.xs,
   },
   heroOrbCaption: {
     fontFamily: fonts.label,
-    fontSize: 9,
+    fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.wide,
-    marginTop: spacing.xs,
+    marginTop: spacing.sm,
     textAlign: 'center',
   },
   heroDotsPill: {
     flexDirection: 'row',
-    gap: 3,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.55)',
     borderRadius: radius.full,
     paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
+    paddingVertical: 8,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.6)',
-    marginTop: spacing.xs,
+    borderColor: 'rgba(255,255,255,0.65)',
+    marginTop: spacing.sm,
   },
   heroDotsLabel: {
     fontFamily: fonts.label,
-    fontSize: 8,
+    fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
-    letterSpacing: 0.6,
-    opacity: 0.7,
-    marginTop: 2,
+    letterSpacing: tracking.wide,
+    marginTop: spacing.xs,
   },
 
   // Day 1 welcome card
-  welcomeCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.lg },
+  welcomeCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.xxl },
   welcomeLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -687,7 +686,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  cardsCol: { gap: spacing.md, marginBottom: spacing.lg },
+  cardsCol: { gap: spacing.md, marginBottom: spacing.xxl },
   forecastCard: { padding: spacing.lg },
   forecastCardPeak: { padding: spacing.lg, gap: spacing.md },
   forecastRow: {
@@ -785,7 +784,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     paddingLeft: spacing.lg,
     paddingRight: spacing.md,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xxl,
   },
   checkinRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   pulseDot: {
@@ -840,7 +839,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  lessonCard: { padding: spacing.lg, marginBottom: spacing.xl, gap: spacing.xs },
+  lessonCard: { padding: spacing.lg, marginBottom: spacing.xxl, gap: spacing.xs },
   lessonLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -864,7 +863,7 @@ const styles = StyleSheet.create({
   },
 
   sosCounterWrap: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xxl,
     borderRadius: radius.sm,
     overflow: 'hidden',
   },
@@ -1005,15 +1004,14 @@ const styles = StyleSheet.create({
   },
   legendSectionLabel: {
     fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
+    fontSize: typeScale.bodyMedium,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginBottom: 2,
-    marginTop: spacing.sm,
+    marginBottom: spacing.xs,
   },
   legendSectionHint: {
     fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
+    fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
     marginBottom: spacing.md,
   },
@@ -1062,8 +1060,7 @@ const styles = StyleSheet.create({
 
   // Freeze card — cool-toned mint/blue gradient wrap + snowflake halo
   freezeWrap: {
-    marginTop: spacing.md,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.xxl,
     borderRadius: radius.sm,
     overflow: 'hidden',
   },
