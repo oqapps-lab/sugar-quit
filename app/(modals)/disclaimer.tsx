@@ -4,16 +4,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * 4.8 First-time SOS disclaimer.
- * Shown before the very first SOS chat. On accept → replace with /(modals)/sos.
+ * Shown before the very first SOS chat. On accept → mark flag in store so
+ * subsequent SOS opens skip this screen, then replace with /(modals)/sos.
  */
 
 export default function Disclaimer() {
   const insets = useSafeAreaInsets();
+  const acceptSosDisclaimer = useUserStore((s) => s.acceptSosDisclaimer);
 
-  const onAccept = () => router.replace('/(modals)/sos');
+  const onAccept = () => {
+    acceptSosDisclaimer();
+    router.replace('/(modals)/sos');
+  };
 
   return (
     <AtmosphericGradient theme="dawn">

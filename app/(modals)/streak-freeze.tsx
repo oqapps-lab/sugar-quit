@@ -5,17 +5,43 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore, getTodayISODate } from '../../stores/useUserStore';
 
 /**
  * 4.2 Streak Freeze — you missed yesterday's check-in.
  * Warm, not punitive. One freeze available this week.
+ *
+ * "Use Streak Freeze" → call useStreakFreeze() action; if successful, mark
+ * lastCheckInDate to today so home doesn't keep re-prompting. If freeze is
+ * exhausted, the action returns false and we still dismiss (UI can be improved
+ * later to show "no freezes left").
+ *
+ * "Let it reset" → resetStreak() then dismiss.
  */
 
 export default function StreakFreeze() {
   const insets = useSafeAreaInsets();
+  const useStreakFreeze = useUserStore((s) => s.useStreakFreeze);
+  const resetStreak = useUserStore((s) => s.resetStreak);
+  const freezesAvail = useUserStore((s) => s.streakFreezesAvailableThisWeek);
+  const freezesUsed = useUserStore((s) => s.streakFreezesUsedThisWeek);
+  const remaining = Math.max(0, freezesAvail - freezesUsed);
 
   const onFreeze = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const ok = useStreakFreeze();
+    if (ok) {
+      // Mark today as checked-in so the auto-trigger on home doesn't fire again
+      // (this is a soft "freeze counts as check-in").
+      useUserStore.setState({ lastCheckInDate: getTodayISODate() });
+    }
+    router.dismiss();
+  };
+
+  const onReset = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    resetStreak();
+    useUserStore.setState({ lastCheckInDate: getTodayISODate() });
     router.dismiss();
   };
 
@@ -43,16 +69,16 @@ export default function StreakFreeze() {
         </Text>
 
         <View style={styles.remainingRow}>
-          <View style={styles.freezeDotActive} />
+          <View style={remaining > 0 ? styles.freezeDotActive : styles.freezeDot} />
           <View style={styles.freezeDot} />
           <View style={styles.freezeDot} />
-          <Text style={styles.remainingLabel}>1 left this week</Text>
+          <Text style={styles.remainingLabel}>{`${remaining} left this week`}</Text>
         </View>
       </View>
 
       <View style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Use Streak Freeze" onPress={onFreeze} />
-        <Pressable onPress={() => router.dismiss()} style={styles.resetBtn}>
+        <PillCTA label="Use Streak Freeze" onPress={onFreeze} disabled={remaining === 0} />
+        <Pressable onPress={onReset} style={styles.resetBtn} accessibilityRole="button" accessibilityLabel="Let streak reset">
           <Text style={styles.resetLabel}>Let it reset</Text>
         </Pressable>
       </View>
