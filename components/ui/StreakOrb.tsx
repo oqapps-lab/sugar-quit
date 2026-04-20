@@ -103,22 +103,36 @@ export function StreakOrb({ count, size = 240 }: Props) {
 
   return (
     <View style={[styles.wrap, { width: S, height: S }]}>
-      {/* 1. Outer soft aura — two diffuse blobs (coral + golden) */}
+      {/* 1. Outer soft aura — single soft coral halo (was two-tone, read
+          as too chromatic). Rendered as a circle so edges are round. */}
       <View
         style={[
           styles.auraWrap,
-          { width: S * 1.2, height: S * 1.2, top: -S * 0.1, left: -S * 0.1 },
+          {
+            width: S * 1.15,
+            height: S * 1.15,
+            top: -S * 0.075,
+            left: -S * 0.075,
+            borderRadius: (S * 1.15) / 2,
+            backgroundColor: 'rgba(255,172,160,0.25)',
+          },
         ]}
-      >
-        <LinearGradient
-          colors={['rgba(255,158,125,0.55)', 'rgba(255,215,168,0)'] as const}
-          start={{ x: 0.2, y: 0.2 }}
-          end={{ x: 0.9, y: 0.9 }}
-          style={[StyleSheet.absoluteFill, { borderRadius: S }]}
-        />
-      </View>
+      />
+      <View
+        style={{
+          position: 'absolute',
+          width: S * 0.95,
+          height: S * 0.95,
+          borderRadius: (S * 0.95) / 2,
+          backgroundColor: 'rgba(255,172,160,0.18)',
+          top: S * 0.025,
+          left: S * 0.025,
+        }}
+        pointerEvents="none"
+      />
 
-      {/* 2. Outer rotating ring — honey gradient sweep */}
+      {/* 2. Outer rotating ring — single coral tone with transparent midpoints
+          (avoids the previous "rainbow" feel from 5+ stop honey gradient) */}
       <Animated.View
         style={[
           styles.ring,
@@ -128,13 +142,9 @@ export function StreakOrb({ count, size = 240 }: Props) {
       >
         <LinearGradient
           colors={[
-            '#FFE8BC',
-            'rgba(255,158,125,0.0)',
-            '#FF9E7D',
-            'rgba(255,232,188,0.0)',
-            '#E85A3A',
-            'rgba(255,158,125,0.0)',
-            '#FFE8BC',
+            'rgba(255,172,160,0.7)',
+            'rgba(255,172,160,0.1)',
+            'rgba(255,172,160,0.7)',
           ] as const}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
@@ -279,7 +289,6 @@ const styles = StyleSheet.create({
   },
   auraWrap: {
     position: 'absolute',
-    opacity: 0.7,
   },
   ring: {
     position: 'absolute',

@@ -79,7 +79,7 @@ export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Pro
   };
 
   const positionStyle: ViewStyle = position === 'center'
-    ? { bottom, left: '50%', transform: [{ translateX: -48 }] } // half of 96 outer
+    ? { bottom, left: '50%', transform: [{ translateX: -OUTER / 2 }] }
     : { bottom, right: 16 };
 
   return (
@@ -116,8 +116,8 @@ export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Pro
   );
 }
 
-const OUTER = 96;
-const CORE = 64;
+const OUTER = 72;
+const CORE = 52;
 
 const styles = StyleSheet.create({
   root: {
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
   label: {
     color: colors.onPrimary,
     fontFamily: fonts.headlineExtraBold,
-    fontSize: 14,
-    letterSpacing: 2,
+    fontSize: 12,
+    letterSpacing: 1.5,
     fontWeight: '800',
   },
 });

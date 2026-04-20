@@ -508,7 +508,7 @@ export default function Home() {
         )}
       </ScrollView>
 
-      <SOSFab onPress={onSos} bottom={insets.bottom + 96} />
+      <SOSFab onPress={onSos} bottom={insets.bottom + 96} position="right" />
     </AtmosphericGradient>
   );
 }
@@ -830,19 +830,20 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
   },
   sosCounterCard: {
-    padding: spacing.lg,
-    gap: spacing.md,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg,
+    gap: spacing.lg,
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
   sosCounterHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
+    gap: spacing.lg,
   },
   sosCounterGlyphWrap: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: 'rgba(255,255,255,0.7)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -855,11 +856,12 @@ const styles = StyleSheet.create({
   sosCounterUpgrade: {
     backgroundColor: 'rgba(255,255,255,0.4)',
     borderRadius: radius.full,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.5)',
+    marginTop: spacing.xs,
   },
   sosCounterUpgradeText: {
     fontFamily: fonts.bodySemibold,
@@ -883,12 +885,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.sm,
     paddingHorizontal: spacing.xs,
+    marginTop: spacing.xs,
   },
   sosCounterSlot: {
     flex: 1,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(165,60,48,0.15)',
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'rgba(165,60,48,0.18)',
   },
   sosCounterSlotUsed: {
     backgroundColor: colors.primary,
