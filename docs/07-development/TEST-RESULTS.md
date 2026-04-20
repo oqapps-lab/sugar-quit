@@ -146,4 +146,41 @@ and re-tested by the 5-question audit.
 ```
 c852da0  fix(ux): close 10 user-adequacy bugs found in manual walkthrough
 d9d3645  fix(milestone): break infinite-loop reopen + replace hardcoded stats
+1a6ac23  fix(ux): replace hardcoded copy in Curriculum / Progress / Home peak badge
+0a32959  fix(tabbar): animated indicator now actually moves — was stuck on first slot
 ```
+
+---
+
+## 🩹 Round 3 — animated indicator fix (2026-04-20 15:42 batch)
+
+**User reported via screenshot**: indicator pill was stuck under "Path" while
+the active tab text was Profile. Text colour swap worked, animated pill did
+not. Root cause:
+
+- `Animated.View` had `transform: [{ translateX: pos.value * (100/4) + '%' }]`
+- Reanimated 4 doesn't interpolate string-percent values into animated px on
+  iOS — the indicator stayed at its initial offset
+
+Fix:
+- Use `useWindowDimensions()` for real screen width
+- Compute `slotWidth = (screenWidth - 2*pad - 2*innerPad) / 4` in pixels
+- `indicatorPos.value` now holds px offset (`activeIndex * slotWidth`)
+- Indicator View width set inline at runtime (depends on screen size)
+
+### Live verification (Round 3)
+
+Walked all 4 tabs and confirmed pill indicator moves correctly:
+
+| Tab tapped | Pill position | Hero copy verified |
+|---|---|---|
+| Home | Slot 1 (left) | "Today is Light." + peak card "3:00 PM" (M3 ✅) |
+| Path | Slot 2 | "Day 1 of 90 / Acute phase. The first day — your brain notices the loop without judgment." (M2 ✅) |
+| Progress | Slot 3 | "DAY 1 OF 90 / The first decision / Day one or three or now — the only act that matters is that you started." (M1 ✅) |
+| Profile | Slot 4 (right) | "1 days clean / 0 cravings met / $2 saved" + "Approx 0.03kg" (L7 ✅) |
+
+All 4 tabs now show:
+- ✅ Correct route screen
+- ✅ Animated pill indicator at the right slot
+- ✅ Active text color (peach)
+- ✅ Spring transition between slots
