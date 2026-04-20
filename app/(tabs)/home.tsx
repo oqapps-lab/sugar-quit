@@ -273,10 +273,20 @@ export default function Home() {
                       Energy dip triggers craving response.
                     </Text>
                   </View>
-                  <View style={styles.peakBadge}>
-                    <Text style={styles.peakBadgeNumber}>3:12</Text>
-                    <Text style={styles.peakBadgeLabel}>PM</Text>
-                  </View>
+                  {(() => {
+                    // Peak badge — split user's peakHour ("3:00 PM") into number + AM/PM.
+                    // Falls back to a sensible default if not set yet.
+                    const raw = useUserStore.getState().peakHour ?? '3:00 PM';
+                    const m = raw.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
+                    const num = m?.[1] ?? '3:00';
+                    const ampm = (m?.[2] ?? 'PM').toUpperCase();
+                    return (
+                      <View style={styles.peakBadge}>
+                        <Text style={styles.peakBadgeNumber}>{num}</Text>
+                        <Text style={styles.peakBadgeLabel}>{ampm}</Text>
+                      </View>
+                    );
+                  })()}
                 </View>
                 <View style={styles.peakActionRow}>
                   <Text style={styles.peakAction}>See plan</Text>

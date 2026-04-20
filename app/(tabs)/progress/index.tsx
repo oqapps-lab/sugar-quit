@@ -14,7 +14,30 @@ import { useUserStore } from '../../../stores/useUserStore';
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
+  const cravings = useUserStore((s) => s.cravings);
+  const sosLog = useUserStore((s) => s.sosLog);
   const currentDay = Math.max(1, streakDays);
+
+  // Hero copy by phase — replaces hardcoded "The subtle shift / Two weeks in"
+  const phase: { title: string; body: string } =
+    currentDay <= 3
+      ? { title: 'The first decision', body: 'Day one or three or now — the only act that matters is that you started.' }
+      : currentDay <= 7
+      ? { title: 'The 72-hour line', body: 'Withdrawal peaks then eases. By the end of week one, the worst is behind you.' }
+      : currentDay <= 14
+      ? { title: 'The subtle shift', body: 'Two weeks in. The storm has passed; the quiet is starting to feel normal.' }
+      : currentDay <= 30
+      ? { title: 'New defaults forming', body: 'Your reflexes are rewiring. Sugar slips out of the auto-reach.' }
+      : currentDay <= 60
+      ? { title: 'Identity, not effort', body: "You don't decide each time anymore. The choice has become who you are." }
+      : { title: 'The horizon', body: 'You walk past the candy aisle without noticing it. The path is yours now.' };
+
+  // Stats — same honest formulas as Profile / Milestone
+  const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
+  const cravingsMet = sosWalked + cravingsWalked;
+  const dollarsSaved = (currentDay * 1.5).toFixed(0);
+  const kgSugar = (currentDay * 0.025).toFixed(1);
 
   const goWeekly = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -64,13 +87,11 @@ export default function ProgressScreen() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero */}
+        {/* Hero — phase-aware copy */}
         <View style={styles.heroSection}>
           <Text style={styles.heroEyebrow}>{`DAY ${currentDay} OF 90`}</Text>
-          <Text style={styles.heroTitle}>The subtle shift</Text>
-          <Text style={styles.heroBody}>
-            Two weeks in. The storm has passed and the quiet is starting to feel normal.
-          </Text>
+          <Text style={styles.heroTitle}>{phase.title}</Text>
+          <Text style={styles.heroBody}>{phase.body}</Text>
         </View>
 
         {/* Timeline (weekly preview) */}
@@ -192,18 +213,18 @@ export default function ProgressScreen() {
           accessibilityLabel="Milestones — your stones"
         >
           <View style={styles.stat}>
-            <Text style={styles.statNumber}>42</Text>
+            <Text style={styles.statNumber}>{cravingsMet}</Text>
             <Text style={styles.statLabel}>cravings met</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
-            <Text style={styles.statNumber}>$72</Text>
+            <Text style={styles.statNumber}>${dollarsSaved}</Text>
             <Text style={styles.statLabel}>saved</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
-            <Text style={styles.statNumber}>89%</Text>
-            <Text style={styles.statLabel}>success</Text>
+            <Text style={styles.statNumber}>{kgSugar}kg</Text>
+            <Text style={styles.statLabel}>sugar avoided</Text>
           </View>
         </Pressable>
       </ScrollView>

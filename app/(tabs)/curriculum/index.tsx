@@ -57,6 +57,19 @@ function computeLessonState(day: number, currentDay: number): LessonState {
   return 'upcoming';
 }
 
+/**
+ * Pick the hero subtitle based on which phase the user is in.
+ * Drops the hardcoded "Week 2 · clarity phase" copy that read wrong on Day 1.
+ */
+function heroForDay(day: number): string {
+  if (day <= 3) return `Acute phase. The first ${day === 1 ? 'day' : `${day} days`} — your brain notices the loop without judgment.`;
+  if (day <= 7) return 'Adaptation phase. The 72-hour storm has passed; cravings start losing their grip.';
+  if (day <= 14) return `Clarity phase. Two weeks in — your body and mind are catching up with each other.`;
+  if (day <= 30) return 'Integration phase. New defaults forming. Sugar slips out of the auto-reach.';
+  if (day <= 60) return 'Identity phase. You no longer ask "should I". You just don\'t.';
+  return 'Horizon. The path is yours now.';
+}
+
 export default function Curriculum() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
@@ -83,9 +96,7 @@ export default function Curriculum() {
         <Text style={styles.heroTitle}>
           Day <Text style={styles.heroAccent}>{currentDay}</Text> of 90
         </Text>
-        <Text style={styles.heroBody}>
-          Week 2 · clarity phase. Your body and mind start catching up with each other.
-        </Text>
+        <Text style={styles.heroBody}>{heroForDay(currentDay)}</Text>
 
         {/* Progress bar */}
         <View style={styles.progressBar}>
