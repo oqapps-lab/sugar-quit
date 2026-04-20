@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 type LessonState = 'done' | 'current' | 'upcoming' | 'locked';
 type Lesson = { day: number; title: string; minutes: number; state: LessonState };
@@ -47,6 +48,9 @@ const PHASES: { name: string; days: string; lessons: Lesson[] }[] = [
 
 export default function Curriculum() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
+  const currentDay = Math.max(1, streakDays);
+  const progressPct = (currentDay / 90) * 100;
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -66,7 +70,7 @@ export default function Curriculum() {
         {/* Hero */}
         <Text style={styles.eyebrow}>YOUR 90-DAY PATH</Text>
         <Text style={styles.heroTitle}>
-          Day <Text style={styles.heroAccent}>8</Text> of 90
+          Day <Text style={styles.heroAccent}>{currentDay}</Text> of 90
         </Text>
         <Text style={styles.heroBody}>
           Week 2 · clarity phase. Your body and mind start catching up with each other.
@@ -74,7 +78,7 @@ export default function Curriculum() {
 
         {/* Progress bar */}
         <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: `${(8 / 90) * 100}%` }]} />
+          <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
         </View>
         <View style={styles.progressLabels}>
           <Text style={styles.progressLabel}>Day 1</Text>

@@ -22,7 +22,7 @@ export function TokenDot({ filled = true, size = 6, color = colors.primary }: Pr
           borderRadius: size / 2,
           backgroundColor: filled ? color : 'rgba(178, 178, 173, 0.3)',
         },
-        filled && { shadowColor: color, ...shadows.glowDotSm },
+        filled && { ...shadows.glowDotSm, shadowColor: color },
       ]}
     />
   );

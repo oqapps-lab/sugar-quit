@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 /**
  * Progress — 90-Day Journey on Dark Horizon gradient.
@@ -12,6 +13,8 @@ import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '..
  */
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
+  const currentDay = Math.max(1, streakDays);
 
   const goWeekly = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -50,7 +53,7 @@ export default function ProgressScreen() {
       >
         {/* Hero */}
         <View style={styles.heroSection}>
-          <Text style={styles.heroEyebrow}>DAY 14 OF 90</Text>
+          <Text style={styles.heroEyebrow}>{`DAY ${currentDay} OF 90`}</Text>
           <Text style={styles.heroTitle}>The subtle shift</Text>
           <Text style={styles.heroBody}>
             Two weeks in. The storm has passed and the quiet is starting to feel normal.

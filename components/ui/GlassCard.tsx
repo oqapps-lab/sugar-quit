@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { Platform, StyleSheet, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { colors, radius, shadows } from '../../constants/tokens';
 
 type Tint = 'default' | 'peach' | 'mint' | 'lavender' | 'cream' | 'dark';
@@ -7,7 +7,7 @@ type Tint = 'default' | 'peach' | 'mint' | 'lavender' | 'cream' | 'dark';
 type Props = {
   tint?: Tint;
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   radius?: number;
   blurIntensity?: number;
 };

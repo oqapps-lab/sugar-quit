@@ -1,17 +1,34 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
+
+const TRIGGER_LABELS: Record<string, string> = {
+  stress: 'Stress', boredom: 'Boredom', meals: 'After meals',
+  social: 'Social pressure', emotions: 'Emotions', night: 'Late-night',
+};
 
 /**
- * 2.4.3 Edit Profile — name, goal, peak hour, trigger.
- * SKELETON.
+ * 2.4.3 Edit Profile — name, goal, peak hour, trigger. Wired to store.
  */
 export default function EditProfile() {
   const insets = useSafeAreaInsets();
+  const firstName = useUserStore((s) => s.firstName);
+  const goal = useUserStore((s) => s.goal);
+  const peakHour = useUserStore((s) => s.peakHour);
+  const triggers = useUserStore((s) => s.triggers);
+  const setFirstName = useUserStore((s) => s.setFirstName);
+
+  const [nameDraft, setNameDraft] = useState(firstName ?? '');
+  const initial = (nameDraft[0] ?? 'Y').toUpperCase();
+  const goalLabel = goal === 'quit' ? 'Quit completely' : goal === 'reduce' ? 'Reduce gradually' : '—';
+  const peakLabel = peakHour ?? '—';
+  const mainTriggerLabel = triggers[0] ? (TRIGGER_LABELS[triggers[0]] ?? triggers[0]) : '—';
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -20,6 +37,7 @@ export default function EditProfile() {
 
   const handleSave = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setFirstName(nameDraft);
     router.back();
   };
 
@@ -42,7 +60,7 @@ export default function EditProfile() {
         {/* Avatar */}
         <View style={styles.avatarBlock}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarInitial}>S</Text>
+            <Text style={styles.avatarInitial}>{initial}</Text>
           </View>
           <Pressable
             onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
@@ -57,22 +75,25 @@ export default function EditProfile() {
           <Text style={styles.fieldLabel}>NAME</Text>
           <View style={styles.inputFrost}>
             <TextInput
-              defaultValue="Sarah"
-              placeholder="Your name"
+              value={nameDraft}
+              onChangeText={setNameDraft}
+              placeholder="Your first name"
               placeholderTextColor={colors.outline}
               style={styles.input}
+              autoCapitalize="words"
+              returnKeyType="done"
             />
           </View>
         </View>
 
         {/* Goal */}
-        <FieldRow label="GOAL" value="Reduce gradually" />
+        <FieldRow label="GOAL" value={goalLabel} />
 
         {/* Peak hour */}
-        <FieldRow label="PEAK HOUR" value="3:00 PM" />
+        <FieldRow label="PEAK HOUR" value={peakLabel} />
 
         {/* Main trigger */}
-        <FieldRow label="MAIN TRIGGER" value="Stress" />
+        <FieldRow label="MAIN TRIGGER" value={mainTriggerLabel} />
 
         {/* Bottom actions */}
         <View style={styles.footer}>

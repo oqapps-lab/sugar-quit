@@ -7,22 +7,31 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore, type Goal } from '../../../stores/useUserStore';
 
 /**
  * 1.4 Quiz: Sugar Goal — "How do you want to move?" (single-select, 2 options).
  */
 export default function QuizSugarGoal() {
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<string | null>(null);
+  const setGoal = useUserStore((s) => s.setGoal);
+  const storedGoal = useUserStore((s) => s.goal);
+  const [selected, setSelected] = useState<Goal | null>(storedGoal);
 
-  const options = [
-    { key: 'quit',   title: 'Quit cold',     body: 'No added sugar from day one. I want the reset.' , tint: 'peach' as const },
-    { key: 'reduce', title: 'Reduce slowly', body: 'Step it down week by week. Build the habit.' , tint: 'mint' as const },
+  const options: { key: Goal; title: string; body: string; tint: 'peach' | 'mint' }[] = [
+    { key: 'quit',   title: 'Quit cold',     body: 'No added sugar from day one. I want the reset.' , tint: 'peach' },
+    { key: 'reduce', title: 'Reduce slowly', body: 'Step it down week by week. Build the habit.' , tint: 'mint' },
   ];
 
-  const pick = (key: string) => {
+  const pick = (key: Goal) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected(key);
+  };
+
+  const handleContinue = () => {
+    if (!selected) return;
+    setGoal(selected);
+    router.push('/(onboarding)/motivational-1');
   };
 
   return (
@@ -44,7 +53,13 @@ export default function QuizSugarGoal() {
           {options.map((o) => {
             const isOn = selected === o.key;
             return (
-              <Pressable key={o.key} onPress={() => pick(o.key)}>
+              <Pressable
+                key={o.key}
+                onPress={() => pick(o.key)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={o.title}
+              >
                 <GlassCard tint={o.tint} style={[styles.optionCard, isOn && styles.optionCardOn]}>
                   <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
                   <Text style={styles.optionBody}>{o.body}</Text>
@@ -59,7 +74,8 @@ export default function QuizSugarGoal() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/motivational-1')}
+          onPress={handleContinue}
+          disabled={!selected}
         />
       </View>
     </AtmosphericGradient>

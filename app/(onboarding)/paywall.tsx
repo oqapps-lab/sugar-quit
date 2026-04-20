@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 type Tier = 'annual' | 'monthly';
 
@@ -18,6 +19,14 @@ const BENEFITS = [
 export default function Paywall() {
   const insets = useSafeAreaInsets();
   const [tier, setTier] = useState<Tier>('annual');
+  const firstName = useUserStore((s) => s.firstName);
+  const peakHour = useUserStore((s) => s.peakHour);
+  const eyebrow = firstName
+    ? `${firstName.toUpperCase()}, YOUR PLAN IS READY`
+    : 'YOUR PLAN IS READY';
+  const triggerText = peakHour
+    ? `Trigger prediction tuned to your ${peakHour.toLowerCase()}`
+    : 'Trigger prediction tuned to your peak hour';
 
   return (
     <AtmosphericGradient theme="cravingProfile">
@@ -37,7 +46,7 @@ export default function Paywall() {
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
-        <Text style={styles.eyebrow}>SARAH, YOUR PLAN IS READY</Text>
+        <Text style={styles.eyebrow}>{eyebrow}</Text>
         <Text style={styles.heroTitle}>
           A <Text style={styles.heroAccent}>$0.22</Text> / day decision
         </Text>

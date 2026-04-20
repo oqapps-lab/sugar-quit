@@ -3,7 +3,7 @@ import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, fonts, radius, shadows, spacing, typeScale } from '../../constants/tokens';
+import { colors, fonts, radius, shadows, spacing } from '../../constants/tokens';
 
 /**
  * Main bottom-tabs layout. 4 tabs: home / curriculum / progress / profile.
@@ -45,38 +45,47 @@ function CustomTabBar({ state, navigation }: any) {
 
   const activeRoute = state.routes[state.index].name;
 
-  const content = (
-    <View style={styles.inner}>
-      {TABS.map((t) => {
-        const active = activeRoute === t.key;
-        return (
-          <Pressable
-            key={t.key}
-            onPress={() => go(t.key)}
-            style={({ pressed }) => [
-              styles.tab,
-              active && styles.tabActive,
-              { transform: [{ scale: pressed ? 0.94 : 1 }] },
-            ]}
-          >
-            <Text style={[styles.glyph, active && styles.glyphActive]}>{t.glyph}</Text>
-            <Text style={[styles.label, active && styles.labelActive]}>{t.label}</Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-
-  if (Platform.OS === 'ios') {
-    return (
-      <BlurView intensity={40} tint="light" style={[styles.pill, { bottom }, shadows.cardWhisper]}>
-        {content}
-      </BlurView>
-    );
-  }
+  // Render BlurView (or fallback) as an absolute backdrop with pointerEvents="none"
+  // so it can't intercept taps. The Pressable row sits in a sibling layer above.
+  // Nesting Pressables inside BlurView occasionally swallows touches on iOS.
   return (
-    <View style={[styles.pill, { bottom, backgroundColor: 'rgba(255,255,255,0.85)' }, shadows.cardWhisper]}>
-      {content}
+    <View style={[styles.pill, { bottom }, shadows.cardWhisper]} accessibilityRole="tablist">
+      {Platform.OS === 'ios' ? (
+        <BlurView
+          intensity={40}
+          tint="light"
+          style={StyleSheet.absoluteFill}
+          pointerEvents="none"
+        />
+      ) : (
+        <View
+          style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255,255,255,0.85)' }]}
+          pointerEvents="none"
+        />
+      )}
+      <View style={styles.inner}>
+        {TABS.map((t) => {
+          const active = activeRoute === t.key;
+          return (
+            <Pressable
+              key={t.key}
+              onPress={() => go(t.key)}
+              hitSlop={8}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: active }}
+              accessibilityLabel={t.label}
+              style={({ pressed }) => [
+                styles.tab,
+                active && styles.tabActive,
+                { transform: [{ scale: pressed ? 0.94 : 1 }] },
+              ]}
+            >
+              <Text style={[styles.glyph, active && styles.glyphActive]}>{t.glyph}</Text>
+              <Text style={[styles.label, active && styles.labelActive]}>{t.label}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 }

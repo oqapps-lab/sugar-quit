@@ -31,6 +31,9 @@ export function PillCTA({
       <Pressable
         onPress={handlePress}
         disabled={disabled}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled }}
         style={({ pressed }) => [
           styles.pill,
           styles.darkText,
@@ -49,6 +52,9 @@ export function PillCTA({
       <Pressable
         onPress={handlePress}
         disabled={disabled}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled }}
         style={({ pressed }) => [
           styles.pill,
           styles.lightOnDark,
@@ -71,6 +77,9 @@ export function PillCTA({
     <Pressable
       onPress={handlePress}
       disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled }}
       style={({ pressed }) => [
         { opacity: disabled ? 0.4 : pressed ? 0.92 : 1 },
         style,

@@ -122,10 +122,10 @@ export default function CheckIn() {
         <View style={styles.bodyCenter}>
           <View style={styles.completeGlow}>
             <View style={styles.completeOrb}>
-              <Text style={styles.completeStreak}>9</Text>
+              <Text style={styles.completeStreak}>{streakDays}</Text>
             </View>
           </View>
-          <Text style={styles.completeEyebrow}>DAY 9 · STREAK INTACT</Text>
+          <Text style={styles.completeEyebrow}>{`DAY ${streakDays} · STREAK INTACT`}</Text>
           <Text style={styles.completeTitle}>Thank you for the honest note.</Text>
           <Text style={styles.completeBody}>
             Every day you answer is a sentence in your story.

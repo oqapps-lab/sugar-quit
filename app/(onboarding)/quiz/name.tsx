@@ -5,15 +5,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 /**
  * 1.12 Quiz: Name — optional text input + Skip + Continue.
  */
 export default function QuizName() {
   const insets = useSafeAreaInsets();
-  const [name, setName] = useState('');
+  const stored = useUserStore((s) => s.firstName);
+  const setFirstName = useUserStore((s) => s.setFirstName);
+  const [name, setName] = useState(stored ?? '');
 
-  const goNext = () => router.push('/(onboarding)/loading');
+  const goNext = () => {
+    // Persist whatever they typed (empty string clears to null in the store helper).
+    setFirstName(name);
+    router.push('/(onboarding)/loading');
+  };
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
