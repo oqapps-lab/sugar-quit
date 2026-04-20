@@ -200,9 +200,10 @@ export default function Home() {
           </GlassCard>
         )}
 
-        {/* First-time legend — only on Day 1, teaches the four key concepts
-            so the user understands what every block on this screen means. */}
-        {isDayOne && (
+        {/* First-time legend — shown during the acute phase (Days 0-3) so the
+            user has time to absorb what each block means. It's the highest-
+            density learning moment in the whole product. */}
+        {streakDays <= 3 && (
           <GlassCard tint="default" style={styles.legendCard}>
             <Text style={styles.legendLabel}>WHAT EVERYTHING MEANS</Text>
             <View style={styles.legendRow}>
@@ -354,12 +355,17 @@ export default function Home() {
           </GlassCard>
         </Pressable>
 
-        {/* SOS counter chip — only if free + non-zero used */}
+        {/* SOS counter chip — only if free + non-zero used.
+            Eyebrow makes clear this is a usage counter, not a weird label. */}
         {sosRemaining !== null && sosUsedThisMonth > 0 && (
           <View style={styles.sosCounter}>
+            <Text style={styles.sosCounterEyebrow}>SOS USAGE</Text>
             <Text style={styles.sosCounterText}>
-              SOS · {sosUsedThisMonth}/{sosFreeLimit} this month
+              {sosUsedThisMonth} of {sosFreeLimit} used this month
             </Text>
+            {sosRemaining === 0 && (
+              <Text style={styles.sosCounterHint}>Upgrade to Premium for unlimited</Text>
+            )}
           </View>
         )}
 
@@ -368,8 +374,9 @@ export default function Home() {
           <View
             style={styles.streakSection}
             accessibilityRole="text"
-            accessibilityLabel={`Streak: ${streakDays} дней без сахара. ${freezesLeft} заморозок осталось на этой неделе.`}
+            accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
           >
+            <Text style={styles.streakEyebrow}>YOUR STREAK</Text>
             <Text style={styles.streakNumber}>{streakDays}</Text>
             <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
             <View style={styles.streakDots}>
@@ -377,6 +384,7 @@ export default function Home() {
                 <TokenDot key={i} filled={i < streakDays} size={6} />
               ))}
             </View>
+            <Text style={styles.streakDotsHint}>last 14 days</Text>
             {/* Streak freeze indicator — small chip under the streak */}
             <View style={styles.freezeIndicator}>
               <Text style={styles.freezeGlyph}>❄</Text>
@@ -386,6 +394,9 @@ export default function Home() {
                   : `${freezesLeft} freeze${freezesLeft === 1 ? '' : 's'} left this week`}
               </Text>
             </View>
+            <Text style={styles.streakFreezeHint}>
+              A Freeze forgives one missed day per week — your streak stays intact.
+            </Text>
           </View>
         )}
       </ScrollView>
@@ -704,23 +715,43 @@ const styles = StyleSheet.create({
 
   sosCounter: {
     alignSelf: 'center',
+    alignItems: 'center',
     backgroundColor: 'rgba(165,60,48,0.08)',
     paddingHorizontal: spacing.md,
-    paddingVertical: 4,
-    borderRadius: radius.full,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.sm,
     marginBottom: spacing.md,
+    gap: 2,
+  },
+  sosCounterEyebrow: {
+    fontFamily: fonts.label,
+    fontSize: 9,
+    color: colors.primary,
+    letterSpacing: tracking.widest,
+    opacity: 0.8,
   },
   sosCounterText: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
     color: colors.primary,
-    letterSpacing: tracking.wide,
+  },
+  sosCounterHint: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
   },
 
   streakSection: {
     alignItems: 'center',
     marginTop: spacing.xxl,
     marginBottom: spacing.xl,
+  },
+  streakEyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.xs,
   },
   streakNumber: {
     fontFamily: fonts.headlineExtraBold,
@@ -738,6 +769,23 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   streakDots: { flexDirection: 'row', gap: 6 },
+  streakDotsHint: {
+    fontFamily: fonts.label,
+    fontSize: 9,
+    color: colors.onSurfaceVariant,
+    letterSpacing: tracking.wide,
+    marginTop: spacing.xs,
+    opacity: 0.6,
+  },
+  streakFreezeHint: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
+    textAlign: 'center',
+    maxWidth: 280,
+    marginTop: spacing.xs,
+    lineHeight: 16,
+  },
 
   freezeIndicator: {
     flexDirection: 'row',
