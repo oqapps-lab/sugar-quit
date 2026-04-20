@@ -2,7 +2,18 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+  Easing,
+  FadeInUp,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
@@ -21,6 +32,21 @@ export default function LoadingScreen() {
   const insets = useSafeAreaInsets();
   const [statusIdx, setStatusIdx] = useState(0);
   const [percent, setPercent] = useState(0);
+
+  // Rotating orbit glyph
+  const rm = useReducedMotion();
+  const rotation = useSharedValue(0);
+  useEffect(() => {
+    if (rm) return;
+    rotation.value = withRepeat(
+      withTiming(360, { duration: 6000, easing: Easing.linear }),
+      -1,
+      false,
+    );
+  }, [rm, rotation]);
+  const orbitStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
 
   useEffect(() => {
     const startedAt = Date.now();
@@ -51,19 +77,35 @@ export default function LoadingScreen() {
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
+      {/* Background aura blobs */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
+        <AuraBlob tint="mint" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
+
       <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <View style={styles.body}>
-          <Text style={styles.eyebrow}>ONE MOMENT</Text>
-          <Text style={styles.headline}>Writing your plan…</Text>
+          <Animated.View entering={FadeInUp.duration(400)} style={styles.orbitWrap}>
+            <Animated.View style={orbitStyle}>
+              <DecorGlyph variant="orbit" size={96} />
+            </Animated.View>
+          </Animated.View>
 
-          <View style={styles.progressWrap}>
+          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
+            ONE MOMENT
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.headline}>
+            Writing your plan…
+          </Animated.Text>
+
+          <Animated.View entering={FadeInUp.delay(250).duration(400)} style={styles.progressWrap}>
             <View style={styles.progressTrack}>
               <View style={[styles.progressFill, { width: `${percent}%` }]} />
             </View>
             <Text style={styles.percent}>{Math.round(percent)}%</Text>
-          </View>
+          </Animated.View>
 
-          <View style={styles.statusWrap}>
+          <Animated.View entering={FadeInUp.delay(350).duration(400)} style={styles.statusWrap}>
             {STATUS_LINES.map((line, i) => {
               const isActive = i === statusIdx;
               const isPast = i < statusIdx;
@@ -84,7 +126,7 @@ export default function LoadingScreen() {
                 </View>
               );
             })}
-          </View>
+          </Animated.View>
         </View>
       </View>
     </AtmosphericGradient>
@@ -94,6 +136,20 @@ export default function LoadingScreen() {
 const HONEY = '#d88c3f'; // thin honey line
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -120,
+  },
   container: { flex: 1 },
   body: {
     flex: 1,
@@ -101,6 +157,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: spacing.lg,
+  },
+  orbitWrap: {
+    marginBottom: spacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   eyebrow: {
     fontFamily: fonts.label,

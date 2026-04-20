@@ -1,7 +1,9 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
@@ -15,31 +17,37 @@ export default function PushPermission() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      {/* Background aura blobs */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="golden" size={260} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
+      </View>
+
       <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
-        <View style={styles.hero}>
+        <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
           <Text style={styles.eyebrow}>THE PROMISE</Text>
           <Text style={styles.title}>We'll warn you 15 minutes before your 3pm</Text>
           <Text style={styles.sub}>One push when the pattern predicts a craving. That's it. No spam, ever.</Text>
-        </View>
+        </Animated.View>
 
-        <View style={styles.illustration}>
+        <Animated.View entering={FadeInUp.delay(150).duration(450)} style={styles.illustration}>
           <View style={styles.bellOuter}>
             <View style={styles.bellInner} />
           </View>
-        </View>
+        </Animated.View>
 
-        <View style={styles.promises}>
+        <Animated.View entering={FadeInDown.delay(250).duration(450)} style={styles.promises}>
           <PromiseRow text="Only when your pattern predicts a craving" />
           <PromiseRow text="Max 1 push per day" />
           <PromiseRow text="Turn off anytime in settings" />
-        </View>
+        </Animated.View>
 
-        <View style={styles.footer}>
+        <Animated.View entering={FadeInDown.delay(400).duration(450)} style={styles.footer}>
           <PillCTA label="Turn on predictions" onPress={finish} />
           <Pressable onPress={finish} style={styles.laterBtn}>
             <Text style={styles.laterLabel}>Maybe later</Text>
           </Pressable>
-        </View>
+        </Animated.View>
       </View>
     </AtmosphericGradient>
   );
@@ -55,6 +63,20 @@ function PromiseRow({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -120,
+  },
   root: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'space-between' },
   hero: { alignItems: 'center', gap: spacing.xs },
   eyebrow: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide, marginBottom: spacing.sm },
@@ -68,7 +90,7 @@ const styles = StyleSheet.create({
   promises: { gap: spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingHorizontal: spacing.md },
   dot: { width: 6, height: 6, borderRadius: radius.full, backgroundColor: colors.primary },
-  rowText: { fontFamily: fonts.bodyLight, fontSize: typeScale.bodyMedium, color: colors.onSurface, flex: 1 },
+  rowText: { fontFamily: fonts.body, fontSize: typeScale.bodyMedium, color: colors.onSurface, flex: 1, lineHeight: 20 },
 
   footer: { gap: spacing.md, alignItems: 'center' },
   laterBtn: { padding: spacing.sm },

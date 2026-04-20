@@ -3,7 +3,10 @@ import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
@@ -23,6 +26,10 @@ export default function RateApp() {
 
   return (
     <AtmosphericGradient theme="mistyPlum">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="lavender" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="golden" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
@@ -31,22 +38,31 @@ export default function RateApp() {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.eyebrow}>SEVEN DAYS IN</Text>
-        <Text style={styles.title}>A small ask</Text>
-        <Text style={styles.body}>
+        <Animated.View entering={FadeInUp.duration(450)} style={styles.heroGlyphWrap}>
+          <DecorGlyph variant="heart" size={88} />
+        </Animated.View>
+        <Animated.Text entering={FadeInUp.delay(120).duration(400)} style={styles.eyebrow}>
+          SEVEN DAYS IN
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.title}>
+          A small ask
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.body}>
           If this week felt worth something, a rating helps other people find us. Completely optional.
-        </Text>
+        </Animated.Text>
 
-        <View style={styles.stonesRow}>
-          {[1, 2, 3, 4, 5].map((n) => {
+        <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.stonesRow}>
+          {[1, 2, 3, 4, 5].map((n, idx) => {
             const active = rating !== null && rating >= n;
             return (
-              <Pressable key={n} onPress={() => pickStone(n)} style={[styles.stone, active && styles.stoneActive]}>
-                <Text style={[styles.stoneMark, active && styles.stoneMarkActive]}>●</Text>
-              </Pressable>
+              <Animated.View key={n} entering={FadeInDown.delay(360 + idx * 60).duration(400)}>
+                <Pressable onPress={() => pickStone(n)} style={[styles.stone, active && styles.stoneActive]}>
+                  <Text style={[styles.stoneMark, active && styles.stoneMarkActive]}>●</Text>
+                </Pressable>
+              </Animated.View>
             );
           })}
-        </View>
+        </Animated.View>
 
         {rating !== null && (
           <Text style={styles.caption}>
@@ -55,7 +71,7 @@ export default function RateApp() {
         )}
       </View>
 
-      <View style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
+      <Animated.View entering={FadeInDown.delay(700).duration(400)} style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
           label="Leave a review on the App Store"
           onPress={() => router.dismiss()}
@@ -64,7 +80,7 @@ export default function RateApp() {
         <Pressable onPress={() => router.dismiss()} style={styles.laterBtn}>
           <Text style={styles.laterLabel}>Maybe later</Text>
         </Pressable>
-      </View>
+      </Animated.View>
     </AtmosphericGradient>
   );
 }
@@ -83,6 +99,26 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
+
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+  heroGlyphWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
 
   content: {
     flex: 1,

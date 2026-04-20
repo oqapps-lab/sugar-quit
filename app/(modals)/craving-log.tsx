@@ -3,7 +3,10 @@ import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -57,65 +60,81 @@ export default function CravingLog() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="mint" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+        <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <View style={{ width: 36 }} />
           <Text style={styles.headerTitle}>Log a craving</Text>
           <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
             <Text style={styles.closeX}>×</Text>
           </Pressable>
-        </View>
+        </Animated.View>
 
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeInUp.delay(80).duration(400)} style={styles.heroGlyphWrap}>
+            <DecorGlyph variant="lightning" size={80} />
+          </Animated.View>
+
           {/* Intensity */}
-          <Text style={styles.sectionLabel}>INTENSITY</Text>
-          <View style={styles.stonesRow}>
-            {[1, 2, 3, 4, 5].map((n) => {
-              const active = intensity !== null && intensity >= n;
-              return (
-                <Pressable key={n} onPress={() => pickIntensity(n as Intensity)} style={[styles.stone, active && styles.stoneActive]}>
-                  <Text style={[styles.stoneNum, active && styles.stoneNumActive]}>{n}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
+          <Animated.View entering={FadeInUp.delay(150).duration(400)}>
+            <Text style={styles.sectionLabel}>INTENSITY</Text>
+            <View style={styles.stonesRow}>
+              {[1, 2, 3, 4, 5].map((n) => {
+                const active = intensity !== null && intensity >= n;
+                return (
+                  <Pressable key={n} onPress={() => pickIntensity(n as Intensity)} style={[styles.stone, active && styles.stoneActive]}>
+                    <Text style={[styles.stoneNum, active && styles.stoneNumActive]}>{n}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </Animated.View>
 
           {/* Triggers */}
-          <Text style={[styles.sectionLabel, { marginTop: spacing.xl }]}>TRIGGER · TAP ANY</Text>
-          <View style={styles.chipsWrap}>
-            {TRIGGERS.map((t) => {
-              const active = triggers.includes(t);
-              return (
-                <Pressable key={t} onPress={() => toggleTrigger(t)} style={[styles.chip, active && styles.chipActive]}>
-                  <Text style={[styles.chipLabel, active && styles.chipLabelActive]}>{t}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
+          <Animated.View entering={FadeInUp.delay(220).duration(400)} style={styles.sectionBlock}>
+            <Text style={styles.sectionLabel}>TRIGGER · TAP ANY</Text>
+            <View style={styles.chipsWrap}>
+              {TRIGGERS.map((t) => {
+                const active = triggers.includes(t);
+                return (
+                  <Pressable key={t} onPress={() => toggleTrigger(t)} style={[styles.chip, active && styles.chipActive]}>
+                    <Text style={[styles.chipLabel, active && styles.chipLabelActive]}>{t}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </Animated.View>
 
           {/* Outcome */}
-          <Text style={[styles.sectionLabel, { marginTop: spacing.xl }]}>OUTCOME</Text>
-          <View style={styles.outcomeRow}>
-            {OUTCOMES.map((o) => (
-              <Pressable key={o.key} onPress={() => pickOutcome(o.key)} style={{ flex: 1 }}>
-                <GlassCard tint={o.tint} style={[styles.outcomeCard, outcome === o.key && styles.outcomeActive]}>
-                  <Text style={styles.outcomeTitle}>{o.title}</Text>
-                  <Text style={styles.outcomeBody}>{o.body}</Text>
-                </GlassCard>
-              </Pressable>
-            ))}
-          </View>
+          <Animated.View entering={FadeInDown.delay(290).duration(400)} style={styles.sectionBlock}>
+            <Text style={styles.sectionLabel}>OUTCOME</Text>
+            <View style={styles.outcomeRow}>
+              {OUTCOMES.map((o) => (
+                <Pressable key={o.key} onPress={() => pickOutcome(o.key)} style={{ flex: 1 }}>
+                  <GlassCard tint={o.tint} style={[styles.outcomeCard, outcome === o.key && styles.outcomeActive]}>
+                    <Text style={styles.outcomeTitle}>{o.title}</Text>
+                    <Text style={styles.outcomeBody}>{o.body}</Text>
+                  </GlassCard>
+                </Pressable>
+              ))}
+            </View>
+          </Animated.View>
 
           {/* Notes */}
-          <Text style={[styles.sectionLabel, { marginTop: spacing.xl }]}>NOTE · OPTIONAL</Text>
-          <TextInput
-            value={notes}
-            onChangeText={setNotes}
-            placeholder="what was happening…"
-            placeholderTextColor={colors.outline}
-            multiline
-            style={styles.notesInput}
-          />
+          <Animated.View entering={FadeInDown.delay(360).duration(400)} style={styles.sectionBlock}>
+            <Text style={styles.sectionLabel}>NOTE · OPTIONAL</Text>
+            <TextInput
+              value={notes}
+              onChangeText={setNotes}
+              placeholder="what was happening…"
+              placeholderTextColor={colors.outline}
+              multiline
+              style={styles.notesInput}
+            />
+          </Animated.View>
         </ScrollView>
 
         <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
@@ -148,6 +167,29 @@ const styles = StyleSheet.create({
 
   scroll: { padding: spacing.lg, paddingBottom: spacing.xxxl + 40 },
 
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+
+  heroGlyphWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  sectionBlock: {
+    marginTop: spacing.lg,
+  },
   sectionLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,

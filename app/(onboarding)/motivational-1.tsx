@@ -1,7 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GradientText } from '../../components/ui/GradientText';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -15,6 +18,12 @@ export default function Motivational1() {
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
+      {/* Background aura blobs */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.55} drift={22} />
+        <AuraBlob tint="golden" size={260} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
+      </View>
+
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
@@ -24,31 +33,52 @@ export default function Motivational1() {
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOU'RE NOT ALONE</Text>
-        <GradientText style={styles.bigNumber} gradient="heroHorizontal">
-          127,000
-        </GradientText>
-        <Text style={styles.headline}>
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.glyphWrap}>
+          <DecorGlyph variant="heart" size={56} />
+        </Animated.View>
+        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
+          YOU'RE NOT ALONE
+        </Animated.Text>
+        <Animated.View entering={FadeInUp.delay(150).duration(400)}>
+          <GradientText style={styles.bigNumber} gradient="heroHorizontal">
+            127,000
+          </GradientText>
+        </Animated.View>
+        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.headline}>
           people have walked this path with us
-        </Text>
-        <Text style={styles.sub}>
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(350).duration(400)} style={styles.sub}>
           Quiet mornings, tough afternoons, softer nights.
           You're stepping into good company.
-        </Text>
+        </Animated.Text>
       </View>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
+      <Animated.View entering={FadeInDown.delay(400).duration(400)} style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
           label="Continue"
           variant="onboarding"
           onPress={() => router.push('/(onboarding)/quiz/peak-time')}
         />
-      </View>
+      </Animated.View>
     </AtmosphericGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -120,
+  },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
   backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
   back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
@@ -60,6 +90,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     marginTop: -spacing.xxl,
+  },
+  glyphWrap: {
+    marginBottom: spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   eyebrow: {
     fontFamily: fonts.label,

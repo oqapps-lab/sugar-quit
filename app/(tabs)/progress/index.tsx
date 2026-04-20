@@ -1,9 +1,11 @@
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
@@ -51,11 +53,11 @@ export default function ProgressScreen() {
   };
 
   const nodes = [
-    { label: 'Arrival', phase: 'Week 1', state: 'done' as const },
-    { label: 'Detox', phase: 'Week 2', state: 'done' as const },
-    { label: 'Exhale', phase: 'Now', state: 'current' as const },
-    { label: 'Clarity', phase: 'Week 4', state: 'upcoming' as const },
-    { label: 'Horizon', phase: 'Day 90', state: 'goal' as const },
+    { label: 'Arrival',  phase: 'Week 1', state: 'done' as const,     glyph: 'compass' as const },
+    { label: 'Detox',    phase: 'Week 2', state: 'done' as const,     glyph: 'flame' as const },
+    { label: 'Exhale',   phase: 'Now',    state: 'current' as const,  glyph: 'moon' as const },
+    { label: 'Clarity',  phase: 'Week 4', state: 'upcoming' as const, glyph: 'sun' as const },
+    { label: 'Horizon',  phase: 'Day 90', state: 'goal' as const,     glyph: 'orbit' as const },
   ];
 
   // Health Timeline — physiological markers per FEATURES.md.
@@ -73,6 +75,12 @@ export default function ProgressScreen() {
 
   return (
     <AtmosphericGradient theme="darkHorizon">
+      {/* Background aura blobs — dark-horizon safe tints, low intensity */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.4} drift={20} />
+        <AuraBlob tint="golden" size={260} style={styles.auraBottomRight} intensity={0.3} drift={16} />
+      </View>
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
@@ -103,6 +111,7 @@ export default function ProgressScreen() {
         </Animated.View>
 
         {/* Timeline (weekly preview) */}
+        <Animated.View entering={FadeInDown.delay(100).duration(400)}>
         <Pressable
           onPress={goWeekly}
           style={styles.timelineSection}
@@ -128,13 +137,23 @@ export default function ProgressScreen() {
                   {n.state === 'current' && <View style={styles.nodeGlow} />}
                   <View
                     style={[
-                      styles.node,
-                      n.state === 'done' && styles.nodeDone,
-                      n.state === 'current' && styles.nodeCurrent,
-                      n.state === 'upcoming' && styles.nodeUpcoming,
-                      n.state === 'goal' && styles.nodeGoal,
+                      styles.nodeGlyphBg,
+                      n.state === 'done' && styles.nodeBgDone,
+                      n.state === 'current' && styles.nodeBgCurrent,
+                      n.state === 'upcoming' && styles.nodeBgUpcoming,
+                      n.state === 'goal' && styles.nodeBgGoal,
                     ]}
-                  />
+                  >
+                    <View
+                      style={[
+                        styles.nodeGlyphInner,
+                        n.state === 'upcoming' && { opacity: 0.45 },
+                        n.state === 'goal' && { opacity: 0.55 },
+                      ]}
+                    >
+                      <DecorGlyph variant={n.glyph} size={n.state === 'current' ? 22 : 18} />
+                    </View>
+                  </View>
                 </View>
 
                 <Text style={[styles.nodePhase, n.state === 'current' && styles.nodePhaseActive]}>
@@ -144,9 +163,17 @@ export default function ProgressScreen() {
             ))}
           </View>
         </Pressable>
+        </Animated.View>
 
-        {/* Details card */}
-        <View style={styles.detailsCard}>
+        {/* Details card — internal gradient overlay for depth (insightCard tokens) */}
+        <Animated.View entering={FadeInDown.delay(200).duration(400)} style={styles.detailsWrap}>
+          <LinearGradient
+            colors={['rgba(106,87,127,0.55)', 'rgba(165,60,48,0.35)'] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.detailsGradient}
+          />
+          <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
             <Text style={styles.detailsLabel}>TODAY'S FOCUS</Text>
           </View>
@@ -180,17 +207,22 @@ export default function ProgressScreen() {
             onPress={() => router.push('/(modals)/sos')}
             style={styles.sessionCTA}
           />
-        </View>
+          </View>
+        </Animated.View>
 
         {/* Health Timeline — physiological markers per FEATURES.md G4 */}
-        <View style={styles.healthSection}>
+        <Animated.View entering={FadeInDown.delay(300).duration(400)} style={styles.healthSection}>
           <Text style={styles.sectionLabel}>HEALTH TIMELINE</Text>
           <Text style={styles.sectionHint}>What's happening in your body, not just your mind.</Text>
           <View style={styles.healthList}>
-            {healthMarkers.map((m) => {
+            {healthMarkers.map((m, i) => {
               const reached = currentDay >= m.day;
               return (
-                <View key={m.day} style={styles.healthRow}>
+                <Animated.View
+                  key={m.day}
+                  entering={FadeInDown.delay(80 + i * 70).duration(400)}
+                  style={styles.healthRow}
+                >
                   <View style={[styles.healthDot, reached && styles.healthDotActive]} />
                   <View style={styles.healthLine} />
                   <View style={styles.healthText}>
@@ -207,13 +239,14 @@ export default function ProgressScreen() {
                       {m.detail}
                     </Text>
                   </View>
-                </View>
+                </Animated.View>
               );
             })}
           </View>
-        </View>
+        </Animated.View>
 
         {/* Quick stats row (milestones entry) */}
+        <Animated.View entering={FadeInDown.delay(400).duration(400)}>
         <Pressable
           onPress={goMilestones}
           style={styles.statsRow}
@@ -235,6 +268,7 @@ export default function ProgressScreen() {
             <Text style={styles.statLabel}>sugar avoided</Text>
           </View>
         </Pressable>
+        </Animated.View>
       </ScrollView>
 
     </AtmosphericGradient>
@@ -357,23 +391,35 @@ const styles = StyleSheet.create({
     width: 32, height: 32, borderRadius: radius.full,
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
-  node: { width: 8, height: 8, borderRadius: radius.full },
-  nodeDone: { backgroundColor: 'rgba(255,255,255,0.45)' },
-  nodeCurrent: {
-    width: 14, height: 14,
-    backgroundColor: '#ffffff',
-    borderWidth: 3,
-    borderColor: 'rgba(255,255,255,0.25)',
+  // Node background pill — holds the DecorGlyph inside
+  nodeGlyphBg: {
+    width: 32, height: 32, borderRadius: radius.full,
+    alignItems: 'center', justifyContent: 'center',
   },
-  nodeUpcoming: {
-    width: 6, height: 6,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+  nodeGlyphInner: {
+    width: 22, height: 22,
+    alignItems: 'center', justifyContent: 'center',
   },
-  nodeGoal: {
-    width: 8, height: 8,
+  nodeBgDone: {
+    backgroundColor: 'rgba(255,255,255,0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: 'rgba(255,255,255,0.18)',
+  },
+  nodeBgCurrent: {
+    width: 36, height: 36, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  nodeBgUpcoming: {
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  nodeBgGoal: {
     backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   nodePhase: {
     fontFamily: fonts.label,
@@ -384,13 +430,21 @@ const styles = StyleSheet.create({
   },
   nodePhaseActive: { color: colors.primaryFixedDim, fontWeight: '700' },
 
+  detailsWrap: {
+    marginBottom: spacing.xl,
+    borderRadius: radius.sm,
+    overflow: 'hidden',
+  },
+  detailsGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: radius.sm,
+  },
   detailsCard: {
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: radius.sm,
     padding: spacing.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-    marginBottom: spacing.xl,
+    borderColor: 'rgba(255,255,255,0.12)',
   },
   detailsHeader: { marginBottom: spacing.sm },
   detailsLabel: {
@@ -559,4 +613,20 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   healthDetailActive: { color: DARK_BODY },
+
+  // Background aura layer (dark-horizon safe tints)
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -60,
+    right: -120,
+  },
+  auraBottomRight: {
+    position: 'absolute',
+    bottom: '20%',
+    right: -100,
+  },
 });

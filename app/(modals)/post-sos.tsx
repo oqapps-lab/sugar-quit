@@ -3,7 +3,10 @@ import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -45,40 +48,54 @@ export default function PostSOS() {
 
   return (
     <AtmosphericGradient theme="dawn">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
+      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>After the wave</Text>
         <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
           <Text style={styles.closeX}>×</Text>
         </Pressable>
-      </View>
+      </Animated.View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>CHECK-OUT</Text>
-        <Text style={styles.title}>How are you now?</Text>
-        <Text style={styles.sub}>Whatever the answer — it's worth logging.</Text>
+        <Animated.View entering={FadeInUp.delay(80).duration(400)} style={styles.heroGlyphWrap}>
+          <DecorGlyph variant="heart" size={88} />
+        </Animated.View>
+        <Animated.Text entering={FadeInUp.delay(140).duration(400)} style={styles.eyebrow}>
+          CHECK-OUT
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(190).duration(400)} style={styles.title}>
+          How are you now?
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.sub}>
+          Whatever the answer — it's worth logging.
+        </Animated.Text>
 
         <View style={styles.cards}>
-          {ANSWERS.map((a) => (
-            <Pressable
-              key={a.key}
-              onPress={() => onPick(a.key)}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: picked === a.key }}
-              accessibilityLabel={`${a.title}. ${a.body}`}
-            >
-              <GlassCard tint={a.tint} style={[styles.card, picked === a.key && styles.cardActive]}>
-                <View style={styles.row}>
-                  <View style={{ flex: 1, gap: 2 }}>
-                    <Text style={styles.cardTitle}>{a.title}</Text>
-                    <Text style={styles.cardBody}>{a.body}</Text>
+          {ANSWERS.map((a, idx) => (
+            <Animated.View key={a.key} entering={FadeInDown.delay(300 + idx * 90).duration(400)}>
+              <Pressable
+                onPress={() => onPick(a.key)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: picked === a.key }}
+                accessibilityLabel={`${a.title}. ${a.body}`}
+              >
+                <GlassCard tint={a.tint} style={[styles.card, picked === a.key && styles.cardActive]}>
+                  <View style={styles.row}>
+                    <View style={{ flex: 1, gap: 2 }}>
+                      <Text style={styles.cardTitle}>{a.title}</Text>
+                      <Text style={styles.cardBody}>{a.body}</Text>
+                    </View>
+                    <View style={[styles.arrow, picked === a.key && styles.arrowActive]}>
+                      <Text style={[styles.arrowText, picked === a.key && styles.arrowTextActive]}>→</Text>
+                    </View>
                   </View>
-                  <View style={[styles.arrow, picked === a.key && styles.arrowActive]}>
-                    <Text style={[styles.arrowText, picked === a.key && styles.arrowTextActive]}>→</Text>
-                  </View>
-                </View>
-              </GlassCard>
-            </Pressable>
+                </GlassCard>
+              </Pressable>
+            </Animated.View>
           ))}
         </View>
       </View>
@@ -110,7 +127,27 @@ const styles = StyleSheet.create({
   },
   closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
 
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+
   body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.sm },
+  heroGlyphWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
   eyebrow: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,

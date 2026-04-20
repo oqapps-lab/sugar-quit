@@ -3,19 +3,23 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { getTiers, purchase, type Tier as AdaptyTier } from '../../lib/adapty';
 import { useUserStore } from '../../stores/useUserStore';
 
 type Tier = 'annual' | 'monthly';
+type GlyphVariant = 'lightning' | 'orbit' | 'compass' | 'snowflake';
 
-const BENEFITS = [
-  { glyph: '∞', label: 'Unlimited SOS conversations, any hour' },
-  { glyph: '◈', label: 'Your personalized 90-day program' },
-  { glyph: '◉', label: 'Trigger prediction tuned to your 3pm' },
-  { glyph: '❄', label: 'Streak Freeze — one missed day forgiven per week' },
+const BENEFITS: { glyph: GlyphVariant; label: string }[] = [
+  { glyph: 'lightning', label: 'Unlimited SOS conversations, any hour' },
+  { glyph: 'orbit',     label: 'Your personalized 90-day program' },
+  { glyph: 'compass',   label: 'Trigger prediction tuned to your 3pm' },
+  { glyph: 'snowflake', label: 'Streak Freeze — one missed day forgiven per week' },
 ];
 
 export default function Paywall() {
@@ -29,9 +33,6 @@ export default function Paywall() {
   const eyebrow = firstName
     ? `${firstName.toUpperCase()}, YOUR PLAN IS READY`
     : 'YOUR PLAN IS READY';
-  const triggerText = peakHour
-    ? `Trigger prediction tuned to your ${peakHour.toLowerCase()}`
-    : 'Trigger prediction tuned to your peak hour';
 
   // Fetch real Adapty tiers (mock-fallback in Expo Go).
   useEffect(() => {
@@ -69,6 +70,12 @@ export default function Paywall() {
 
   return (
     <AtmosphericGradient theme="cravingProfile">
+      {/* Background aura blobs */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraMidLeft} intensity={0.4} drift={18} />
+      </View>
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
@@ -85,37 +92,42 @@ export default function Paywall() {
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
-        <Text style={styles.eyebrow}>{eyebrow}</Text>
-        <Text style={styles.heroTitle}>
-          A <Text style={styles.heroAccent}>$0.22</Text> / day decision
-        </Text>
-        <Text style={styles.heroSub}>
-          Less than the candy bar you already skipped today. Seven days free. Cancel in one tap.
-        </Text>
+        <Animated.View entering={FadeInUp.duration(450)} style={styles.heroWrap}>
+          <View style={styles.heroEyebrowRow}>
+            <DecorGlyph variant="orbit" size={36} />
+            <Text style={styles.eyebrow}>{eyebrow}</Text>
+          </View>
+          <Text style={styles.heroTitle}>
+            A <Text style={styles.heroAccent}>$0.22</Text> / day decision
+          </Text>
+          <Text style={styles.heroSub}>
+            Less than the candy bar you already skipped today. Seven days free. Cancel in one tap.
+          </Text>
+        </Animated.View>
 
         {/* Benefits */}
-        <View style={styles.benefitsCard}>
+        <Animated.View entering={FadeInDown.delay(150).duration(450)} style={styles.benefitsCard}>
           {BENEFITS.map((b, i) => (
             <View key={i} style={[styles.benefitRow, i > 0 && styles.benefitRowBorder]}>
               <View style={styles.benefitGlyph}>
-                <Text style={styles.benefitGlyphText}>{b.glyph}</Text>
+                <DecorGlyph variant={b.glyph} size={22} />
               </View>
               <Text style={styles.benefitLabel}>{b.label}</Text>
             </View>
           ))}
-        </View>
+        </Animated.View>
 
         {/* Testimonial */}
-        <View style={styles.testimonial}>
+        <Animated.View entering={FadeInDown.delay(250).duration(450)} style={styles.testimonial}>
           <Text style={styles.stars}>★ ★ ★ ★ ★</Text>
           <Text style={styles.testimonialText}>
             "The SOS saved me from the 3pm chocolate. Twice this week."
           </Text>
           <Text style={styles.testimonialAuthor}>Maya · Day 34</Text>
-        </View>
+        </Animated.View>
 
         {/* Pricing cards */}
-        <View style={styles.pricingRow}>
+        <Animated.View entering={FadeInDown.delay(350).duration(450)} style={styles.pricingRow}>
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
             onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setTier('annual'); }}
@@ -142,7 +154,7 @@ export default function Paywall() {
             <Text style={styles.pricePerMonth}>per month</Text>
             <Text style={styles.priceSave}>switch anytime</Text>
           </Pressable>
-        </View>
+        </Animated.View>
       </ScrollView>
 
       {/* Sticky CTA footer */}
@@ -178,6 +190,20 @@ export default function Paywall() {
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraMidLeft: {
+    position: 'absolute',
+    top: '35%',
+    left: -140,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -199,14 +225,22 @@ const styles = StyleSheet.create({
   },
   closeX: { fontSize: 22, color: colors.onSurfaceVariant, lineHeight: 22, fontFamily: fonts.headlineLight },
 
-  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, gap: spacing.lg },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.md },
 
+  heroWrap: { marginBottom: spacing.lg },
+  heroEyebrowRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
+  },
   eyebrow: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginTop: spacing.md,
+    flexShrink: 1,
   },
   heroTitle: {
     fontFamily: fonts.headlineExtraBold,
@@ -231,6 +265,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.7)',
     padding: spacing.md,
+    marginBottom: spacing.lg,
   },
   benefitRow: {
     flexDirection: 'row',
@@ -243,14 +278,9 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(49,51,47,0.06)',
   },
   benefitGlyph: {
-    width: 28, height: 28, borderRadius: radius.full,
+    width: 36, height: 36, borderRadius: radius.full,
     backgroundColor: colors.primaryContainer,
     alignItems: 'center', justifyContent: 'center',
-  },
-  benefitGlyphText: {
-    fontFamily: fonts.headlineBold,
-    fontSize: 14,
-    color: colors.primary,
   },
   benefitLabel: {
     fontFamily: fonts.body,
@@ -264,6 +294,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.md,
     gap: 4,
+    marginBottom: spacing.lg,
   },
   stars: {
     fontSize: 14,
@@ -291,6 +322,7 @@ const styles = StyleSheet.create({
   pricingRow: {
     flexDirection: 'row',
     gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
   priceCard: {
     flex: 1,

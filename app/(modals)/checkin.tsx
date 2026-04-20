@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -60,8 +63,12 @@ export default function CheckIn() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
@@ -71,29 +78,40 @@ export default function CheckIn() {
           <View style={[styles.stepDot, (step === 'mood' || step === 'done') && styles.stepDotActive]} />
           <View style={[styles.stepDot, step === 'done' && styles.stepDotActive]} />
         </View>
-      </View>
+      </Animated.View>
 
       {step === 'sugar' && (
         <View style={styles.body}>
-          <Text style={styles.stepEyebrow}>STEP 1 OF 3 · TONIGHT</Text>
-          <Text style={styles.stepTitle}>How did the day go?</Text>
-          <Text style={styles.stepBody}>Honest only. No streak is worth a lie.</Text>
+          <Animated.View entering={FadeInUp.duration(400)} style={styles.stepGlyphWrap}>
+            <DecorGlyph variant="flame" size={88} />
+          </Animated.View>
+          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.stepEyebrow}>
+            STEP 1 OF 3 · TONIGHT
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.stepTitle}>
+            How did the day go?
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.stepBody}>
+            Honest only. No streak is worth a lie.
+          </Animated.Text>
 
           <View style={styles.cardsCol}>
-            {SUGAR_OPTIONS.map((opt) => (
-              <Pressable key={opt.key} onPress={() => onSugar(opt.key)}>
-                <GlassCard tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
-                  <View style={styles.optionRow}>
-                    <View style={styles.optionText}>
-                      <Text style={styles.optionTitle}>{opt.title}</Text>
-                      <Text style={styles.optionBody}>{opt.body}</Text>
+            {SUGAR_OPTIONS.map((opt, idx) => (
+              <Animated.View key={opt.key} entering={FadeInDown.delay(250 + idx * 80).duration(400)}>
+                <Pressable onPress={() => onSugar(opt.key)}>
+                  <GlassCard tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
+                    <View style={styles.optionRow}>
+                      <View style={styles.optionText}>
+                        <Text style={styles.optionTitle}>{opt.title}</Text>
+                        <Text style={styles.optionBody}>{opt.body}</Text>
+                      </View>
+                      <View style={[styles.optionArrow, sugar === opt.key && styles.optionArrowActive]}>
+                        <Text style={[styles.optionArrowText, sugar === opt.key && styles.optionArrowTextActive]}>→</Text>
+                      </View>
                     </View>
-                    <View style={[styles.optionArrow, sugar === opt.key && styles.optionArrowActive]}>
-                      <Text style={[styles.optionArrowText, sugar === opt.key && styles.optionArrowTextActive]}>→</Text>
-                    </View>
-                  </View>
-                </GlassCard>
-              </Pressable>
+                  </GlassCard>
+                </Pressable>
+              </Animated.View>
             ))}
           </View>
         </View>
@@ -101,11 +119,20 @@ export default function CheckIn() {
 
       {step === 'mood' && (
         <View style={styles.body}>
-          <Text style={styles.stepEyebrow}>STEP 2 OF 3</Text>
-          <Text style={styles.stepTitle}>How are you feeling?</Text>
-          <Text style={styles.stepBody}>Tap the closest one.</Text>
+          <Animated.View entering={FadeInUp.duration(400)} style={styles.stepGlyphWrap}>
+            <DecorGlyph variant="heart" size={88} />
+          </Animated.View>
+          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.stepEyebrow}>
+            STEP 2 OF 3
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.stepTitle}>
+            How are you feeling?
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.stepBody}>
+            Tap the closest one.
+          </Animated.Text>
 
-          <View style={styles.moodGrid}>
+          <Animated.View entering={FadeInDown.delay(280).duration(400)} style={styles.moodGrid}>
             {MOODS.map((m) => (
               <Pressable key={m.value} onPress={() => onMood(m.value)}>
                 <View style={[styles.moodTile, mood === m.value && styles.moodTileActive]}>
@@ -114,24 +141,31 @@ export default function CheckIn() {
                 </View>
               </Pressable>
             ))}
-          </View>
+          </Animated.View>
         </View>
       )}
 
       {step === 'done' && (
         <View style={styles.bodyCenter}>
-          <View style={styles.completeGlow}>
+          <Animated.View entering={FadeInUp.duration(450)} style={styles.completeGlyphOverlay}>
+            <DecorGlyph variant="orbit" size={200} />
+          </Animated.View>
+          <Animated.View entering={FadeInUp.delay(80).duration(450)} style={styles.completeGlow}>
             <View style={styles.completeOrb}>
               <Text style={styles.completeStreak}>{streakDays}</Text>
             </View>
-          </View>
-          <Text style={styles.completeEyebrow}>{`DAY ${streakDays} · STREAK INTACT`}</Text>
-          <Text style={styles.completeTitle}>Thank you for the honest note.</Text>
-          <Text style={styles.completeBody}>
+          </Animated.View>
+          <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.completeEyebrow}>
+            {`DAY ${streakDays} · STREAK INTACT`}
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.completeTitle}>
+            Thank you for the honest note.
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.completeBody}>
             Every day you answer is a sentence in your story.
-          </Text>
+          </Animated.Text>
 
-          <View style={styles.summaryRow}>
+          <Animated.View entering={FadeInDown.delay(360).duration(400)} style={styles.summaryRow}>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryLabel}>SUGAR</Text>
               <Text style={styles.summaryValue}>{sugar === 'free' ? 'Clean' : sugar === 'some' ? 'A little' : 'Slip'}</Text>
@@ -141,11 +175,11 @@ export default function CheckIn() {
               <Text style={styles.summaryLabel}>MOOD</Text>
               <Text style={styles.summaryValue}>{MOODS.find((x) => x.value === mood)?.label}</Text>
             </View>
-          </View>
+          </Animated.View>
 
-          <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
+          <Animated.View entering={FadeInDown.delay(420).duration(400)} style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
             <PillCTA label="Back to today" onPress={() => router.dismiss()} />
-          </View>
+          </Animated.View>
         </View>
       )}
     </AtmosphericGradient>
@@ -178,8 +212,34 @@ const styles = StyleSheet.create({
   },
   stepDotActive: { backgroundColor: colors.primary },
 
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+
   body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.sm },
   bodyCenter: { flex: 1, paddingHorizontal: spacing.lg, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
+  stepGlyphWrap: {
+    alignItems: 'center',
+    marginTop: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  completeGlyphOverlay: {
+    position: 'absolute',
+    top: '18%',
+    opacity: 0.35,
+  },
 
   stepEyebrow: {
     fontFamily: fonts.label,

@@ -1,10 +1,12 @@
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
@@ -45,6 +47,12 @@ export default function Lesson() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      {/* Background aura blobs — ambient depth behind all content */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="lavender" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="peach" size={260} style={styles.auraBottomLeft} intensity={0.5} drift={18} />
+      </View>
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
@@ -93,11 +101,13 @@ export default function Lesson() {
           </Text>
         </Animated.View>
 
-        {/* Illustration — two overlapping blooms + a tiny accent */}
+        {/* Illustration — centered phase glyph (128px) with a bloom halo behind */}
         <Animated.View entering={FadeInUp.delay(250).duration(500)} style={styles.illustration}>
-          <View style={styles.illoBloom} />
-          <View style={[styles.illoBloom, styles.illoBloomSmall]} />
-          <View style={styles.illoAccent} />
+          <View style={styles.illoHalo} />
+          <DecorGlyph
+            variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'heart'}
+            size={128}
+          />
         </Animated.View>
 
         {/* Section 2 — Practice */}
@@ -112,41 +122,48 @@ export default function Lesson() {
           </Text>
         </Animated.View>
 
-        {/* Section 3 — Mini-task (anchor card). Interactive 1-5 rating. */}
-        <Animated.View entering={FadeInDown.delay(450).duration(400)}>
-        <GlassCard tint="peach" style={styles.taskCard}>
-          <Text style={styles.taskLabel}>TONIGHT'S NOTE</Text>
-          <Text style={styles.taskTitle}>Rate the fruit's sweetness</Text>
-          <View style={styles.ratingRow}>
-            {[1, 2, 3, 4, 5].map((n) => {
-              const active = rating === n;
-              return (
-                <Pressable
-                  key={n}
-                  onPress={() => onRate(n)}
-                  hitSlop={6}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: active }}
-                  accessibilityLabel={`Rate ${n} of 5`}
-                  style={[styles.ratingStone, active && styles.ratingStoneActive]}
-                >
-                  <Text style={[styles.ratingStoneText, active && styles.ratingStoneTextActive]}>{n}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
-          <View style={styles.ratingLabels}>
-            <Text style={styles.ratingLabel}>sour</Text>
-            <Text style={styles.ratingLabel}>sweet</Text>
-          </View>
-          {rating !== null && (
-            <Text style={styles.ratingHint}>
-              {rating <= 2 ? 'Less sweet than you remembered.' :
-               rating === 3 ? 'About what you expected.' :
-               'Sweeter than before — your taste is recalibrating.'}
-            </Text>
-          )}
-        </GlassCard>
+        {/* Section 3 — Mini-task (anchor card). Interactive 1-5 rating.
+            Wrapped in an internal gradient overlay for depth (like home SOS counter). */}
+        <Animated.View entering={FadeInDown.delay(450).duration(400)} style={styles.taskWrap}>
+          <LinearGradient
+            colors={['rgba(255,215,168,0.4)', 'rgba(255,172,160,0.22)'] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.taskGradient}
+          />
+          <GlassCard tint="peach" style={styles.taskCard}>
+            <Text style={styles.taskLabel}>TONIGHT'S NOTE</Text>
+            <Text style={styles.taskTitle}>Rate the fruit's sweetness</Text>
+            <View style={styles.ratingRow}>
+              {[1, 2, 3, 4, 5].map((n) => {
+                const active = rating === n;
+                return (
+                  <Pressable
+                    key={n}
+                    onPress={() => onRate(n)}
+                    hitSlop={6}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: active }}
+                    accessibilityLabel={`Rate ${n} of 5`}
+                    style={[styles.ratingStone, active && styles.ratingStoneActive]}
+                  >
+                    <Text style={[styles.ratingStoneText, active && styles.ratingStoneTextActive]}>{n}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+            <View style={styles.ratingLabels}>
+              <Text style={styles.ratingLabel}>sour</Text>
+              <Text style={styles.ratingLabel}>sweet</Text>
+            </View>
+            {rating !== null && (
+              <Text style={styles.ratingHint}>
+                {rating <= 2 ? 'Less sweet than you remembered.' :
+                 rating === 3 ? 'About what you expected.' :
+                 'Sweeter than before — your taste is recalibrating.'}
+              </Text>
+            )}
+          </GlassCard>
         </Animated.View>
 
         {/* Source */}
@@ -241,39 +258,21 @@ const styles = StyleSheet.create({
   illustration: {
     alignItems: 'center',
     marginVertical: spacing.xl,
-    height: 140,
+    height: 180,
     justifyContent: 'center',
   },
-  illoBloom: {
-    width: 100, height: 100, borderRadius: radius.full,
+  illoHalo: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: (180 - 170) / 2,
+    width: 170, height: 170, borderRadius: 85,
     backgroundColor: colors.primaryContainer,
-    opacity: 0.8,
+    opacity: 0.55,
     shadowColor: colors.primary,
-    shadowOpacity: 0.2,
-    shadowRadius: 20,
+    shadowOpacity: 0.25,
+    shadowRadius: 28,
     shadowOffset: { width: 0, height: 8 },
     elevation: 6,
-  },
-  illoBloomSmall: {
-    position: 'absolute',
-    width: 64, height: 64,
-    backgroundColor: colors.tertiaryContainer,
-    left: '58%',
-    top: '44%',
-    opacity: 0.9,
-  },
-  illoAccent: {
-    position: 'absolute',
-    width: 20, height: 20, borderRadius: 10,
-    backgroundColor: colors.primary,
-    right: '32%',
-    top: '18%',
-    opacity: 0.7,
-    shadowColor: colors.primary,
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 0 },
-    elevation: 4,
   },
 
   // Hero layout (title left, glyph right)
@@ -289,7 +288,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  taskCard: { padding: spacing.lg, marginTop: spacing.lg, gap: spacing.sm },
+  taskWrap: {
+    marginTop: spacing.lg,
+    marginBottom: spacing.lg,
+    borderRadius: radius.sm,
+    overflow: 'hidden',
+  },
+  taskGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: radius.sm,
+  },
+  taskCard: {
+    padding: spacing.lg,
+    gap: spacing.sm,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
   taskLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -359,5 +372,21 @@ const styles = StyleSheet.create({
     bottom: 0, left: 0, right: 0,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
+  },
+
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: '18%',
+    left: -120,
   },
 });

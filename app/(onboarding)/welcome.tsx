@@ -1,7 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -15,6 +18,12 @@ export default function Welcome() {
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
+      {/* Background aura blobs — dawn feel */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.55} drift={22} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+      </View>
+
       <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
         <View style={styles.progressRail}>
           {[...Array(15)].map((_, i) => (
@@ -25,27 +34,29 @@ export default function Welcome() {
       </View>
 
       <View style={styles.body}>
-        {/* Illustration placeholder */}
-        <View style={styles.illustration}>
-          <View style={styles.illoCircle}>
-            <View style={styles.illoCircleInner} />
+        {/* Hero illustration — sun + moon = 24-hour coverage */}
+        <Animated.View entering={FadeInUp.duration(500)} style={styles.illustration}>
+          <View style={styles.illoHalo}>
+            <DecorGlyph variant="sun" size={84} />
           </View>
-          <View style={[styles.illoCircle, styles.illoCircleSmall]}>
-            <View style={[styles.illoCircleInner, { backgroundColor: colors.tertiaryContainer }]} />
+          <View style={[styles.illoHalo, styles.illoHaloSmall]}>
+            <DecorGlyph variant="moon" size={56} />
           </View>
-        </View>
+        </Animated.View>
 
-        <Text style={styles.eyebrow}>SUGAR QUIT</Text>
-        <Text style={styles.heroTitle} numberOfLines={4}>
+        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
+          SUGAR QUIT
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.heroTitle} numberOfLines={4}>
           Meet the quiet coach for your cravings
-        </Text>
-        <Text style={styles.heroSub}>
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.heroSub}>
           Three minutes, and you'll have a 90-day plan for your body, your triggers,
           and the moment your hand reaches for sugar.
-        </Text>
+        </Animated.Text>
       </View>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
+      <Animated.View entering={FadeInDown.delay(300).duration(400)} style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
           label="Begin"
           variant="onboarding"
@@ -57,12 +68,26 @@ export default function Welcome() {
             Already walking? <Text style={styles.signInLink}>Sign in</Text>
           </Text>
         </Pressable>
-      </View>
+      </Animated.View>
     </AtmosphericGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -120,
+  },
   header: {
     alignItems: 'center',
     gap: spacing.sm,
@@ -92,26 +117,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 140,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.lg,
     gap: spacing.md,
   },
-  illoCircle: {
+  illoHalo: {
     width: 120, height: 120,
     borderRadius: radius.full,
-    backgroundColor: 'rgba(255,172,160,0.4)',
+    backgroundColor: 'rgba(255,172,160,0.35)',
     alignItems: 'center', justifyContent: 'center',
   },
-  illoCircleSmall: {
-    width: 72, height: 72,
-    marginLeft: -30,
-    marginTop: 32,
-    backgroundColor: 'rgba(207,224,223,0.5)',
-  },
-  illoCircleInner: {
-    width: 52, height: 52,
-    borderRadius: radius.full,
-    backgroundColor: colors.primary,
-    opacity: 0.9,
+  illoHaloSmall: {
+    width: 84, height: 84,
+    marginLeft: -24,
+    marginTop: 36,
+    backgroundColor: 'rgba(196,168,216,0.35)',
   },
   eyebrow: {
     fontFamily: fonts.label,

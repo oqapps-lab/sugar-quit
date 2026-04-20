@@ -1,7 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -35,6 +38,13 @@ export default function ProfileScreen() {
 
   return (
     <AtmosphericGradient theme="cravingProfile">
+      {/* Background aura blobs — ambient warmth */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={24} />
+        <AuraBlob tint="lavender" size={280} style={styles.auraMidLeft} intensity={0.45} drift={18} />
+        <AuraBlob tint="mint" size={220} style={styles.auraBottomRight} intensity={0.4} drift={16} />
+      </View>
+
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
           <View style={styles.logoMark} />
@@ -49,9 +59,12 @@ export default function ProfileScreen() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero — clean app style */}
-        <View style={styles.heroSection}>
-          <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
+        {/* Hero — persona + peak + flame glyph */}
+        <Animated.View entering={FadeInUp.duration(500)} style={styles.heroSection}>
+          <View style={styles.heroEyebrowRow}>
+            <DecorGlyph variant="flame" size={40} />
+            <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
+          </View>
           <Text style={styles.heroTitle}>
             You're a <Text style={styles.heroTitleAccent}>{personaName}</Text>
           </Text>
@@ -60,68 +73,74 @@ export default function ProfileScreen() {
             Your body seeks rapid energy drops to counter cortisol peaks.
             We'll replace the spike with steady emotional grounding.
           </Text>
-        </View>
+        </Animated.View>
 
         {/* Cards */}
         <View style={styles.cardsCol}>
-          <GlassCard tint="default" style={styles.insightCard}>
-            <View style={styles.cardHeader}>
-              <View style={styles.cardIcon}>
-                <Text style={styles.cardIconGlyph}>⧗</Text>
+          <Animated.View entering={FadeInDown.delay(200).duration(450)}>
+            <GlassCard tint="default" style={styles.insightCard}>
+              <View style={styles.cardHeader}>
+                <View style={styles.cardIcon}>
+                  <DecorGlyph variant="compass" size={22} />
+                </View>
+                <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
               </View>
-              <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
-            </View>
-            <Text style={styles.cardTitle}>{peakLabel}</Text>
-            <Text style={styles.cardBody}>
-              Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
-              breath protocol right before the craving hits.
-            </Text>
-          </GlassCard>
+              <Text style={styles.cardTitle}>{peakLabel}</Text>
+              <Text style={styles.cardBody}>
+                Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
+                breath protocol right before the craving hits.
+              </Text>
+            </GlassCard>
+          </Animated.View>
 
-          <GlassCard tint="peach" style={styles.insightCardLarge}>
-            <View style={styles.cardHeader}>
-              <View style={styles.cardIconAccent}>
-                <Text style={styles.cardIconGlyphAccent}>◈</Text>
+          <Animated.View entering={FadeInDown.delay(300).duration(450)}>
+            <GlassCard tint="peach" style={styles.insightCardLarge}>
+              <View style={styles.cardHeader}>
+                <View style={styles.cardIconAccent}>
+                  <DecorGlyph variant="lightning" size={22} />
+                </View>
+                <Text style={styles.cardEyebrowAccent}>WEEK 1</Text>
               </View>
-              <Text style={styles.cardEyebrowAccent}>WEEK 1</Text>
-            </View>
-            <Text style={styles.cardTitleLarge}>Withdrawal, then clarity</Text>
-            <Text style={styles.cardBody}>
-              The first 4 days are a physiological unbinding. By day 7, the mental
-              fog lifts and the deep fatigue subsides. Expect emotional turbulence,
-              met with soft interventions.
-            </Text>
-            <View style={styles.timelineRow}>
-              <View style={styles.timelineDay}>
-                <Text style={styles.timelineDayNumber}>1–4</Text>
-                <Text style={styles.timelineDayLabel}>unbind</Text>
+              <Text style={styles.cardTitleLarge}>Withdrawal, then clarity</Text>
+              <Text style={styles.cardBody}>
+                The first 4 days are a physiological unbinding. By day 7, the mental
+                fog lifts and the deep fatigue subsides. Expect emotional turbulence,
+                met with soft interventions.
+              </Text>
+              <View style={styles.timelineRow}>
+                <View style={styles.timelineDay}>
+                  <Text style={styles.timelineDayNumber}>1–4</Text>
+                  <Text style={styles.timelineDayLabel}>unbind</Text>
+                </View>
+                <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+                <View style={styles.timelineDay}>
+                  <Text style={styles.timelineDayNumber}>5–6</Text>
+                  <Text style={styles.timelineDayLabel}>turbulence</Text>
+                </View>
+                <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+                <View style={styles.timelineDay}>
+                  <Text style={[styles.timelineDayNumber, { color: colors.primary }]}>7</Text>
+                  <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>clarity</Text>
+                </View>
               </View>
-              <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
-              <View style={styles.timelineDay}>
-                <Text style={styles.timelineDayNumber}>5–6</Text>
-                <Text style={styles.timelineDayLabel}>turbulence</Text>
-              </View>
-              <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
-              <View style={styles.timelineDay}>
-                <Text style={[styles.timelineDayNumber, { color: colors.primary }]}>7</Text>
-                <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>clarity</Text>
-              </View>
-            </View>
-          </GlassCard>
+            </GlassCard>
+          </Animated.View>
 
-          <GlassCard tint="mint" style={styles.insightCard}>
-            <View style={styles.cardHeader}>
-              <View style={styles.cardIconMint}>
-                <Text style={[styles.cardIconGlyph, { color: colors.tertiary }]}>△</Text>
+          <Animated.View entering={FadeInDown.delay(400).duration(450)}>
+            <GlassCard tint="mint" style={styles.insightCard}>
+              <View style={styles.cardHeader}>
+                <View style={styles.cardIconMint}>
+                  <DecorGlyph variant="heart" size={22} />
+                </View>
+                <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>BY DAY 30</Text>
               </View>
-              <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>BY DAY 30</Text>
-            </View>
-            <Text style={styles.cardTitle}>Taste buds reset</Text>
-            <Text style={styles.cardBody}>
-              Natural foods will taste vibrant again. The compulsion fades into
-              a gentle, manageable whisper.
-            </Text>
-          </GlassCard>
+              <Text style={styles.cardTitle}>Taste buds reset</Text>
+              <Text style={styles.cardBody}>
+                Natural foods will taste vibrant again. The compulsion fades into
+                a gentle, manageable whisper.
+              </Text>
+            </GlassCard>
+          </Animated.View>
         </View>
       </ScrollView>
 
@@ -133,6 +152,25 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraMidLeft: {
+    position: 'absolute',
+    top: '35%',
+    left: -140,
+  },
+  auraBottomRight: {
+    position: 'absolute',
+    bottom: '20%',
+    right: -80,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -154,15 +192,23 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
   },
 
-  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.xl },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
 
-  heroSection: { gap: spacing.xs },
+  heroSection: {
+    gap: spacing.xs,
+    marginBottom: spacing.lg,
+  },
+  heroEyebrowRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
   eyebrow: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginBottom: spacing.sm,
   },
   heroTitle: {
     fontFamily: fonts.headlineExtraBold,
@@ -200,29 +246,19 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   cardIcon: {
-    width: 32, height: 32, borderRadius: radius.full,
+    width: 36, height: 36, borderRadius: radius.full,
     backgroundColor: 'rgba(165,60,48,0.1)',
     alignItems: 'center', justifyContent: 'center',
   },
   cardIconAccent: {
-    width: 32, height: 32, borderRadius: radius.full,
-    backgroundColor: colors.primary,
+    width: 36, height: 36, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.7)',
     alignItems: 'center', justifyContent: 'center',
   },
   cardIconMint: {
-    width: 32, height: 32, borderRadius: radius.full,
+    width: 36, height: 36, borderRadius: radius.full,
     backgroundColor: 'rgba(207,224,223,0.6)',
     alignItems: 'center', justifyContent: 'center',
-  },
-  cardIconGlyph: {
-    fontSize: 16,
-    color: colors.primary,
-    fontFamily: fonts.headlineBold,
-  },
-  cardIconGlyphAccent: {
-    fontSize: 16,
-    color: colors.onPrimary,
-    fontFamily: fonts.headlineBold,
   },
   cardEyebrow: {
     fontFamily: fonts.label,
@@ -251,7 +287,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   cardBody: {
-    fontFamily: fonts.bodyLight,
+    fontFamily: fonts.body,
     fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
     lineHeight: 20,

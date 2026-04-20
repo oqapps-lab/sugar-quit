@@ -3,7 +3,10 @@ import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
@@ -93,6 +96,10 @@ export default function ChatScreen() {
     const tier = isPremium ? 'premium' : 'free';
     return (
       <AtmosphericGradient theme="dawn">
+        <View style={styles.auraLayer} pointerEvents="none">
+          <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={22} />
+          <AuraBlob tint="peach" size={280} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
+        </View>
         <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
             <Text style={styles.backArrow}>←</Text>
@@ -101,17 +108,24 @@ export default function ChatScreen() {
           <View style={{ width: 40 }} />
         </View>
         <View style={styles.blockedContent}>
-          <Text style={styles.blockedEyebrow}>FREE LIMIT REACHED</Text>
-          <Text style={styles.blockedTitle}>You've used all {sosFreeLimit} SOS sessions this month.</Text>
-          <Text style={styles.blockedBody}>
+          <Animated.View entering={FadeInUp.duration(400)} style={styles.blockedGlyphWrap}>
+            <DecorGlyph variant="flame" size={108} />
+          </Animated.View>
+          <Animated.Text entering={FadeInUp.delay(120).duration(400)} style={styles.blockedEyebrow}>
+            FREE LIMIT REACHED
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.blockedTitle}>
+            You've used all {sosFreeLimit} SOS sessions this month.
+          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.blockedBody}>
             Sugar Quit Premium gives you unlimited conversations — for the moments that matter most.
-          </Text>
-          <View style={styles.blockedActions}>
+          </Animated.Text>
+          <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.blockedActions}>
             <PillCTA label="Try Premium free" onPress={() => router.replace('/(modals)/paywall-contextual')} />
             <Pressable onPress={() => router.dismiss()} style={styles.blockedSkip}>
               <Text style={styles.blockedSkipText}>Not now</Text>
             </Pressable>
-          </View>
+          </Animated.View>
           <Text style={styles.blockedTier}>Current plan: {tier}</Text>
         </View>
       </AtmosphericGradient>
@@ -120,13 +134,17 @@ export default function ChatScreen() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top : 0}
         style={{ flex: 1 }}
       >
         {/* Header */}
-        <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+        <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
             <Text style={styles.backArrow}>←</Text>
           </Pressable>
@@ -137,7 +155,7 @@ export default function ChatScreen() {
           <Pressable onPress={onEnd} style={styles.endBtn} accessibilityRole="button" accessibilityLabel="End SOS — go to reflection">
             <Text style={styles.endLabel}>End</Text>
           </Pressable>
-        </View>
+        </Animated.View>
 
         {/* Disclaimer */}
         <Text style={styles.disclaimer}>A companion, not a medical advisor.</Text>
@@ -355,12 +373,32 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
 
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -90,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -80,
+    left: -110,
+  },
+
   // Limit-reached layout
   blockedContent: {
     flex: 1,
     paddingHorizontal: spacing.xl,
     justifyContent: 'center',
     gap: spacing.sm,
+  },
+  blockedGlyphWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.lg,
   },
   blockedEyebrow: {
     fontFamily: fonts.label,

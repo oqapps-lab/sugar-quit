@@ -3,7 +3,9 @@ import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, typeScale } from '../../constants/tokens';
 import { isSupabaseConfigured } from '../../lib/env';
@@ -74,15 +76,21 @@ export default function Auth() {
   if (mode === 'email') {
     return (
       <AtmosphericGradient theme="dawn">
+        {/* Background aura blobs */}
+        <View style={styles.auraLayer} pointerEvents="none">
+          <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+          <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+        </View>
+
         <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
-          <View style={styles.hero}>
+          <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
             <View style={styles.mark} />
             <Text style={styles.brand}>Sugar Quit</Text>
             <Text style={styles.title}>{isSignUp ? 'Create your account' : 'Welcome back'}</Text>
             <Text style={styles.sub}>{isSignUp ? 'Save your plan, streak, and SOS history.' : 'Pick up where you left off.'}</Text>
-          </View>
+          </Animated.View>
 
-          <View style={styles.formCol}>
+          <Animated.View entering={FadeInDown.delay(150).duration(450)} style={styles.formCol}>
             <View style={styles.inputWrap}>
               <TextInput
                 value={email}
@@ -133,7 +141,7 @@ export default function Auth() {
             <Pressable onPress={() => setMode('menu')} style={styles.backBtn}>
               <Text style={styles.toggleText}>← Other options</Text>
             </Pressable>
-          </View>
+          </Animated.View>
 
           <Text style={styles.terms}>
             By continuing, you agree to our <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Privacy</Text>.
@@ -145,15 +153,21 @@ export default function Auth() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      {/* Background aura blobs */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+      </View>
+
       <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
-        <View style={styles.hero}>
+        <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
           <View style={styles.mark} />
           <Text style={styles.brand}>Sugar Quit</Text>
           <Text style={styles.title} numberOfLines={4}>One last step — keep your plan</Text>
           <Text style={styles.sub}>Sign in so your plan, streak, and SOS history stay with you.</Text>
-        </View>
+        </Animated.View>
 
-        <View style={styles.buttonsCol}>
+        <Animated.View entering={FadeInDown.delay(150).duration(450)} style={styles.buttonsCol}>
           <Pressable
             onPress={onApple}
             style={styles.appleBtn}
@@ -178,7 +192,7 @@ export default function Auth() {
           >
             <Text style={styles.emailLabel}>Continue with email</Text>
           </Pressable>
-        </View>
+        </Animated.View>
 
         <Text style={styles.terms}>
           By continuing, you agree to our <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Privacy</Text>.
@@ -189,6 +203,20 @@ export default function Auth() {
 }
 
 const styles = StyleSheet.create({
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -120,
+  },
   root: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'space-between' },
   hero: { alignItems: 'center', gap: spacing.sm, marginTop: spacing.xxl },
   mark: { width: 12, height: 12, borderRadius: radius.full, backgroundColor: colors.primary, marginBottom: spacing.xs },
@@ -226,7 +254,7 @@ const styles = StyleSheet.create({
   },
   configHint: {
     fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
+    fontSize: typeScale.bodySmall,
     color: colors.onSurfaceVariant,
     textAlign: 'center',
   },
@@ -238,6 +266,6 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
 
-  terms: { fontFamily: fonts.bodyLight, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, textAlign: 'center', opacity: 0.7 },
+  terms: { fontFamily: fonts.bodyLight, fontSize: typeScale.bodySmall, color: colors.onSurfaceVariant, textAlign: 'center', opacity: 0.7 },
   termsLink: { fontFamily: fonts.bodySemibold, color: colors.primary, textDecorationLine: 'underline' },
 });

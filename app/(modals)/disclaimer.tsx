@@ -1,7 +1,10 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
@@ -21,8 +24,18 @@ export default function Disclaimer() {
     router.replace('/(modals)/sos');
   };
 
+  const bullets = [
+    "Our coach is AI. It's trained to listen well — not to diagnose or prescribe.",
+    "If something feels like a medical issue, please speak to a clinician.",
+    "Anything you share stays private to your account.",
+  ];
+
   return (
     <AtmosphericGradient theme="dawn">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
@@ -31,41 +44,33 @@ export default function Disclaimer() {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.glyph}>
-          <Text style={styles.glyphMark}>◈</Text>
-        </View>
+        <Animated.View entering={FadeInUp.duration(450)} style={styles.glyph}>
+          <DecorGlyph variant="compass" size={64} />
+        </Animated.View>
 
-        <Text style={styles.eyebrow}>BEFORE WE TALK</Text>
-        <Text style={styles.title}>Sugar Quit is a companion, not a medical advisor.</Text>
+        <Animated.Text entering={FadeInUp.delay(120).duration(400)} style={styles.eyebrow}>
+          BEFORE WE TALK
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.title}>
+          Sugar Quit is a companion, not a medical advisor.
+        </Animated.Text>
 
-        <View style={styles.bullets}>
-          <View style={styles.bulletRow}>
-            <View style={styles.bulletDot} />
-            <Text style={styles.bulletText}>
-              Our coach is AI. It's trained to listen well — not to diagnose or prescribe.
-            </Text>
-          </View>
-          <View style={styles.bulletRow}>
-            <View style={styles.bulletDot} />
-            <Text style={styles.bulletText}>
-              If something feels like a medical issue, please speak to a clinician.
-            </Text>
-          </View>
-          <View style={styles.bulletRow}>
-            <View style={styles.bulletDot} />
-            <Text style={styles.bulletText}>
-              Anything you share stays private to your account.
-            </Text>
-          </View>
-        </View>
+        <Animated.View entering={FadeInDown.delay(250).duration(400)} style={styles.bullets}>
+          {bullets.map((b, i) => (
+            <Animated.View key={i} entering={FadeInDown.delay(320 + i * 80).duration(400)} style={styles.bulletRow}>
+              <View style={styles.bulletDot} />
+              <Text style={styles.bulletText}>{b}</Text>
+            </Animated.View>
+          ))}
+        </Animated.View>
       </View>
 
-      <View style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
+      <Animated.View entering={FadeInDown.delay(600).duration(400)} style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="I understand — let's talk" onPress={onAccept} />
         <Pressable onPress={() => router.dismiss()} style={styles.cancelBtn}>
           <Text style={styles.cancelLabel}>Not now</Text>
         </Pressable>
-      </View>
+      </Animated.View>
     </AtmosphericGradient>
   );
 }
@@ -85,6 +90,22 @@ const styles = StyleSheet.create({
   },
   closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
 
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+
   content: {
     flex: 1,
     alignItems: 'center',
@@ -97,12 +118,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryContainer,
     alignItems: 'center', justifyContent: 'center',
     marginBottom: spacing.lg,
-  },
-  glyphMark: {
-    fontFamily: fonts.headlineBold,
-    fontSize: 40,
-    color: colors.primary,
-    lineHeight: 44,
   },
   eyebrow: {
     fontFamily: fonts.label,

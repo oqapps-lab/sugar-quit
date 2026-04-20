@@ -3,7 +3,10 @@ import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
@@ -31,6 +34,10 @@ export default function PaywallContextual() {
 
   return (
     <AtmosphericGradient theme="cravingProfile">
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={22} />
+        <AuraBlob tint="golden" size={280} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
+      </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
@@ -39,18 +46,26 @@ export default function PaywallContextual() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.limitCard}>
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.heroGlyphWrap}>
+          <DecorGlyph variant="flame" size={80} />
+        </Animated.View>
+
+        <Animated.View entering={FadeInUp.delay(100).duration(400)} style={styles.limitCard}>
           <Text style={styles.limitLabel}>FREE LIMIT REACHED</Text>
           <Text style={styles.limitHeadline}>3 of 3 SOS used this month</Text>
-        </View>
+        </Animated.View>
 
-        <Text style={styles.eyebrow}>KEEP THE COACH CLOSE</Text>
-        <Text style={styles.title}>
+        <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.eyebrow}>
+          KEEP THE COACH CLOSE
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.title}>
           <Text style={styles.titleAccent}>$0.22</Text> / day
-        </Text>
-        <Text style={styles.sub}>Less than the candy you just skipped.</Text>
+        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.sub}>
+          Less than the candy you just skipped.
+        </Animated.Text>
 
-        <View style={styles.benefitsCard}>
+        <Animated.View entering={FadeInDown.delay(360).duration(400)} style={styles.benefitsCard}>
           {BENEFITS.map((b, i) => (
             <View key={i} style={[styles.benefitRow, i > 0 && styles.benefitBorder]}>
               <View style={styles.benefitGlyph}>
@@ -59,9 +74,9 @@ export default function PaywallContextual() {
               <Text style={styles.benefitLabel}>{b.label}</Text>
             </View>
           ))}
-        </View>
+        </Animated.View>
 
-        <View style={styles.pricingRow}>
+        <Animated.View entering={FadeInDown.delay(440).duration(400)} style={styles.pricingRow}>
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
             onPress={() => pickTier('annual')}
@@ -81,7 +96,7 @@ export default function PaywallContextual() {
             <Text style={styles.pricePerMonth}>per month</Text>
             <Text style={styles.priceSave}>cancel anytime</Text>
           </Pressable>
-        </View>
+        </Animated.View>
       </ScrollView>
 
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
@@ -113,6 +128,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingBottom: 220,
     gap: spacing.md,
+  },
+
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -90,
+    right: -120,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
+  heroGlyphWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.xs,
   },
 
   limitCard: {

@@ -2,7 +2,9 @@ import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
@@ -25,17 +27,21 @@ export default function ShareCard() {
 
   return (
     <AtmosphericGradient theme="dawn">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+      </View>
+      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>Share your chapter</Text>
         <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
           <Text style={styles.closeX}>×</Text>
         </Pressable>
-      </View>
+      </Animated.View>
 
       <View style={styles.content}>
         {/* 9:16 card preview */}
-        <View style={styles.cardFrame}>
+        <Animated.View entering={FadeInUp.delay(120).duration(450)} style={styles.cardFrame}>
           <View style={styles.card}>
             <View style={styles.cardInner}>
               <View style={styles.logoRow}>
@@ -68,10 +74,10 @@ export default function ShareCard() {
               <Text style={styles.cardFooter}>sugarquit.app</Text>
             </View>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Action row */}
-        <View style={styles.actionsRow}>
+        <Animated.View entering={FadeInDown.delay(260).duration(400)} style={styles.actionsRow}>
           {ACTIONS.map((a) => (
             <Pressable key={a.key} onPress={onAction} style={styles.actionBtn}>
               <View style={styles.actionGlyph}>
@@ -80,7 +86,7 @@ export default function ShareCard() {
               <Text style={styles.actionLabel}>{a.label}</Text>
             </Pressable>
           ))}
-        </View>
+        </Animated.View>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.md }]}>
@@ -109,6 +115,22 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
+
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -110,
+  },
+  auraBottomLeft: {
+    position: 'absolute',
+    bottom: -60,
+    left: -100,
+  },
 
   content: {
     flex: 1,
