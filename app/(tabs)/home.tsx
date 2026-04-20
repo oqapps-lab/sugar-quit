@@ -296,13 +296,12 @@ export default function Home() {
                 accessibilityLabel="Peak surge window — tap to see your plan"
               >
                 <GlassCard tint="peach" style={styles.forecastCardPeak}>
-                  {/* decor glyph sits behind the text as a subtle background */}
-                  <View style={styles.peakGlyphBg} pointerEvents="none">
-                    <DecorGlyph variant="lightning" size={110} />
-                  </View>
                   <View style={styles.forecastRow}>
                     <View style={styles.forecastText}>
-                      <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                      <View style={styles.peakTitleRow}>
+                        <DecorGlyph variant="lightning" size={28} />
+                        <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                      </View>
                       <Text style={styles.forecastTitlePeak}>High surge</Text>
                       <Text style={styles.forecastBodyPeak}>
                         Energy dip triggers craving response.
@@ -936,12 +935,11 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  // Peak glyph background
-  peakGlyphBg: {
-    position: 'absolute',
-    right: -20,
-    top: -20,
-    opacity: 0.4,
+  peakTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: 2,
   },
 
   freezeIndicator: {

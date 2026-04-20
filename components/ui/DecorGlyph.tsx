@@ -140,29 +140,44 @@ function Lightning({ size }: { size: number }) {
           backgroundColor: 'rgba(255,172,160,0.35)',
         }}
       />
-      <Text
+      {/* Lightning bolt drawn from two trapezoid-like Views for crisp rendering.
+          Emoji "⚡" inside a custom font family silently falls back to ? on iOS. */}
+      <View
         style={{
           position: 'absolute',
-          top: s * 0.05,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          fontSize: s * 0.7,
-          fontFamily: fonts.headlineExtraBold,
-          color: colors.primary,
-          textShadowColor: 'rgba(165,60,48,0.4)',
-          textShadowOffset: { width: 0, height: 2 },
-          textShadowRadius: 6,
+          top: s * 0.18,
+          left: s * 0.38,
+          width: s * 0.22,
+          height: s * 0.3,
+          backgroundColor: colors.primary,
+          transform: [{ skewX: '-18deg' }, { rotate: '8deg' }],
+          borderTopLeftRadius: 3,
+          borderBottomRightRadius: 2,
         }}
-      >
-        ⚡
-      </Text>
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: s * 0.42,
+          left: s * 0.32,
+          width: s * 0.26,
+          height: s * 0.36,
+          backgroundColor: colors.primary,
+          transform: [{ skewX: '-18deg' }, { rotate: '8deg' }],
+          borderTopRightRadius: 2,
+          borderBottomLeftRadius: 4,
+          opacity: 0.9,
+        }}
+      />
     </>
   );
 }
 
 function Snowflake({ size }: { size: number }) {
   const s = size;
+  const armWidth = s * 0.055;
+  const armLength = s * 0.44;
+  const arms = [0, 60, 120]; // 6-fold symmetry via 3 crossing lines
   return (
     <>
       {/* ring */}
@@ -178,20 +193,34 @@ function Snowflake({ size }: { size: number }) {
           borderColor: 'rgba(165,60,48,0.25)',
         }}
       />
-      <Text
+      {/* 3 arms crossing = 6-point star */}
+      {arms.map((deg) => (
+        <View
+          key={deg}
+          style={{
+            position: 'absolute',
+            top: s / 2 - armWidth / 2,
+            left: s / 2 - armLength / 2,
+            width: armLength,
+            height: armWidth,
+            borderRadius: armWidth / 2,
+            backgroundColor: colors.primary,
+            transform: [{ rotate: `${deg}deg` }],
+          }}
+        />
+      ))}
+      {/* center dot */}
+      <View
         style={{
           position: 'absolute',
-          top: s * 0.15,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          fontSize: s * 0.58,
-          fontFamily: fonts.headlineBold,
-          color: colors.primary,
+          top: s / 2 - s * 0.06,
+          left: s / 2 - s * 0.06,
+          width: s * 0.12,
+          height: s * 0.12,
+          borderRadius: s * 0.06,
+          backgroundColor: colors.primary,
         }}
-      >
-        ❄
-      </Text>
+      />
     </>
   );
 }
@@ -320,19 +349,45 @@ function Compass({ size }: { size: number }) {
 }
 
 function Heart({ size }: { size: number }) {
+  // Heart drawn from two circles + rotated square, system-font-free.
   const s = size;
+  const lobe = s * 0.35;
   return (
-    <Text
-      style={{
-        fontSize: s * 0.7,
-        fontFamily: fonts.headlineBold,
-        color: colors.primary,
-        textAlign: 'center',
-        lineHeight: s * 0.9,
-      }}
-    >
-      ♥
-    </Text>
+    <>
+      <View
+        style={{
+          position: 'absolute',
+          top: s * 0.2,
+          left: s * 0.15,
+          width: lobe,
+          height: lobe,
+          borderRadius: lobe / 2,
+          backgroundColor: colors.primary,
+        }}
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: s * 0.2,
+          right: s * 0.15,
+          width: lobe,
+          height: lobe,
+          borderRadius: lobe / 2,
+          backgroundColor: colors.primary,
+        }}
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: s * 0.33,
+          left: s / 2 - lobe / 2,
+          width: lobe,
+          height: lobe,
+          backgroundColor: colors.primary,
+          transform: [{ rotate: '45deg' }],
+        }}
+      />
+    </>
   );
 }
 
