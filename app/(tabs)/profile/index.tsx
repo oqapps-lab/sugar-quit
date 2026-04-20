@@ -1,7 +1,9 @@
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
@@ -63,39 +65,54 @@ export default function Profile() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Avatar + name + plan */}
-        <View style={styles.heroBlock}>
-          <View style={styles.avatar}><Text style={styles.avatarInitial}>{initial}</Text></View>
-          <Text style={styles.name}>{displayName}</Text>
+        {/* Avatar + name + plan. Avatar has a soft halo (concentric glow).
+            Decorative flame next to the name marks the streak context. */}
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.heroBlock}>
+          <View style={styles.avatarHaloWrap}>
+            <View style={styles.avatarHaloOuter} />
+            <View style={styles.avatarHaloInner} />
+            <View style={styles.avatar}>
+              <Text style={styles.avatarInitial}>{initial}</Text>
+            </View>
+          </View>
+          <View style={styles.nameRow}>
+            <Text style={styles.name}>{displayName}</Text>
+            {streakDays > 0 && <DecorGlyph variant="flame" size={32} style={{ marginLeft: 6 }} />}
+          </View>
           <View style={styles.planBadge}>
             <Text style={styles.planBadgeText}>{planLabel}</Text>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Stats — computed from real activity (cravings + SOS log + days).
             Numbers are honest: zero on Day 1, grow with use. */}
-        <GlassCard tint="peach" style={styles.statsCard}>
-          <View style={styles.statsRow}>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>{streakDays}</Text>
-              <Text style={styles.statLabel}>days clean</Text>
+        <Animated.View entering={FadeInDown.delay(150).duration(400)}>
+          <GlassCard tint="peach" style={styles.statsCard}>
+            <View style={styles.statsRow}>
+              <View style={styles.stat}>
+                <DecorGlyph variant="flame" size={24} />
+                <Text style={styles.statNumber}>{streakDays}</Text>
+                <Text style={styles.statLabel}>days clean</Text>
+              </View>
+              <View style={styles.statDivider} />
+              <View style={styles.stat}>
+                <DecorGlyph variant="heart" size={24} />
+                <Text style={styles.statNumber}>{cravingsMet}</Text>
+                <Text style={styles.statLabel}>cravings met</Text>
+              </View>
+              <View style={styles.statDivider} />
+              <View style={styles.stat}>
+                <DecorGlyph variant="compass" size={24} />
+                <Text style={styles.statNumber}>${dollarsSaved}</Text>
+                <Text style={styles.statLabel}>saved</Text>
+              </View>
             </View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>{cravingsMet}</Text>
-              <Text style={styles.statLabel}>cravings met</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>${dollarsSaved}</Text>
-              <Text style={styles.statLabel}>saved</Text>
-            </View>
-          </View>
-          <Text style={styles.statsHint}>
-            Approx {kgSugarAvoided}kg of added sugar avoided.
-            {' '}<Text style={styles.statsHintMuted}>(~25g/day baseline)</Text>
-          </Text>
-        </GlassCard>
+            <Text style={styles.statsHint}>
+              Approx {kgSugarAvoided}kg of added sugar avoided.
+              {' '}<Text style={styles.statsHintMuted}>(~25g/day baseline)</Text>
+            </Text>
+          </GlassCard>
+        </Animated.View>
 
         {/* Info about craving profile */}
         <GlassCard tint="default" style={styles.infoCard}>
@@ -150,15 +167,36 @@ const styles = StyleSheet.create({
 
   scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.lg },
   heroBlock: { alignItems: 'center', gap: spacing.sm, marginBottom: spacing.md },
-  avatar: { width: 80, height: 80, borderRadius: radius.full, backgroundColor: colors.primaryContainer, alignItems: 'center', justifyContent: 'center' },
+
+  avatarHaloWrap: { alignItems: 'center', justifyContent: 'center', width: 128, height: 128 },
+  avatarHaloOuter: {
+    position: 'absolute',
+    width: 128, height: 128, borderRadius: 64,
+    backgroundColor: 'rgba(255,172,160,0.2)',
+  },
+  avatarHaloInner: {
+    position: 'absolute',
+    width: 104, height: 104, borderRadius: 52,
+    backgroundColor: 'rgba(255,172,160,0.35)',
+  },
+  avatar: {
+    width: 80, height: 80, borderRadius: radius.full,
+    backgroundColor: colors.primaryContainer,
+    alignItems: 'center', justifyContent: 'center',
+    shadowColor: colors.primary,
+    shadowOpacity: 0.25, shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
+  },
   avatarInitial: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium, color: colors.primary },
+  nameRow: { flexDirection: 'row', alignItems: 'center' },
   name: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displaySmall, color: colors.onSurface, letterSpacing: -0.6 },
   planBadge: { backgroundColor: 'rgba(165,60,48,0.1)', paddingHorizontal: spacing.md, paddingVertical: 4, borderRadius: radius.full },
   planBadgeText: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
 
   statsCard: { padding: spacing.md },
   statsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  stat: { flex: 1, alignItems: 'center', gap: 2 },
+  stat: { flex: 1, alignItems: 'center', gap: 4 },
   statNumber: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.titleLarge + 4, color: colors.onSurface, letterSpacing: -0.5 },
   statLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.wide },
   statDivider: { width: 1, height: 28, backgroundColor: 'rgba(49,51,47,0.1)' },

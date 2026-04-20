@@ -3,10 +3,20 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+
+// Per-phase hero glyph for lesson screens — matches the curriculum phase
+const PHASE_GLYPH_BY_LABEL: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'> = {
+  'ACUTE PHASE': 'flame',
+  'ADAPTATION': 'sun',
+  'CLARITY PHASE': 'compass',
+  'INTEGRATION': 'orbit',
+};
 
 type LessonContent = { phase: string; title: string; body: string };
 
@@ -55,39 +65,55 @@ export default function Lesson() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 240 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero */}
-        <Text style={styles.lessonEyebrow}>{lesson.phase}</Text>
-        <Text style={styles.lessonTitle}>{lesson.title}</Text>
-        <Text style={styles.lessonMeta}>5 min · neuroscience + one practice</Text>
+        {/* Hero — now with a large phase glyph that anchors the screen */}
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.heroRow}>
+          <View style={styles.heroCol}>
+            <Text style={styles.lessonEyebrow}>{lesson.phase}</Text>
+            <Text style={styles.lessonTitle}>{lesson.title}</Text>
+            <Text style={styles.lessonMeta}>5 min · neuroscience + one practice</Text>
+          </View>
+          <View style={styles.heroGlyphWrap}>
+            <DecorGlyph
+              variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'orbit'}
+              size={72}
+            />
+          </View>
+        </Animated.View>
 
         {/* Divider */}
         <View style={styles.divider} />
 
         {/* Section 1 — What's happening */}
-        <Text style={styles.sectionLabel}>WHAT'S HAPPENING</Text>
-        <Text style={styles.body}>{lesson.body}</Text>
-        <Text style={styles.body}>
-          A 2019 University of Michigan study showed a 40% increase in perceived
-          fruit sweetness after two weeks of sugar reduction.
-        </Text>
+        <Animated.View entering={FadeInDown.delay(150).duration(400)}>
+          <Text style={styles.sectionLabel}>WHAT'S HAPPENING</Text>
+          <Text style={styles.body}>{lesson.body}</Text>
+          <Text style={styles.body}>
+            A 2019 University of Michigan study showed a 40% increase in perceived
+            fruit sweetness after two weeks of sugar reduction.
+          </Text>
+        </Animated.View>
 
-        {/* Illustration placeholder */}
-        <View style={styles.illustration}>
+        {/* Illustration — two overlapping blooms + a tiny accent */}
+        <Animated.View entering={FadeInUp.delay(250).duration(500)} style={styles.illustration}>
           <View style={styles.illoBloom} />
           <View style={[styles.illoBloom, styles.illoBloomSmall]} />
-        </View>
+          <View style={styles.illoAccent} />
+        </Animated.View>
 
         {/* Section 2 — Practice */}
-        <Text style={styles.sectionLabel}>THE PRACTICE</Text>
-        <Text style={styles.body}>
-          Tonight, eat a fruit you used to find "not sweet enough" — a Granny Smith
-          apple, a grapefruit, blueberries.
-        </Text>
-        <Text style={styles.body}>
-          Notice. No judgment, no measuring. Just notice.
-        </Text>
+        <Animated.View entering={FadeInDown.delay(350).duration(400)}>
+          <Text style={styles.sectionLabel}>THE PRACTICE</Text>
+          <Text style={styles.body}>
+            Tonight, eat a fruit you used to find "not sweet enough" — a Granny Smith
+            apple, a grapefruit, blueberries.
+          </Text>
+          <Text style={styles.body}>
+            Notice. No judgment, no measuring. Just notice.
+          </Text>
+        </Animated.View>
 
         {/* Section 3 — Mini-task (anchor card). Interactive 1-5 rating. */}
+        <Animated.View entering={FadeInDown.delay(450).duration(400)}>
         <GlassCard tint="peach" style={styles.taskCard}>
           <Text style={styles.taskLabel}>TONIGHT'S NOTE</Text>
           <Text style={styles.taskTitle}>Rate the fruit's sweetness</Text>
@@ -121,6 +147,7 @@ export default function Lesson() {
             </Text>
           )}
         </GlassCard>
+        </Animated.View>
 
         {/* Source */}
         <Text style={styles.source}>Source: Wise et al., 2019, Nutrients</Text>
@@ -214,20 +241,52 @@ const styles = StyleSheet.create({
   illustration: {
     alignItems: 'center',
     marginVertical: spacing.xl,
-    height: 120,
+    height: 140,
     justifyContent: 'center',
   },
   illoBloom: {
-    width: 84, height: 84, borderRadius: radius.full,
+    width: 100, height: 100, borderRadius: radius.full,
     backgroundColor: colors.primaryContainer,
-    opacity: 0.7,
+    opacity: 0.8,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
   },
   illoBloomSmall: {
     position: 'absolute',
-    width: 52, height: 52,
+    width: 64, height: 64,
     backgroundColor: colors.tertiaryContainer,
-    left: '55%',
-    top: '50%',
+    left: '58%',
+    top: '44%',
+    opacity: 0.9,
+  },
+  illoAccent: {
+    position: 'absolute',
+    width: 20, height: 20, borderRadius: 10,
+    backgroundColor: colors.primary,
+    right: '32%',
+    top: '18%',
+    opacity: 0.7,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 4,
+  },
+
+  // Hero layout (title left, glyph right)
+  heroRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.sm,
+  },
+  heroCol: { flex: 1, gap: spacing.xs },
+  heroGlyphWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   taskCard: { padding: spacing.lg, marginTop: spacing.lg, gap: spacing.sm },

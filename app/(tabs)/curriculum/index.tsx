@@ -1,10 +1,20 @@
 import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+
+// Map each phase to a decorative glyph — visual shorthand for the phase feel.
+const PHASE_GLYPHS: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'> = {
+  Acute: 'flame',        // burning withdrawal
+  Adaptation: 'sun',     // the sun comes out
+  Clarity: 'compass',    // direction appears
+  Integration: 'orbit',  // settling into orbit
+};
 
 type LessonState = 'done' | 'current' | 'upcoming' | 'locked';
 type LessonStatic = { day: number; title: string; minutes: number };
@@ -91,29 +101,47 @@ export default function Curriculum() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero */}
-        <Text style={styles.eyebrow}>YOUR 90-DAY PATH</Text>
-        <Text style={styles.heroTitle}>
-          Day <Text style={styles.heroAccent}>{currentDay}</Text> of 90
-        </Text>
-        <Text style={styles.heroBody}>{heroForDay(currentDay)}</Text>
+        {/* Hero — title on the left, orbit glyph on the right */}
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.heroRow}>
+          <View style={styles.heroTextCol}>
+            <Text style={styles.eyebrow}>YOUR 90-DAY PATH</Text>
+            <Text style={styles.heroTitle}>
+              Day <Text style={styles.heroAccent}>{currentDay}</Text> of 90
+            </Text>
+          </View>
+          <DecorGlyph variant="orbit" size={64} />
+        </Animated.View>
 
-        {/* Progress bar */}
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
-        </View>
-        <View style={styles.progressLabels}>
-          <Text style={styles.progressLabel}>Day 1</Text>
-          <Text style={styles.progressLabelEnd}>Day 90</Text>
-        </View>
+        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.heroBody}>
+          {heroForDay(currentDay)}
+        </Animated.Text>
+
+        {/* Progress bar with bigger label and percentage */}
+        <Animated.View entering={FadeInUp.delay(200).duration(400)}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
+          </View>
+          <View style={styles.progressLabels}>
+            <Text style={styles.progressLabel}>Day 1</Text>
+            <Text style={styles.progressLabelMid}>{Math.round(progressPct)}% of the way</Text>
+            <Text style={styles.progressLabelEnd}>Day 90</Text>
+          </View>
+        </Animated.View>
 
         {/* Phases */}
         <View style={styles.phases}>
           {PHASES.map((phase, pi) => (
-            <View key={pi} style={styles.phaseBlock}>
+            <Animated.View
+              key={pi}
+              entering={FadeInDown.delay(300 + pi * 80).duration(400)}
+              style={styles.phaseBlock}
+            >
               <View style={styles.phaseHeader}>
-                <Text style={styles.phaseName}>{phase.name}</Text>
-                <Text style={styles.phaseDays}>{phase.days}</Text>
+                <DecorGlyph variant={PHASE_GLYPHS[phase.name] ?? 'orbit'} size={28} />
+                <View style={styles.phaseHeaderText}>
+                  <Text style={styles.phaseName}>{phase.name}</Text>
+                  <Text style={styles.phaseDays}>{phase.days}</Text>
+                </View>
               </View>
 
               {phase.lessons.length === 0 ? (
@@ -131,7 +159,7 @@ export default function Curriculum() {
                 </Pressable>
               ) : (
                 <View style={styles.lessonsList}>
-                  {phase.lessons.map((lesson) => {
+                  {phase.lessons.map((lesson, li) => {
                     const state = computeLessonState(lesson.day, currentDay);
                     return (
                       <Pressable key={lesson.day} onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}>
@@ -179,7 +207,7 @@ export default function Curriculum() {
                   })}
                 </View>
               )}
-            </View>
+            </Animated.View>
           ))}
         </View>
       </ScrollView>
@@ -276,10 +304,11 @@ const styles = StyleSheet.create({
   phaseBlock: { gap: spacing.sm },
   phaseHeader: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: spacing.sm,
-    marginBottom: spacing.xs,
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.sm,
   },
+  phaseHeaderText: { flex: 1 },
   phaseName: {
     fontFamily: fonts.headlineSemibold,
     fontSize: typeScale.titleLarge,
@@ -291,6 +320,22 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.labelWide,
+    marginTop: 2,
+  },
+
+  // Hero layout
+  heroRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: spacing.md,
+  },
+  heroTextCol: { flex: 1, gap: spacing.xs },
+  progressLabelMid: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.wide,
   },
   lessonsList: { gap: spacing.xs },
   lessonCard: { paddingVertical: spacing.sm + 2, paddingHorizontal: spacing.md },

@@ -2,7 +2,9 @@ import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
@@ -87,12 +89,18 @@ export default function ProgressScreen() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero — phase-aware copy */}
-        <View style={styles.heroSection}>
-          <Text style={styles.heroEyebrow}>{`DAY ${currentDay} OF 90`}</Text>
-          <Text style={styles.heroTitle}>{phase.title}</Text>
+        {/* Hero — phase-aware copy with a decorative sun/moon glyph */}
+        <Animated.View entering={FadeInUp.duration(500)} style={styles.heroSection}>
+          <View style={styles.heroRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.heroEyebrow}>{`DAY ${currentDay} OF 90`}</Text>
+              <Text style={styles.heroTitle}>{phase.title}</Text>
+            </View>
+            {/* Sun-like on early days, moon-like later — mood shift */}
+            <DecorGlyph variant={currentDay <= 14 ? 'sun' : 'orbit'} size={72} />
+          </View>
           <Text style={styles.heroBody}>{phase.body}</Text>
-        </View>
+        </Animated.View>
 
         {/* Timeline (weekly preview) */}
         <Pressable
@@ -276,6 +284,12 @@ const styles = StyleSheet.create({
   scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
 
   heroSection: { marginBottom: spacing.xxl, marginTop: spacing.lg },
+  heroRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.md,
+  },
   heroEyebrow: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
