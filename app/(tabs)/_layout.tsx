@@ -1,6 +1,6 @@
 import { router, Tabs, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -42,32 +42,34 @@ const TABS = [
 
 function CustomTabBar() {
   const insets = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
   const bottom = Math.max(insets.bottom, 16) + 16;
 
+  // Pill geometry — pure pixels, computed from screen width. Reanimated's
+  // translateX accepts numbers (px) reliably; the previous '%' string approach
+  // wasn't interpolated correctly and the indicator stuck at its first value.
+  const pillOuterWidth = screenWidth - spacing.lg * 2;            // pill spans this
+  const pillInnerWidth = pillOuterWidth - spacing.sm * 2;          // minus inner padding
+  const slotWidth = pillInnerWidth / TABS.length;
+
   // Source of truth for active tab — useSegments is native to expo-router and
-  // updates reliably after router.replace/push. Previously we relied on
-  // state.routes[state.index].name from the Tabs prop, which didn't always
-  // re-render the bar after a tab switch (the bar component only mounts once
-  // and React doesn't re-evaluate state.index for it consistently).
+  // updates reliably after router.replace/push.
   const segments = useSegments() as string[];
-  // For /(tabs)/home segments = ['(tabs)', 'home']; for /(tabs)/curriculum/[day]
-  // segments = ['(tabs)', 'curriculum', '5'] — second segment is the tab name.
   const activeKey = segments[1] ?? 'home';
   const activeIndex = Math.max(0, TABS.findIndex((t) => t.key === activeKey));
 
   // Animated indicator — slides between tab slots with a spring.
-  // We animate a translateX on a pill-shaped View positioned behind the icons.
-  const indicatorPos = useSharedValue(activeIndex);
+  const indicatorPos = useSharedValue(activeIndex * slotWidth);
   useEffect(() => {
-    indicatorPos.value = withSpring(activeIndex, {
+    indicatorPos.value = withSpring(activeIndex * slotWidth, {
       damping: 22,
       stiffness: 220,
       mass: 0.7,
     });
-  }, [activeIndex, indicatorPos]);
+  }, [activeIndex, slotWidth, indicatorPos]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: indicatorPos.value * (100 / TABS.length) + '%' as any }],
+    transform: [{ translateX: indicatorPos.value }],
   }));
 
   const go = (href: (typeof TABS)[number]['href']) => {
@@ -94,9 +96,9 @@ function CustomTabBar() {
         />
       )}
 
-      {/* Animated active-tab indicator (peach pill that slides) */}
+      {/* Animated active-tab indicator (peach pill that slides between slots) */}
       <View style={styles.indicatorTrack} pointerEvents="none">
-        <Animated.View style={[styles.indicator, indicatorStyle]} />
+        <Animated.View style={[styles.indicator, { width: slotWidth }, indicatorStyle]} />
       </View>
 
       <View style={styles.inner}>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   indicator: {
-    width: `${100 / TABS.length}%`,
+    // width is set inline at runtime from slotWidth (depends on screen width)
     height: '100%',
     borderRadius: radius.full,
     backgroundColor: 'rgba(165,60,48,0.12)',
