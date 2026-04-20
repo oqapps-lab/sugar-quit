@@ -5,13 +5,33 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
+
+const TRIGGER_TYPE_BY_KEY: Record<string, string> = {
+  stress: 'Stress Eater',
+  emotions: 'Emotional Eater',
+  boredom: 'Comfort Eater',
+  meals: 'Habit Eater',
+  social: 'Social Eater',
+  night: 'Late-Night Eater',
+};
 
 /**
- * Profile — Your Craving Profile (post-onboarding result).
- * Clean modern typography. No serif italic.
+ * Result Screen — post-onboarding "Your Craving Profile".
+ * Personalises the hero based on the dominant trigger picked in quiz/triggers.
+ * Adapts peak hour from quiz/peak-time.
  */
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const triggers = useUserStore((s) => s.triggers);
+  const peakHour = useUserStore((s) => s.peakHour);
+
+  const dominantTrigger = triggers[0] ?? 'stress';
+  const personaName = TRIGGER_TYPE_BY_KEY[dominantTrigger] ?? 'Stress Eater';
+  const peakLabel = peakHour ?? '3:00 PM';
+  // Build a sub-headline with the picked time, e.g. "with a 3pm crash"
+  const peakHourShort = peakLabel.replace(/(:00 )?(AM|PM)/, '$2').toLowerCase();
+  const subline = `with a ${peakHourShort} crash`;
 
   return (
     <AtmosphericGradient theme="cravingProfile">
@@ -33,9 +53,9 @@ export default function ProfileScreen() {
         <View style={styles.heroSection}>
           <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
           <Text style={styles.heroTitle}>
-            You're a <Text style={styles.heroTitleAccent}>Stress Eater</Text>
+            You're a <Text style={styles.heroTitleAccent}>{personaName}</Text>
           </Text>
-          <Text style={styles.heroSubtitle}>with a 3pm crash</Text>
+          <Text style={styles.heroSubtitle}>{subline}</Text>
           <Text style={styles.heroBody}>
             Your body seeks rapid energy drops to counter cortisol peaks.
             We'll replace the spike with steady emotional grounding.
@@ -51,7 +71,7 @@ export default function ProfileScreen() {
               </View>
               <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
             </View>
-            <Text style={styles.cardTitle}>3:00 – 5:00 PM</Text>
+            <Text style={styles.cardTitle}>{peakLabel}</Text>
             <Text style={styles.cardBody}>
               Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
               breath protocol right before the craving hits.

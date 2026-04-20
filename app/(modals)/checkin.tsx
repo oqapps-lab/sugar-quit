@@ -48,11 +48,14 @@ export default function CheckIn() {
     setTimeout(() => setStep('done'), 240);
   };
 
-  // C3: Streak increment celebration on step 3 mount — Success notification
+  // C3: On step 3 — actually persist the check-in via store, then celebrate
+  // with Success notification haptic per UX-SPEC §4.2.
   useEffect(() => {
-    if (step === 'done') {
+    if (step === 'done' && sugar) {
+      completeCheckIn(sugar);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   return (

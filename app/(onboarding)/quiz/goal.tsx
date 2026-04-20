@@ -5,6 +5,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 /**
  * 1.2 Quiz: Goal — "What's the shape of your goal?"
@@ -12,6 +13,7 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../co
  */
 export default function QuizGoal() {
   const insets = useSafeAreaInsets();
+  const setGoal = useUserStore((s) => s.setGoal);
 
   const options = [
     { key: 'quit',    title: 'Quit completely',  body: 'Zero added sugar, for my reasons.' },
@@ -36,7 +38,15 @@ export default function QuizGoal() {
 
         <View style={styles.optionsCol}>
           {options.map((o) => (
-            <Pressable key={o.key} onPress={() => router.push('/(onboarding)/quiz/motivation')}>
+            <Pressable
+              key={o.key}
+              onPress={() => {
+                if (o.key === 'quit' || o.key === 'reduce') setGoal(o.key);
+                router.push('/(onboarding)/quiz/motivation');
+              }}
+              accessibilityRole="radio"
+              accessibilityLabel={o.title}
+            >
               <GlassCard tint="default" style={styles.optionCard}>
                 <Text style={styles.optionTitle}>{o.title}</Text>
                 <Text style={styles.optionBody}>{o.body}</Text>

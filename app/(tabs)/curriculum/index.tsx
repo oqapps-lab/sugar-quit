@@ -106,7 +106,7 @@ export default function Curriculum() {
               ) : (
                 <View style={styles.lessonsList}>
                   {phase.lessons.map((lesson) => (
-                    <Pressable key={lesson.day} onPress={() => router.push('/(tabs)/curriculum/8')}>
+                    <Pressable key={lesson.day} onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}>
                       <GlassCard
                         tint={lesson.state === 'current' ? 'peach' : 'default'}
                         style={[

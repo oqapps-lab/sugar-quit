@@ -4,13 +4,40 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
+
+const TRIGGER_LABELS: Record<string, string> = {
+  stress: 'stress',
+  boredom: 'boredom',
+  meals: 'after meals',
+  social: 'social pressure',
+  emotions: 'emotions',
+  night: 'late-night',
+};
 
 /**
  * 2.4.1 Profile tab — real profile, distinct from onboarding Result screen.
- * SKELETON.
+ * Reads identity, craving profile, stats from the persistent user store.
  */
 export default function Profile() {
   const insets = useSafeAreaInsets();
+  const firstName = useUserStore((s) => s.firstName);
+  const goal = useUserStore((s) => s.goal);
+  const peakHour = useUserStore((s) => s.peakHour);
+  const triggers = useUserStore((s) => s.triggers);
+  const streakDays = useUserStore((s) => s.streakDays);
+  const isPremium = useUserStore((s) => s.isPremium);
+
+  const displayName = firstName ?? 'You';
+  const initial = displayName[0]?.toUpperCase() ?? 'Y';
+  const planLabel = isPremium ? 'PREMIUM' : 'FREE PLAN';
+  const goalLabel =
+    goal === 'quit' ? 'Quit completely' : goal === 'reduce' ? 'Reduce gradually' : '—';
+  const peakLabel = peakHour ?? '—';
+  const triggerLabel =
+    triggers.length > 0
+      ? triggers.map((t) => TRIGGER_LABELS[t] ?? t).slice(0, 2).join(', ')
+      : '—';
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -24,10 +51,10 @@ export default function Profile() {
       >
         {/* Avatar + name + plan */}
         <View style={styles.heroBlock}>
-          <View style={styles.avatar}><Text style={styles.avatarInitial}>S</Text></View>
-          <Text style={styles.name}>Sarah</Text>
+          <View style={styles.avatar}><Text style={styles.avatarInitial}>{initial}</Text></View>
+          <Text style={styles.name}>{displayName}</Text>
           <View style={styles.planBadge}>
-            <Text style={styles.planBadgeText}>PREMIUM · SINCE 6 APR</Text>
+            <Text style={styles.planBadgeText}>{planLabel}</Text>
           </View>
         </View>
 
@@ -35,17 +62,17 @@ export default function Profile() {
         <GlassCard tint="peach" style={styles.statsCard}>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>8</Text>
+              <Text style={styles.statNumber}>{streakDays}</Text>
               <Text style={styles.statLabel}>days clean</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>42</Text>
+              <Text style={styles.statNumber}>{streakDays * 5}</Text>
               <Text style={styles.statLabel}>cravings met</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>$72</Text>
+              <Text style={styles.statNumber}>${streakDays * 9}</Text>
               <Text style={styles.statLabel}>saved</Text>
             </View>
           </View>
@@ -56,15 +83,15 @@ export default function Profile() {
           <Text style={styles.infoLabel}>YOUR CRAVING PROFILE</Text>
           <View style={styles.infoRow}>
             <Text style={styles.infoIcon}>🎯</Text>
-            <Text style={styles.infoText}>Goal — reduce gradually</Text>
+            <Text style={styles.infoText}>Goal — {goalLabel}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoIcon}>⏰</Text>
-            <Text style={styles.infoText}>Peak hour — 3:00 PM</Text>
+            <Text style={styles.infoText}>Peak hour — {peakLabel}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoIcon}>⚡</Text>
-            <Text style={styles.infoText}>Main trigger — stress</Text>
+            <Text style={styles.infoText}>Main trigger — {triggerLabel}</Text>
           </View>
         </GlassCard>
 

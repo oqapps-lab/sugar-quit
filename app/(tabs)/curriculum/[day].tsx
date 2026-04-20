@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -6,11 +6,22 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 
-/**
- * Lesson screen — Day 8 example. Editorial reading.
- */
+type LessonContent = { phase: string; title: string; body: string };
+
+const LESSONS: Record<number, LessonContent> = {
+  1: { phase: 'ACUTE PHASE', title: 'Why sugar catches the brain', body: 'Sugar triggers dopamine release like other addictive substances. Day 1 is awareness — noticing the loop without trying to stop it yet.' },
+  3: { phase: 'ACUTE PHASE', title: 'The 72-hour storm', body: 'Withdrawal peaks now: irritability, headache, intense cravings. By tomorrow morning the worst will be behind you.' },
+  7: { phase: 'ADAPTATION', title: 'One whole week', body: 'Your insulin sensitivity has measurably improved. Energy is steadier between meals. Sleep deepens.' },
+  8: { phase: 'CLARITY PHASE', title: 'Your taste buds are waking up', body: 'By day 8 without excess sugar, your taste receptors begin to recalibrate. Fruit will start tasting noticeably sweeter by day 14.' },
+  14: { phase: 'CLARITY PHASE', title: 'Two weeks — the subtle shift', body: 'The 2-week mark is where most quit attempts fail and where success solidifies. Your brain pathways are forming new defaults.' },
+  30: { phase: 'INTEGRATION', title: 'Day 30 — taste reset', body: 'Natural foods taste vibrant again. The compulsion fades into a manageable whisper. You\'ve rewired the reward loop.' },
+};
+
 export default function Lesson() {
   const insets = useSafeAreaInsets();
+  const params = useLocalSearchParams<{ day?: string }>();
+  const dayNum = Math.max(1, Math.min(90, parseInt(params.day ?? '8', 10) || 8));
+  const lesson = LESSONS[dayNum] ?? LESSONS[8];
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -20,14 +31,14 @@ export default function Lesson() {
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <View style={styles.headerCenter}>
-          <Text style={styles.headerLabel}>DAY 8 OF 90</Text>
+          <Text style={styles.headerLabel}>DAY {dayNum} OF 90</Text>
         </View>
         <View style={{ width: 40 }} />
       </View>
 
       {/* Thin progress */}
       <View style={styles.progressRail}>
-        <View style={[styles.progressFill, { width: `${(8 / 90) * 100}%` }]} />
+        <View style={[styles.progressFill, { width: `${(dayNum / 90) * 100}%` }]} />
       </View>
 
       <ScrollView
@@ -35,8 +46,8 @@ export default function Lesson() {
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
-        <Text style={styles.lessonEyebrow}>CLARITY PHASE</Text>
-        <Text style={styles.lessonTitle}>Your taste buds are waking up</Text>
+        <Text style={styles.lessonEyebrow}>{lesson.phase}</Text>
+        <Text style={styles.lessonTitle}>{lesson.title}</Text>
         <Text style={styles.lessonMeta}>5 min · neuroscience + one practice</Text>
 
         {/* Divider */}
@@ -44,10 +55,7 @@ export default function Lesson() {
 
         {/* Section 1 — What's happening */}
         <Text style={styles.sectionLabel}>WHAT'S HAPPENING</Text>
-        <Text style={styles.body}>
-          By day 8 without excess sugar, your taste receptors begin to recalibrate.
-          Fruit will start tasting noticeably sweeter by day 14.
-        </Text>
+        <Text style={styles.body}>{lesson.body}</Text>
         <Text style={styles.body}>
           A 2019 University of Michigan study showed a 40% increase in perceived
           fruit sweetness after two weeks of sugar reduction.

@@ -7,12 +7,21 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
+
+const TIME_BY_KEY: Record<string, string> = {
+  morning: '9:00 AM',
+  afternoon: '3:00 PM',
+  evening: '7:00 PM',
+  night: '11:00 PM',
+};
 
 /**
  * 1.6 Quiz: Peak Time — "When does it hit hardest?" 4 chips + default time.
  */
 export default function QuizPeakTime() {
   const insets = useSafeAreaInsets();
+  const setPeakHour = useUserStore((s) => s.setPeakHour);
   const [selected, setSelected] = useState<string>('afternoon');
 
   const chips = [
@@ -64,7 +73,10 @@ export default function QuizPeakTime() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/quiz/triggers')}
+          onPress={() => {
+            setPeakHour(TIME_BY_KEY[selected] ?? '3:00 PM');
+            router.push('/(onboarding)/quiz/triggers');
+          }}
         />
       </View>
     </AtmosphericGradient>

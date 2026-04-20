@@ -1,149 +1,322 @@
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { SOSFab } from '../../components/ui/SOSFab';
 import { TokenDot } from '../../components/ui/TokenDot';
-import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../constants/tokens';
-import { useUserStore } from '../../stores/useUserStore';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import {
+  getMilestoneDueIfAny,
+  getTodayISODate,
+  getYesterdayISODate,
+  useUserStore,
+} from '../../stores/useUserStore';
 
 /**
  * Home — Daily Wellness Weather.
- * Modern mobile typography (not magazine). Clean sans-serif throughout.
+ * Two states: Day 1 (empty, welcoming tips) and Day N (with data — forecast cards).
+ *
+ * Auto-trigger effects on mount:
+ *  - missed yesterday's check-in → Streak Freeze modal
+ *  - new uncelebrated milestone reached → Milestone modal
+ *  - push permission denied 3+ days ago → render top re-permission banner
  */
 export default function Home() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
   const bestStreak = useUserStore((s) => s.bestStreak);
   const firstName = useUserStore((s) => s.firstName);
-  // Exposed for Agent α's SOS FAB gating / counter chip. Reading them here
-  // keeps the selectors subscribed so rerenders happen on monthly rollover.
+  const lastCheckInDate = useUserStore((s) => s.lastCheckInDate);
+  const milestonesCelebrated = useUserStore((s) => s.milestonesCelebrated);
+  const pushDenied = useUserStore((s) => s.pushPermissionDenied);
+  const pushDeniedAt = useUserStore((s) => s.pushDeniedAt);
   const sosUsedThisMonth = useUserStore((s) => s.sosUsedThisMonth);
   const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
-  void sosUsedThisMonth;
-  void sosFreeLimit;
+  const sosDisclaimerAccepted = useUserStore((s) => s.sosDisclaimerAccepted);
+
+  // Auto-triggers on mount
+  useEffect(() => {
+    const today = getTodayISODate();
+    const yesterday = getYesterdayISODate(today);
+
+    // 1. Streak Freeze: existed-but-broken streak → offer freeze
+    if (
+      streakDays > 0 &&
+      lastCheckInDate &&
+      lastCheckInDate !== today &&
+      lastCheckInDate !== yesterday
+    ) {
+      router.push('/(modals)/streak-freeze');
+      return; // don't stack two modals
+    }
+
+    // 2. Milestone: due milestone uncelebrated → push celebration
+    const due = getMilestoneDueIfAny(streakDays, milestonesCelebrated);
+    if (due !== null) {
+      router.push('/(modals)/milestone');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isDayOne = streakDays === 0 && !lastCheckInDate;
+  const isCheckedInToday = lastCheckInDate === getTodayISODate();
+  const sosRemaining = Number.isFinite(sosFreeLimit)
+    ? Math.max(0, sosFreeLimit - sosUsedThisMonth)
+    : null;
+
+  // Push re-permission banner: visible if denied >3 days ago
+  let showPushBanner = false;
+  if (pushDenied && pushDeniedAt) {
+    const today = getTodayISODate();
+    const [y1, m1, d1] = pushDeniedAt.split('-').map(Number);
+    const [y2, m2, d2] = today.split('-').map(Number);
+    const daysSince =
+      (Date.UTC(y2, m2 - 1, d2) - Date.UTC(y1, m1 - 1, d1)) / 86400000;
+    if (daysSince >= 3) showPushBanner = true;
+  }
+
   const dateLabel = firstName
     ? `Доброе утро, ${firstName}`.toUpperCase()
-    : "TODAY'S FORECAST · 19 APRIL";
+    : "TODAY'S FORECAST";
+  const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
+
+  const onSos = () => {
+    router.push(sosDisclaimerAccepted ? '/(modals)/sos' : '/(modals)/disclaimer');
+  };
 
   return (
     <AtmosphericGradient theme="dawn">
+      {/* Push re-permission banner */}
+      {showPushBanner && (
+        <View style={[styles.pushBanner, { top: insets.top + 4 }]}>
+          <View style={styles.pushBannerDot} />
+          <Text style={styles.pushBannerText}>
+            Включите уведомления, чтобы не пропустить тягу
+          </Text>
+          <Pressable
+            onPress={() => router.push('/(onboarding)/push-permission')}
+            accessibilityRole="button"
+            accessibilityLabel="Включить уведомления"
+          >
+            <Text style={styles.pushBannerCta}>Включить →</Text>
+          </Pressable>
+        </View>
+      )}
+
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+      <View style={[styles.header, { paddingTop: insets.top + (showPushBanner ? 56 : spacing.sm) }]}>
         <View style={styles.brandRow}>
           <View style={styles.logoMark} />
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarInitial}>S</Text>
-        </View>
+        <Pressable
+          onPress={() => router.push('/(tabs)/profile')}
+          style={styles.avatar}
+          accessibilityRole="button"
+          accessibilityLabel="Открыть профиль"
+        >
+          <Text style={styles.avatarInitial}>{avatarInitial}</Text>
+        </Pressable>
       </View>
 
       <ScrollView
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 180 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Date label */}
         <Text style={styles.dateLabel}>{dateLabel}</Text>
 
-        {/* Hero */}
-        <Text style={styles.heroPrefix}>Today is</Text>
-        <Text style={styles.heroWord}>Light.</Text>
-        <Text style={styles.heroSub}>
-          Morning is calm. A small 3pm surge. Evening exhales into mint.
-        </Text>
+        {/* HERO — Day 1 vs Day N */}
+        {isDayOne ? (
+          <>
+            <Text style={styles.heroPrefix}>Welcome,</Text>
+            <Text style={styles.heroWord}>Day 1.</Text>
+            <Text style={styles.heroSub}>
+              Three soft tasks for today. No rush. No perfect.
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text style={styles.heroPrefix}>Today is</Text>
+            <Text style={styles.heroWord}>Light.</Text>
+            <Text style={styles.heroSub}>
+              Morning is calm. A small 3pm surge. Evening exhales into mint.
+            </Text>
+          </>
+        )}
 
-        {/* Forecast cards */}
-        <View style={styles.cardsCol}>
-          {/* Morning */}
-          <GlassCard tint="default" style={styles.forecastCard}>
-            <View style={styles.forecastRow}>
-              <View style={styles.forecastText}>
-                <Text style={styles.timeLabel}>08:00 — 12:00</Text>
-                <Text style={styles.forecastTitle}>Calm</Text>
-                <Text style={styles.forecastBody}>
-                  Low risk. Cortisol stable. Good for deep work.
-                </Text>
-              </View>
-              <View style={[styles.dotLarge, { backgroundColor: colors.tertiaryContainer }]} />
+        {/* Day 1 onboarding tasks card */}
+        {isDayOne && (
+          <GlassCard tint="cream" style={styles.welcomeCard}>
+            <Text style={styles.welcomeLabel}>WHAT'S WAITING</Text>
+            <View style={styles.taskRow}>
+              <View style={styles.taskNum}><Text style={styles.taskNumText}>1</Text></View>
+              <Text style={styles.taskText}>Mark a check-in tonight — how did the day go?</Text>
+            </View>
+            <View style={styles.taskRow}>
+              <View style={styles.taskNum}><Text style={styles.taskNumText}>2</Text></View>
+              <Text style={styles.taskText}>Read Day 1 — why sugar catches the brain (5 min)</Text>
+            </View>
+            <View style={styles.taskRow}>
+              <View style={styles.taskNum}><Text style={styles.taskNumText}>3</Text></View>
+              <Text style={styles.taskText}>Use SOS if a craving arrives. Even once.</Text>
             </View>
           </GlassCard>
+        )}
 
-          {/* Afternoon — peak (anchor) */}
-          <GlassCard tint="peach" style={styles.forecastCardPeak}>
-            <View style={styles.forecastRow}>
-              <View style={styles.forecastText}>
-                <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
-                <Text style={styles.forecastTitlePeak}>High surge</Text>
-                <Text style={styles.forecastBodyPeak}>
-                  Energy dip triggers craving response.
-                </Text>
+        {/* Forecast cards — only on Day N */}
+        {!isDayOne && (
+          <View style={styles.cardsCol}>
+            <GlassCard tint="default" style={styles.forecastCard}>
+              <View style={styles.forecastRow}>
+                <View style={styles.forecastText}>
+                  <Text style={styles.timeLabel}>08:00 — 12:00</Text>
+                  <Text style={styles.forecastTitle}>Calm</Text>
+                  <Text style={styles.forecastBody}>
+                    Low risk. Cortisol stable. Good for deep work.
+                  </Text>
+                </View>
+                <View style={[styles.dotLarge, { backgroundColor: colors.tertiaryContainer }]} />
               </View>
-              <View style={styles.peakBadge}>
-                <Text style={styles.peakBadgeNumber}>3:12</Text>
-                <Text style={styles.peakBadgeLabel}>PM</Text>
-              </View>
-            </View>
-            <View style={styles.peakActionRow}>
-              <Text style={styles.peakAction}>See plan</Text>
-              <Text style={styles.peakArrow}>→</Text>
-            </View>
-          </GlassCard>
+            </GlassCard>
 
-          {/* Evening — exhale */}
-          <GlassCard tint="mint" style={styles.forecastCard}>
-            <View style={styles.forecastRow}>
-              <View style={styles.forecastText}>
-                <Text style={styles.timeLabel}>18:00 — 22:00</Text>
-                <Text style={styles.forecastTitle}>The exhale</Text>
-                <Text style={styles.forecastBody}>
-                  System resets. Prepare for deep restorative sleep.
-                </Text>
+            <GlassCard tint="peach" style={styles.forecastCardPeak}>
+              <View style={styles.forecastRow}>
+                <View style={styles.forecastText}>
+                  <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                  <Text style={styles.forecastTitlePeak}>High surge</Text>
+                  <Text style={styles.forecastBodyPeak}>
+                    Energy dip triggers craving response.
+                  </Text>
+                </View>
+                <View style={styles.peakBadge}>
+                  <Text style={styles.peakBadgeNumber}>3:12</Text>
+                  <Text style={styles.peakBadgeLabel}>PM</Text>
+                </View>
               </View>
-              <View style={[styles.dotLarge, { backgroundColor: colors.secondaryFixedDim }]} />
-            </View>
-          </GlassCard>
-        </View>
+              <Pressable
+                style={styles.peakActionRow}
+                onPress={onSos}
+                accessibilityRole="button"
+                accessibilityLabel="Открыть план на пиковый час"
+              >
+                <Text style={styles.peakAction}>See plan</Text>
+                <Text style={styles.peakArrow}>→</Text>
+              </Pressable>
+            </GlassCard>
 
-        {/* Check-in strip */}
-        <GlassCard tint="cream" radius={radius.full} style={styles.checkinStrip}>
-          <View style={styles.checkinRow}>
-            <View style={styles.pulseDot} />
-            <Text style={styles.checkinLabel}>Midday check-in</Text>
+            <GlassCard tint="mint" style={styles.forecastCard}>
+              <View style={styles.forecastRow}>
+                <View style={styles.forecastText}>
+                  <Text style={styles.timeLabel}>18:00 — 22:00</Text>
+                  <Text style={styles.forecastTitle}>The exhale</Text>
+                  <Text style={styles.forecastBody}>
+                    System resets. Prepare for deep restorative sleep.
+                  </Text>
+                </View>
+                <View style={[styles.dotLarge, { backgroundColor: colors.secondaryFixedDim }]} />
+              </View>
+            </GlassCard>
           </View>
-          <Text style={styles.checkinCta}>Mark now →</Text>
-        </GlassCard>
+        )}
+
+        {/* Check-in strip — only if not done today */}
+        {!isCheckedInToday && (
+          <Pressable onPress={() => router.push('/(modals)/checkin')}>
+            <GlassCard tint="cream" radius={radius.full} style={styles.checkinStrip}>
+              <View style={styles.checkinRow}>
+                <View style={styles.pulseDot} />
+                <Text style={styles.checkinLabel}>{isDayOne ? 'Your first check-in' : 'Daily check-in'}</Text>
+              </View>
+              <Text style={styles.checkinCta}>Mark now →</Text>
+            </GlassCard>
+          </Pressable>
+        )}
 
         {/* Lesson card */}
-        <GlassCard tint="lavender" style={styles.lessonCard}>
-          <Text style={styles.lessonLabel}>DAILY INSIGHT</Text>
-          <Text style={styles.lessonTitle}>
-            Day 8 — your taste buds are waking up
-          </Text>
-          <Text style={styles.lessonBody}>
-            Fruit will taste 40% sweeter by day 14. 5 min read.
-          </Text>
-        </GlassCard>
+        <Pressable onPress={() => router.push('/(tabs)/curriculum')}>
+          <GlassCard tint="lavender" style={styles.lessonCard}>
+            <Text style={styles.lessonLabel}>DAILY INSIGHT</Text>
+            <Text style={styles.lessonTitle}>
+              {isDayOne
+                ? 'Day 1 — why sugar catches the brain'
+                : `Day ${Math.max(1, streakDays)} — your taste buds are waking up`}
+            </Text>
+            <Text style={styles.lessonBody}>
+              {isDayOne
+                ? '7 min · neuroscience + first practice.'
+                : 'Fruit will taste 40% sweeter by day 14. 5 min read.'}
+            </Text>
+          </GlassCard>
+        </Pressable>
 
-        {/* Streak */}
-        <View style={styles.streakSection}>
-          <Text style={styles.streakNumber}>{streakDays}</Text>
-          <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
-          <View style={styles.streakDots}>
-            {[...Array(14)].map((_, i) => (
-              <TokenDot key={i} filled={i < streakDays} size={6} />
-            ))}
+        {/* SOS counter chip — only if free + non-zero used */}
+        {sosRemaining !== null && sosUsedThisMonth > 0 && (
+          <View style={styles.sosCounter}>
+            <Text style={styles.sosCounterText}>
+              SOS · {sosUsedThisMonth}/{sosFreeLimit} this month
+            </Text>
           </View>
-        </View>
+        )}
+
+        {/* Streak section — hidden on Day 1 to avoid mocking 0 */}
+        {!isDayOne && (
+          <View
+            style={styles.streakSection}
+            accessibilityRole="text"
+            accessibilityLabel={`Streak: ${streakDays} дней без сахара`}
+          >
+            <Text style={styles.streakNumber}>{streakDays}</Text>
+            <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
+            <View style={styles.streakDots}>
+              {[...Array(14)].map((_, i) => (
+                <TokenDot key={i} filled={i < streakDays} size={6} />
+              ))}
+            </View>
+          </View>
+        )}
       </ScrollView>
 
-      <SOSFab onPress={() => router.push('/(modals)/sos')} bottom={insets.bottom + 120} />
+      <SOSFab onPress={onSos} bottom={insets.bottom + 96} />
     </AtmosphericGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  pushBanner: {
+    position: 'absolute',
+    left: spacing.lg,
+    right: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    backgroundColor: 'rgba(255,172,160,0.4)',
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(165,60,48,0.2)',
+    zIndex: 20,
+  },
+  pushBannerDot: {
+    width: 6,
+    height: 6,
+    borderRadius: radius.full,
+    backgroundColor: colors.primary,
+  },
+  pushBannerText: {
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodySmall,
+    color: colors.onPrimaryContainer,
+  },
+  pushBannerCta: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: typeScale.bodySmall,
+    color: colors.primary,
+  },
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -210,6 +383,35 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: spacing.xl,
     maxWidth: 300,
+  },
+
+  // Day 1 welcome card
+  welcomeCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.lg },
+  welcomeLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: 2,
+  },
+  taskRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
+  taskNum: {
+    width: 24, height: 24, borderRadius: radius.full,
+    backgroundColor: colors.primaryContainer,
+    alignItems: 'center', justifyContent: 'center',
+    marginTop: 2,
+  },
+  taskNumText: {
+    fontFamily: fonts.headlineBold,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+  },
+  taskText: {
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurface,
+    lineHeight: 20,
   },
 
   cardsCol: { gap: spacing.md, marginBottom: spacing.lg },
@@ -330,7 +532,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
 
-  lessonCard: { padding: spacing.lg, marginBottom: spacing.xxl, gap: spacing.xs },
+  lessonCard: { padding: spacing.lg, marginBottom: spacing.xl, gap: spacing.xs },
   lessonLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -351,6 +553,21 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     lineHeight: 20,
     marginTop: 4,
+  },
+
+  sosCounter: {
+    alignSelf: 'center',
+    backgroundColor: 'rgba(165,60,48,0.08)',
+    paddingHorizontal: spacing.md,
+    paddingVertical: 4,
+    borderRadius: radius.full,
+    marginBottom: spacing.md,
+  },
+  sosCounterText: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.wide,
   },
 
   streakSection: {

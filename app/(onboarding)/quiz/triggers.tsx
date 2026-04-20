@@ -7,12 +7,14 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 /**
  * 1.7 Quiz: Triggers — multi-select 6 options.
  */
 export default function QuizTriggers() {
   const insets = useSafeAreaInsets();
+  const setTriggers = useUserStore((s) => s.setTriggers);
   const [selected, setSelected] = useState<string[]>([]);
 
   const options = [
@@ -65,7 +67,10 @@ export default function QuizTriggers() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/quiz/consumption')}
+          onPress={() => {
+            setTriggers(selected);
+            router.push('/(onboarding)/quiz/consumption');
+          }}
         />
       </View>
     </AtmosphericGradient>
