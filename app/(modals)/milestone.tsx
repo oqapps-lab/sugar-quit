@@ -3,8 +3,9 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useReducedMotion } from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInUp, useReducedMotion } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { getMilestoneDueIfAny, useUserStore } from '../../stores/useUserStore';
@@ -92,39 +93,50 @@ export default function Milestone() {
           <Text style={styles.closeX}>×</Text>
         </Pressable>
 
-        <Text style={styles.eyebrow}>A MILESTONE</Text>
+        <Animated.Text entering={FadeInUp.duration(400)} style={styles.eyebrow}>
+          A MILESTONE
+        </Animated.Text>
 
-        {/* Hero number — computed from streak, not hardcoded */}
-        <View style={styles.heroOrb}>
+        {/* Hero number — sits inside a soft coral orb with outer glow + a small
+            flame glyph tucked top-right as a decorative accent. */}
+        <Animated.View entering={FadeInUp.delay(150).duration(500)} style={styles.heroOrb}>
           <View style={styles.heroGlow} />
           <Text style={styles.heroNumber}>{dayShown}</Text>
-        </View>
+          <View style={styles.heroFlameBadge} pointerEvents="none">
+            <DecorGlyph variant="flame" size={32} />
+          </View>
+        </Animated.View>
 
-        <Text style={styles.milestoneTitle}>days sugar-free</Text>
+        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.milestoneTitle}>
+          days sugar-free
+        </Animated.Text>
 
         <View style={styles.divider} />
 
-        {/* Stats row — computed from real activity, not hardcoded */}
-        <View style={styles.statsRow}>
+        {/* Stats row — computed from real activity, with small glyph leaders */}
+        <Animated.View entering={FadeInDown.delay(350).duration(400)} style={styles.statsRow}>
           <View style={styles.stat}>
+            <DecorGlyph variant="heart" size={22} />
             <Text style={styles.statNumber}>{cravingsMet}</Text>
             <Text style={styles.statLabel}>cravings met</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
+            <DecorGlyph variant="compass" size={22} />
             <Text style={styles.statNumber}>${dollarsSaved}</Text>
             <Text style={styles.statLabel}>saved</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
+            <DecorGlyph variant="snowflake" size={22} />
             <Text style={styles.statNumber}>{kgSugarAvoided}kg</Text>
             <Text style={styles.statLabel}>sugar avoided</Text>
           </View>
-        </View>
+        </Animated.View>
 
-        <Text style={styles.quote}>
+        <Animated.Text entering={FadeInDown.delay(450).duration(400)} style={styles.quote}>
           You placed a large stone today. Each day adds another to the path.
-        </Text>
+        </Animated.Text>
       </View>
 
       {/* Actions */}
@@ -183,6 +195,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 220, height: 220, borderRadius: radius.full,
     backgroundColor: 'rgba(165,60,48,0.15)',
+  },
+  heroFlameBadge: {
+    position: 'absolute',
+    top: -8, right: -8,
+    width: 48, height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: colors.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
   heroNumber: {
     fontFamily: fonts.headlineExtraBold,

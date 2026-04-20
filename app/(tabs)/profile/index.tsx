@@ -114,46 +114,53 @@ export default function Profile() {
           </GlassCard>
         </Animated.View>
 
-        {/* Info about craving profile */}
-        <GlassCard tint="default" style={styles.infoCard}>
-          <Text style={styles.infoLabel}>YOUR CRAVING PROFILE</Text>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>🎯</Text>
-            <Text style={styles.infoText}>Goal — {goalLabel}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>⏰</Text>
-            <Text style={styles.infoText}>Peak hour — {peakLabel}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>⚡</Text>
-            <Text style={styles.infoText}>Main trigger — {triggerLabel}</Text>
-          </View>
-        </GlassCard>
+        {/* Craving profile — replace emoji leaders (they render as ? box
+            inside Plus Jakarta Sans) with DecorGlyph composition icons. */}
+        <Animated.View entering={FadeInDown.delay(250).duration(400)}>
+          <GlassCard tint="default" style={styles.infoCard}>
+            <Text style={styles.infoLabel}>YOUR CRAVING PROFILE</Text>
+            <View style={styles.infoRow}>
+              <DecorGlyph variant="compass" size={22} />
+              <Text style={styles.infoText}>Goal — {goalLabel}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <DecorGlyph variant="sun" size={22} />
+              <Text style={styles.infoText}>Peak hour — {peakLabel}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <DecorGlyph variant="lightning" size={22} />
+              <Text style={styles.infoText}>Main trigger — {triggerLabel}</Text>
+            </View>
+          </GlassCard>
+        </Animated.View>
 
-        {/* Menu */}
-        <View style={styles.menu}>
-          {[
-            { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
-            { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
-            { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
-            { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
-            { label: 'Support',        icon: '?', onPress: undefined },
-            { label: 'Privacy Policy', icon: '🔒', onPress: undefined },
-          ].map((m) => (
-            <Pressable
-              key={m.label}
-              style={styles.menuRow}
-              onPress={m.onPress}
-              accessibilityRole="button"
-              accessibilityLabel={m.label}
-            >
-              <Text style={styles.menuIcon}>{m.icon}</Text>
-              <Text style={styles.menuLabel}>{m.label}</Text>
-              <Text style={styles.menuArrow}>→</Text>
-            </Pressable>
-          ))}
-        </View>
+        {/* Menu — icons are unicode BMP characters that render reliably
+            across iOS fonts (emoji like 🔒 silently fall back to ? inside
+            Plus Jakarta Sans). "✎ ♪ ◆ ⚙ ◐ ◉" all ship in the font. */}
+        <Animated.View entering={FadeInDown.delay(350).duration(400)}>
+          <View style={styles.menu}>
+            {[
+              { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
+              { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
+              { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
+              { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
+              { label: 'Support',        icon: '◐', onPress: undefined },
+              { label: 'Privacy Policy', icon: '◉', onPress: undefined },
+            ].map((m) => (
+              <Pressable
+                key={m.label}
+                style={styles.menuRow}
+                onPress={m.onPress}
+                accessibilityRole="button"
+                accessibilityLabel={m.label}
+              >
+                <Text style={styles.menuIcon}>{m.icon}</Text>
+                <Text style={styles.menuLabel}>{m.label}</Text>
+                <Text style={styles.menuArrow}>→</Text>
+              </Pressable>
+            ))}
+          </View>
+        </Animated.View>
 
         <Text style={styles.version}>v0.1.0</Text>
       </ScrollView>
