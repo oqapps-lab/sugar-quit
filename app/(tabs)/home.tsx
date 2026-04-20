@@ -1,9 +1,11 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { SOSFab } from '../../components/ui/SOSFab';
@@ -129,6 +131,13 @@ export default function Home() {
 
   return (
     <AtmosphericGradient theme="dawn">
+      {/* Background aura blobs — give the screen ambient depth */}
+      <View style={styles.auraLayer} pointerEvents="none">
+        <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={24} />
+        <AuraBlob tint="lavender" size={280} style={styles.auraMidLeft} intensity={0.45} drift={18} />
+        <AuraBlob tint="golden" size={220} style={styles.auraBottomRight} intensity={0.5} drift={16} />
+      </View>
+
       {/* Push re-permission banner */}
       {showPushBanner && (
         <View style={[styles.pushBanner, { top: insets.top + 4 }]}>
@@ -390,12 +399,25 @@ export default function Home() {
           </GlassCard>
         </Pressable>
 
-        {/* SOS counter — card with 3 circle indicators, readable typography */}
+        {/* SOS counter — GlassCard with internal gradient overlay for depth.
+            When the user is at limit the tone shifts to warmer / more urgent. */}
         {sosRemaining !== null && sosUsedThisMonth > 0 && (
-          <Animated.View entering={FadeInUp.delay(400).duration(500)}>
+          <Animated.View entering={FadeInUp.delay(400).duration(500)} style={styles.sosCounterWrap}>
+            <LinearGradient
+              colors={
+                sosRemaining === 0
+                  ? ['rgba(255,158,125,0.35)', 'rgba(165,60,48,0.18)'] as const
+                  : ['rgba(255,215,168,0.4)', 'rgba(255,172,160,0.25)'] as const
+              }
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.sosCounterGradient}
+            />
             <GlassCard tint="peach" style={styles.sosCounterCard}>
               <View style={styles.sosCounterHeader}>
-                <DecorGlyph variant="compass" size={36} />
+                <View style={styles.sosCounterGlyphWrap}>
+                  <DecorGlyph variant="compass" size={32} />
+                </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.sosCounterEyebrow}>SOS USAGE · THIS MONTH</Text>
                   <Text style={styles.sosCounterText}>
@@ -416,13 +438,18 @@ export default function Home() {
                   ))}
               </View>
               {sosRemaining === 0 && (
-                <Text style={styles.sosCounterHint}>Upgrade to Premium for unlimited</Text>
+                <View style={styles.sosCounterUpgrade}>
+                  <Text style={styles.sosCounterUpgradeText}>
+                    Upgrade to Premium for unlimited →
+                  </Text>
+                </View>
               )}
             </GlassCard>
           </Animated.View>
         )}
 
-        {/* Streak section — orb centerpiece with orbital ring animation */}
+        {/* Streak section — ceremonial frame: orb centerpiece, caption, dots,
+            and a separate cool-toned Freeze card below. */}
         {!isDayOne && (
           <Animated.View
             entering={FadeInUp.delay(500).duration(600)}
@@ -431,22 +458,40 @@ export default function Home() {
             accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
           >
             <Text style={styles.streakEyebrow}>YOUR STREAK</Text>
-            <StreakOrb count={streakDays} size={200} />
+            <View style={styles.orbFrame}>
+              <StreakOrb count={streakDays} size={240} />
+            </View>
             <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
 
+            {/* Dots block — now with a subtle glass pill around it */}
             <View style={styles.streakDotsBlock}>
               <Text style={styles.streakDotsLabel}>LAST 14 DAYS</Text>
-              <View style={styles.streakDots}>
+              <View style={styles.streakDotsRow}>
                 {[...Array(14)].map((_, i) => (
-                  <TokenDot key={i} filled={i < streakDays} size={8} />
+                  <TokenDot key={i} filled={i < streakDays} size={9} />
                 ))}
               </View>
             </View>
+          </Animated.View>
+        )}
 
-            {/* Streak freeze card — richer presentation than a plain chip */}
+        {/* Streak freeze card — cool mint/blue internal gradient, large
+            snowflake with its own halo. Separated from the orb section so the
+            orb can breathe. */}
+        {!isDayOne && (
+          <Animated.View entering={FadeInUp.delay(700).duration(500)} style={styles.freezeWrap}>
+            <LinearGradient
+              colors={['rgba(207,224,223,0.5)', 'rgba(230,240,240,0.3)'] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.freezeGradient}
+            />
             <GlassCard tint="default" style={styles.freezeCard}>
               <View style={styles.freezeHeaderRow}>
-                <DecorGlyph variant="snowflake" size={40} />
+                <View style={styles.freezeGlyphWrap}>
+                  <View style={styles.freezeGlyphAura} />
+                  <DecorGlyph variant="snowflake" size={44} />
+                </View>
                 <View style={styles.freezeHeaderText}>
                   <Text style={styles.freezeTitle}>
                     {freezesLeft === 0
@@ -775,15 +820,51 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
-  sosCounterCard: {
-    padding: spacing.md,
+  sosCounterWrap: {
     marginBottom: spacing.lg,
-    gap: spacing.sm,
+    borderRadius: radius.sm,
+    overflow: 'hidden',
+  },
+  sosCounterGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: radius.sm,
+  },
+  sosCounterCard: {
+    padding: spacing.lg,
+    gap: spacing.md,
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   sosCounterHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
+  },
+  sosCounterGlyphWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: colors.primary,
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  sosCounterUpgrade: {
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    borderRadius: radius.full,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.5)',
+  },
+  sosCounterUpgradeText: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: typeScale.bodyMedium,
+    color: colors.primary,
   },
   sosCounterEyebrow: {
     fontFamily: fonts.label,
@@ -823,7 +904,7 @@ const styles = StyleSheet.create({
   streakSection: {
     alignItems: 'center',
     marginTop: spacing.xxl,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.lg,
     gap: spacing.sm,
   },
   streakEyebrow: {
@@ -831,16 +912,29 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
+    marginBottom: spacing.sm,
+  },
+  orbFrame: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: spacing.sm,
   },
   streakCaption: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.labelWide,
+    marginTop: spacing.md,
   },
   streakDotsBlock: {
     alignItems: 'center',
-    marginTop: spacing.md,
+    marginTop: spacing.lg,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.5)',
     gap: spacing.xs,
   },
   streakDotsLabel: {
@@ -848,9 +942,9 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.labelWide,
-    opacity: 0.7,
+    opacity: 0.8,
   },
-  streakDots: { flexDirection: 'row', gap: 7 },
+  streakDotsRow: { flexDirection: 'row', gap: 8 },
 
   // Legend carousel
   legendSectionLabel: {
@@ -910,18 +1004,40 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  // Freeze card
+  // Freeze card — cool-toned mint/blue gradient wrap + snowflake halo
+  freezeWrap: {
+    marginTop: spacing.md,
+    marginBottom: spacing.xl,
+    borderRadius: radius.sm,
+    overflow: 'hidden',
+  },
+  freezeGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: radius.sm,
+  },
   freezeCard: {
-    padding: spacing.md,
-    marginTop: spacing.sm,
-    alignSelf: 'stretch',
+    padding: spacing.lg,
+    backgroundColor: 'rgba(255,255,255,0.1)',
   },
   freezeHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
   },
-  freezeHeaderText: { flex: 1, gap: 2 },
+  freezeGlyphWrap: {
+    width: 56,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  freezeGlyphAura: {
+    position: 'absolute',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(165,60,48,0.12)',
+  },
+  freezeHeaderText: { flex: 1, gap: 4 },
   freezeTitle: {
     fontFamily: fonts.headlineSemibold,
     fontSize: typeScale.bodyLarge,
@@ -933,6 +1049,27 @@ const styles = StyleSheet.create({
     fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
     lineHeight: 18,
+  },
+
+  // Background aura layer
+  auraLayer: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  auraTopRight: {
+    position: 'absolute',
+    top: -80,
+    right: -120,
+  },
+  auraMidLeft: {
+    position: 'absolute',
+    top: '35%',
+    left: -140,
+  },
+  auraBottomRight: {
+    position: 'absolute',
+    bottom: '25%',
+    right: -80,
   },
 
   peakTitleRow: {
