@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
@@ -10,14 +9,17 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import { radius } from '../../constants/tokens';
 
 /**
- * AuraBlob — soft decorative gradient orb for background ambience.
- * Use absolutely positioned, behind content. Slowly drifts + pulses so the
- * screen feels alive without being distracting.
+ * AuraBlob — soft, round, drifting gradient orb for ambient background.
  *
- * Palette choices are coral / peach / lavender — matching our dawn theme.
+ * Implementation note: expo-linear-gradient is LINEAR only — to get a
+ * true radial soft-edge bloom we stack 5 concentric circles with decreasing
+ * size and decreasing opacity. Each circle has a full border-radius so
+ * edges are perfectly round (no square artifacts).
+ *
+ * Animation: the whole stack drifts gently and pulses opacity.
+ * Reduce-motion aware.
  */
 
 type Tint = 'coral' | 'peach' | 'lavender' | 'mint' | 'golden';
@@ -26,68 +28,77 @@ type Props = {
   tint?: Tint;
   size?: number;
   style?: ViewStyle;
-  /** Max opacity (pulse floats between 0.5*this and this). Default 0.6. */
+  /** Max opacity of the brightest circle. Default 0.55. */
   intensity?: number;
   /** Drift radius in pixels. Default 20. */
   drift?: number;
 };
 
-const TINT_COLORS: Record<Tint, readonly [string, string, string]> = {
-  coral:    ['#FF9E7D', '#FF7E5F', '#E85A3A'],
-  peach:    ['#FFD7A8', '#FFB89E', '#FF9E7D'],
-  lavender: ['#E5D4F0', '#C4A8D8', '#8A6BA8'],
-  mint:     ['#CFE0DF', '#A8D0CC', '#7FB5AF'],
-  golden:   ['#FFE8BC', '#FFC978', '#FF9E7D'],
+const TINT: Record<Tint, string> = {
+  coral:    '#FF9E7D',
+  peach:    '#FFC099',
+  lavender: '#C4A8D8',
+  mint:     '#9CC9C4',
+  golden:   '#FFD792',
 };
 
 export function AuraBlob({
   tint = 'coral',
   size = 280,
   style,
-  intensity = 0.6,
+  intensity = 0.55,
   drift = 20,
 }: Props) {
   const rm = useReducedMotion();
-  const opacity = useSharedValue(intensity);
+  const pulse = useSharedValue(intensity);
   const tx = useSharedValue(0);
   const ty = useSharedValue(0);
 
   useEffect(() => {
     if (rm) return;
-    // pulse
-    opacity.value = withRepeat(
+    pulse.value = withRepeat(
       withSequence(
         withTiming(intensity, { duration: 3500, easing: Easing.inOut(Easing.quad) }),
-        withTiming(intensity * 0.5, { duration: 3500, easing: Easing.inOut(Easing.quad) }),
+        withTiming(intensity * 0.55, { duration: 3500, easing: Easing.inOut(Easing.quad) }),
       ),
       -1,
       false,
     );
-    // drift
     tx.value = withRepeat(
       withSequence(
-        withTiming(drift, { duration: 6000, easing: Easing.inOut(Easing.sin) }),
-        withTiming(-drift, { duration: 6000, easing: Easing.inOut(Easing.sin) }),
+        withTiming(drift, { duration: 6400, easing: Easing.inOut(Easing.sin) }),
+        withTiming(-drift, { duration: 6400, easing: Easing.inOut(Easing.sin) }),
       ),
       -1,
       false,
     );
     ty.value = withRepeat(
       withSequence(
-        withTiming(-drift * 0.6, { duration: 5000, easing: Easing.inOut(Easing.sin) }),
-        withTiming(drift * 0.6, { duration: 5000, easing: Easing.inOut(Easing.sin) }),
+        withTiming(-drift * 0.55, { duration: 5400, easing: Easing.inOut(Easing.sin) }),
+        withTiming(drift * 0.55, { duration: 5400, easing: Easing.inOut(Easing.sin) }),
       ),
       -1,
       false,
     );
-  }, [rm, intensity, drift, opacity, tx, ty]);
+  }, [rm, intensity, drift, pulse, tx, ty]);
 
   const animStyle = useAnimatedStyle(() => ({
-    opacity: rm ? intensity * 0.7 : opacity.value,
+    opacity: rm ? intensity * 0.7 : pulse.value,
     transform: [{ translateX: tx.value }, { translateY: ty.value }],
   }));
 
-  const colors = TINT_COLORS[tint];
+  const color = TINT[tint];
+
+  // Radial soft bloom via 5 stacked concentric circles — each smaller and
+  // more opaque than the previous. Reads as a proper fuzzy halo.
+  // Radii (relative to size) and opacities are hand-tuned for a soft fall-off.
+  const layers = [
+    { r: 1.00, o: 0.08 },
+    { r: 0.85, o: 0.14 },
+    { r: 0.65, o: 0.22 },
+    { r: 0.45, o: 0.32 },
+    { r: 0.25, o: 0.45 },
+  ];
 
   return (
     <Animated.View
@@ -96,30 +107,29 @@ export function AuraBlob({
         {
           width: size,
           height: size,
-          borderRadius: size / 2,
+          alignItems: 'center',
+          justifyContent: 'center',
         },
         style,
         animStyle,
       ]}
     >
-      <LinearGradient
-        colors={[colors[0], colors[1], 'rgba(255,255,255,0)'] as const}
-        start={{ x: 0.3, y: 0.3 }}
-        end={{ x: 0.9, y: 0.9 }}
-        style={StyleSheet.absoluteFill}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          top: size * 0.1,
-          left: size * 0.1,
-          width: size * 0.4,
-          height: size * 0.4,
-          borderRadius: (size * 0.4) / 2,
-          backgroundColor: colors[0],
-          opacity: 0.5,
-        }}
-      />
+      {layers.map((l, i) => {
+        const d = size * l.r;
+        return (
+          <View
+            key={i}
+            style={{
+              position: 'absolute',
+              width: d,
+              height: d,
+              borderRadius: d / 2,
+              backgroundColor: color,
+              opacity: l.o,
+            }}
+          />
+        );
+      })}
     </Animated.View>
   );
 }
