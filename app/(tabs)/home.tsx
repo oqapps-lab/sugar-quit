@@ -177,8 +177,8 @@ export default function Home() {
       >
         <Text style={styles.dateLabel}>{dateLabel}</Text>
 
-        {/* HERO — Day 1 vs Day N. "Today is X" reads as a weather forecast
-            for your craving day; X is computed from streak + SOS pressure. */}
+        {/* HERO row — forecast text on the left, streak orb on the right.
+            Day 1 (no streak yet) gets text-only hero. */}
         {isDayOne ? (
           <>
             <Text style={styles.heroPrefix}>Welcome,</Text>
@@ -186,11 +186,30 @@ export default function Home() {
             <Text style={styles.heroSub}>{forecast.sub}</Text>
           </>
         ) : (
-          <>
-            <Text style={styles.heroPrefix}>Today is</Text>
-            <Text style={styles.heroWord}>{forecast.tone}.</Text>
-            <Text style={styles.heroSub}>{forecast.sub}</Text>
-          </>
+          <Animated.View entering={FadeInUp.duration(450)} style={styles.heroRow}>
+            <View style={styles.heroTextCol}>
+              <Text style={styles.heroPrefix}>Today is</Text>
+              <Text style={styles.heroWord}>{forecast.tone}.</Text>
+              <Text style={styles.heroSub}>{forecast.sub}</Text>
+            </View>
+
+            {/* Compact streak orb + dots pill below, right column */}
+            <View
+              style={styles.heroOrbCol}
+              accessibilityRole="text"
+              accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
+            >
+              <Text style={styles.heroOrbEyebrow}>YOUR STREAK</Text>
+              <StreakOrb count={streakDays} size={140} />
+              <Text style={styles.heroOrbCaption}>{`DAY${streakDays === 1 ? '' : 'S'} CLEAN · BEST ${bestStreak}`}</Text>
+              <View style={styles.heroDotsPill}>
+                {[...Array(14)].map((_, i) => (
+                  <TokenDot key={i} filled={i < streakDays} size={5} />
+                ))}
+              </View>
+              <Text style={styles.heroDotsLabel}>last 14 days</Text>
+            </View>
+          </Animated.View>
         )}
 
         {/* Day 1 onboarding tasks card */}
@@ -214,9 +233,11 @@ export default function Home() {
 
         {/* First-time legend — 4 distinct cards in a horizontal carousel,
             each with its own decorative glyph and accent tint. Shown during
-            the acute phase (Days 0-3). */}
+            the acute phase (Days 0-3). Carousel deliberately bleeds beyond
+            the screen edge (negative right margin via negative scroll-end
+            padding) so the next card is visibly peeking. */}
         {streakDays <= 3 && (
-          <Animated.View entering={FadeInUp.delay(200).duration(500)}>
+          <Animated.View entering={FadeInUp.delay(200).duration(500)} style={styles.legendBlock}>
             <Text style={styles.legendSectionLabel}>WHAT EVERYTHING MEANS</Text>
             <Text style={styles.legendSectionHint}>Swipe to learn the four concepts →</Text>
             <ScrollView
@@ -225,6 +246,7 @@ export default function Home() {
               contentContainerStyle={styles.legendScroll}
               snapToInterval={260 + 12}
               decelerationRate="fast"
+              style={styles.legendScrollView}
             >
               <GlassCard tint="peach" style={styles.legendCardHoriz}>
                 <View style={styles.legendHeaderRow}>
@@ -448,38 +470,10 @@ export default function Home() {
           </Animated.View>
         )}
 
-        {/* Streak section — ceremonial frame: orb centerpiece, caption, dots,
-            and a separate cool-toned Freeze card below. */}
-        {!isDayOne && (
-          <Animated.View
-            entering={FadeInUp.delay(500).duration(600)}
-            style={styles.streakSection}
-            accessibilityRole="text"
-            accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
-          >
-            <Text style={styles.streakEyebrow}>YOUR STREAK</Text>
-            <View style={styles.orbFrame}>
-              <StreakOrb count={streakDays} size={240} />
-            </View>
-            <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
-
-            {/* Dots block — now with a subtle glass pill around it */}
-            <View style={styles.streakDotsBlock}>
-              <Text style={styles.streakDotsLabel}>LAST 14 DAYS</Text>
-              <View style={styles.streakDotsRow}>
-                {[...Array(14)].map((_, i) => (
-                  <TokenDot key={i} filled={i < streakDays} size={9} />
-                ))}
-              </View>
-            </View>
-          </Animated.View>
-        )}
-
         {/* Streak freeze card — cool mint/blue internal gradient, large
-            snowflake with its own halo. Separated from the orb section so the
-            orb can breathe. */}
+            snowflake with its own halo. */}
         {!isDayOne && (
-          <Animated.View entering={FadeInUp.delay(700).duration(500)} style={styles.freezeWrap}>
+          <Animated.View entering={FadeInUp.delay(600).duration(500)} style={styles.freezeWrap}>
             <LinearGradient
               colors={['rgba(207,224,223,0.5)', 'rgba(230,240,240,0.3)'] as const}
               start={{ x: 0, y: 0 }}
@@ -600,19 +594,68 @@ const styles = StyleSheet.create({
   },
   heroWord: {
     fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayLarge + 20,
+    fontSize: typeScale.displayMedium + 12,
     color: colors.primary,
     letterSpacing: -1.5,
-    lineHeight: 58,
+    lineHeight: 48,
     marginBottom: spacing.md,
   },
   heroSub: {
     fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
+    fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
-    lineHeight: 22,
+    lineHeight: 20,
     marginBottom: spacing.xl,
-    maxWidth: 300,
+  },
+
+  // Hero row layout (text left, orb right)
+  heroRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+    marginBottom: spacing.xxl,
+  },
+  heroTextCol: {
+    flex: 1,
+  },
+  heroOrbCol: {
+    width: 150,
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  heroOrbEyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: 2,
+  },
+  heroOrbCaption: {
+    fontFamily: fonts.label,
+    fontSize: 9,
+    color: colors.onSurfaceVariant,
+    letterSpacing: tracking.wide,
+    marginTop: spacing.xs,
+    textAlign: 'center',
+  },
+  heroDotsPill: {
+    flexDirection: 'row',
+    gap: 3,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.6)',
+    marginTop: spacing.xs,
+  },
+  heroDotsLabel: {
+    fontFamily: fonts.label,
+    fontSize: 8,
+    color: colors.onSurfaceVariant,
+    letterSpacing: 0.6,
+    opacity: 0.7,
+    marginTop: 2,
   },
 
   // Day 1 welcome card
@@ -861,7 +904,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.5)',
-    marginTop: spacing.xs,
+    marginTop: spacing.md,
   },
   sosCounterUpgradeText: {
     fontFamily: fonts.bodySemibold,
@@ -885,7 +928,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.sm,
     paddingHorizontal: spacing.xs,
-    marginTop: spacing.xs,
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
   },
   sosCounterSlot: {
     flex: 1,
@@ -949,7 +993,16 @@ const styles = StyleSheet.create({
   },
   streakDotsRow: { flexDirection: 'row', gap: 8 },
 
-  // Legend carousel
+  // Legend carousel — the ScrollView itself gets a NEGATIVE right margin that
+  // cancels the parent ScrollView's paddingHorizontal, so cards can fully
+  // bleed past the screen edge. Inner contentContainer adds back-padding so
+  // cards start flush with screen left.
+  legendBlock: {
+    marginBottom: spacing.xxl,
+  },
+  legendScrollView: {
+    marginRight: -spacing.lg,
+  },
   legendSectionLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -965,7 +1018,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   legendScroll: {
-    paddingRight: spacing.lg,
+    paddingRight: spacing.lg * 2,
     gap: spacing.md,
     paddingBottom: spacing.sm,
   },
