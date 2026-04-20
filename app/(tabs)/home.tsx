@@ -605,7 +605,7 @@ const styles = StyleSheet.create({
     fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
     lineHeight: 20,
-    marginBottom: spacing.xl,
+    marginBottom: 0,
   },
 
   // Hero row layout (text left, orb right)
@@ -613,7 +613,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.lg,
   },
   heroTextCol: {
     flex: 1,
@@ -658,7 +658,7 @@ const styles = StyleSheet.create({
   },
 
   // Day 1 welcome card
-  welcomeCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.xxl },
+  welcomeCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.lg },
   welcomeLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -686,7 +686,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  cardsCol: { gap: spacing.md, marginBottom: spacing.xxl },
+  cardsCol: { gap: spacing.md, marginBottom: spacing.lg },
   forecastCard: { padding: spacing.lg },
   forecastCardPeak: { padding: spacing.lg, gap: spacing.md },
   forecastRow: {
@@ -784,7 +784,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     paddingLeft: spacing.lg,
     paddingRight: spacing.md,
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.lg,
   },
   checkinRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   pulseDot: {
@@ -839,7 +839,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  lessonCard: { padding: spacing.lg, marginBottom: spacing.xxl, gap: spacing.xs },
+  lessonCard: { padding: spacing.lg, marginBottom: spacing.lg, gap: spacing.xs },
   lessonLabel: {
     fontFamily: fonts.label,
     fontSize: typeScale.labelSmall,
@@ -863,7 +863,7 @@ const styles = StyleSheet.create({
   },
 
   sosCounterWrap: {
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.lg,
     borderRadius: radius.sm,
     overflow: 'hidden',
   },
@@ -997,7 +997,7 @@ const styles = StyleSheet.create({
   // bleed past the screen edge. Inner contentContainer adds back-padding so
   // cards start flush with screen left.
   legendBlock: {
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.lg,
   },
   legendScrollView: {
     marginRight: -spacing.lg,
@@ -1060,7 +1060,7 @@ const styles = StyleSheet.create({
 
   // Freeze card — cool-toned mint/blue gradient wrap + snowflake halo
   freezeWrap: {
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.lg,
     borderRadius: radius.sm,
     overflow: 'hidden',
   },
