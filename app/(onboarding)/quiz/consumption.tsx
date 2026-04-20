@@ -7,15 +7,18 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore, type Consumption } from '../../../stores/useUserStore';
 
 /**
  * 1.8 Quiz: Consumption — 5-level scale.
  */
 export default function QuizConsumption() {
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<string | null>(null);
+  const stored = useUserStore((s) => s.consumption);
+  const setConsumption = useUserStore((s) => s.setConsumption);
+  const [selected, setSelected] = useState<Consumption | null>(stored);
 
-  const levels = [
+  const levels: { key: Consumption; title: string; hint: string }[] = [
     { key: 'little',   title: 'A little',        hint: 'Barely registers most days' },
     { key: 'moderate', title: 'Moderate',        hint: 'Shows up, not overwhelming' },
     { key: 'alot',     title: 'A lot',           hint: 'Regular loud visits' },
@@ -23,9 +26,15 @@ export default function QuizConsumption() {
     { key: 'runs',     title: 'It runs my day',  hint: 'The sugar plans the hours' },
   ];
 
-  const pick = (key: string) => {
+  const pick = (key: Consumption) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected(key);
+  };
+
+  const handleContinue = () => {
+    if (!selected) return;
+    setConsumption(selected);
+    router.push('/(onboarding)/motivational-2');
   };
 
   return (
@@ -47,7 +56,13 @@ export default function QuizConsumption() {
           {levels.map((l, i) => {
             const isOn = selected === l.key;
             return (
-              <Pressable key={l.key} onPress={() => pick(l.key)}>
+              <Pressable
+                key={l.key}
+                onPress={() => pick(l.key)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={`${l.title}. ${l.hint}`}
+              >
                 <GlassCard
                   tint={isOn ? 'peach' : 'default'}
                   style={[styles.optionCard, isOn && styles.optionCardOn]}
@@ -72,7 +87,8 @@ export default function QuizConsumption() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/motivational-2')}
+          onPress={handleContinue}
+          disabled={!selected}
         />
       </View>
     </AtmosphericGradient>

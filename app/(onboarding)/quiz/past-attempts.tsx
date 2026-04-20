@@ -7,24 +7,33 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore, type PastAttempts } from '../../../stores/useUserStore';
 
 /**
  * 1.10 Quiz: Past Attempts — 4 options, single-select.
  */
 export default function QuizPastAttempts() {
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<string | null>(null);
+  const stored = useUserStore((s) => s.pastAttempts);
+  const setPastAttempts = useUserStore((s) => s.setPastAttempts);
+  const [selected, setSelected] = useState<PastAttempts | null>(stored);
 
-  const options = [
+  const options: { key: PastAttempts; title: string; body: string }[] = [
     { key: 'first',  title: 'This is my first real try',  body: 'Starting fresh.' },
     { key: 'short',  title: 'A few times, short',         body: 'Days, not weeks.' },
     { key: 'longer', title: 'Once or twice, longer',      body: 'Weeks, even months.' },
     { key: 'many',   title: 'Many times',                 body: 'Cycled in and out.' },
   ];
 
-  const pick = (key: string) => {
+  const pick = (key: PastAttempts) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected(key);
+  };
+
+  const handleContinue = () => {
+    if (!selected) return;
+    setPastAttempts(selected);
+    router.push('/(onboarding)/quiz/work-environment');
   };
 
   return (
@@ -46,7 +55,13 @@ export default function QuizPastAttempts() {
           {options.map((o) => {
             const isOn = selected === o.key;
             return (
-              <Pressable key={o.key} onPress={() => pick(o.key)}>
+              <Pressable
+                key={o.key}
+                onPress={() => pick(o.key)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={`${o.title}. ${o.body}`}
+              >
                 <GlassCard
                   tint={isOn ? 'peach' : 'default'}
                   style={[styles.optionCard, isOn && styles.optionCardOn]}
@@ -64,7 +79,8 @@ export default function QuizPastAttempts() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/quiz/work-environment')}
+          onPress={handleContinue}
+          disabled={!selected}
         />
       </View>
     </AtmosphericGradient>

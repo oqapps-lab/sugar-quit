@@ -8,6 +8,9 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type Goal = 'quit' | 'reduce';
 export type CheckInStatus = 'free' | 'some' | 'relapse';
+export type Consumption = 'little' | 'moderate' | 'alot' | 'great' | 'runs';
+export type PastAttempts = 'first' | 'short' | 'longer' | 'many';
+export type WorkEnvironment = 'office' | 'home' | 'feet' | 'mobile';
 
 export type UserState = {
   // identity
@@ -18,6 +21,10 @@ export type UserState = {
   goal: Goal | null;
   peakHour: string | null;
   triggers: string[];
+  motivations: string[];
+  consumption: Consumption | null;
+  pastAttempts: PastAttempts | null;
+  workEnvironment: WorkEnvironment | null;
 
   // streak
   streakDays: number;
@@ -49,6 +56,10 @@ export type UserActions = {
   setGoal: (g: Goal) => void;
   setPeakHour: (h: string) => void;
   setTriggers: (t: string[]) => void;
+  setMotivations: (m: string[]) => void;
+  setConsumption: (c: Consumption) => void;
+  setPastAttempts: (p: PastAttempts) => void;
+  setWorkEnvironment: (w: WorkEnvironment) => void;
   completeCheckIn: (status: CheckInStatus) => void;
   useStreakFreeze: () => boolean; // returns true if used successfully
   resetStreak: () => void;
@@ -128,6 +139,10 @@ const initialState: UserState = {
   goal: null,
   peakHour: null,
   triggers: [],
+  motivations: [],
+  consumption: null,
+  pastAttempts: null,
+  workEnvironment: null,
 
   streakDays: 0,
   bestStreak: 0,
@@ -169,6 +184,14 @@ export const useUserStore = create<UserStore>()(
       setPeakHour: (h) => set({ peakHour: h }),
 
       setTriggers: (t) => set({ triggers: t }),
+
+      setMotivations: (m) => set({ motivations: m }),
+
+      setConsumption: (c) => set({ consumption: c }),
+
+      setPastAttempts: (p) => set({ pastAttempts: p }),
+
+      setWorkEnvironment: (w) => set({ workEnvironment: w }),
 
       completeCheckIn: (status) => {
         const state = get();
@@ -280,6 +303,10 @@ export const useUserStore = create<UserStore>()(
         goal: state.goal,
         peakHour: state.peakHour,
         triggers: state.triggers,
+        motivations: state.motivations,
+        consumption: state.consumption,
+        pastAttempts: state.pastAttempts,
+        workEnvironment: state.workEnvironment,
         streakDays: state.streakDays,
         bestStreak: state.bestStreak,
         lastCheckInDate: state.lastCheckInDate,

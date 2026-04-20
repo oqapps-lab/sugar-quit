@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
@@ -27,20 +27,24 @@ export default function TabsLayout() {
   );
 }
 
-function CustomTabBar({ state, navigation }: any) {
+function CustomTabBar({ state }: any) {
   const insets = useSafeAreaInsets();
   const bottom = Math.max(insets.bottom, 16) + 16;
 
-  const TABS: { key: string; glyph: string; label: string }[] = [
-    { key: 'home',       glyph: '◉', label: 'Home' },
-    { key: 'curriculum', glyph: '≡', label: 'Path' },
-    { key: 'progress',   glyph: '≋', label: 'Progress' },
-    { key: 'profile',    glyph: '◯', label: 'Profile' },
+  const TABS: { key: string; glyph: string; label: string; href: '/(tabs)/home' | '/(tabs)/curriculum' | '/(tabs)/progress' | '/(tabs)/profile' }[] = [
+    { key: 'home',       glyph: '◉', label: 'Home',     href: '/(tabs)/home' },
+    { key: 'curriculum', glyph: '≡', label: 'Path',     href: '/(tabs)/curriculum' },
+    { key: 'progress',   glyph: '≋', label: 'Progress', href: '/(tabs)/progress' },
+    { key: 'profile',    glyph: '◯', label: 'Profile',  href: '/(tabs)/profile' },
   ];
 
-  const go = (routeName: string) => {
+  // expo-router: use `router.replace` to switch tabs (no stack buildup).
+  // The previous `navigation.navigate(routeName)` was the React Navigation API,
+  // not understood by expo-router's wrapper — it raised
+  // "The action 'NAVIGATE' with payload {name: 'curriculum'} was not handled".
+  const go = (href: (typeof TABS)[number]['href']) => {
     Haptics.selectionAsync();
-    navigation.navigate(routeName);
+    router.replace(href);
   };
 
   const activeRoute = state.routes[state.index].name;
@@ -69,7 +73,7 @@ function CustomTabBar({ state, navigation }: any) {
           return (
             <Pressable
               key={t.key}
-              onPress={() => go(t.key)}
+              onPress={() => go(t.href)}
               hitSlop={8}
               accessibilityRole="tab"
               accessibilityState={{ selected: active }}

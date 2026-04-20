@@ -7,14 +7,16 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
 
 /**
- * 1.3 Quiz: Motivation — "What's pulling you here?" (multi-select).
- * SKELETON — onboarding flow.
+ * 1.3 Quiz: Motivation — "What's pulling you here?" (multi-select, min 1).
  */
 export default function QuizMotivation() {
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<string[]>([]);
+  const stored = useUserStore((s) => s.motivations);
+  const setMotivations = useUserStore((s) => s.setMotivations);
+  const [selected, setSelected] = useState<string[]>(stored);
 
   const options = [
     { key: 'health',   title: 'Health is asking me to',   tint: 'peach' as const },
@@ -27,6 +29,12 @@ export default function QuizMotivation() {
   const toggle = (key: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected((s) => (s.includes(key) ? s.filter((k) => k !== key) : [...s, key]));
+  };
+
+  const handleContinue = () => {
+    if (selected.length === 0) return;
+    setMotivations(selected);
+    router.push('/(onboarding)/quiz/sugar-goal');
   };
 
   return (
@@ -48,7 +56,13 @@ export default function QuizMotivation() {
           {options.map((o) => {
             const isOn = selected.includes(o.key);
             return (
-              <Pressable key={o.key} onPress={() => toggle(o.key)}>
+              <Pressable
+                key={o.key}
+                onPress={() => toggle(o.key)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: isOn }}
+                accessibilityLabel={o.title}
+              >
                 <GlassCard tint={isOn ? 'peach' : o.tint} style={[styles.optionCard, isOn && styles.optionCardOn]}>
                   <View style={styles.optionRow}>
                     <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
@@ -67,7 +81,8 @@ export default function QuizMotivation() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/quiz/sugar-goal')}
+          onPress={handleContinue}
+          disabled={selected.length === 0}
         />
       </View>
     </AtmosphericGradient>

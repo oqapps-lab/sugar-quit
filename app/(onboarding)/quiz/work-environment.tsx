@@ -7,24 +7,33 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore, type WorkEnvironment } from '../../../stores/useUserStore';
 
 /**
  * 1.11 Quiz: Work Environment — 4 options in 2×2 grid.
  */
 export default function QuizWorkEnvironment() {
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<string | null>(null);
+  const stored = useUserStore((s) => s.workEnvironment);
+  const setWorkEnvironment = useUserStore((s) => s.setWorkEnvironment);
+  const [selected, setSelected] = useState<WorkEnvironment | null>(stored);
 
-  const options = [
-    { key: 'office', title: 'Office',      glyph: '▢', tint: 'default' as const },
-    { key: 'home',   title: 'Home',        glyph: '△', tint: 'mint' as const },
-    { key: 'feet',   title: 'On my feet',  glyph: '◇', tint: 'peach' as const },
-    { key: 'mobile', title: 'Mobile',      glyph: '◯', tint: 'default' as const },
+  const options: { key: WorkEnvironment; title: string; glyph: string; tint: 'default' | 'mint' | 'peach' }[] = [
+    { key: 'office', title: 'Office',      glyph: '▢', tint: 'default' },
+    { key: 'home',   title: 'Home',        glyph: '△', tint: 'mint' },
+    { key: 'feet',   title: 'On my feet',  glyph: '◇', tint: 'peach' },
+    { key: 'mobile', title: 'Mobile',      glyph: '◯', tint: 'default' },
   ];
 
-  const pick = (key: string) => {
+  const pick = (key: WorkEnvironment) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected(key);
+  };
+
+  const handleContinue = () => {
+    if (!selected) return;
+    setWorkEnvironment(selected);
+    router.push('/(onboarding)/quiz/name');
   };
 
   return (
@@ -46,7 +55,14 @@ export default function QuizWorkEnvironment() {
           {options.map((o) => {
             const isOn = selected === o.key;
             return (
-              <Pressable key={o.key} style={styles.gridItem} onPress={() => pick(o.key)}>
+              <Pressable
+                key={o.key}
+                style={styles.gridItem}
+                onPress={() => pick(o.key)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={o.title}
+              >
                 <GlassCard
                   tint={isOn ? 'peach' : o.tint}
                   style={[styles.optionCard, isOn && styles.optionCardOn]}
@@ -64,7 +80,8 @@ export default function QuizWorkEnvironment() {
         <PillCTA
           label="Continue"
           variant="onboarding"
-          onPress={() => router.push('/(onboarding)/quiz/name')}
+          onPress={handleContinue}
+          disabled={!selected}
         />
       </View>
     </AtmosphericGradient>
