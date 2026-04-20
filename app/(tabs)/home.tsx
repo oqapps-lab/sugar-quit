@@ -63,6 +63,7 @@ export default function Home() {
   const sosDisclaimerAccepted = useUserStore((s) => s.sosDisclaimerAccepted);
   const freezesAvail = useUserStore((s) => s.streakFreezesAvailableThisWeek);
   const freezesUsed = useUserStore((s) => s.streakFreezesUsedThisWeek);
+  const markMilestoneCelebrated = useUserStore((s) => s.markMilestoneCelebrated);
   const freezesLeft = Math.max(0, freezesAvail - freezesUsed);
 
   // Auto-triggers on mount
@@ -81,9 +82,13 @@ export default function Home() {
       return; // don't stack two modals
     }
 
-    // 2. Milestone: due milestone uncelebrated → push celebration
+    // 2. Milestone: due milestone uncelebrated → mark celebrated AND push.
+    // Marking BEFORE push prevents the auto-trigger from re-firing on the
+    // next Home mount if the user closes by tab-switching away (state hasn't
+    // round-tripped through the modal yet).
     const due = getMilestoneDueIfAny(streakDays, milestonesCelebrated);
     if (due !== null) {
+      markMilestoneCelebrated(due);
       router.push('/(modals)/milestone');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
