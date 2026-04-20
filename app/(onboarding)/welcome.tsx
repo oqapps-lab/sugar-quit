@@ -36,7 +36,7 @@ export default function Welcome() {
         </View>
 
         <Text style={styles.eyebrow}>SUGAR QUIT</Text>
-        <Text style={styles.heroTitle}>
+        <Text style={styles.heroTitle} numberOfLines={4}>
           Meet the quiet coach for your cravings
         </Text>
         <Text style={styles.heroSub}>
@@ -52,7 +52,7 @@ export default function Welcome() {
           onPress={() => router.push('/(onboarding)/quiz/goal')}
           style={styles.cta}
         />
-        <Pressable onPress={() => {}} style={styles.signInRow}>
+        <Pressable onPress={() => router.push('/(onboarding)/auth')} style={styles.signInRow}>
           <Text style={styles.signInText}>
             Already walking? <Text style={styles.signInLink}>Sign in</Text>
           </Text>

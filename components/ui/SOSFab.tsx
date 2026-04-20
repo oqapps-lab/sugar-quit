@@ -7,25 +7,44 @@ type Props = {
   onPress?: () => void;
   style?: ViewStyle;
   bottom?: number;
-  right?: number;
+  /**
+   * Position mode:
+   * - 'center' (default, per UX-SPEC §2.4) — centered above bottom tab bar
+   * - 'right' — alternate legacy right-bottom
+   */
+  position?: 'center' | 'right';
 };
 
 /**
- * SOSFab — floating action button, всегда в правом нижнем углу.
- * Gradient: primary → error. Haptic: medium.
+ * SOSFab — floating action button.
+ *
+ * UX-SPEC §2.4: SOS is center-bottom, above the tab bar, 56–64dp round.
+ * Haptic per §4.2: HEAVY impact (core emergency action).
+ * Accessibility per §5.2: label + hint in Russian.
+ *
+ * Hidden on: onboarding, auth, SOS chat itself, modals.
  */
-export function SOSFab({ onPress, style, bottom = 110, right = 24 }: Props) {
+export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Props) {
   const handlePress = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // Per UX-SPEC §4.2: SOS button tap = Heavy impact
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     onPress?.();
   };
 
+  const positionStyle: ViewStyle = position === 'center'
+    ? { bottom, left: '50%', transform: [{ translateX: -32 }] }  // 32 = half of 64px FAB
+    : { bottom, right: 24 };
+
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="SOS — получить помощь с тягой к сахару"
+      accessibilityHint="Открывает AI-чат для помощи в момент тяги"
       onPress={handlePress}
       style={({ pressed }) => [
         styles.root,
-        { bottom, right, transform: [{ scale: pressed ? 0.96 : 1 }] },
+        positionStyle,
+        pressed && { transform: [...(positionStyle.transform ?? []), { scale: 0.92 }] as any },
         style,
       ]}
     >

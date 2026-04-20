@@ -1,6 +1,9 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useReducedMotion } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
@@ -11,36 +14,49 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../const
  */
 export default function Milestone() {
   const insets = useSafeAreaInsets();
+  const reducedMotion = useReducedMotion();
+
+  // C4: Milestone celebration — Success notification on mount
+  useEffect(() => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  }, []);
 
   return (
     <AtmosphericGradient theme="dawn">
-      {/* Confetti dots - static placeholders */}
-      <View style={styles.confettiLayer} pointerEvents="none">
-        {[...Array(12)].map((_, i) => {
-          const left = (i * 37) % 90;
-          const top = (i * 23 + 15) % 60;
-          const size = 4 + (i % 3) * 2;
-          const color = [colors.primary, colors.primaryContainer, colors.secondaryFixedDim, colors.tertiaryContainer][i % 4];
-          return (
-            <View
-              key={i}
-              style={[
-                styles.confetti,
-                {
-                  left: `${left}%`,
-                  top: `${top}%`,
-                  width: size, height: size,
-                  backgroundColor: color,
-                  opacity: 0.7,
-                },
-              ]}
-            />
-          );
-        })}
-      </View>
+      {/* F2: Confetti dots — skipped when reduce-motion is on */}
+      {!reducedMotion && (
+        <View style={styles.confettiLayer} pointerEvents="none">
+          {[...Array(12)].map((_, i) => {
+            const left = (i * 37) % 90;
+            const top = (i * 23 + 15) % 60;
+            const size = 4 + (i % 3) * 2;
+            const color = [colors.primary, colors.primaryContainer, colors.secondaryFixedDim, colors.tertiaryContainer][i % 4];
+            return (
+              <View
+                key={i}
+                style={[
+                  styles.confetti,
+                  {
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: size, height: size,
+                    backgroundColor: color,
+                    opacity: 0.7,
+                  },
+                ]}
+              />
+            );
+          })}
+        </View>
+      )}
 
       <View style={[styles.content, { paddingTop: insets.top + spacing.xxl }]}>
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Закрыть"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
 

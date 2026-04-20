@@ -71,14 +71,20 @@ export default function Profile() {
         {/* Menu */}
         <View style={styles.menu}>
           {[
-            { label: 'Edit profile', icon: '✎' },
-            { label: 'Notifications', icon: '♪' },
-            { label: 'Subscription', icon: '◆' },
-            { label: 'Settings', icon: '⚙' },
-            { label: 'Support', icon: '?' },
-            { label: 'Privacy Policy', icon: '🔒' },
+            { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
+            { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
+            { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
+            { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
+            { label: 'Support',        icon: '?', onPress: undefined },
+            { label: 'Privacy Policy', icon: '🔒', onPress: undefined },
           ].map((m) => (
-            <Pressable key={m.label} style={styles.menuRow}>
+            <Pressable
+              key={m.label}
+              style={styles.menuRow}
+              onPress={m.onPress}
+              accessibilityRole="button"
+              accessibilityLabel={m.label}
+            >
               <Text style={styles.menuIcon}>{m.icon}</Text>
               <Text style={styles.menuLabel}>{m.label}</Text>
               <Text style={styles.menuArrow}>→</Text>

@@ -50,9 +50,11 @@ export default function QuizMotivation() {
             return (
               <Pressable key={o.key} onPress={() => toggle(o.key)}>
                 <GlassCard tint={isOn ? 'peach' : o.tint} style={[styles.optionCard, isOn && styles.optionCardOn]}>
-                  <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
-                  <View style={[styles.checkDot, isOn && styles.checkDotOn]}>
-                    {isOn ? <Text style={styles.checkGlyph}>✓</Text> : null}
+                  <View style={styles.optionRow}>
+                    <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
+                    <View style={[styles.checkDot, isOn && styles.checkDotOn]}>
+                      {isOn ? <Text style={styles.checkGlyph}>✓</Text> : null}
+                    </View>
                   </View>
                 </GlassCard>
               </Pressable>
@@ -82,8 +84,9 @@ const styles = StyleSheet.create({
   hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 34, marginTop: spacing.sm },
   sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
   optionsCol: { gap: spacing.sm },
-  optionCard: { padding: spacing.md + 2, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  optionCard: { padding: spacing.md + 2 },
   optionCardOn: { borderColor: colors.primary, borderWidth: 1.5 },
+  optionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md },
   optionTitle: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleMedium, color: colors.onSurface, flex: 1 },
   optionTitleOn: { color: colors.primary },
   checkDot: { width: 22, height: 22, borderRadius: radius.full, borderWidth: 1.5, borderColor: 'rgba(49,51,47,0.25)', alignItems: 'center', justifyContent: 'center' },

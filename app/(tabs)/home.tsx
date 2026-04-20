@@ -6,6 +6,7 @@ import { GlassCard } from '../../components/ui/GlassCard';
 import { SOSFab } from '../../components/ui/SOSFab';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * Home — Daily Wellness Weather.
@@ -13,6 +14,18 @@ import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '..
  */
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
+  const bestStreak = useUserStore((s) => s.bestStreak);
+  const firstName = useUserStore((s) => s.firstName);
+  // Exposed for Agent α's SOS FAB gating / counter chip. Reading them here
+  // keeps the selectors subscribed so rerenders happen on monthly rollover.
+  const sosUsedThisMonth = useUserStore((s) => s.sosUsedThisMonth);
+  const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
+  void sosUsedThisMonth;
+  void sosFreeLimit;
+  const dateLabel = firstName
+    ? `Доброе утро, ${firstName}`.toUpperCase()
+    : "TODAY'S FORECAST · 19 APRIL";
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -32,7 +45,7 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
       >
         {/* Date label */}
-        <Text style={styles.dateLabel}>TODAY'S FORECAST · 19 APRIL</Text>
+        <Text style={styles.dateLabel}>{dateLabel}</Text>
 
         {/* Hero */}
         <Text style={styles.heroPrefix}>Today is</Text>
@@ -115,11 +128,11 @@ export default function Home() {
 
         {/* Streak */}
         <View style={styles.streakSection}>
-          <Text style={styles.streakNumber}>8</Text>
-          <Text style={styles.streakCaption}>DAYS CLEAN · BEST 12</Text>
+          <Text style={styles.streakNumber}>{streakDays}</Text>
+          <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
           <View style={styles.streakDots}>
             {[...Array(14)].map((_, i) => (
-              <TokenDot key={i} filled={i < 8} size={6} />
+              <TokenDot key={i} filled={i < streakDays} size={6} />
             ))}
           </View>
         </View>

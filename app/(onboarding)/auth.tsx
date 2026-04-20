@@ -19,18 +19,33 @@ export default function Auth() {
         <View style={styles.hero}>
           <View style={styles.mark} />
           <Text style={styles.brand}>Sugar Quit</Text>
-          <Text style={styles.title}>One last step — keep your plan</Text>
+          <Text style={styles.title} numberOfLines={4}>One last step — keep your plan</Text>
           <Text style={styles.sub}>Sign in so your plan, streak, and SOS history stay with you.</Text>
         </View>
 
         <View style={styles.buttonsCol}>
-          <Pressable onPress={next} style={styles.appleBtn}>
+          <Pressable
+            onPress={next}
+            style={styles.appleBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Continue with Apple"
+          >
             <Text style={styles.appleLabel}> Continue with Apple</Text>
           </Pressable>
-          <Pressable onPress={next} style={styles.googleBtn}>
+          <Pressable
+            onPress={next}
+            style={styles.googleBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Continue with Google"
+          >
             <Text style={styles.googleLabel}>G  Continue with Google</Text>
           </Pressable>
-          <Pressable onPress={next} style={styles.emailBtn}>
+          <Pressable
+            onPress={next}
+            style={styles.emailBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Continue with email"
+          >
             <Text style={styles.emailLabel}>Continue with email</Text>
           </Pressable>
         </View>

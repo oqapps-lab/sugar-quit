@@ -1,5 +1,6 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../../components/ui/PillCTA';
@@ -11,6 +12,15 @@ import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '..
  */
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
+
+  const goWeekly = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.push('/(tabs)/progress/weekly');
+  };
+  const goMilestones = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.push('/(tabs)/progress/milestones');
+  };
 
   const nodes = [
     { label: 'Arrival', phase: 'Week 1', state: 'done' as const },
@@ -47,8 +57,13 @@ export default function ProgressScreen() {
           </Text>
         </View>
 
-        {/* Timeline */}
-        <View style={styles.timelineSection}>
+        {/* Timeline (weekly preview) */}
+        <Pressable
+          onPress={goWeekly}
+          style={styles.timelineSection}
+          accessibilityRole="button"
+          accessibilityLabel="Weekly progress details"
+        >
           <View style={styles.horizonLine} />
           <View style={styles.nodesRow}>
             {nodes.map((n, i) => (
@@ -83,7 +98,7 @@ export default function ProgressScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </Pressable>
 
         {/* Details card */}
         <View style={styles.detailsCard}>
@@ -122,8 +137,13 @@ export default function ProgressScreen() {
           />
         </View>
 
-        {/* Quick stats row */}
-        <View style={styles.statsRow}>
+        {/* Quick stats row (milestones entry) */}
+        <Pressable
+          onPress={goMilestones}
+          style={styles.statsRow}
+          accessibilityRole="button"
+          accessibilityLabel="Milestones — your stones"
+        >
           <View style={styles.stat}>
             <Text style={styles.statNumber}>42</Text>
             <Text style={styles.statLabel}>cravings met</Text>
@@ -138,7 +158,7 @@ export default function ProgressScreen() {
             <Text style={styles.statNumber}>89%</Text>
             <Text style={styles.statLabel}>success</Text>
           </View>
-        </View>
+        </Pressable>
       </ScrollView>
 
     </AtmosphericGradient>

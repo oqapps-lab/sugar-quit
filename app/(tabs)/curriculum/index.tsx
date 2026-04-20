@@ -91,12 +91,18 @@ export default function Curriculum() {
               </View>
 
               {phase.lessons.length === 0 ? (
-                <GlassCard tint="default" style={styles.lockedCard}>
-                  <View style={styles.lockedRow}>
-                    <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>🔒</Text></View>
-                    <Text style={styles.lockedText}>Unlocks as you walk</Text>
-                  </View>
-                </GlassCard>
+                <Pressable
+                  onPress={() => router.push('/(modals)/paywall-contextual')}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${phase.name} phase locked — upgrade to unlock`}
+                >
+                  <GlassCard tint="default" style={styles.lockedCard}>
+                    <View style={styles.lockedRow}>
+                      <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>🔒</Text></View>
+                      <Text style={styles.lockedText}>Unlocks as you walk</Text>
+                    </View>
+                  </GlassCard>
+                </Pressable>
               ) : (
                 <View style={styles.lessonsList}>
                   {phase.lessons.map((lesson) => (

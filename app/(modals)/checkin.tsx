@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,6 +7,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 type Step = 'sugar' | 'mood' | 'done';
 type Sugar = 'free' | 'some' | 'relapse';
@@ -31,17 +32,28 @@ export default function CheckIn() {
   const [step, setStep] = useState<Step>('sugar');
   const [sugar, setSugar] = useState<Sugar | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
+  const completeCheckIn = useUserStore((s) => s.completeCheckIn);
+  const streakDays = useUserStore((s) => s.streakDays);
 
   const onSugar = (s: Sugar) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // Per UX-SPEC §4.2: Check-in submit = Medium impact
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSugar(s);
     setTimeout(() => setStep('mood'), 240);
   };
   const onMood = (m: Mood) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // Per UX-SPEC §4.2: Check-in submit = Medium impact
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setMood(m);
     setTimeout(() => setStep('done'), 240);
   };
+
+  // C3: Streak increment celebration on step 3 mount — Success notification
+  useEffect(() => {
+    if (step === 'done') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+  }, [step]);
 
   return (
     <AtmosphericGradient theme="dawn">
