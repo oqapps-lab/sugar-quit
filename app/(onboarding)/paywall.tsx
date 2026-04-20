@@ -1,10 +1,12 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { getTiers, purchase, type Tier as AdaptyTier } from '../../lib/adapty';
 import { useUserStore } from '../../stores/useUserStore';
 
 type Tier = 'annual' | 'monthly';
@@ -19,14 +21,51 @@ const BENEFITS = [
 export default function Paywall() {
   const insets = useSafeAreaInsets();
   const [tier, setTier] = useState<Tier>('annual');
+  const [tiers, setTiers] = useState<AdaptyTier[] | null>(null);
+  const [purchasing, setPurchasing] = useState(false);
   const firstName = useUserStore((s) => s.firstName);
   const peakHour = useUserStore((s) => s.peakHour);
+  const setPremium = useUserStore((s) => s.setPremium);
   const eyebrow = firstName
     ? `${firstName.toUpperCase()}, YOUR PLAN IS READY`
     : 'YOUR PLAN IS READY';
   const triggerText = peakHour
     ? `Trigger prediction tuned to your ${peakHour.toLowerCase()}`
     : 'Trigger prediction tuned to your peak hour';
+
+  // Fetch real Adapty tiers (mock-fallback in Expo Go).
+  useEffect(() => {
+    let cancelled = false;
+    getTiers().then((t) => {
+      if (!cancelled) setTiers(t);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const annualPrice  = tiers?.find((t) => t.id === 'annual')?.priceLabel  ?? '$79.99';
+  const annualPerMo  = tiers?.find((t) => t.id === 'annual')?.perPeriodLabel ?? '$6.67 / month';
+  const monthlyPrice = tiers?.find((t) => t.id === 'monthly')?.priceLabel ?? '$9.99';
+
+  const onStartTrial = async () => {
+    if (purchasing) return;
+    setPurchasing(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const result = await purchase(tier);
+    setPurchasing(false);
+    if (!result.ok) {
+      if (result.code === 'cancelled') {
+        // Silent — user just backed out of the system sheet.
+        return;
+      }
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      // Even on error in skeleton mode, advance to auth so demo flow continues.
+      router.push('/(onboarding)/auth');
+      return;
+    }
+    setPremium(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    router.push('/(onboarding)/auth');
+  };
 
   return (
     <AtmosphericGradient theme="cravingProfile">
@@ -79,21 +118,27 @@ export default function Paywall() {
         <View style={styles.pricingRow}>
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
-            onPress={() => setTier('annual')}
+            onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setTier('annual'); }}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: tier === 'annual' }}
+            accessibilityLabel={`Annual plan, ${annualPrice}, ${annualPerMo}`}
           >
             {tier === 'annual' && <View style={styles.bestBadge}><Text style={styles.bestBadgeText}>BEST VALUE</Text></View>}
             <Text style={styles.priceLabel}>Annual</Text>
-            <Text style={styles.priceMain}>$79.99</Text>
-            <Text style={styles.pricePerMonth}>$6.67 / month</Text>
+            <Text style={styles.priceMain}>{annualPrice}</Text>
+            <Text style={styles.pricePerMonth}>{annualPerMo}</Text>
             <Text style={styles.priceSave}>save 44%</Text>
           </Pressable>
 
           <Pressable
             style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
-            onPress={() => setTier('monthly')}
+            onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setTier('monthly'); }}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: tier === 'monthly' }}
+            accessibilityLabel={`Monthly plan, ${monthlyPrice} per month`}
           >
             <Text style={styles.priceLabel}>Monthly</Text>
-            <Text style={styles.priceMain}>$9.99</Text>
+            <Text style={styles.priceMain}>{monthlyPrice}</Text>
             <Text style={styles.pricePerMonth}>per month</Text>
             <Text style={styles.priceSave}>switch anytime</Text>
           </Pressable>
@@ -103,8 +148,9 @@ export default function Paywall() {
       {/* Sticky CTA footer */}
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
         <PillCTA
-          label="Start 7 days free"
-          onPress={() => router.push('/(onboarding)/auth')}
+          label={purchasing ? '…' : 'Start 7 days free'}
+          onPress={onStartTrial}
+          disabled={purchasing}
           style={styles.cta}
         />
         <View style={styles.trialTimeline}>

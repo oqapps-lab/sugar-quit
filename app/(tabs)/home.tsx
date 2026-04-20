@@ -35,6 +35,9 @@ export default function Home() {
   const sosUsedThisMonth = useUserStore((s) => s.sosUsedThisMonth);
   const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
   const sosDisclaimerAccepted = useUserStore((s) => s.sosDisclaimerAccepted);
+  const freezesAvail = useUserStore((s) => s.streakFreezesAvailableThisWeek);
+  const freezesUsed = useUserStore((s) => s.streakFreezesUsedThisWeek);
+  const freezesLeft = Math.max(0, freezesAvail - freezesUsed);
 
   // Auto-triggers on mount
   useEffect(() => {
@@ -265,7 +268,7 @@ export default function Home() {
           <View
             style={styles.streakSection}
             accessibilityRole="text"
-            accessibilityLabel={`Streak: ${streakDays} дней без сахара`}
+            accessibilityLabel={`Streak: ${streakDays} дней без сахара. ${freezesLeft} заморозок осталось на этой неделе.`}
           >
             <Text style={styles.streakNumber}>{streakDays}</Text>
             <Text style={styles.streakCaption}>{`DAYS CLEAN · BEST ${bestStreak}`}</Text>
@@ -273,6 +276,15 @@ export default function Home() {
               {[...Array(14)].map((_, i) => (
                 <TokenDot key={i} filled={i < streakDays} size={6} />
               ))}
+            </View>
+            {/* Streak freeze indicator — small chip under the streak */}
+            <View style={styles.freezeIndicator}>
+              <Text style={styles.freezeGlyph}>❄</Text>
+              <Text style={styles.freezeText}>
+                {freezesLeft === 0
+                  ? 'No freezes left this week'
+                  : `${freezesLeft} freeze${freezesLeft === 1 ? '' : 's'} left this week`}
+              </Text>
             </View>
           </View>
         )}
@@ -591,4 +603,26 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   streakDots: { flexDirection: 'row', gap: 6 },
+
+  freezeIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    marginTop: spacing.md,
+  },
+  freezeGlyph: {
+    fontFamily: fonts.headlineBold,
+    fontSize: 12,
+    color: colors.primary,
+  },
+  freezeText: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
+    letterSpacing: tracking.wide,
+  },
 });

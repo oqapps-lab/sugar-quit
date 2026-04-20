@@ -1,9 +1,12 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 type Msg = { role: 'ai' | 'user'; text: string };
 
@@ -23,23 +26,97 @@ const SUGGESTIONS = [
   'A glass of water with lemon',
 ];
 
+// Offline-fallback: shown when the user has no connectivity. Pure-content tips
+// from FEATURES.md F1 — same advice pattern, no AI call needed.
+const OFFLINE_TIPS = [
+  'Set a 4-minute timer. Walk anywhere — the kitchen counts.',
+  'Drink a full glass of water before any decision.',
+  'Name the trigger in one word. Just label it.',
+  "If you eat, choose protein first. Cravings shrink with fat + fiber.",
+];
+
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
+  const logSosOpen = useUserStore((s) => s.logSosOpen);
+  const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
+  const isPremium = useUserStore((s) => s.isPremium);
   const [messages, setMessages] = useState<Msg[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [blocked, setBlocked] = useState(false);
+  const [showOffline, setShowOffline] = useState(false);
+  const sessionIdRef = useRef<string | null>(null);
+  const aiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // On mount: spend one SOS credit (or surface limit-reached UI). Heavy haptic
+  // per UX-SPEC §4.2 C1 — SOS is the most urgent surface in the app.
+  useEffect(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    const result = logSosOpen();
+    if (!result.allowed) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setBlocked(true);
+      return;
+    }
+    sessionIdRef.current = result.sessionId;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const send = () => {
     if (!input.trim()) return;
     const userMsg: Msg = { role: 'user', text: input };
     setMessages((m) => [...m, userMsg]);
     setInput('');
-    // Mock AI response
-    setTimeout(() => {
+    setShowOffline(false);
+    if (aiTimerRef.current) clearTimeout(aiTimerRef.current);
+    // Mock AI response (700ms). Offline-fallback fires after 6 s with no
+    // response arriving — graceful degradation per FEATURES.md F1.
+    let arrived = false;
+    aiTimerRef.current = setTimeout(() => {
+      arrived = true;
       setMessages((m) => [...m, ...AI_FOLLOWUP]);
       setShowSuggestions(true);
     }, 700);
+    setTimeout(() => {
+      if (!arrived) setShowOffline(true);
+    }, 6000);
   };
+
+  const onEnd = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const session = sessionIdRef.current ?? '';
+    router.replace({ pathname: '/(modals)/post-sos', params: { session } });
+  };
+
+  // Limit-reached state: free user already used all 3 SOS this month.
+  if (blocked) {
+    const tier = isPremium ? 'premium' : 'free';
+    return (
+      <AtmosphericGradient theme="dawn">
+        <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
+            <Text style={styles.backArrow}>←</Text>
+          </Pressable>
+          <View style={{ width: 40 }} />
+          <View style={{ width: 40 }} />
+        </View>
+        <View style={styles.blockedContent}>
+          <Text style={styles.blockedEyebrow}>FREE LIMIT REACHED</Text>
+          <Text style={styles.blockedTitle}>You've used all {sosFreeLimit} SOS sessions this month.</Text>
+          <Text style={styles.blockedBody}>
+            Sugar Quit Premium gives you unlimited conversations — for the moments that matter most.
+          </Text>
+          <View style={styles.blockedActions}>
+            <PillCTA label="Try Premium free" onPress={() => router.replace('/(modals)/paywall-contextual')} />
+            <Pressable onPress={() => router.dismiss()} style={styles.blockedSkip}>
+              <Text style={styles.blockedSkipText}>Not now</Text>
+            </Pressable>
+          </View>
+          <Text style={styles.blockedTier}>Current plan: {tier}</Text>
+        </View>
+      </AtmosphericGradient>
+    );
+  }
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -56,7 +133,7 @@ export default function ChatScreen() {
             <View style={styles.headerDot} />
             <Text style={styles.headerLabel}>COACH IS HERE</Text>
           </View>
-          <Pressable onPress={() => router.dismiss()} style={styles.endBtn}>
+          <Pressable onPress={onEnd} style={styles.endBtn} accessibilityRole="button" accessibilityLabel="End SOS — go to reflection">
             <Text style={styles.endLabel}>End</Text>
           </Pressable>
         </View>
@@ -81,6 +158,18 @@ export default function ChatScreen() {
           {showSuggestions && (
             <View style={styles.suggestionsBlock}>
               {SUGGESTIONS.map((s, i) => (
+                <View key={i} style={styles.suggestionRow}>
+                  <View style={styles.suggestionDot} />
+                  <Text style={styles.suggestionText}>{s}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {showOffline && (
+            <View style={[styles.suggestionsBlock, styles.offlineBlock]}>
+              <Text style={styles.offlineLabel}>OFFLINE — TRY ONE OF THESE</Text>
+              {OFFLINE_TIPS.map((s, i) => (
                 <View key={i} style={styles.suggestionRow}>
                   <View style={styles.suggestionDot} />
                   <Text style={styles.suggestionText}>{s}</Text>
@@ -251,5 +340,62 @@ const styles = StyleSheet.create({
     color: colors.onPrimary,
     fontFamily: fonts.headlineBold,
     lineHeight: 18,
+  },
+
+  offlineBlock: {
+    borderColor: 'rgba(165,60,48,0.3)',
+    backgroundColor: 'rgba(255,237,217,0.7)',
+  },
+  offlineLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.xs,
+  },
+
+  // Limit-reached layout
+  blockedContent: {
+    flex: 1,
+    paddingHorizontal: spacing.xl,
+    justifyContent: 'center',
+    gap: spacing.sm,
+  },
+  blockedEyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+  },
+  blockedTitle: {
+    fontFamily: fonts.headlineExtraBold,
+    fontSize: typeScale.displayMedium,
+    color: colors.onSurface,
+    letterSpacing: -0.8,
+    lineHeight: 34,
+    marginTop: spacing.xs,
+  },
+  blockedBody: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurfaceVariant,
+    lineHeight: 24,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xl,
+  },
+  blockedActions: { gap: spacing.sm, alignItems: 'center' },
+  blockedSkip: { padding: spacing.md },
+  blockedSkipText: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+  },
+  blockedTier: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.outline,
+    letterSpacing: tracking.wide,
+    textAlign: 'center',
+    marginTop: spacing.xl,
   },
 });

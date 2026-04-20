@@ -7,44 +7,55 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../co
 import { useUserStore } from '../../../stores/useUserStore';
 
 type LessonState = 'done' | 'current' | 'upcoming' | 'locked';
-type Lesson = { day: number; title: string; minutes: number; state: LessonState };
+type LessonStatic = { day: number; title: string; minutes: number };
+type Lesson = LessonStatic & { state: LessonState };
 
-const PHASES: { name: string; days: string; lessons: Lesson[] }[] = [
+// Phase content is static; per-lesson state is computed at render time from
+// the user's current streak. Keeps the source of truth in the store, not in
+// hand-edited card metadata.
+const PHASES: { name: string; days: string; lessons: LessonStatic[]; locked?: boolean }[] = [
   {
     name: 'Acute',
     days: 'Days 1–3',
     lessons: [
-      { day: 1, title: 'Why sugar catches the brain',    minutes: 7, state: 'done' },
-      { day: 2, title: 'The 72-hour storm',               minutes: 5, state: 'done' },
-      { day: 3, title: 'First quiet morning',             minutes: 4, state: 'done' },
+      { day: 1, title: 'Why sugar catches the brain',    minutes: 7 },
+      { day: 2, title: 'The 72-hour storm',               minutes: 5 },
+      { day: 3, title: 'First quiet morning',             minutes: 4 },
     ],
   },
   {
     name: 'Adaptation',
     days: 'Days 4–7',
     lessons: [
-      { day: 4, title: 'Your 3pm pattern, mapped',        minutes: 6, state: 'done' },
-      { day: 5, title: 'Why fruit tastes bland',          minutes: 5, state: 'done' },
-      { day: 6, title: 'The sleep-sugar loop',            minutes: 6, state: 'done' },
-      { day: 7, title: 'One whole week',                  minutes: 4, state: 'done' },
+      { day: 4, title: 'Your 3pm pattern, mapped',        minutes: 6 },
+      { day: 5, title: 'Why fruit tastes bland',          minutes: 5 },
+      { day: 6, title: 'The sleep-sugar loop',            minutes: 6 },
+      { day: 7, title: 'One whole week',                  minutes: 4 },
     ],
   },
   {
     name: 'Clarity',
     days: 'Days 8–14',
     lessons: [
-      { day: 8, title: 'Your taste buds are waking up',   minutes: 5, state: 'current' },
-      { day: 9, title: 'Triggers without reactions',      minutes: 6, state: 'upcoming' },
-      { day: 10, title: 'The stress-sugar reflex',        minutes: 5, state: 'upcoming' },
-      { day: 11, title: 'Alternatives that actually work',minutes: 7, state: 'upcoming' },
+      { day: 8,  title: 'Your taste buds are waking up',   minutes: 5 },
+      { day: 9,  title: 'Triggers without reactions',      minutes: 6 },
+      { day: 10, title: 'The stress-sugar reflex',         minutes: 5 },
+      { day: 11, title: 'Alternatives that actually work', minutes: 7 },
     ],
   },
   {
     name: 'Integration',
     days: 'Days 15–30',
-    lessons: [], // locked phase
+    lessons: [], // locked phase (premium)
+    locked: true,
   },
 ];
+
+function computeLessonState(day: number, currentDay: number): LessonState {
+  if (day < currentDay) return 'done';
+  if (day === currentDay) return 'current';
+  return 'upcoming';
+}
 
 export default function Curriculum() {
   const insets = useSafeAreaInsets();
@@ -109,49 +120,52 @@ export default function Curriculum() {
                 </Pressable>
               ) : (
                 <View style={styles.lessonsList}>
-                  {phase.lessons.map((lesson) => (
-                    <Pressable key={lesson.day} onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}>
-                      <GlassCard
-                        tint={lesson.state === 'current' ? 'peach' : 'default'}
-                        style={[
-                          styles.lessonCard,
-                          lesson.state === 'current' && styles.lessonCardCurrent,
-                        ]}
-                      >
-                        <View style={styles.lessonRow}>
-                          <View style={[
-                            styles.dayBadge,
-                            lesson.state === 'current' && styles.dayBadgeCurrent,
-                            lesson.state === 'done' && styles.dayBadgeDone,
-                          ]}>
-                            <Text style={[
-                              styles.dayBadgeText,
-                              lesson.state === 'current' && styles.dayBadgeTextCurrent,
-                              lesson.state === 'done' && styles.dayBadgeTextDone,
+                  {phase.lessons.map((lesson) => {
+                    const state = computeLessonState(lesson.day, currentDay);
+                    return (
+                      <Pressable key={lesson.day} onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}>
+                        <GlassCard
+                          tint={state === 'current' ? 'peach' : 'default'}
+                          style={[
+                            styles.lessonCard,
+                            state === 'current' && styles.lessonCardCurrent,
+                          ]}
+                        >
+                          <View style={styles.lessonRow}>
+                            <View style={[
+                              styles.dayBadge,
+                              state === 'current' && styles.dayBadgeCurrent,
+                              state === 'done' && styles.dayBadgeDone,
                             ]}>
-                              {lesson.state === 'done' ? '✓' : lesson.day}
-                            </Text>
+                              <Text style={[
+                                styles.dayBadgeText,
+                                state === 'current' && styles.dayBadgeTextCurrent,
+                                state === 'done' && styles.dayBadgeTextDone,
+                              ]}>
+                                {state === 'done' ? '✓' : lesson.day}
+                              </Text>
+                            </View>
+                            <View style={styles.lessonText}>
+                              <Text style={[
+                                styles.lessonTitle,
+                                state === 'current' && styles.lessonTitleCurrent,
+                                state === 'upcoming' && styles.lessonTitleUpcoming,
+                              ]}>
+                                {lesson.title}
+                              </Text>
+                              <Text style={styles.lessonMeta}>
+                                {lesson.minutes} min · Day {lesson.day}
+                                {state === 'current' && ' · today'}
+                              </Text>
+                            </View>
+                            {state === 'current' && (
+                              <View style={styles.currentArrow}><Text style={styles.currentArrowText}>→</Text></View>
+                            )}
                           </View>
-                          <View style={styles.lessonText}>
-                            <Text style={[
-                              styles.lessonTitle,
-                              lesson.state === 'current' && styles.lessonTitleCurrent,
-                              lesson.state === 'upcoming' && styles.lessonTitleUpcoming,
-                            ]}>
-                              {lesson.title}
-                            </Text>
-                            <Text style={styles.lessonMeta}>
-                              {lesson.minutes} min · Day {lesson.day}
-                              {lesson.state === 'current' && ' · today'}
-                            </Text>
-                          </View>
-                          {lesson.state === 'current' && (
-                            <View style={styles.currentArrow}><Text style={styles.currentArrowText}>→</Text></View>
-                          )}
-                        </View>
-                      </GlassCard>
-                    </Pressable>
-                  ))}
+                        </GlassCard>
+                      </Pressable>
+                    );
+                  })}
                 </View>
               )}
             </View>

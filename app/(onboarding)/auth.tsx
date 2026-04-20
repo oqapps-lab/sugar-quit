@@ -1,17 +1,147 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import * as Haptics from 'expo-haptics';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, typeScale } from '../../constants/tokens';
+import { isSupabaseConfigured } from '../../lib/env';
+import { signInWithEmail, signUpWithEmail } from '../../lib/supabase';
 
 /**
- * 1.16 Auth — Sign in with Apple / Google / Email
- * SKELETON — full OAuth flow to be wired by onboarding agent.
+ * 1.16 Auth — Sign in / Sign up.
+ *
+ * Apple/Google buttons are placeholders — real native sign-in requires
+ * `expo-apple-authentication` + a dev client (won't work in Expo Go). For now
+ * they advance the flow as if successful, since we're still in skeleton mode.
+ *
+ * Email auth uses Supabase password flow when keys are configured. If not,
+ * we still advance the flow so the demo can be walked end-to-end.
  */
 export default function Auth() {
   const insets = useSafeAreaInsets();
+  const [mode, setMode] = useState<'menu' | 'email'>('menu');
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const next = () => router.push('/(onboarding)/push-permission');
+  const advanceToPushPermission = () => router.push('/(onboarding)/push-permission');
+
+  const onApple = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // TODO(stage-6): expo-apple-authentication + supabase.auth.signInWithIdToken
+    advanceToPushPermission();
+  };
+  const onGoogle = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // TODO(stage-6): expo-auth-session/google + supabase.auth.signInWithIdToken
+    advanceToPushPermission();
+  };
+  const onEmail = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setMode('email');
+  };
+
+  const onSubmit = async () => {
+    if (!email.trim() || !password.trim()) {
+      setError('Email and password required');
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const fn = isSignUp ? signUpWithEmail : signInWithEmail;
+    const result = await fn(email.trim(), password);
+    setSubmitting(false);
+    if (!result.ok) {
+      // If Supabase isn't configured we still let the demo flow continue —
+      // shouldn't block onboarding while building.
+      if (!isSupabaseConfigured) {
+        advanceToPushPermission();
+        return;
+      }
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setError(result.error);
+      return;
+    }
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    advanceToPushPermission();
+  };
+
+  if (mode === 'email') {
+    return (
+      <AtmosphericGradient theme="dawn">
+        <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
+          <View style={styles.hero}>
+            <View style={styles.mark} />
+            <Text style={styles.brand}>Sugar Quit</Text>
+            <Text style={styles.title}>{isSignUp ? 'Create your account' : 'Welcome back'}</Text>
+            <Text style={styles.sub}>{isSignUp ? 'Save your plan, streak, and SOS history.' : 'Pick up where you left off.'}</Text>
+          </View>
+
+          <View style={styles.formCol}>
+            <View style={styles.inputWrap}>
+              <TextInput
+                value={email}
+                onChangeText={setEmail}
+                placeholder="email@example.com"
+                placeholderTextColor={colors.outline}
+                style={styles.input}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                accessibilityLabel="Email"
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                placeholder="password"
+                placeholderTextColor={colors.outline}
+                style={styles.input}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="done"
+                onSubmitEditing={onSubmit}
+                accessibilityLabel="Password"
+              />
+            </View>
+
+            {error && <Text style={styles.errorText}>{error}</Text>}
+            {!isSupabaseConfigured && (
+              <Text style={styles.configHint}>
+                Supabase not configured — demo mode (any input continues).
+              </Text>
+            )}
+
+            <PillCTA
+              label={submitting ? '…' : isSignUp ? 'Create account' : 'Sign in'}
+              onPress={onSubmit}
+              disabled={submitting}
+            />
+            <Pressable onPress={() => setIsSignUp((v) => !v)} style={styles.toggleBtn}>
+              <Text style={styles.toggleText}>
+                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
+              </Text>
+            </Pressable>
+            <Pressable onPress={() => setMode('menu')} style={styles.backBtn}>
+              <Text style={styles.toggleText}>← Other options</Text>
+            </Pressable>
+          </View>
+
+          <Text style={styles.terms}>
+            By continuing, you agree to our <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Privacy</Text>.
+          </Text>
+        </View>
+      </AtmosphericGradient>
+    );
+  }
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -25,7 +155,7 @@ export default function Auth() {
 
         <View style={styles.buttonsCol}>
           <Pressable
-            onPress={next}
+            onPress={onApple}
             style={styles.appleBtn}
             accessibilityRole="button"
             accessibilityLabel="Continue with Apple"
@@ -33,7 +163,7 @@ export default function Auth() {
             <Text style={styles.appleLabel}> Continue with Apple</Text>
           </Pressable>
           <Pressable
-            onPress={next}
+            onPress={onGoogle}
             style={styles.googleBtn}
             accessibilityRole="button"
             accessibilityLabel="Continue with Google"
@@ -41,7 +171,7 @@ export default function Auth() {
             <Text style={styles.googleLabel}>G  Continue with Google</Text>
           </Pressable>
           <Pressable
-            onPress={next}
+            onPress={onEmail}
             style={styles.emailBtn}
             accessibilityRole="button"
             accessibilityLabel="Continue with email"
@@ -73,6 +203,40 @@ const styles = StyleSheet.create({
   googleLabel: { color: colors.onSurface, fontFamily: fonts.headlineSemibold, fontSize: typeScale.bodyLarge },
   emailBtn: { paddingVertical: 14, alignItems: 'center' },
   emailLabel: { color: colors.onSurfaceVariant, fontFamily: fonts.bodyMedium, fontSize: typeScale.bodyMedium },
+
+  formCol: { gap: spacing.sm, alignItems: 'stretch' },
+  inputWrap: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.8)',
+  },
+  input: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurface,
+    paddingVertical: spacing.md,
+  },
+  errorText: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodySmall,
+    color: colors.error,
+    textAlign: 'center',
+  },
+  configHint: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
+    textAlign: 'center',
+  },
+  toggleBtn: { padding: spacing.sm, alignItems: 'center' },
+  backBtn: { padding: spacing.sm, alignItems: 'center' },
+  toggleText: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
+    color: colors.primary,
+  },
 
   terms: { fontFamily: fonts.bodyLight, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, textAlign: 'center', opacity: 0.7 },
   termsLink: { fontFamily: fonts.bodySemibold, color: colors.primary, textDecorationLine: 'underline' },

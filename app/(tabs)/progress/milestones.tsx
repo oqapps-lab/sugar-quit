@@ -4,11 +4,15 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { MILESTONE_DAYS, useUserStore } from '../../../stores/useUserStore';
 
 /**
  * 2.3.3 Milestones — "Your stones".
- * Dark-horizon grid of 7 milestone cards (earned / current / upcoming / goal).
- * SKELETON.
+ * Dark-horizon grid of 7 milestone cards. Status is computed from streakDays:
+ *  - day < streakDays → earned
+ *  - day === current milestone (largest day ≤ streakDays) → current
+ *  - day > streakDays && day < 90 → upcoming
+ *  - day === 90 → goal
  */
 type Status = 'earned' | 'current' | 'upcoming' | 'goal';
 
@@ -18,18 +22,37 @@ type Milestone = {
   status: Status;
 };
 
-const MILESTONES: Milestone[] = [
-  { day: 1,  title: 'The first decision',  status: 'earned' },
-  { day: 3,  title: 'First quiet morning', status: 'earned' },
-  { day: 7,  title: 'First week, whole',   status: 'earned' },
-  { day: 14, title: 'Adaptation',          status: 'current' },
-  { day: 30, title: 'Taste reset',         status: 'upcoming' },
-  { day: 60, title: 'New identity',        status: 'upcoming' },
-  { day: 90, title: 'The horizon',         status: 'goal' },
-];
+const TITLES: Record<number, string> = {
+  1:  'The first decision',
+  3:  'First quiet morning',
+  7:  'First week, whole',
+  14: 'Adaptation',
+  30: 'Taste reset',
+  60: 'New identity',
+  90: 'The horizon',
+};
+
+function buildMilestones(streakDays: number): Milestone[] {
+  // The "current" stone is the largest milestone ≤ streakDays. Everything below
+  // it is earned, everything above is upcoming. Day 90 always reads as goal
+  // unless reached.
+  const earnedDays = MILESTONE_DAYS.filter((d) => d <= streakDays);
+  const currentDay = earnedDays.length > 0 ? earnedDays[earnedDays.length - 1] : null;
+  return MILESTONE_DAYS.map((day) => {
+    let status: Status;
+    if (day === 90 && streakDays < 90) status = 'goal';
+    else if (day === currentDay) status = 'current';
+    else if (day < streakDays) status = 'earned';
+    else status = 'upcoming';
+    return { day, title: TITLES[day] ?? `Day ${day}`, status };
+  });
+}
 
 export default function Milestones() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
+  const milestones = buildMilestones(streakDays);
+  const earnedCount = milestones.filter((m) => m.status === 'earned' || m.status === 'current').length;
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -47,14 +70,16 @@ export default function Milestones() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.heroNumber}>8 stones placed</Text>
+        <Text style={styles.heroNumber}>
+          {earnedCount === 1 ? '1 stone placed' : `${earnedCount} stones placed`}
+        </Text>
         <Text style={styles.heroSub}>Each one a day you chose yourself.</Text>
 
         <View style={styles.grid}>
-          {MILESTONES.map((m) => (
+          {milestones.map((m) => (
             <MilestoneCard key={m.day} milestone={m} />
           ))}
         </View>

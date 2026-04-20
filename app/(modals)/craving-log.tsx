@@ -7,6 +7,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * 3.3 Quick craving log.
@@ -24,10 +25,18 @@ const OUTCOMES: { key: Outcome; title: string; body: string; tint: 'mint' | 'def
 
 export default function CravingLog() {
   const insets = useSafeAreaInsets();
+  const logCraving = useUserStore((s) => s.logCraving);
   const [intensity, setIntensity] = useState<Intensity | null>(null);
   const [triggers, setTriggers] = useState<string[]>([]);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [notes, setNotes] = useState('');
+
+  const onSave = () => {
+    if (intensity === null || outcome === null) return;
+    logCraving({ intensity, triggers, outcome, notes: notes.trim() });
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    router.dismiss();
+  };
 
   const toggleTrigger = (t: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -110,7 +119,7 @@ export default function CravingLog() {
         </ScrollView>
 
         <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-          <PillCTA label="Save craving" onPress={() => router.dismiss()} disabled={!canSave} />
+          <PillCTA label="Save craving" onPress={onSave} disabled={!canSave} />
         </View>
       </KeyboardAvoidingView>
     </AtmosphericGradient>

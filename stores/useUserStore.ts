@@ -11,6 +11,23 @@ export type CheckInStatus = 'free' | 'some' | 'relapse';
 export type Consumption = 'little' | 'moderate' | 'alot' | 'great' | 'runs';
 export type PastAttempts = 'first' | 'short' | 'longer' | 'many';
 export type WorkEnvironment = 'office' | 'home' | 'feet' | 'mobile';
+export type SosOutcome = 'walked' | 'softer' | 'gave';
+
+export type CravingLogEntry = {
+  /** ISO timestamp (Date.now() in ms is fine for sorting; ISO is for portability). */
+  id: string;
+  timestamp: string; // ISO 8601
+  intensity: 1 | 2 | 3 | 4 | 5;
+  triggers: string[];
+  outcome: 'walked' | 'gave';
+  notes: string; // empty string allowed
+};
+
+export type SosLogEntry = {
+  id: string;
+  timestamp: string; // ISO 8601, when the user opened SOS
+  outcome: SosOutcome | null; // filled when post-sos modal completes; null while session is open
+};
 
 export type UserState = {
   // identity
@@ -38,6 +55,10 @@ export type UserState = {
   sosResetMonth: string | null; // "YYYY-MM" tracked for auto-reset
   sosDisclaimerAccepted: boolean;
   sosFreeLimit: number; // 3 on free, Infinity on premium
+  sosLog: SosLogEntry[]; // every open + outcome (newest last)
+
+  // craving log
+  cravings: CravingLogEntry[]; // newest last
 
   // milestones
   milestonesCelebrated: number[]; // [1, 3, 7, 14, 30, 60, 90] once each
@@ -63,8 +84,10 @@ export type UserActions = {
   completeCheckIn: (status: CheckInStatus) => void;
   useStreakFreeze: () => boolean; // returns true if used successfully
   resetStreak: () => void;
-  logSosOpen: () => { allowed: boolean; remainingThisMonth: number };
+  logSosOpen: () => { allowed: boolean; remainingThisMonth: number; sessionId: string | null };
+  logSosOutcome: (sessionId: string, outcome: SosOutcome) => void;
   acceptSosDisclaimer: () => void;
+  logCraving: (entry: Omit<CravingLogEntry, 'id' | 'timestamp'>) => void;
   markMilestoneCelebrated: (day: number) => void;
   setPremium: (v: boolean) => void;
   markPushDenied: () => void;
@@ -154,6 +177,9 @@ const initialState: UserState = {
   sosResetMonth: null,
   sosDisclaimerAccepted: false,
   sosFreeLimit: 3,
+  sosLog: [],
+
+  cravings: [],
 
   milestonesCelebrated: [],
 
@@ -256,20 +282,61 @@ export const useUserStore = create<UserStore>()(
           if (state.sosResetMonth !== currentMonth) {
             set({ sosResetMonth: currentMonth, sosUsedThisMonth: 0 });
           }
-          return { allowed: false, remainingThisMonth: 0 };
+          return { allowed: false, remainingThisMonth: 0, sessionId: null };
         }
 
         const next = used + 1;
+        const sessionId = `sos_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        const session: SosLogEntry = {
+          id: sessionId,
+          timestamp: new Date().toISOString(),
+          outcome: null,
+        };
         set({
           sosUsedThisMonth: next,
           sosResetMonth: currentMonth,
+          sosLog: [...state.sosLog, session],
         });
 
         const remaining = Number.isFinite(limit) ? Math.max(0, limit - next) : Infinity;
-        return { allowed: true, remainingThisMonth: remaining };
+        return { allowed: true, remainingThisMonth: remaining, sessionId };
+      },
+
+      logSosOutcome: (sessionId, outcome) => {
+        const state = get();
+        const idx = state.sosLog.findIndex((s) => s.id === sessionId);
+        if (idx < 0) {
+          // Session not found — append a stand-alone outcome entry so the data
+          // isn't lost (covers the case where post-sos opens without going
+          // through logSosOpen, e.g. deep link).
+          set({
+            sosLog: [
+              ...state.sosLog,
+              {
+                id: sessionId || `sos_${Date.now()}`,
+                timestamp: new Date().toISOString(),
+                outcome,
+              },
+            ],
+          });
+          return;
+        }
+        const next = [...state.sosLog];
+        next[idx] = { ...next[idx], outcome };
+        set({ sosLog: next });
       },
 
       acceptSosDisclaimer: () => set({ sosDisclaimerAccepted: true }),
+
+      logCraving: (entry) => {
+        const state = get();
+        const full: CravingLogEntry = {
+          ...entry,
+          id: `craving_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+          timestamp: new Date().toISOString(),
+        };
+        set({ cravings: [...state.cravings, full] });
+      },
 
       markMilestoneCelebrated: (day) => {
         const state = get();
@@ -295,7 +362,24 @@ export const useUserStore = create<UserStore>()(
     {
       name: 'sugarquit.user',
       storage: createJSONStorage(() => AsyncStorage),
-      version: 1,
+      version: 2,
+      // v1 → v2: added motivations/consumption/pastAttempts/workEnvironment + sosLog/cravings.
+      // Hydrate older payloads with sane defaults so existing users don't reset.
+      migrate: (persisted: any, fromVersion) => {
+        if (!persisted || typeof persisted !== 'object') return persisted;
+        if (fromVersion < 2) {
+          return {
+            ...persisted,
+            motivations: persisted.motivations ?? [],
+            consumption: persisted.consumption ?? null,
+            pastAttempts: persisted.pastAttempts ?? null,
+            workEnvironment: persisted.workEnvironment ?? null,
+            sosLog: persisted.sosLog ?? [],
+            cravings: persisted.cravings ?? [],
+          };
+        }
+        return persisted;
+      },
       // Persist everything in UserState — actions are re-attached on rehydrate.
       partialize: (state) => ({
         onboarded: state.onboarded,
@@ -316,6 +400,8 @@ export const useUserStore = create<UserStore>()(
         sosResetMonth: state.sosResetMonth,
         sosDisclaimerAccepted: state.sosDisclaimerAccepted,
         sosFreeLimit: state.sosFreeLimit,
+        sosLog: state.sosLog,
+        cravings: state.cravings,
         milestonesCelebrated: state.milestonesCelebrated,
         isPremium: state.isPremium,
         pushPermissionDenied: state.pushPermissionDenied,

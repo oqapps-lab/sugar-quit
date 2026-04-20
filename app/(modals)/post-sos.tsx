@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -7,15 +7,18 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore, type SosOutcome } from '../../stores/useUserStore';
 
 /**
  * 4.5 Post-SOS reflection.
  * Non-judgmental: any answer is valid data, no moral framing.
+ *
+ * Receives optional `?session=<sosId>` so we can attach the outcome to the
+ * same SosLogEntry that logSosOpen created. If absent, logSosOutcome creates
+ * a stand-alone entry.
  */
 
-type Answer = 'walked' | 'softer' | 'gave';
-
-const ANSWERS: { key: Answer; title: string; body: string; tint: 'mint' | 'peach' | 'default' }[] = [
+const ANSWERS: { key: SosOutcome; title: string; body: string; tint: 'mint' | 'peach' | 'default' }[] = [
   { key: 'walked', title: 'Walked through it',        body: "The wave came, you stayed.",              tint: 'mint' },
   { key: 'softer', title: 'Softer, but still there',  body: 'Noisier than before, quieter than peak.', tint: 'peach' },
   { key: 'gave',   title: 'Gave in to it',            body: "Honest answer. Data, not failure.",       tint: 'default' },
@@ -23,11 +26,21 @@ const ANSWERS: { key: Answer; title: string; body: string; tint: 'mint' | 'peach
 
 export default function PostSOS() {
   const insets = useSafeAreaInsets();
-  const [picked, setPicked] = useState<Answer | null>(null);
+  const params = useLocalSearchParams<{ session?: string }>();
+  const sessionId = typeof params.session === 'string' ? params.session : '';
+  const logSosOutcome = useUserStore((s) => s.logSosOutcome);
+  const [picked, setPicked] = useState<SosOutcome | null>(null);
 
-  const onPick = (a: Answer) => {
+  const onPick = (a: SosOutcome) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setPicked(a);
+  };
+
+  const onSave = () => {
+    if (!picked) return;
+    logSosOutcome(sessionId, picked);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    router.dismiss();
   };
 
   return (
@@ -47,7 +60,13 @@ export default function PostSOS() {
 
         <View style={styles.cards}>
           {ANSWERS.map((a) => (
-            <Pressable key={a.key} onPress={() => onPick(a.key)}>
+            <Pressable
+              key={a.key}
+              onPress={() => onPick(a.key)}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: picked === a.key }}
+              accessibilityLabel={`${a.title}. ${a.body}`}
+            >
               <GlassCard tint={a.tint} style={[styles.card, picked === a.key && styles.cardActive]}>
                 <View style={styles.row}>
                   <View style={{ flex: 1, gap: 2 }}>
@@ -65,7 +84,7 @@ export default function PostSOS() {
       </View>
 
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Save & close" onPress={() => router.dismiss()} disabled={!picked} />
+        <PillCTA label="Save & close" onPress={onSave} disabled={!picked} />
       </View>
     </AtmosphericGradient>
   );

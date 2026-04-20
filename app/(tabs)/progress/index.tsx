@@ -33,6 +33,19 @@ export default function ProgressScreen() {
     { label: 'Horizon', phase: 'Day 90', state: 'goal' as const },
   ];
 
+  // Health Timeline — physiological markers per FEATURES.md.
+  // Each entry has a `unlocksAt` day. Items with day <= currentDay show as
+  // "happening" (active state); the rest read as quiet upcoming text.
+  const healthMarkers = [
+    { day: 1,  label: 'Insulin spikes soften',          detail: 'Within hours of cutting refined sugar.' },
+    { day: 3,  label: 'Cravings peak, then ease',       detail: 'Dopamine receptors recalibrating.' },
+    { day: 7,  label: 'Sleep depth increases',          detail: 'Cortisol rhythm normalizing.' },
+    { day: 14, label: 'Taste buds regenerate',          detail: 'Fruit registers ~40% sweeter.' },
+    { day: 30, label: 'Liver fat measurably reduces',   detail: 'Average ~10% drop in NAFLD markers.' },
+    { day: 60, label: 'Inflammation markers drop',      detail: 'CRP and HbA1c trending down.' },
+    { day: 90, label: 'Insulin sensitivity peaks',      detail: 'Metabolic flexibility restored.' },
+  ];
+
   return (
     <AtmosphericGradient theme="darkHorizon">
       {/* Header */}
@@ -138,6 +151,37 @@ export default function ProgressScreen() {
             onPress={() => router.push('/(modals)/sos')}
             style={styles.sessionCTA}
           />
+        </View>
+
+        {/* Health Timeline — physiological markers per FEATURES.md G4 */}
+        <View style={styles.healthSection}>
+          <Text style={styles.sectionLabel}>HEALTH TIMELINE</Text>
+          <Text style={styles.sectionHint}>What's happening in your body, not just your mind.</Text>
+          <View style={styles.healthList}>
+            {healthMarkers.map((m) => {
+              const reached = currentDay >= m.day;
+              return (
+                <View key={m.day} style={styles.healthRow}>
+                  <View style={[styles.healthDot, reached && styles.healthDotActive]} />
+                  <View style={styles.healthLine} />
+                  <View style={styles.healthText}>
+                    <View style={styles.healthHeadRow}>
+                      <Text style={[styles.healthDay, reached && styles.healthDayActive]}>
+                        {`DAY ${m.day}`}
+                      </Text>
+                      {reached && <Text style={styles.healthBadge}>HAPPENING</Text>}
+                    </View>
+                    <Text style={[styles.healthLabel, reached && styles.healthLabelActive]}>
+                      {m.label}
+                    </Text>
+                    <Text style={[styles.healthDetail, reached && styles.healthDetailActive]}>
+                      {m.detail}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
         </View>
 
         {/* Quick stats row (milestones entry) */}
@@ -394,4 +438,90 @@ const styles = StyleSheet.create({
     width: 1, height: 32,
     backgroundColor: 'rgba(255,255,255,0.1)',
   },
+
+  // Health Timeline
+  healthSection: { marginTop: spacing.xxl, marginBottom: spacing.xxl },
+  sectionLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primaryFixedDim,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.xs,
+  },
+  sectionHint: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodyMedium,
+    color: DARK_BODY,
+    lineHeight: 20,
+    marginBottom: spacing.xl,
+    maxWidth: 320,
+  },
+  healthList: { gap: spacing.lg },
+  healthRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
+    position: 'relative',
+  },
+  healthDot: {
+    width: 12, height: 12, borderRadius: radius.full,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    marginTop: 4,
+    zIndex: 1,
+  },
+  healthDotActive: {
+    backgroundColor: colors.primaryFixedDim,
+    shadowColor: colors.primaryFixedDim,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 4,
+  },
+  healthLine: {
+    position: 'absolute',
+    left: 5, // (12-2)/2 — half dot width minus half line width
+    top: 16,
+    bottom: -spacing.lg + 4,
+    width: 2,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+  },
+  healthText: { flex: 1, gap: 2, paddingBottom: spacing.xs },
+  healthHeadRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: 2,
+  },
+  healthDay: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: DARK_WHISPER,
+    letterSpacing: tracking.wide,
+  },
+  healthDayActive: { color: colors.primaryFixedDim },
+  healthBadge: {
+    fontFamily: fonts.label,
+    fontSize: 9,
+    color: colors.onPrimary,
+    backgroundColor: colors.primary,
+    letterSpacing: tracking.widest,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: radius.full,
+  },
+  healthLabel: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyLarge,
+    color: DARK_BODY,
+    lineHeight: 22,
+  },
+  healthLabelActive: { color: DARK_TEXT },
+  healthDetail: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodySmall,
+    color: DARK_WHISPER,
+    lineHeight: 18,
+    marginTop: 2,
+  },
+  healthDetailActive: { color: DARK_BODY },
 });
