@@ -15,6 +15,32 @@ import {
 } from '../../stores/useUserStore';
 
 /**
+ * Compute the day's forecast tone from streak + sos pressure. Eventually this
+ * will read day-of-week and history of slips per weekday; for now it's a
+ * rough heuristic to stop hard-coding "Light".
+ */
+type ForecastTone = 'Welcome' | 'Light' | 'Calm' | 'Steady' | 'Storm';
+
+function computeForecast(streakDays: number, sosUsedToday: number, isCheckedInToday: boolean): { tone: ForecastTone; sub: string } {
+  if (streakDays === 0) {
+    return { tone: 'Welcome', sub: 'Three soft tasks for today. No rush. No perfect.' };
+  }
+  if (sosUsedToday >= 2) {
+    return { tone: 'Storm', sub: 'Heavy day. Two SOS already. Be especially gentle with yourself.' };
+  }
+  if (sosUsedToday === 1) {
+    return { tone: 'Steady', sub: 'You reached out once. Hold the line — the next hours get easier.' };
+  }
+  if (streakDays >= 14) {
+    return { tone: 'Calm', sub: 'Two weeks in. Your body and brain found a rhythm.' };
+  }
+  if (isCheckedInToday) {
+    return { tone: 'Light', sub: 'Morning is calm. A small 3pm surge. Evening exhales into mint.' };
+  }
+  return { tone: 'Light', sub: 'Today opens quietly. Mark a check-in tonight to track the shape of it.' };
+}
+
+/**
  * Home — Daily Wellness Weather.
  * Two states: Day 1 (empty, welcoming tips) and Day N (with data — forecast cards).
  *
@@ -68,6 +94,10 @@ export default function Home() {
   const sosRemaining = Number.isFinite(sosFreeLimit)
     ? Math.max(0, sosFreeLimit - sosUsedThisMonth)
     : null;
+
+  // Today's forecast — computed, not hardcoded "Light"
+  const sosUsedToday = 0; // TODO: derive from sosLog when we add per-day filtering
+  const forecast = computeForecast(streakDays, sosUsedToday, isCheckedInToday);
 
   // Push re-permission banner: visible if denied >3 days ago
   let showPushBanner = false;
@@ -130,22 +160,19 @@ export default function Home() {
       >
         <Text style={styles.dateLabel}>{dateLabel}</Text>
 
-        {/* HERO — Day 1 vs Day N */}
+        {/* HERO — Day 1 vs Day N. "Today is X" reads as a weather forecast
+            for your craving day; X is computed from streak + SOS pressure. */}
         {isDayOne ? (
           <>
             <Text style={styles.heroPrefix}>Welcome,</Text>
             <Text style={styles.heroWord}>Day 1.</Text>
-            <Text style={styles.heroSub}>
-              Three soft tasks for today. No rush. No perfect.
-            </Text>
+            <Text style={styles.heroSub}>{forecast.sub}</Text>
           </>
         ) : (
           <>
             <Text style={styles.heroPrefix}>Today is</Text>
-            <Text style={styles.heroWord}>Light.</Text>
-            <Text style={styles.heroSub}>
-              Morning is calm. A small 3pm surge. Evening exhales into mint.
-            </Text>
+            <Text style={styles.heroWord}>{forecast.tone}.</Text>
+            <Text style={styles.heroSub}>{forecast.sub}</Text>
           </>
         )}
 
@@ -168,71 +195,129 @@ export default function Home() {
           </GlassCard>
         )}
 
-        {/* Forecast cards — only on Day N */}
+        {/* First-time legend — only on Day 1, teaches the four key concepts
+            so the user understands what every block on this screen means. */}
+        {isDayOne && (
+          <GlassCard tint="default" style={styles.legendCard}>
+            <Text style={styles.legendLabel}>WHAT EVERYTHING MEANS</Text>
+            <View style={styles.legendRow}>
+              <Text style={styles.legendGlyph}>⛅</Text>
+              <View style={styles.legendText}>
+                <Text style={styles.legendTitle}>Forecast</Text>
+                <Text style={styles.legendBody}>Light / Calm / Storm — your day's craving weather, like a real forecast.</Text>
+              </View>
+            </View>
+            <View style={styles.legendRow}>
+              <Text style={styles.legendGlyph}>◉</Text>
+              <View style={styles.legendText}>
+                <Text style={styles.legendTitle}>SOS button</Text>
+                <Text style={styles.legendBody}>Tap when a craving hits. AI talks you through it. 3 free per month.</Text>
+              </View>
+            </View>
+            <View style={styles.legendRow}>
+              <Text style={styles.legendGlyph}>❄</Text>
+              <View style={styles.legendText}>
+                <Text style={styles.legendTitle}>Streak Freeze</Text>
+                <Text style={styles.legendBody}>One missed day forgiven per week — your streak doesn't break.</Text>
+              </View>
+            </View>
+            <View style={styles.legendRow}>
+              <Text style={styles.legendGlyph}>◆</Text>
+              <View style={styles.legendText}>
+                <Text style={styles.legendTitle}>Streak</Text>
+                <Text style={styles.legendBody}>Days in a row sugar-free. Builds with each check-in.</Text>
+              </View>
+            </View>
+          </GlassCard>
+        )}
+
+        {/* Forecast cards — every one is tappable, opens the explainer modal
+            with the slot context (morning / peak / evening). */}
         {!isDayOne && (
           <View style={styles.cardsCol}>
-            <GlassCard tint="default" style={styles.forecastCard}>
-              <View style={styles.forecastRow}>
-                <View style={styles.forecastText}>
-                  <Text style={styles.timeLabel}>08:00 — 12:00</Text>
-                  <Text style={styles.forecastTitle}>Calm</Text>
-                  <Text style={styles.forecastBody}>
-                    Low risk. Cortisol stable. Good for deep work.
-                  </Text>
+            <Pressable
+              onPress={() => router.push('/(modals)/forecast-window?slot=morning')}
+              accessibilityRole="button"
+              accessibilityLabel="Calm morning window — tap to learn more"
+            >
+              <GlassCard tint="default" style={styles.forecastCard}>
+                <View style={styles.forecastRow}>
+                  <View style={styles.forecastText}>
+                    <Text style={styles.timeLabel}>08:00 — 12:00</Text>
+                    <Text style={styles.forecastTitle}>Calm</Text>
+                    <Text style={styles.forecastBody}>
+                      Low risk. Cortisol stable. Good for deep work.
+                    </Text>
+                  </View>
+                  <View style={[styles.dotLarge, { backgroundColor: colors.tertiaryContainer }]} />
                 </View>
-                <View style={[styles.dotLarge, { backgroundColor: colors.tertiaryContainer }]} />
-              </View>
-            </GlassCard>
+              </GlassCard>
+            </Pressable>
 
-            <GlassCard tint="peach" style={styles.forecastCardPeak}>
-              <View style={styles.forecastRow}>
-                <View style={styles.forecastText}>
-                  <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
-                  <Text style={styles.forecastTitlePeak}>High surge</Text>
-                  <Text style={styles.forecastBodyPeak}>
-                    Energy dip triggers craving response.
-                  </Text>
+            <Pressable
+              onPress={() => router.push('/(modals)/forecast-window?slot=peak')}
+              accessibilityRole="button"
+              accessibilityLabel="Peak surge window — tap to see your plan"
+            >
+              <GlassCard tint="peach" style={styles.forecastCardPeak}>
+                <View style={styles.forecastRow}>
+                  <View style={styles.forecastText}>
+                    <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                    <Text style={styles.forecastTitlePeak}>High surge</Text>
+                    <Text style={styles.forecastBodyPeak}>
+                      Energy dip triggers craving response.
+                    </Text>
+                  </View>
+                  <View style={styles.peakBadge}>
+                    <Text style={styles.peakBadgeNumber}>3:12</Text>
+                    <Text style={styles.peakBadgeLabel}>PM</Text>
+                  </View>
                 </View>
-                <View style={styles.peakBadge}>
-                  <Text style={styles.peakBadgeNumber}>3:12</Text>
-                  <Text style={styles.peakBadgeLabel}>PM</Text>
+                <View style={styles.peakActionRow}>
+                  <Text style={styles.peakAction}>See plan</Text>
+                  <Text style={styles.peakArrow}>→</Text>
                 </View>
-              </View>
-              <Pressable
-                style={styles.peakActionRow}
-                onPress={onSos}
-                accessibilityRole="button"
-                accessibilityLabel="Открыть план на пиковый час"
-              >
-                <Text style={styles.peakAction}>See plan</Text>
-                <Text style={styles.peakArrow}>→</Text>
-              </Pressable>
-            </GlassCard>
+              </GlassCard>
+            </Pressable>
 
-            <GlassCard tint="mint" style={styles.forecastCard}>
-              <View style={styles.forecastRow}>
-                <View style={styles.forecastText}>
-                  <Text style={styles.timeLabel}>18:00 — 22:00</Text>
-                  <Text style={styles.forecastTitle}>The exhale</Text>
-                  <Text style={styles.forecastBody}>
-                    System resets. Prepare for deep restorative sleep.
-                  </Text>
+            <Pressable
+              onPress={() => router.push('/(modals)/forecast-window?slot=evening')}
+              accessibilityRole="button"
+              accessibilityLabel="Evening exhale window — tap to learn more"
+            >
+              <GlassCard tint="mint" style={styles.forecastCard}>
+                <View style={styles.forecastRow}>
+                  <View style={styles.forecastText}>
+                    <Text style={styles.timeLabel}>18:00 — 22:00</Text>
+                    <Text style={styles.forecastTitle}>The exhale</Text>
+                    <Text style={styles.forecastBody}>
+                      System resets. Prepare for deep restorative sleep.
+                    </Text>
+                  </View>
+                  <View style={[styles.dotLarge, { backgroundColor: colors.secondaryFixedDim }]} />
                 </View>
-                <View style={[styles.dotLarge, { backgroundColor: colors.secondaryFixedDim }]} />
-              </View>
-            </GlassCard>
+              </GlassCard>
+            </Pressable>
           </View>
         )}
 
-        {/* Check-in strip — only if not done today */}
+        {/* Check-in strip — only if not done today. Border + chevron makes it
+            clearly tappable (was reading as a passive notice card). */}
         {!isCheckedInToday && (
-          <Pressable onPress={() => router.push('/(modals)/checkin')}>
-            <GlassCard tint="cream" radius={radius.full} style={styles.checkinStrip}>
+          <Pressable
+            onPress={() => router.push('/(modals)/checkin')}
+            accessibilityRole="button"
+            accessibilityLabel={isDayOne ? 'Open your first check-in' : 'Open daily check-in'}
+          >
+            <GlassCard tint="peach" radius={radius.full} style={styles.checkinStrip}>
               <View style={styles.checkinRow}>
                 <View style={styles.pulseDot} />
                 <Text style={styles.checkinLabel}>{isDayOne ? 'Your first check-in' : 'Daily check-in'}</Text>
               </View>
-              <Text style={styles.checkinCta}>Mark now →</Text>
+              <View style={styles.checkinCtaWrap}>
+                <Text style={styles.checkinCta}>Mark now</Text>
+                <Text style={styles.checkinChevron}>→</Text>
+              </View>
             </GlassCard>
           </Pressable>
         )}
@@ -538,10 +623,45 @@ const styles = StyleSheet.create({
     fontSize: typeScale.bodyLarge,
     color: colors.onSurface,
   },
+  checkinCtaWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   checkinCta: {
     fontFamily: fonts.bodySemibold,
     fontSize: typeScale.bodyMedium,
     color: colors.primary,
+  },
+  checkinChevron: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: typeScale.bodyMedium + 2,
+    color: colors.primary,
+  },
+
+  // Day 1 first-time legend
+  legendCard: { padding: spacing.lg, gap: spacing.md, marginBottom: spacing.lg },
+  legendLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginBottom: spacing.xs,
+  },
+  legendRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
+  legendGlyph: {
+    fontSize: 22,
+    width: 28,
+    textAlign: 'center',
+    color: colors.primary,
+  },
+  legendText: { flex: 1, gap: 2 },
+  legendTitle: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.bodyLarge,
+    color: colors.onSurface,
+  },
+  legendBody: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+    lineHeight: 18,
   },
 
   lessonCard: { padding: spacing.lg, marginBottom: spacing.xl, gap: spacing.xs },

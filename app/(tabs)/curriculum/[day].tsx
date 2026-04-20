@@ -1,4 +1,6 @@
+import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -22,6 +24,14 @@ export default function Lesson() {
   const params = useLocalSearchParams<{ day?: string }>();
   const dayNum = Math.max(1, Math.min(90, parseInt(params.day ?? '8', 10) || 8));
   const lesson = LESSONS[dayNum] ?? LESSONS[8];
+  // Mini-task: rate the fruit's sweetness 1-5. Local state — would persist
+  // to a future `lessonProgress[day]` slice in the store; out of scope here.
+  const [rating, setRating] = useState<number | null>(null);
+
+  const onRate = (n: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setRating(n);
+  };
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -42,7 +52,7 @@ export default function Lesson() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 240 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
@@ -77,29 +87,47 @@ export default function Lesson() {
           Notice. No judgment, no measuring. Just notice.
         </Text>
 
-        {/* Section 3 — Mini-task (anchor card) */}
+        {/* Section 3 — Mini-task (anchor card). Interactive 1-5 rating. */}
         <GlassCard tint="peach" style={styles.taskCard}>
           <Text style={styles.taskLabel}>TONIGHT'S NOTE</Text>
           <Text style={styles.taskTitle}>Rate the fruit's sweetness</Text>
           <View style={styles.ratingRow}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <View key={n} style={[styles.ratingStone, n === 3 && styles.ratingStoneActive]}>
-                <Text style={[styles.ratingStoneText, n === 3 && styles.ratingStoneTextActive]}>{n}</Text>
-              </View>
-            ))}
+            {[1, 2, 3, 4, 5].map((n) => {
+              const active = rating === n;
+              return (
+                <Pressable
+                  key={n}
+                  onPress={() => onRate(n)}
+                  hitSlop={6}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  accessibilityLabel={`Rate ${n} of 5`}
+                  style={[styles.ratingStone, active && styles.ratingStoneActive]}
+                >
+                  <Text style={[styles.ratingStoneText, active && styles.ratingStoneTextActive]}>{n}</Text>
+                </Pressable>
+              );
+            })}
           </View>
           <View style={styles.ratingLabels}>
             <Text style={styles.ratingLabel}>sour</Text>
             <Text style={styles.ratingLabel}>sweet</Text>
           </View>
+          {rating !== null && (
+            <Text style={styles.ratingHint}>
+              {rating <= 2 ? 'Less sweet than you remembered.' :
+               rating === 3 ? 'About what you expected.' :
+               'Sweeter than before — your taste is recalibrating.'}
+            </Text>
+          )}
         </GlassCard>
 
         {/* Source */}
         <Text style={styles.source}>Source: Wise et al., 2019, Nutrients</Text>
       </ScrollView>
 
-      {/* CTA */}
-      <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.md }]}>
+      {/* CTA — sits above the floating tab bar (bar takes ~114pt from bottom) */}
+      <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 110 }]}>
         <PillCTA label="Mark lesson complete" onPress={() => router.back()} />
       </View>
     </AtmosphericGradient>
@@ -248,6 +276,14 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.onSurfaceVariant,
     letterSpacing: tracking.wide,
+  },
+  ratingHint: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyMedium,
+    color: colors.primary,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    fontStyle: 'italic',
   },
 
   source: {

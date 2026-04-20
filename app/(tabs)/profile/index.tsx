@@ -27,6 +27,8 @@ export default function Profile() {
   const triggers = useUserStore((s) => s.triggers);
   const streakDays = useUserStore((s) => s.streakDays);
   const isPremium = useUserStore((s) => s.isPremium);
+  const cravings = useUserStore((s) => s.cravings);
+  const sosLog = useUserStore((s) => s.sosLog);
 
   const displayName = firstName ?? 'You';
   const initial = displayName[0]?.toUpperCase() ?? 'Y';
@@ -38,6 +40,18 @@ export default function Profile() {
     triggers.length > 0
       ? triggers.map((t) => TRIGGER_LABELS[t] ?? t).slice(0, 2).join(', ')
       : '—';
+
+  // Stats — computed from real activity, not hardcoded multipliers.
+  // - cravingsMet: each craving entry where user "walked through" + each SOS
+  //   session resolved as "walked" or "softer".
+  // - dollarsSaved: rough heuristic — average chocolate bar / candy unit
+  //   $1.50/day (USD), times days clean. Conservative.
+  // - kgSugar: average ~25g added sugar avoided per day = 0.025kg/day.
+  const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
+  const cravingsMet = sosWalked + cravingsWalked;
+  const dollarsSaved = (streakDays * 1.5).toFixed(0);
+  const kgSugarAvoided = (streakDays * 0.025).toFixed(2);
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -58,7 +72,8 @@ export default function Profile() {
           </View>
         </View>
 
-        {/* Stats quick */}
+        {/* Stats — computed from real activity (cravings + SOS log + days).
+            Numbers are honest: zero on Day 1, grow with use. */}
         <GlassCard tint="peach" style={styles.statsCard}>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
@@ -67,15 +82,19 @@ export default function Profile() {
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>{streakDays * 5}</Text>
+              <Text style={styles.statNumber}>{cravingsMet}</Text>
               <Text style={styles.statLabel}>cravings met</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>${streakDays * 9}</Text>
+              <Text style={styles.statNumber}>${dollarsSaved}</Text>
               <Text style={styles.statLabel}>saved</Text>
             </View>
           </View>
+          <Text style={styles.statsHint}>
+            Approx {kgSugarAvoided}kg of added sugar avoided.
+            {' '}<Text style={styles.statsHintMuted}>(~25g/day baseline)</Text>
+          </Text>
         </GlassCard>
 
         {/* Info about craving profile */}
@@ -143,6 +162,14 @@ const styles = StyleSheet.create({
   statNumber: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.titleLarge + 4, color: colors.onSurface, letterSpacing: -0.5 },
   statLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.wide },
   statDivider: { width: 1, height: 28, backgroundColor: 'rgba(49,51,47,0.1)' },
+  statsHint: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
+  statsHintMuted: { opacity: 0.6 },
 
   infoCard: { padding: spacing.md, gap: spacing.sm },
   infoLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide, marginBottom: spacing.xs },

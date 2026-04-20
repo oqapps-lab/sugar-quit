@@ -1,8 +1,14 @@
-import { router, Tabs } from 'expo-router';
+import { router, Tabs, useSegments } from 'expo-router';
+import { useEffect } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { colors, fonts, radius, shadows, spacing } from '../../constants/tokens';
 
 /**
@@ -17,7 +23,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarStyle: { display: 'none' }, // hide default, we render custom below
       }}
-      tabBar={(props) => <CustomTabBar {...props} />}
+      tabBar={() => <CustomTabBar />}
     >
       <Tabs.Screen name="home" options={{ title: 'Home' }} />
       <Tabs.Screen name="curriculum" options={{ title: 'Curriculum' }} />
@@ -27,27 +33,47 @@ export default function TabsLayout() {
   );
 }
 
-function CustomTabBar({ state }: any) {
+const TABS = [
+  { key: 'home',       glyph: '◉', label: 'Home',     href: '/(tabs)/home'       as const },
+  { key: 'curriculum', glyph: '≡', label: 'Path',     href: '/(tabs)/curriculum' as const },
+  { key: 'progress',   glyph: '≋', label: 'Progress', href: '/(tabs)/progress'   as const },
+  { key: 'profile',    glyph: '◯', label: 'Profile',  href: '/(tabs)/profile'    as const },
+];
+
+function CustomTabBar() {
   const insets = useSafeAreaInsets();
   const bottom = Math.max(insets.bottom, 16) + 16;
 
-  const TABS: { key: string; glyph: string; label: string; href: '/(tabs)/home' | '/(tabs)/curriculum' | '/(tabs)/progress' | '/(tabs)/profile' }[] = [
-    { key: 'home',       glyph: '◉', label: 'Home',     href: '/(tabs)/home' },
-    { key: 'curriculum', glyph: '≡', label: 'Path',     href: '/(tabs)/curriculum' },
-    { key: 'progress',   glyph: '≋', label: 'Progress', href: '/(tabs)/progress' },
-    { key: 'profile',    glyph: '◯', label: 'Profile',  href: '/(tabs)/profile' },
-  ];
+  // Source of truth for active tab — useSegments is native to expo-router and
+  // updates reliably after router.replace/push. Previously we relied on
+  // state.routes[state.index].name from the Tabs prop, which didn't always
+  // re-render the bar after a tab switch (the bar component only mounts once
+  // and React doesn't re-evaluate state.index for it consistently).
+  const segments = useSegments() as string[];
+  // For /(tabs)/home segments = ['(tabs)', 'home']; for /(tabs)/curriculum/[day]
+  // segments = ['(tabs)', 'curriculum', '5'] — second segment is the tab name.
+  const activeKey = segments[1] ?? 'home';
+  const activeIndex = Math.max(0, TABS.findIndex((t) => t.key === activeKey));
 
-  // expo-router: use `router.replace` to switch tabs (no stack buildup).
-  // The previous `navigation.navigate(routeName)` was the React Navigation API,
-  // not understood by expo-router's wrapper — it raised
-  // "The action 'NAVIGATE' with payload {name: 'curriculum'} was not handled".
+  // Animated indicator — slides between tab slots with a spring.
+  // We animate a translateX on a pill-shaped View positioned behind the icons.
+  const indicatorPos = useSharedValue(activeIndex);
+  useEffect(() => {
+    indicatorPos.value = withSpring(activeIndex, {
+      damping: 22,
+      stiffness: 220,
+      mass: 0.7,
+    });
+  }, [activeIndex, indicatorPos]);
+
+  const indicatorStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: indicatorPos.value * (100 / TABS.length) + '%' as any }],
+  }));
+
   const go = (href: (typeof TABS)[number]['href']) => {
     Haptics.selectionAsync();
     router.replace(href);
   };
-
-  const activeRoute = state.routes[state.index].name;
 
   // Render BlurView (or fallback) as an absolute backdrop with pointerEvents="none"
   // so it can't intercept taps. The Pressable row sits in a sibling layer above.
@@ -67,9 +93,15 @@ function CustomTabBar({ state }: any) {
           pointerEvents="none"
         />
       )}
+
+      {/* Animated active-tab indicator (peach pill that slides) */}
+      <View style={styles.indicatorTrack} pointerEvents="none">
+        <Animated.View style={[styles.indicator, indicatorStyle]} />
+      </View>
+
       <View style={styles.inner}>
         {TABS.map((t) => {
-          const active = activeRoute === t.key;
+          const active = t.key === activeKey;
           return (
             <Pressable
               key={t.key}
@@ -80,7 +112,6 @@ function CustomTabBar({ state }: any) {
               accessibilityLabel={t.label}
               style={({ pressed }) => [
                 styles.tab,
-                active && styles.tabActive,
                 { transform: [{ scale: pressed ? 0.94 : 1 }] },
               ]}
             >
@@ -105,6 +136,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     overflow: 'hidden',
   },
+  indicatorTrack: {
+    position: 'absolute',
+    left: spacing.sm,
+    right: spacing.sm,
+    top: spacing.sm,
+    bottom: spacing.sm,
+    flexDirection: 'row',
+  },
+  indicator: {
+    width: `${100 / TABS.length}%`,
+    height: '100%',
+    borderRadius: radius.full,
+    backgroundColor: 'rgba(165,60,48,0.12)',
+  },
   inner: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -118,9 +163,6 @@ const styles = StyleSheet.create({
     gap: 2,
     paddingVertical: 6,
     borderRadius: radius.full,
-  },
-  tabActive: {
-    backgroundColor: 'rgba(165,60,48,0.1)',
   },
   glyph: {
     fontSize: 18,
