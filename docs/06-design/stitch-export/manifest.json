@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "01-sos-breathe",
+    "title": "SOS: Breathe",
+    "id": "046e4c7a7ef64f48999ab99ee8838ecf",
+    "ok": true
+  },
+  {
+    "slug": "02-craving-forecast-a",
+    "title": "Craving Forecast A",
+    "id": "c564f8b6d9c64e3389825a6a1ab870cf",
+    "ok": true
+  },
+  {
+    "slug": "03-living-dashboard",
+    "title": "Living Dashboard",
+    "id": "e74704acc29d404992201bb80fe2045d",
+    "ok": true
+  },
+  {
+    "slug": "04-onboarding-why-now",
+    "title": "Onboarding: Why Now?",
+    "id": "44e15f0fac834c8faa55f9f87c8681a7",
+    "ok": true
+  },
+  {
+    "slug": "05-craving-profile",
+    "title": "Your Craving Profile",
+    "id": "b3f1d5e1eaf144e5a20faf79833fcfd9",
+    "ok": true
+  },
+  {
+    "slug": "06-craving-forecast-b",
+    "title": "Craving Forecast B",
+    "id": "599475b3106848b5b4c91824bad14f03",
+    "ok": true
+  },
+  {
+    "slug": "07-sleep-sugar-insight-v3",
+    "title": "Sleep & Sugar Insight (V3)",
+    "id": "5a87a61cff354551ab211814998f6ab2",
+    "ok": true
+  },
+  {
+    "slug": "08-90-day-horizon",
+    "title": "The 90-Day Horizon",
+    "id": "75da9435398d4c32a800ca40c6cd9de9",
+    "ok": true
+  },
+  {
+    "slug": "09-craving-forecast-c",
+    "title": "Craving Forecast C",
+    "id": "c2b265f3342b43638c7cb6282eaac8d2",
+    "ok": true
+  },
+  {
+    "slug": "10-craving-forecast-d",
+    "title": "Craving Forecast D",
+    "id": "f0ccf43fad2a47a282bad4e23bab51e4",
+    "ok": true
+  },
+  {
+    "slug": "11-craving-forecast-e",
+    "title": "Craving Forecast E",
+    "id": "f9d7c9bf54a94d5687ef0faecedc6d70",
+    "ok": true
+  },
+  {
+    "slug": "12-daily-wellness-weather",
+    "title": "Daily Wellness Weather Report",
+    "id": "ebf9e36602b641fdbe8d94db6b01ffb5",
+    "ok": true
+  }
+]
