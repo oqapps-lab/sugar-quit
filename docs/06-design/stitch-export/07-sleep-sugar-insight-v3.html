@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@200;300;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efeee9",
+                    "secondary-fixed-dim": "#e3cbfa",
+                    "primary-dim": "#953025",
+                    "on-background": "#31332f",
+                    "primary": "#a53c30",
+                    "background": "#fbf9f5",
+                    "on-tertiary": "#eafdfc",
+                    "tertiary-fixed": "#cfe0df",
+                    "on-secondary-fixed": "#49385d",
+                    "secondary-container": "#efdbff",
+                    "on-surface": "#31332f",
+                    "tertiary-container": "#cfe0df",
+                    "on-tertiary-fixed": "#2f3f3e",
+                    "on-error-container": "#65000b",
+                    "outline": "#7a7b76",
+                    "surface-container-highest": "#e3e3dd",
+                    "on-primary-fixed": "#570202",
+                    "surface-dim": "#dadad4",
+                    "inverse-surface": "#0e0e0d",
+                    "on-error": "#fff7f6",
+                    "on-secondary-fixed-variant": "#66547b",
+                    "on-tertiary-fixed-variant": "#4b5b5b",
+                    "tertiary": "#526262",
+                    "error-dim": "#70030f",
+                    "surface-container-low": "#f5f3ef",
+                    "surface-bright": "#fbf9f5",
+                    "surface-container-high": "#e9e8e3",
+                    "outline-variant": "#b2b2ad",
+                    "inverse-primary": "#fd7d6c",
+                    "error-container": "#f56965",
+                    "on-secondary": "#fff6ff",
+                    "primary-container": "#ffaca0",
+                    "surface-variant": "#e3e3dd",
+                    "secondary-fixed": "#efdbff",
+                    "surface-tint": "#a53c30",
+                    "on-secondary-container": "#5c4a71",
+                    "on-primary-fixed-variant": "#822219",
+                    "on-tertiary-container": "#415151",
+                    "tertiary-dim": "#465656",
+                    "tertiary-fixed-dim": "#c1d2d1",
+                    "primary-fixed": "#ffaca0",
+                    "inverse-on-surface": "#9e9d9a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#5e605b",
+                    "error": "#ac3434",
+                    "secondary": "#6a577f",
+                    "on-primary": "#fff7f6",
+                    "primary-fixed-dim": "#ff9788",
+                    "on-primary-container": "#761911",
+                    "surface": "#fbf9f5",
+                    "secondary-dim": "#5e4b72"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: radial-gradient(circle at bottom, #cfe0df 0%, #fbf9f5 100%);
+        }
+        .atmospheric-gradient {
+            background: linear-gradient(135deg, #6a577f 0%, #a53c30 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+        }
+        .pain-point-glow {
+            box-shadow: 0 0 30px 10px rgba(165, 60, 48, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen text-on-surface">
+<!-- TopAppBar -->
+<header class="w-full top-0 left-0 fixed z-40 bg-transparent backdrop-blur-xl">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a woman with a serene expression in soft, warm natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3p23z7deA49DH3O1A7i8Jtzr14VcF68GrbReF1OBvWZ1g97zXr0v3OvfB0HeNGGBTUXnK-30tKGzyALEnCTkptDtGZcN0QuIpe0gBJq_WCHMdy1STSLwy9kJczoo3JMtait5yEDZxbkxNtRnkcztuAF0pxWp0poq1Cda6Ge57T7QwSG8fxWSsO8xaTdVVKYl-sqWFSvui1mJgdp1yizRzd2t3vhbInbmZW6eRvCrI0_D4enQ58pYg5I8mOj_s4LYXjNrwwRSzCdQ"/>
+</div>
+<span class="text-2xl font-extrabold text-[#a53c30] tracking-tighter">Exhale</span>
+</div>
+<div class="flex gap-4">
+<button class="hover:opacity-80 transition-opacity duration-500 active:scale-95 duration-300 ease-out">
+<span class="material-symbols-outlined text-[#a53c30]">settings</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-xl mx-auto">
+<!-- Hero Insight Header -->
+<section class="mb-12">
+<h1 class="font-headline font-extrabold text-6xl md:text-8xl tracking-tighter text-[#a53c30] opacity-90 mb-4">
+                Patterns.
+            </h1>
+<p class="font-body text-xl font-light tracking-wide text-tertiary max-w-md">
+                Your body speaks in rhythms. Let's listen to the quietest ones.
+            </p>
+</section>
+<!-- Sleep & Sugar Insight Component (Bento Large) -->
+<div class="relative w-full aspect-[16/10] md:aspect-[21/9] rounded-xl overflow-hidden atmospheric-gradient p-8 md:p-12 flex flex-col justify-between group">
+<!-- Decorative Depth Elements -->
+<div class="absolute top-1/4 right-1/4 w-64 h-64 bg-secondary-container opacity-10 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-primary-container opacity-10 rounded-full blur-[120px]"></div>
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-8">
+<div>
+<h2 class="font-headline font-bold text-3xl md:text-4xl text-on-primary tracking-tight mb-2">Sleep &amp; Sugar Insight</h2>
+<p class="font-body font-thin text-lg md:text-xl text-on-primary/80 tracking-widest">
+                        "Less sleep = more cravings. Tuesday proved it."
+                    </p>
+</div>
+<div class="flex gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-primary/60">Rest Cycle</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-primary/60">Sugar Intensity</span>
+</div>
+</div>
+</div>
+<!-- Hand-drawn Curve Visualization -->
+<div class="relative flex-grow flex items-center justify-center py-12">
+<svg class="w-full h-full drop-shadow-2xl overflow-visible" viewbox="0 0 800 300">
+<!-- Sleep Curve (Violet) -->
+<path class="transition-all duration-1000" d="M 0 250 Q 150 200 250 180 T 400 220 T 550 100 T 800 150" fill="none" opacity="0.6" stroke="#e3cbfa" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Sugar Curve (Coral) -->
+<path d="M 0 100 Q 150 120 250 220 T 400 100 T 550 250 T 800 50" fill="none" opacity="0.8" stroke="#ffaca0" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Intersection Point / Pain Point -->
+<g transform="translate(295, 198)">
+<circle class="pain-point-glow" fill="#a53c30" r="6"></circle>
+<circle fill="#a53c30" opacity="0.2" r="12"></circle>
+<text fill="white" font-family="Manrope" font-size="12" font-weight="200" tracking="2" x="15" y="-15">TUE: 4H SLEEP</text>
+</g>
+</svg>
+</div>
+<div class="relative z-10 flex justify-between items-end">
+<div class="glass-panel px-6 py-3 rounded-full flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary/70">insights</span>
+<span class="font-body text-sm font-light text-on-primary/90">Correlation: <strong class="font-bold">-84%</strong> Sleep Quality to Craving Resilience</span>
+</div>
+<div class="hidden md:block">
+<span class="font-label text-[10px] text-on-primary/40 uppercase tracking-[0.4em]">Atmosphere / Golden Hour</span>
+</div>
+</div>
+</div>
+<!-- Secondary Bento Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+<div class="md:col-span-1 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between aspect-square md:aspect-auto">
+<span class="material-symbols-outlined text-secondary text-4xl" data-weight="fill">auto_awesome</span>
+<div>
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-2">Next Journey</h3>
+<p class="font-body text-sm text-on-surface-variant font-light">Deepening the twilight rest state through intentional breathwork.</p>
+</div>
+</div>
+<div class="md:col-span-2 relative rounded-xl overflow-hidden min-h-[300px]">
+<img alt="Evening sky" class="w-full h-full object-cover" data-alt="Abstract evening sky with soft purple and orange clouds reflecting in still water, ethereal calm mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXE3JRz9pBEnC41POrgDRjZWDvlUFrCnzl_Qe05orWUefPp_4y4IcMAf7_PkcZz9SCxu7XpXGZ4KjOHQQSWdCDzzT3dcnvOOcYnjG5PqAZefs3qBkpp6hzAkDuYC1GFww7dccg4UjhOxFt4QQjqt_W3TXbIn2YSC3x4k92KGpJ4HvjH504q13g2CAUiQg_6URiFCDsjBNBewEwfAHpuDvrxwupQ5eX5dREgZ3GuhYOIW13UHYvl4sL5lXdfqERzESRDcse6NJ94hg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8">
+<h3 class="font-headline text-3xl font-bold text-white mb-2">Restorative Pulse</h3>
+<div class="flex gap-4">
+<button class="bg-primary px-6 py-2 rounded-full text-white font-label text-xs tracking-widest uppercase hover:opacity-90 transition-opacity">
+                            Start Guide
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 bg-[#FAD0C4]/80 backdrop-blur-3xl rounded-t-[40px] shadow-[0_-4px_40px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#526262] opacity-60 hover:text-[#6a577f] transition-colors duration-700" href="#">
+<span class="material-symbols-outlined mb-1">auto_awesome</span>
+<span class="font-manrope font-light text-[10px] tracking-widest uppercase">Journey</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#a53c30] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#a53c30] after:rounded-full hover:text-[#6a577f] transition-colors duration-700" href="#">
+<span class="material-symbols-outlined mb-1">insights</span>
+<span class="font-manrope font-light text-[10px] tracking-widest uppercase">Insights</span>
+</a>
+<!-- SOS Floating Action Position -->
+<a class="flex flex-col items-center justify-center -mt-12 group" href="#">
+<div class="w-14 h-14 bg-[#a53c30] rounded-full flex items-center justify-center shadow-lg active:scale-95 duration-300">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+</div>
+<span class="font-manrope font-light text-[10px] tracking-widest uppercase mt-2 text-[#a53c30]">SOS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#526262] opacity-60 hover:text-[#6a577f] transition-colors duration-700" href="#">
+<span class="material-symbols-outlined mb-1">air</span>
+<span class="font-manrope font-light text-[10px] tracking-widest uppercase">Breathe</span>
+</a>
+</nav>
+</body></html>

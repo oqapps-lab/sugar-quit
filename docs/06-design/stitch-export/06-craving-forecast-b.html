@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "amber-mist": "#fdf2e9",
+                        "rose-mist": "#fce7f3",
+                        "plum-soft": "#e9d5ff",
+                        "text-warm": "#7c2d12",
+                        "text-soft": "#9d8b85",
+                        "timeline-thread": "rgba(124, 45, 18, 0.15)"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --misty-gradient: linear-gradient(180deg, 
+                #fff9f5 0%, 
+                #fdf2e9 25%, 
+                #fae8e0 50%, 
+                #fce7f3 75%, 
+                #f3e8ff 100%
+            );
+        }
+        .atmospheric-bg {
+            background: var(--misty-gradient);
+            background-attachment: fixed;
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        .pulse-dot {
+            box-shadow: 0 0 15px rgba(251, 146, 60, 0.4);
+        }
+        .floating-layer-1 { transform: translateZ(0); }
+        .floating-layer-2 { color: #8b5e51; }.floating-layer-3 { color: #a88a82; }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="atmospheric-bg text-text-warm font-body min-h-screen overflow-x-hidden selection:bg-rose-mist selection:text-text-warm">
+<header class="flex justify-between items-center w-full px-8 py-10 z-50 absolute top-0 bg-transparent">
+<div class="flex items-center gap-2 opacity-60">
+<span class="material-symbols-outlined text-[20px]" data-icon="bubble_chart">bubble_chart</span>
+<span class="text-xs font-headline font-light tracking-[0.3em] uppercase">The Exhale</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-amber-900/10 grayscale-[30%] opacity-80">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARRCmqIDqdEZ40i1QIykIytQ3k5kOjPHvsRATKy1ORxKeW8zYkYLadI1NDmb0xmOzQ2Yz8Z5b6TvFnV1avz9muQw6M08mVqsZIQGK8XAquHOA9BTzl5bMH2O266_vRInwunJ5eNaGZNwmtpKTQ3OyZvZpvTK61SYo-Nu9rqG3yPFqZHsI3V3p9pkZdJ0oHR99riZUCQIDuVHHJqhE2OD5tF9gdsV61bYSn4GQllO2w5sDsj2_3ionWywPolfDYR0ilKpEleMuowhU"/>
+</div>
+</header>
+<main class="min-h-screen pt-40 pb-48 flex flex-col items-center gap-32">
+<section class="w-full max-w-screen-xl px-12 flex flex-col items-center">
+<div class="relative w-full h-12 flex items-center">
+<div class="absolute w-full h-[0.5px] bg-timeline-thread"></div>
+<div class="absolute w-full flex justify-between px-2">
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-1 h-1 rounded-full bg-text-warm pulse-dot relative">
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-light tracking-widest text-text-warm uppercase">3pm · Post-Meetings</span>
+</div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-1 h-1 rounded-full bg-text-warm/40 relative">
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-light tracking-widest text-text-soft uppercase">8pm</span>
+</div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+<div class="w-0.5 h-0.5 rounded-full bg-text-soft/20"></div>
+</div>
+</div>
+</section>
+<section class="flex flex-col items-center text-center max-w-md">
+<h2 class="text-7xl md:text-8xl font-headline font-extralight tracking-tighter text-text-warm leading-none mb-6">
+            2:45 PM
+        </h2>
+<p class="text-xl font-light text-text-soft leading-relaxed tracking-wide mb-10">
+            craving likely in <span class="text-text-warm">47 min</span>
+</p>
+<p class="text-sm font-light text-[#a88a82] italic leading-loose">
+            Your plan: almonds + 5-minute walk.
+        </p>
+</section>
+<section class="flex flex-col gap-10 items-center text-center w-full">
+<div class="flex flex-col gap-8">
+<div class="flex items-center justify-center gap-12 group">
+<span class="text-base font-light text-[#8b5e51] tracking-wide leading-loose">After team meetings</span>
+<span class="text-xl font-headline font-normal text-text-warm">78%</span>
+</div>
+<div class="flex items-center justify-center gap-12 group">
+<span class="text-base font-light text-[#8b5e51] tracking-wide leading-loose">Sunday evenings</span>
+<span class="text-xl font-headline font-normal text-text-warm">65%</span>
+</div>
+<div class="flex items-center justify-center gap-12 group">
+<span class="text-base font-light text-[#8b5e51] tracking-wide leading-loose">Poor sleep</span>
+<span class="text-xl font-headline font-normal text-text-warm">52%</span>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 flex gap-12 px-10 py-5 bg-transparent items-center">
+<div class="text-text-soft/40 hover:text-text-warm transition-colors cursor-pointer">
+<span class="material-symbols-outlined font-thin">grain</span>
+</div>
+<div class="text-text-soft/40 hover:text-text-warm transition-colors cursor-pointer">
+<span class="material-symbols-outlined font-thin">map</span>
+</div>
+<div class="text-text-warm relative flex flex-col items-center cursor-pointer">
+<span class="material-symbols-outlined font-light text-[24px]">insights</span>
+<div class="absolute -bottom-2 w-1 h-1 rounded-full bg-text-warm"></div>
+</div>
+<div class="text-text-soft/40 hover:text-text-warm transition-colors cursor-pointer">
+<span class="material-symbols-outlined font-thin">settings</span>
+</div>
+</nav>
+<div class="fixed top-[15%] left-[10%] w-[40vw] h-[40vw] bg-amber-mist/40 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[10%] right-[5%] w-[50vw] h-[50vw] bg-plum-soft/30 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+
+</body></html>

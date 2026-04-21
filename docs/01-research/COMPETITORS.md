@@ -1,377 +1,280 @@
-# Competitor Analysis: Sugar Quit App
+# Конкурентный анализ: Sugar Quit
 
-**Date:** April 14, 2026
-**Scope:** 5 direct competitors (sugar-specific) + 3 indirect (adjacent behavior-change apps)
-
----
-
-## Selection Rationale
-
-The competitive landscape splits into two groups:
-- **Direct** — apps explicitly targeting sugar quitting/reduction (App Store / Google Play)
-- **Indirect** — behavior-change apps whose mechanics, monetization, and scale are directly instructive
-
-5 direct competitors cover the full range from indie solo projects to the category's top downloads. 3 indirect competitors are the most-cited analogs in the quit-drinking/weight-loss space.
+**Дата:** 13 апреля 2026
+**Категория:** Health / Behavior Change
+**Companion Document:** [Market Research](./MARKET-RESEARCH.md)
 
 ---
 
-## Direct Competitors
+## 1. Прямые конкуренты (Sugar-Specific Apps)
+
+### 1.1 Sugarfree — Quit Sugar Addiction (JoyInApps)
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.5/5 (806 iOS) · 3.57/5 (1,600 Google Play) |
+| **Скачивания** | ~81K (Android), ~900/мес |
+| **Цена** | Free base · $6.49/мес · $26.99/год · Lifetime $59.99 |
+| **Последнее обновление** | 10 ноября 2024 |
+| **Ключевые фичи** | AI meal scanner, sugar/food/water tracking, AI chatbot, milestone tracking, symptom monitoring |
+| **Сильные стороны** | Самая большая база пользователей среди sugar-специфичных приложений; AI-фичи (сканер + чатбот); комплексный трекинг |
+| **Слабости** | 1) Food database с ошибками — "every item I scan has wrong information" (отзывы); 2) Чатбот — простой Q&A, не real-time коучинг; 3) Нет структурированной программы; 4) Нет предсказания тяги; 5) Не обновлялось 5 мес; 6) UI не адаптирован под Dynamic Island |
+
+**Текущий "лидер рынка" — но лидер с 806 отзывами.**
+
+### 1.2 Sugarless — Quit Sugar Habit (Viktor Sec / Missing Apps)
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android + Apple Watch |
+| **Рейтинг** | 4.7/5 (126 iOS) · 2.6/5 (54 Google Play) |
+| **Скачивания** | ~5K-15K |
+| **Цена** | Free base · $4.49/мес · Lifetime $29.99 |
+| **Последнее обновление** | 9 марта 2026 |
+| **Ключевые фичи** | CBT-based 20-step Journey, виртуальный сад (gamification), Panic Button widget, daily tips, streak tracking |
+| **Сильные стороны** | Психологический подход (CBT); элегантная метафора сада; доступный lifetime |
+| **Слабости** | 1) Panic Button показывает только дыхательные упражнения — 1 ре-ролл в час; 2) Reddit-ссылка ведёт на общий Reddit; 3) Нет AI; 4) Нет гайда по симптомам отмены; 5) Google Play рейтинг 2.6/5; 6) Premium не даёт реальной ценности — "don't waste your money" |
+
+### 1.3 Sugarcut (Naratour / Oxygen Tech d.o.o., Хорватия)
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.8/5 (8 iOS) |
+| **Скачивания** | ~1K-3K |
+| **Цена** | $9.99/мес · $19.99-$35.95/год |
+| **Последнее обновление** | Сен 2025 (iOS), Фев 2026 (Android) |
+| **Ключевые фичи** | 90/120-дневные программы, sugar scanner, panic button, AI Assistant, journal, daily reflections, craving challenges |
+| **Сильные стороны** | Наиболее feature-complete sugar app; структурированные программы; panic button + AI combo |
+| **Слабости** | 1) 8 отзывов — нет product-market fit; 2) Высокая цена для непроверенного продукта; 3) Нет community; 4) Нет предсказания тяги; 5) Разработчик — туристическая компания (не healthtech) |
+
+### 1.4 Quit Sugar: No Treat Today (Goodwhale)
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Apple Watch + Vision Pro + Mac |
+| **Рейтинг** | 4.9/5 (35 iOS) |
+| **Скачивания** | ~2K-5K |
+| **Цена** | Free · $6.99/мес · $34.99-$39.99/год · Lifetime $49.99 |
+| **Ключевые фичи** | Коллекция обезьянок (gamification), coin flip mechanic, простой yes/no трекинг, Apple Watch integration, multi-language |
+| **Сильные стороны** | Высший рейтинг; charming gamification; non-judgmental подход; Apple ecosystem |
+| **Слабости** | 1) Крошечная база; 2) iOS only; 3) Нет AI; 4) Нет craving intervention; 5) Нет community; 6) Нет образовательного контента |
+
+### 1.5 STOPPR: Women's Sugar Tracker (David Attias) — НОВЫЙ 2025
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.5/5 (260 ratings) |
+| **Скачивания** | 250K заявлено |
+| **Цена** | Free base · подписка (детали не опубликованы) |
+| **Запуск** | Апрель 2025 |
+| **Ключевые фичи** | 90-day science-based reset, real-time tracking, community, mindful eating challenges, dopamine-balancing exercises, guided meditations |
+| **Сильные стороны** | Гендерный таргетинг (только женщины) — дифференциация; быстрый рост (260 отзывов за год); community |
+| **Слабости** | 1) Только женщины — 50% рынка недоступно; 2) Нет AI-коучинг; 3) Нет trigger prediction; 4) Generic медитации |
+
+**Внимание: STOPPR — первый конкурент с заметным ростом. Следить.**
+
+### 1.6 No Sugar Challenge: Sugar Free (AppsLab LLC) — НОВЫЙ 2025
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.9/5 (72 iOS) · 4.8/5 (93 Google Play) |
+| **Цена** | $6.99/нед · $14.99/мес · $29.99-$39.99/год |
+| **Ключевые фичи** | AI food scanner, streak tracking, daily tasks/checkups, gamified achievements |
+| **Сильные стороны** | Высокие оценки; AI scanner; активный рост |
+| **Слабости** | 1) Недельная подписка $6.99 = $363/год — хищническое ценообразование; 2) Нет real-time craving support; 3) Нет community; 4) Нет структурированной программы |
+
+### 1.7 QuitSugar: AI Health Coach (Tigran Muradyan / MWM) — НОВЫЙ 2025
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS |
+| **Рейтинг** | 4.7/5 (16 ratings) |
+| **Цена** | $4.99/мес · $39.99/год · One-time $29.99 |
+| **Ключевые фичи** | AI meal logging (photo + barcode), habit tracker, "No Sugar" challenges, streaks, leaderboards, group challenges, coin rewards |
+| **Сильные стороны** | AI-powered; группы и челленджи; MWM — платформа с ресурсами |
+| **Слабости** | 1) 16 отзывов — нет traction; 2) MWM выпускает десятки generic приложений; 3) Нет real-time craving intervention; 4) Нет предсказания |
+
+### 1.8 StopSugar
+
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS |
+| **Рейтинг** | Нет достаточного количества оценок |
+| **Цена** | Подписка (конкретные цены не опубликованы) |
+| **Ключевые фичи** | 90-day science-backed program, "Brain Rewriting" meter, panic button, healthy alternatives, streak tracking |
+| **Сильные стороны** | Интересная концепция "Brain Rewriting" (визуализация нейропластичности) |
+| **Слабости** | 1) Нулевой traction; 2) Минимальная видимость; 3) Контент-маркетинг на сайте без конверсии в установки |
 
 ---
 
-## 1. Sugarfree — Quit Sugar Addiction (JoyInApps)
+## 2. Косвенные конкуренты
 
-**Category:** Direct — largest sugar-specific app by user base
+### 2.1 I Am Sober
 
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android |
-| iOS Rating | 4.5 / 5 |
-| iOS Reviews | 805 ratings |
-| Google Play Rating | 3.57 / 5 |
-| Google Play Reviews | ~1,600 ratings |
-| Downloads (est.) | ~50K–100K |
-| Monetization | Free base · $6.49/mo · $26.99/yr · Lifetime $9.99–$59.99 |
-| Developer | JoyInApps |
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.8/5 (12K iOS · 127K Google Play) |
+| **Скачивания** | 10M+ |
+| **Revenue** | ~$200K/мес |
+| **Цена** | Free base · $9.99/мес · $39.99/год |
+| **Sugar-релевантность** | Поддерживает сахар как категорию зависимости; sobriety tracker + daily pledges + urge management |
+| **Почему мы побеждаем** | Generic — не создан для сахара. Нет food scanning, нет sugar-специфичного образования, нет альтернатив еды. Craving tools — только медитация, не food/behavior specific |
 
-### Features
-- AI meal scanner (barcode + photo)
-- Sugar / food / water daily tracker
-- AI chatbot (Q&A style, not conversational)
-- Milestone and streak tracking
-- Symptom monitoring log
+### 2.2 Noom
 
-### Strengths (from reviews)
-- "Most complete" among sugar apps — scanner + chatbot in one product
-- Affordable lifetime tier removes subscription fatigue
-- Large user base provides social proof for downloads
-- Multi-platform (iOS + Android) maximises reach
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.7/5 (817K iOS · 310K Google Play) |
+| **Revenue** | ~$1B ARR (2023), $3.7B valuation |
+| **Цена** | $17-70/мес |
+| **GLP-1 программа** | $100M revenue run-rate за 4 месяца (сен 2024) |
+| **Sugar-релевантность** | Color-coded food system; CBT backbone; Welli AI assistant; партнёрство с Highmark Health для diabetes prevention (2M members, 2026) |
+| **Почему мы побеждаем** | Не sugar-focused; weight loss = primary goal; $17-70/мес дорого; нет SOS mechanic; нет craving prediction |
+| **⚠️ Риск** | Noom может добавить sugar-модуль с существующей базой 50M+ пользователей |
 
-### Weaknesses (from reviews)
-- **"Every item I scan has wrong information"** — food database accuracy is the #1 complaint across both stores; undermines core value proposition
-- **3.57 Google Play rating** vs 4.5 on iOS — major cross-platform quality gap, suggesting Android build lags significantly
-- Chatbot answers static FAQ questions only; does not respond in real time during cravings and has no memory of user patterns
-- No structured program — users self-direct, which hurts long-term retention
-- Upsell prompts described as "aggressive" in multiple reviews
+### 2.3 Reframe (Quit Drinking) — МОДЕЛЬ ДЛЯ КОПИРОВАНИЯ
 
-### Key Insight
-Category leader by default in a fragmented market, not by excellence. The two features users care most about — scanner accuracy and real craving support — are both broken. Biggest signal the category is underserved.
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Рейтинг** | 4.8/5 (18K+ reviews) |
+| **Скачивания** | 3.2M+ · ~50K/мес |
+| **Revenue** | ~$300K/мес · $10M+ ARR |
+| **Funding** | $12.5M |
+| **Цена** | ~$14/мес · ~$140/год + coaching add-ons $9.99-$249.99/мес |
+| **Ключевые механики** | 160-day neuroscience curriculum, "Cravings Mode" с distraction games, AI chatbot (Melody), community, gamification |
+| **Что копировать** | Curriculum structure; craving mode; AI chatbot; community; neuroscience positioning |
+| **Что адаптировать** | Alcohol → sugar; добавить food alternatives; barcode scanner; photo-based craving analysis |
 
----
+### 2.4 Sunnyside (Moderate Drinking) — МОДЕЛЬ РОСТА
 
-## 2. Sugarless — Quit Sugar Habit (Viktor Sec)
+| Поле | Данные |
+|------|--------|
+| **Платформа** | iOS + Android |
+| **Revenue** | $23.7M (2025) |
+| **Funding** | $14.6M |
+| **Users** | 250K+ |
+| **Цена** | $12/мес · $99/год · Premium $36/мес |
+| **Ключевые механики** | SMS nudges, AI chatbot coach, drink tracking, daily logging, community, personalized plans |
+| **Что копировать** | Proactive nudges; support reduction (не только abstinence); results dashboard |
 
-**Category:** Direct — psychology-first, solo developer
+### 2.5 MyFitnessPal
 
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android + Apple Watch |
-| iOS Rating | 4.7 / 5 |
-| iOS Reviews | 126 ratings |
-| Downloads (est.) | ~5K–15K |
-| Monetization | Free base · $4.49/mo · Lifetime $29.99 |
-| Developer | Viktor Sec (solo) |
+| Поле | Данные |
+|------|--------|
+| **Sugar-релевантность** | Трекает total sugar, но **НЕ МОЖЕТ** отличить added sugar от natural sugar — даже в Premium |
+| **Критическая слабость** | Пользователи жалуются годами. Человек, который ест фрукты, получает ложные предупреждения о сахаре, а человек, пьющий газировку, может выглядеть "нормально" |
+| **Почему мы побеждаем** | Фокус на added sugar; AI coaching вместо простого трекинга; craving intervention |
 
-### Features
-- CBT-based 20-step Journey program
-- Virtual garden gamification (plant health tied to sobriety days)
-- Panic Button home screen widget
-- Daily tips and streak tracking
-- Apple Watch integration
+### 2.6 Emma (бывш. Sugar Free: Food Scanner AI)
 
-### Strengths (from reviews)
-- "Best-designed sugar app" — CBT backbone gives psychological credibility
-- Panic Button widget praised for home screen accessibility without opening app
-- Virtual garden metaphor described as "motivating and non-punitive" vs streak-breaking models
-- Most affordable paid option in the category ($29.99 lifetime)
-- Apple Watch support differentiates from Android-only competitors
-
-### Weaknesses (from reviews)
-- **Panic Button is widely criticised** — "shows a breathing GIF and nothing else"; no conversation, no food alternative, no personalization
-- No AI layer despite having the strongest structural foundation; Journey is static
-- "126 ratings after 2+ years means it's not growing" — growth is stalled
-- Community link routes to generic Reddit, not a moderated in-app space
-- Android version lags iOS in polish per cross-platform reviews
-
-### Key Insight
-Best design philosophy in the category, worst execution at the critical moment. The Panic Button proves users want an SOS mechanic — but a GIF is not a product. This is a roadmap of what to build, not what to compete with.
+| Поле | Данные |
+|------|--------|
+| **Users** | 150K+ (заявлено) |
+| **Ключевые фичи** | AI barcode + photo scanning for hidden sugars, additives, toxins, allergens; health scores; detox timer |
+| **Почему мы побеждаем** | Scanner-only — нет behavior change, нет coaching, нет community, нет curriculum |
 
 ---
 
-## 3. Sugarcut (Naratour d.o.o.)
+## 3. Сводная таблица
 
-**Category:** Direct — most feature-complete sugar app
-
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android |
-| iOS Rating | 4.8 / 5 |
-| iOS Reviews | 8 ratings |
-| Downloads (est.) | ~1K–3K (very new) |
-| Monetization | No free tier · $9.99/mo · $19.99–$35.95/yr |
-| Developer | Naratour d.o.o. |
-
-### Features
-- 90-day and 120-day structured programs
-- Barcode sugar scanner
-- Panic Button
-- AI Assistant
-- Personal journal + daily reflections
-- Craving challenges
-
-### Strengths (from reviews)
-- Most complete feature set in sugar-specific category on paper
-- 90/120-day structured commitment mirrors what Reframe does for alcohol
-- Has both Panic Button and AI Assistant — conceptually closest to the right combination
-- 4.8 rating, though tiny sample
-
-### Weaknesses (from reviews)
-- **8 ratings is not a sample** — impossible to validate real-world quality from reviews
-- No free tier creates a high conversion barrier for an unestablished brand
-- $9.99/mo is what Reframe charges with 3.2M downloads behind it; Sugarcut has none
-- AI Assistant quality unknown — "AI" label on an app store page is not the same as a helpful conversational system
-- Premium-only from day one limits organic growth
-
-### Key Insight
-Closest competitor in terms of feature vision. If Sugarcut executes well and grows, it becomes the most direct threat. Currently, zero traction and no free tier make it a watch-list item, not a fear.
+| Приложение | Rating | Скачивания | AI Coaching | Prediction | Community | Программа | Цена/мес |
+|-----------|--------|-----------|-------------|------------|-----------|-----------|----------|
+| **Sugarfree** | 4.5/3.6 | ~81K | Q&A chatbot | ❌ | ❌ | ❌ | $6.49 |
+| **Sugarless** | 4.7/2.6 | ~10K | ❌ | ❌ | ❌ | 20-step | $4.49 |
+| **Sugarcut** | 4.8 | ~2K | Generic AI | ❌ | ❌ | 90/120-day | $9.99 |
+| **No Treat Today** | 4.9 | ~3K | ❌ | ❌ | ❌ | ❌ | $6.99 |
+| **STOPPR** | 4.5 | ~250K? | ❌ | ❌ | ✅ | 90-day | ? |
+| **No Sugar Challenge** | 4.9 | ? | Scanner AI | ❌ | ❌ | ❌ | $14.99 |
+| **QuitSugar (MWM)** | 4.7 | <1K | AI logging | ❌ | Group | Challenges | $4.99 |
+| **StopSugar** | N/A | <1K | ❌ | ❌ | ❌ | 90-day | ? |
+| **I Am Sober** | 4.8 | 10M+ | ❌ | ❌ | ✅ | ❌ | $9.99 |
+| **Noom** | 4.7/4.2 | Tens of M | Welli AI | ❌ | ❌ | CBT-based | $17-70 |
+| **Reframe** | 4.8 | 3.2M | Melody AI | ❌ | ✅ | 160-day | $14 |
+| **Sugar Quit (мы)** | — | — | **✅ SOS AI** | **✅** | **✅** | **90-day** | **$9.99** |
 
 ---
 
-## 4. Quit Sugar: No Treat Today (Goodwhale)
+## 4. Positioning Map
 
-**Category:** Direct — gamification-first, Apple ecosystem
+```
+              Персонализация / AI
+                     ▲
+                     │
+                     │     ★ Sugar Quit (цель)
+                     │
+          Noom ●     │
+                     │    ● Reframe
+    QuitSugar ●      │
+                     │
+     Sugarfree ●     │    ● Sugarcut
+─────────────────────┼──────────────────────►
+   Трекинг /         │        Behavior Change /
+   Passive           │        Active Coaching
+                     │
+     Sugarless ●     │    ● STOPPR
+                     │
+   No Treat ●        │    ● I Am Sober
+   Today             │
+                     │
+```
 
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Apple Watch + Vision Pro |
-| iOS Rating | 4.9 / 5 |
-| iOS Reviews | 35 ratings |
-| Downloads (est.) | ~2K–5K |
-| Monetization | Free · $6.99/mo · $19.99–$39.99/yr · One-time $49.99–$69.99 |
-| Developer | Goodwhale |
+**Ось X:** Passive Tracking ←→ Active Behavior Change Coaching
+**Ось Y:** Generic ←→ Personalized / AI-Powered
 
-### Features
-- Ape collection gamification (unlock apes for daily sugar-free success)
-- Simple yes/no daily treat logging
-- Non-punitive streak system (missing a day doesn't reset everything)
-- Apple Watch native integration
-- Multi-language support
-- Vision Pro support (novelty)
-
-### Strengths (from reviews)
-- **Highest rating (4.9)** of all direct competitors, though from a small sample
-- "Charming and non-judgmental" — ape collection gamification praised as fun vs guilt-based apps
-- Non-punitive streak model reduces quit-quitting after a single bad day
-- Apple Watch integration feels native, not tacked on
-- Vision Pro support signals forward-thinking development
-
-### Weaknesses (from reviews)
-- iOS-only — excludes entire Android market
-- No AI, no craving intervention system, no SOS mechanic
-- No educational content about sugar addiction science or withdrawal stages
-- No community feature
-- "Basically just a yes/no tracker with cute animals" — depth limited beyond gamification
-- Tiny user base; 35 ratings after release suggests limited marketing reach
-
-### Key Insight
-The highest-rated sugar app — but also the shallowest in terms of behavior change mechanics. Proves that non-punitive design and appealing gamification drive satisfaction scores, but doesn't retain users through the hard parts of quitting.
+**Sugar Quit** позиционируется в правом верхнем квадранте: максимальная персонализация + активный behavior change coaching. Ни один конкурент не занимает этот квадрант в sugar-категории.
 
 ---
 
-## 5. StopSugar
+## 5. Gap Analysis — Что никто не делает, а нужно
 
-**Category:** Direct — neuroscience-positioned, newest entrant
-
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS |
-| iOS Rating | Limited data (very new) |
-| iOS Reviews | <50 ratings |
-| Downloads (est.) | <1K |
-| Monetization | Subscription required (exact pricing not public) |
-| Developer | Independent |
-
-### Features
-- 90-day science-backed structured program
-- "Brain Rewriting" meter — visual indicator of neural habit change progress
-- Craving panic button
-- Healthy sugar alternatives database
-- Streak tracking
-- Visual progress dashboard
-
-### Strengths (from reviews)
-- "Brain Rewriting" concept is the most differentiated positioning in the category — visualizes neural change, not just behavior streaks
-- 90-day science-backed structure aligns with evidence on habit formation timelines
-- Healthy alternatives database addresses the #1 community ask: "what do I eat right now?"
-- Panic button paired with alternatives is a step above breathing-GIF competitors
-
-### Weaknesses (from reviews)
-- Virtually no reviews — cannot validate claims from user feedback
-- iOS only — excludes Android market entirely
-- Limited brand visibility; difficult to discover organically
-- Alternative suggestions appear static (pre-loaded list), not personalized to context
-- No AI, no community, no trigger prediction
-
-### Key Insight
-Most interesting positioning in the direct competitor set — "Brain Rewriting" is closer to the neuroscience framing used by Reframe (alcohol) than anything else in the sugar space. If they execute and grow, this is the most philosophically aligned competitor.
+| Гэп | Описание | Кто ближе всего | Наша возможность |
+|-----|----------|-----------------|-----------------|
+| **Real-time AI craving coaching** | Персонализированный разговор в момент тяги, а не generic tip | Sugarfree (basic Q&A chatbot) | SOS AI знает ваши паттерны, предлагает конкретные альтернативы |
+| **Predictive trigger system** | Предупреждение ДО тяги на основе выученных паттернов | Никто | ML-модель предсказывает тягу и отправляет push за 15-30 мин |
+| **"Eat this instead" engine** | Конкретные альтернативы еды в контексте ситуации | Никто (generic tips есть у нескольких) | AI знает что вы хотите, что доступно, что работало раньше |
+| **Withdrawal day-by-day guide** | Подробный гайд: что ожидать на день 1, 3, 7, 14, 30 | StopSugar (концепт "Brain Rewriting") | Timeline + AI support адаптированный под ваш прогресс |
+| **Added sugar distinction** | Отделение added sugar от natural sugar в трекинге | Emma (частично) | MyFitnessPal не может это, мы можем |
+| **Moderated sugar-specific community** | Не generic addiction community, а сахар-специфичная | STOPPR (women only), I Am Sober (generic) | Anonymous, moderated, sugar-specific |
+| **Accurate food database** | Корректные данные по сахару в продуктах | Все провалили | Open Food Facts + curated corrections + user reports |
 
 ---
 
-## Indirect Competitors
+## 6. Типичные жалобы пользователей (из App Store отзывов)
+
+| Жалоба | Частота | Наш ответ |
+|--------|---------|-----------|
+| "Просто таймер, не реальная помощь" | Очень высокая | SOS AI + 90-day curriculum |
+| "Нет информации о симптомах отмены" | Высокая | Withdrawal timeline + stage-specific support |
+| "Food database с ошибками" | Высокая | Open Food Facts + AI correction + user reports |
+| "Paywall для базовых фич" | Высокая | Free tier: 3 SOS/мес + streak + community read-only |
+| "Нет community / изоляция" | Средняя | Moderated community с daily check-ins |
+| "Generic советы, не персонализация" | Средняя | AI учится вашим паттернам и предлагает персональные стратегии |
+| "Подписка навязана, трудно отменить" | Средняя | Прозрачное ценообразование, лёгкая отмена |
 
 ---
 
-## 6. Reframe (Reframe App Inc.) — PRIMARY MODEL
+## 7. Market Saturation Score
 
-**Category:** Indirect — alcohol reduction, proven playbook to replicate
+### Оценка: 2/10 (Низкая насыщенность)
 
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android |
-| Downloads | 3.2 million |
-| Revenue | $10M+ ARR (March 2022) |
-| Monetization | 7-day trial · ~$15/mo · $99.99/yr · AI chatbot add-on $9.99/mo · Coaching $9.99–$249.99/mo |
-| Funding | $12.5M raised |
+**Обоснование:**
 
-### Features
-- 160-day evidence-based neuroscience curriculum (daily lessons)
-- "Cravings mode" — distraction games activated during urges (~20 min until craving passes)
-- AI chatbot "Melody" — conversational support, available as add-on
-- Community (peer groups, accountability partners)
-- Gamification (badges, streaks, levels)
-- Trigger logging + retrospective pattern analysis
-- Daily exercises + progress analytics
+- **Суммарные скачивания всех sugar-специфичных приложений**: <200K. Для сравнения: I Am Sober — 10M+, Reframe — 3.2M
+- **Лидер категории** (Sugarfree) имеет 806 iOS-отзывов. В любой зрелой категории лидер имеет 100K+
+- **Нет venture-funded player** в sugar-категории. Reframe привлёк $12.5M, Sunnyside — $14.6M. Сахар — ноль
+- **Волна новых входов в 2025-2026** подтверждает: спрос растёт, но никто ещё не поймал product-market fit
+- **AI craving coaching** — ни один конкурент не реализовал. Это blue ocean
+- **Единственный предупреждающий сигнал**: STOPPR набрал 250K users (заявлено) за год. Но это women-only и без AI coaching
 
-### Why It Matters for Sugar Quit
-- **$10M ARR with 3.2M downloads** validates that a neuroscience-based behavior-change app with AI support can become a real business
-- **Cravings mode** is the only craving intervention in any competitor that goes beyond a button — distraction games backed by prefrontal cortex engagement research
-- **Multi-tier monetization** (base + AI add-on + coaching tiers) maximises ARPU without a single high price
-- **91% of users report reduced drinking within 3 months** — outcome data is the strongest possible marketing asset
-- **Not entering sugar market** as of April 2026 — this is the analogy, not the competition
-
-### Sugar-Specific Gap
-Reframe's model assumes substance avoidance. Sugar is embedded in the food supply — you cannot avoid eating. A sugar app requires a scanner, food alternatives, and environmental navigation that Reframe never needed. This is the layer to add on top of Reframe's proven playbook.
+**Вывод: Категория находится в зачаточном состоянии. Это сопоставимо с рынком quit-drinking приложений в 2019 году, до того как Reframe стал категорийным лидером. Окно открыто.**
 
 ---
 
-## 7. I Am Sober
-
-**Category:** Indirect — largest behavior-change app supporting sugar as a category
-
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android |
-| iOS Rating | 4.76 / 5 |
-| iOS Reviews | 130,000+ ratings |
-| Downloads | 11+ million |
-| Monetization | Full free tier · $9.99/mo · $39.99/yr premium |
-| Sugar Relevance | Sugar is one of 40+ supported addiction categories |
-
-### Features
-- Sobriety tracker (supports any substance/behavior)
-- Daily pledge system
-- Urge log — rates craving intensity + triggers mindfulness audio
-- Milestone celebrations + health timeline
-- Community (peer sharing and accountability)
-- Money saved calculator
-- "After X days" biological improvement timeline
-
-### Why It Matters for Sugar Quit
-- **130K+ ratings dwarfs every sugar-specific competitor combined** — proves that generic addiction mechanics (streak, pledge, urge log, community, health timeline, money saved) work at enormous scale
-- **Health timeline** ("After 24 hours: blood sugar stabilises") is the most motivating onboarding feature in any behavior-change app
-- **Money saved calculator** consistently outperforms health motivation for long-term retention
-- **Fully functional free tier** minimises acquisition friction — the lesson: free must be genuinely useful
-
-### Sugar-Specific Gap
-Not sugar-specific in any dimension. Coping tools are meditation-only — no food alternatives, no withdrawal day-by-day guide, no scanner, no sugar science. Users who find it for sugar get the same experience as users quitting gambling. The gap is exactly where Sugar Quit wins.
-
----
-
-## 8. Noom
-
-**Category:** Indirect — weight loss psychology platform, largest in adjacent space
-
-| Metric | Detail |
-|--------|--------|
-| Platform | iOS + Android |
-| Downloads | Tens of millions |
-| Revenue | ~$400M+ ARR (2024 estimate) |
-| Monetization | ~$17–70/mo (12-month plan) · Noom Med $79–129/mo with GLP-1 support |
-| Sugar Relevance | Color-coded food system explicitly discourages high-sugar foods |
-
-### Features
-- Psychology/CBT-based behavior change curriculum
-- Color-coded food logging (red = high sugar/calorie density)
-- Daily lessons (psychology of eating)
-- Human coaching (async, via chat)
-- Community challenges
-- GLP-1 medication support tier (Noom Med)
-
-### Why It Matters for Sugar Quit
-- **At-scale proof** that psychology-based, curriculum-driven behavior change is what users pay for (not calorie counting)
-- **Color-coded food system** creates implicit sugar awareness without sugar-specific positioning
-- **Coaching tier** validates that users will pay a significant premium for human guidance on top of app mechanics
-- **GLP-1 integration** shows where the category is heading — medication + digital behavior change
-
-### Sugar-Specific Gap
-Weight loss is the primary goal; sugar reduction is incidental. No SOS mechanic, no craving intervention, no sugar addiction science, no alternatives engine. Expensive for what it offers relative to sugar-specific needs. Not a direct threat — but if Noom pivoted to sugar, it would be formidable.
-
----
-
-## Feature Comparison Matrix
-
-| Feature | Sugarfree | Sugarless | Sugarcut | Quit Sugar (GW) | StopSugar | Reframe | I Am Sober | Noom | **Sugar Quit** |
-|---------|-----------|-----------|----------|-----------------|-----------|---------|------------|------|---------------|
-| AI real-time craving conversation | Partial (broken) | No | Unknown | No | No | Yes (Melody) | No | No | **Yes — SOS AI** |
-| Trigger prediction (proactive) | No | No | No | No | No | No | No | No | **Yes** |
-| Personalized food alternatives | No | No | No | No | Partial (static) | N/A | No | No | **Yes** |
-| Structured curriculum (90+ days) | No | 20 steps | 90/120 days | No | 90 days | 160 days | No | Yes | **Yes — 90 days** |
-| SOS / Panic Button | No | Yes (basic) | Yes (basic) | No | Yes (basic) | Cravings mode | Urge log | No | **Yes — AI-powered** |
-| Food / sugar scanner | Yes (inaccurate) | No | Yes | No | No | N/A | No | No | **Yes** |
-| Community | No | No | No | No | No | Yes | Yes | Yes | **Yes** |
-| Withdrawal timeline (day-by-day) | No | No | No | No | No | No | Partial | No | **Yes** |
-| Money saved / progress metrics | No | No | No | No | No | Yes | Yes | No | **Yes** |
-| Health improvement timeline | No | No | No | No | No | No | Yes | No | **Yes** |
-| Neuroscience-backed framing | No | CBT only | No | No | Yes (partial) | Yes | No | Yes | **Yes** |
-| Non-punitive streaks | No | No | No | Yes | No | No | No | No | **Yes** |
-| Human coaching tier | No | No | No | No | No | Yes | No | Yes | **Planned** |
-| Free functional tier | Yes | Yes | No | Yes | No | No (trial) | Yes | No (trial) | **Yes** |
-| Android support | Yes | Yes | Yes | No | No | Yes | Yes | Yes | **Yes** |
-
----
-
-## Competitive Gap Analysis
-
-### Gap 1 — The craving moment is universally mishandled
-Every direct competitor acknowledges craving intervention with a button. Every direct competitor fails to resolve it. A button that shows a breathing GIF is not a product. An AI that knows your patterns, knows you always crave sugar after your 3pm meeting, and says "You've got this — here's what to eat right now" is. **This gap is the primary product opportunity.**
-
-### Gap 2 — No competitor has trigger prediction
-Retroactive trigger logging exists (Reframe tracks what triggered a craving after the fact). Proactive trigger prediction — "In 30 minutes you usually crave sugar based on your pattern; here's your plan" — does not exist in any competitor, direct or indirect. This is a genuine first-mover position.
-
-### Gap 3 — The scanner exists but doesn't work
-Food scanning is present in Sugarfree and Sugarcut. In both cases, data accuracy is a top complaint. A scanner that actually works — accurate, fast, with instant swap suggestions and hidden sugar identification — is table stakes done right, not a differentiator per se, but a trust-builder.
-
-### Gap 4 — No sugar-specific neuroscience content
-StopSugar and Sugarless gesture toward psychology (CBT, "brain rewriting"), but no sugar app has built the Reframe-equivalent: a full 90-day neuroscience curriculum explaining dopamine pathways, withdrawal stages, craving mechanics, and habit rewiring with daily lessons. The science exists; no one has packaged it for sugar.
-
-### Gap 5 — No community designed for sugar
-I Am Sober and Reframe have communities. Every direct sugar competitor has either nothing or a link to generic Reddit. A moderated, stage-aware community (Week 1 channels, trigger-specific groups, accountability pairs) built into the app does not exist for sugar users.
-
-### Gap 6 — No app supports "reduction" as a valid goal
-Every direct sugar app frames the goal as "quit sugar." Sunnyside's success in alcohol reduction ($11.5M funded) came partly from supporting "drink less" rather than "quit drinking." A sugar app that supports "reduce 50%" alongside "quit completely" opens the market significantly — most people won't commit to cold turkey.
-
----
-
-## Strategic Conclusions
-
-### 1. The category has no winner
-The largest direct sugar app has ~100K downloads. I Am Sober has 11M. Reframe has 3.2M. The gap is not low demand — it is low-quality supply. No one has built the right product.
-
-### 2. The playbook exists — in alcohol
-Reframe's formula is directly transferable: neuroscience curriculum + AI craving support + community + structured program + multi-tier pricing + outcome data. Add the sugar-specific layer (scanner, food alternatives, environmental triggers) that Reframe never needed.
-
-### 3. Biggest direct threat is Sugarcut — if it executes
-Sugarcut has the right feature vision. It has no users and no free tier. If it raises capital and fixes these, it becomes the most direct threat. The window to outpace it is now.
-
-### 4. The window is 2026
-No competitor has raised venture capital for sugar. No competitor has a working AI craving assistant. No competitor has trigger prediction. The market is where the quit-drinking space was in 2018–2019 — fragmented, underfinanced, waiting for a category-defining product.
+*Данный документ следует читать совместно с [Market Research](./MARKET-RESEARCH.md) для детальных рыночных данных и [Product Brief](./PRODUCT-BRIEF.md) для стратегии продукта.*
