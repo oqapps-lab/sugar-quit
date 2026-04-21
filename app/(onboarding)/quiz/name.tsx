@@ -1,6 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { PillCTA } from '../../../components/ui/PillCTA';
@@ -9,6 +19,10 @@ import { useUserStore } from '../../../stores/useUserStore';
 
 /**
  * 1.12 Quiz: Name — optional text input + Skip + Continue.
+ *
+ * Keyboard handling:
+ * - KeyboardAvoidingView keeps the Continue CTA above the keyboard (iOS padding).
+ * - Tapping anywhere outside the TextInput dismisses the keyboard.
  */
 export default function QuizName() {
   const insets = useSafeAreaInsets();
@@ -24,39 +38,52 @@ export default function QuizName() {
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.back}>←</Text>
-        </Pressable>
-        <Text style={styles.progressLabel}>STEP 12 OF 15</Text>
-        <Pressable onPress={goNext}>
-          <Text style={styles.skipLabel}>Skip</Text>
-        </Pressable>
-      </View>
+      <KeyboardAvoidingView
+        style={StyleSheet.absoluteFill}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={StyleSheet.absoluteFill}>
+            <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+              <Pressable onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back">
+                <Text style={styles.back}>←</Text>
+              </Pressable>
+              <Text style={styles.progressLabel}>STEP 12 OF 15</Text>
+              <Pressable onPress={goNext} accessibilityRole="button" accessibilityLabel="Skip name">
+                <Text style={styles.skipLabel}>Skip</Text>
+              </Pressable>
+            </View>
 
-      <View style={styles.body}>
-        <Text style={styles.eyebrow}>ONE LAST THING</Text>
-        <Text style={styles.hero}>What should we call you?</Text>
-        <Text style={styles.sub}>Optional. We'll keep it soft and personal.</Text>
+            <View style={styles.body}>
+              <Text style={styles.eyebrow}>ONE LAST THING</Text>
+              <Text style={styles.hero}>What should we call you?</Text>
+              <Text style={styles.sub}>Optional. We'll keep it soft and personal.</Text>
 
-        <View style={styles.inputWrap}>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder="Your first name"
-            placeholderTextColor={colors.outline}
-            style={styles.input}
-            autoCapitalize="words"
-            autoCorrect={false}
-            returnKeyType="done"
-            onSubmitEditing={goNext}
-          />
-        </View>
-      </View>
+              <View style={styles.inputWrap}>
+                <TextInput
+                  value={name}
+                  onChangeText={setName}
+                  placeholder="Your first name"
+                  placeholderTextColor={colors.outline}
+                  style={styles.input}
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  onSubmitEditing={goNext}
+                  textContentType="givenName"
+                  accessibilityLabel="Your first name"
+                  accessibilityHint="Optional. Press Done or Continue to proceed."
+                />
+              </View>
+            </View>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Continue" variant="onboarding" onPress={goNext} />
-      </View>
+            <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
+              <PillCTA label="Continue" variant="onboarding" onPress={goNext} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </AtmosphericGradient>
   );
 }

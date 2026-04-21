@@ -82,7 +82,12 @@ export default function Paywall() {
           <View style={styles.logoMark} />
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
-        <Pressable onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close paywall"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>
@@ -181,7 +186,11 @@ export default function Paywall() {
             <Text style={styles.timelineLabel}>Day 7 · Decide</Text>
           </View>
         </View>
-        <Pressable onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))}>
+        <Pressable
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))}
+          accessibilityRole="button"
+          accessibilityLabel="Maybe later, continue without starting trial"
+        >
           <Text style={styles.maybeLater}>Maybe later</Text>
         </Pressable>
       </View>

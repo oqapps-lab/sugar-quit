@@ -37,7 +37,7 @@ export default function Motivational2() {
           <DecorGlyph variant="flame" size={56} />
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-          YOU ARE NOT ALONE
+          YOU'RE NOT ALONE
         </Animated.Text>
         <Animated.View entering={FadeInUp.delay(150).duration(400)}>
           <GradientText style={styles.bigNumber} gradient="heroHorizontal">
@@ -48,7 +48,7 @@ export default function Motivational2() {
           of adults in the US want to reduce sugar.
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(350).duration(400)} style={styles.sub}>
-          You are not alone. This is a quiet epidemic,
+          You're not alone. This is a quiet epidemic,
           and you are one of many stepping out of it.
         </Animated.Text>
       </View>
