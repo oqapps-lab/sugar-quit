@@ -22,13 +22,82 @@ const PHASE_GLYPH_BY_LABEL: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'
 
 type LessonContent = { phase: string; title: string; body: string };
 
+// Source of truth: keep titles + phases in sync with curriculum/index.tsx PHASES.
+// Every day referenced in the index must have a LESSONS entry — otherwise the
+// lesson screen silently falls back to a different day's body (drift bug).
 const LESSONS: Record<number, LessonContent> = {
-  1: { phase: 'ACUTE PHASE', title: 'Why sugar catches the brain', body: 'Sugar triggers dopamine release like other addictive substances. Day 1 is awareness — noticing the loop without trying to stop it yet.' },
-  3: { phase: 'ACUTE PHASE', title: 'The 72-hour storm', body: 'Withdrawal peaks now: irritability, headache, intense cravings. By tomorrow morning the worst will be behind you.' },
-  7: { phase: 'ADAPTATION', title: 'One whole week', body: 'Your insulin sensitivity has measurably improved. Energy is steadier between meals. Sleep deepens.' },
-  8: { phase: 'CLARITY PHASE', title: 'Your taste buds are waking up', body: 'By day 8 without excess sugar, your taste receptors begin to recalibrate. Fruit will start tasting noticeably sweeter by day 14.' },
-  14: { phase: 'CLARITY PHASE', title: 'Two weeks — the subtle shift', body: 'The 2-week mark is where most quit attempts fail and where success solidifies. Your brain pathways are forming new defaults.' },
-  30: { phase: 'INTEGRATION', title: 'Day 30 — taste reset', body: 'Natural foods taste vibrant again. The compulsion fades into a manageable whisper. You\'ve rewired the reward loop.' },
+  // --- Acute (Days 1–3) ---
+  1: {
+    phase: 'ACUTE PHASE',
+    title: 'Why sugar catches the brain',
+    body: 'Sugar triggers dopamine release like other addictive substances. Day 1 is awareness — noticing the loop without trying to stop it yet.',
+  },
+  2: {
+    phase: 'ACUTE PHASE',
+    title: 'The 72-hour storm',
+    body: 'Withdrawal peaks now: irritability, headache, intense cravings. This is your body renegotiating its relationship with glucose. By tomorrow morning the worst will be behind you.',
+  },
+  3: {
+    phase: 'ACUTE PHASE',
+    title: 'First quiet morning',
+    body: 'You wake up and something is different. The first thought isn\'t "sugar". That moment — where the loop doesn\'t fire — is your new baseline forming. Notice it, don\'t rush past it.',
+  },
+
+  // --- Adaptation (Days 4–7) ---
+  4: {
+    phase: 'ADAPTATION',
+    title: 'Your 3pm pattern, mapped',
+    body: 'The afternoon crash is cortisol + blood sugar swinging together. We\'ve tuned your forecast to this window. A 2-minute breath protocol 10 minutes before the dip is worth more than willpower after.',
+  },
+  5: {
+    phase: 'ADAPTATION',
+    title: 'Why fruit tastes bland',
+    body: 'A banana used to taste "not sweet enough". That\'s not the banana — that\'s your taste receptors numbed by processed sugar. Over the next two weeks, sensitivity returns. Fruit gets its flavor back.',
+  },
+  6: {
+    phase: 'ADAPTATION',
+    title: 'The sleep–sugar loop',
+    body: 'Short sleep spikes ghrelin (hunger hormone) and blunts leptin (satiety). One bad night → next-day sugar cravings feel 30% stronger. Guard tonight\'s sleep as a craving-management tool.',
+  },
+  7: {
+    phase: 'ADAPTATION',
+    title: 'One whole week',
+    body: 'Your insulin sensitivity has measurably improved. Energy is steadier between meals. Sleep deepens. This is the floor of the adaptation phase — everything from here compounds.',
+  },
+
+  // --- Clarity (Days 8–14) ---
+  8: {
+    phase: 'CLARITY PHASE',
+    title: 'Your taste buds are waking up',
+    body: 'By day 8 without excess sugar, taste receptors begin to recalibrate. Fruit will taste noticeably sweeter by day 14. Tonight, eat a fruit you used to find "not sweet enough" — a Granny Smith, a strawberry. Notice what changed.',
+  },
+  9: {
+    phase: 'CLARITY PHASE',
+    title: 'Triggers without reactions',
+    body: 'A trigger is a signal, not a sentence. When stress shows up today, name it out loud — "this is the 3pm pattern" — before the reach. Labelling it activates the prefrontal cortex, which cuts the craving circuit by roughly a third.',
+  },
+  10: {
+    phase: 'CLARITY PHASE',
+    title: 'The stress–sugar reflex',
+    body: 'Cortisol tells the body "find fast fuel". Sugar was the fastest fuel you knew. Today we practice a different default: water + 5 slow breaths + a 3-minute walk. The reflex weakens with every swap.',
+  },
+  11: {
+    phase: 'CLARITY PHASE',
+    title: 'Alternatives that actually work',
+    body: 'Not all substitutes are equal. A handful of almonds + one square of 85% dark chocolate lands in the same reward slot as a cookie, without the crash. We\'ll test three combinations this week.',
+  },
+
+  // --- Deeper markers (used by milestone flow) ---
+  14: {
+    phase: 'CLARITY PHASE',
+    title: 'Two weeks — the subtle shift',
+    body: 'The 2-week mark is where most quit attempts fail and where success solidifies. Your brain pathways are forming new defaults. The craving is still there — but the automatic reach is softer.',
+  },
+  30: {
+    phase: 'INTEGRATION',
+    title: 'Day 30 — taste reset',
+    body: 'Natural foods taste vibrant again. The compulsion fades into a manageable whisper. You\'ve rewired the reward loop — the identity catches up next.',
+  },
 };
 
 export default function Lesson() {
