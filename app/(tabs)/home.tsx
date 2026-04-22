@@ -451,7 +451,7 @@ export default function Home() {
                 <View style={{ flex: 1 }}>
                   <Text style={styles.sosCounterEyebrow}>SOS USAGE · THIS MONTH</Text>
                   <Text style={styles.sosCounterText}>
-                    {sosUsedThisMonth} of {sosFreeLimit} sessions used
+                    {sosUsedThisMonth} of {sosFreeLimit} {sosFreeLimit === 1 ? 'session' : 'sessions'} used
                   </Text>
                 </View>
               </View>

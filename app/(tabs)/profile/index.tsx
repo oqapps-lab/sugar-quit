@@ -92,13 +92,13 @@ export default function Profile() {
               <View style={styles.stat}>
                 <DecorGlyph variant="flame" size={24} />
                 <Text style={styles.statNumber}>{streakDays}</Text>
-                <Text style={styles.statLabel}>days clean</Text>
+                <Text style={styles.statLabel}>{streakDays === 1 ? 'day clean' : 'days clean'}</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.stat}>
                 <DecorGlyph variant="heart" size={24} />
                 <Text style={styles.statNumber}>{cravingsMet}</Text>
-                <Text style={styles.statLabel}>cravings met</Text>
+                <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.stat}>

@@ -108,7 +108,7 @@ export default function Milestone() {
         </Animated.View>
 
         <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.milestoneTitle}>
-          days sugar-free
+          {dayShown === 1 ? 'day sugar-free' : 'days sugar-free'}
         </Animated.Text>
 
         <View style={styles.divider} />
@@ -118,7 +118,7 @@ export default function Milestone() {
           <View style={styles.stat}>
             <DecorGlyph variant="heart" size={22} />
             <Text style={styles.statNumber}>{cravingsMet}</Text>
-            <Text style={styles.statLabel}>cravings met</Text>
+            <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
