@@ -32,7 +32,12 @@ export default function RateApp() {
       </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close rate app"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>
@@ -56,7 +61,13 @@ export default function RateApp() {
             const active = rating !== null && rating >= n;
             return (
               <Animated.View key={n} entering={FadeInDown.delay(360 + idx * 60).duration(400)}>
-                <Pressable onPress={() => pickStone(n)} style={[styles.stone, active && styles.stoneActive]}>
+                <Pressable
+                  onPress={() => pickStone(n)}
+                  style={[styles.stone, active && styles.stoneActive]}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: rating === n }}
+                  accessibilityLabel={`Rate ${n} out of 5`}
+                >
                   <Text style={[styles.stoneMark, active && styles.stoneMarkActive]}>●</Text>
                 </Pressable>
               </Animated.View>
@@ -77,7 +88,12 @@ export default function RateApp() {
           onPress={() => router.dismiss()}
           disabled={rating === null}
         />
-        <Pressable onPress={() => router.dismiss()} style={styles.laterBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.laterBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Maybe later, dismiss rating prompt"
+        >
           <Text style={styles.laterLabel}>Maybe later</Text>
         </Pressable>
       </Animated.View>

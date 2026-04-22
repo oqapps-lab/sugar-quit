@@ -129,7 +129,7 @@ export default function Home() {
   }
 
   const dateLabel = firstName
-    ? `Доброе утро, ${firstName}`.toUpperCase()
+    ? `Good morning, ${firstName}`.toUpperCase()
     : "TODAY'S FORECAST";
   const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
@@ -151,14 +151,14 @@ export default function Home() {
         <View style={[styles.pushBanner, { top: insets.top + 4 }]}>
           <View style={styles.pushBannerDot} />
           <Text style={styles.pushBannerText}>
-            Включите уведомления, чтобы не пропустить тягу
+            Turn on notifications so you don't miss a craving
           </Text>
           <Pressable
             onPress={() => router.push('/(onboarding)/push-permission')}
             accessibilityRole="button"
-            accessibilityLabel="Включить уведомления"
+            accessibilityLabel="Enable notifications"
           >
-            <Text style={styles.pushBannerCta}>Включить →</Text>
+            <Text style={styles.pushBannerCta}>Enable →</Text>
           </Pressable>
         </View>
       )}
@@ -173,7 +173,7 @@ export default function Home() {
           onPress={() => router.push('/(tabs)/profile')}
           style={styles.avatar}
           accessibilityRole="button"
-          accessibilityLabel="Открыть профиль"
+          accessibilityLabel="Open profile"
         >
           <Text style={styles.avatarInitial}>{avatarInitial}</Text>
         </Pressable>

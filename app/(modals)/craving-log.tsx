@@ -68,7 +68,12 @@ export default function CravingLog() {
         <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <View style={{ width: 36 }} />
           <Text style={styles.headerTitle}>Log a craving</Text>
-          <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+          <Pressable
+            onPress={() => router.dismiss()}
+            style={styles.closeBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Close craving log"
+          >
             <Text style={styles.closeX}>×</Text>
           </Pressable>
         </Animated.View>
@@ -85,7 +90,14 @@ export default function CravingLog() {
               {[1, 2, 3, 4, 5].map((n) => {
                 const active = intensity !== null && intensity >= n;
                 return (
-                  <Pressable key={n} onPress={() => pickIntensity(n as Intensity)} style={[styles.stone, active && styles.stoneActive]}>
+                  <Pressable
+                    key={n}
+                    onPress={() => pickIntensity(n as Intensity)}
+                    style={[styles.stone, active && styles.stoneActive]}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: intensity === n }}
+                    accessibilityLabel={`Craving intensity ${n} of 5`}
+                  >
                     <Text style={[styles.stoneNum, active && styles.stoneNumActive]}>{n}</Text>
                   </Pressable>
                 );
@@ -100,7 +112,14 @@ export default function CravingLog() {
               {TRIGGERS.map((t) => {
                 const active = triggers.includes(t);
                 return (
-                  <Pressable key={t} onPress={() => toggleTrigger(t)} style={[styles.chip, active && styles.chipActive]}>
+                  <Pressable
+                    key={t}
+                    onPress={() => toggleTrigger(t)}
+                    style={[styles.chip, active && styles.chipActive]}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: active }}
+                    accessibilityLabel={t}
+                  >
                     <Text style={[styles.chipLabel, active && styles.chipLabelActive]}>{t}</Text>
                   </Pressable>
                 );
@@ -113,7 +132,14 @@ export default function CravingLog() {
             <Text style={styles.sectionLabel}>OUTCOME</Text>
             <View style={styles.outcomeRow}>
               {OUTCOMES.map((o) => (
-                <Pressable key={o.key} onPress={() => pickOutcome(o.key)} style={{ flex: 1 }}>
+                <Pressable
+                  key={o.key}
+                  onPress={() => pickOutcome(o.key)}
+                  style={{ flex: 1 }}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: outcome === o.key }}
+                  accessibilityLabel={`${o.title}. ${o.body}`}
+                >
                   <GlassCard tint={o.tint} style={[styles.outcomeCard, outcome === o.key && styles.outcomeActive]}>
                     <Text style={styles.outcomeTitle}>{o.title}</Text>
                     <Text style={styles.outcomeBody}>{o.body}</Text>
@@ -133,6 +159,7 @@ export default function CravingLog() {
               placeholderTextColor={colors.outline}
               multiline
               style={styles.notesInput}
+              accessibilityLabel="Optional note about the craving"
             />
           </Animated.View>
         </ScrollView>

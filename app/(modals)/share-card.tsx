@@ -34,7 +34,12 @@ export default function ShareCard() {
       <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>Share your chapter</Text>
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close share card"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </Animated.View>
@@ -79,7 +84,13 @@ export default function ShareCard() {
         {/* Action row */}
         <Animated.View entering={FadeInDown.delay(260).duration(400)} style={styles.actionsRow}>
           {ACTIONS.map((a) => (
-            <Pressable key={a.key} onPress={onAction} style={styles.actionBtn}>
+            <Pressable
+              key={a.key}
+              onPress={onAction}
+              style={styles.actionBtn}
+              accessibilityRole="button"
+              accessibilityLabel={a.label}
+            >
               <View style={styles.actionGlyph}>
                 <Text style={styles.actionGlyphText}>{a.glyph}</Text>
               </View>
