@@ -55,7 +55,12 @@ export default function Lesson() {
 
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
+        <Pressable
+          onPress={() => router.back()}
+          style={styles.backBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Back to curriculum"
+        >
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <View style={styles.headerCenter}>

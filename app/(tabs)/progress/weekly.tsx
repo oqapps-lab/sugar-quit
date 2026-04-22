@@ -24,7 +24,13 @@ export default function Weekly() {
   return (
     <AtmosphericGradient theme="dawn">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={handleBack} hitSlop={12} style={styles.headerSide}>
+        <Pressable
+          onPress={handleBack}
+          hitSlop={12}
+          style={styles.headerSide}
+          accessibilityRole="button"
+          accessibilityLabel="Back to Progress tab"
+        >
           <Text style={styles.backArrow}>←</Text>
           <Text style={styles.headerCrumb}>Week 2 · 13–19 APR</Text>
         </Pressable>

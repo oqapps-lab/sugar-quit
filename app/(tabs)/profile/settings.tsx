@@ -84,7 +84,13 @@ export default function Settings() {
   return (
     <AtmosphericGradient theme="dawn">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={handleBack} hitSlop={12} style={styles.backBtn}>
+        <Pressable
+          onPress={handleBack}
+          hitSlop={12}
+          style={styles.backBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Back to profile"
+        >
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Settings</Text>
@@ -135,6 +141,9 @@ function RenderRow({ row, isLast }: { row: Row; isLast: boolean }) {
     <Pressable
       onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       style={rowStyle}
+      accessibilityRole="button"
+      accessibilityLabel={row.value ? `${row.label}: ${row.value}` : row.label}
+      accessibilityHint={row.warning ? 'Destructive action' : undefined}
     >
       <View style={styles.rowIcon} />
       <Text style={[styles.rowLabel, row.warning && styles.rowLabelWarning]}>
@@ -166,6 +175,9 @@ function ToggleItem({
         setOn((v) => !v);
       }}
       style={style}
+      accessibilityRole="switch"
+      accessibilityState={{ checked: on }}
+      accessibilityLabel={sub ? `${label}, ${sub}` : label}
     >
       <View style={styles.rowIcon} />
       <View style={styles.rowTextBlock}>

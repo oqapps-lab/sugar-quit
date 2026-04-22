@@ -62,7 +62,13 @@ export default function Milestones() {
   return (
     <AtmosphericGradient theme="darkHorizon">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={handleBack} hitSlop={12} style={styles.backBtn}>
+        <Pressable
+          onPress={handleBack}
+          hitSlop={12}
+          style={styles.backBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Back to Progress tab"
+        >
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Your stones</Text>
@@ -117,6 +123,8 @@ function MilestoneCard({ milestone }: { milestone: Milestone }) {
     <Pressable
       onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
       style={cardStyle}
+      accessibilityRole="button"
+      accessibilityLabel={`Day ${day}: ${title}, ${status}`}
     >
       <View style={glyphStyle} />
       <Text style={[styles.cardDayLabel, { color: textColor, opacity: status === 'upcoming' ? 0.6 : 1 }]}>
