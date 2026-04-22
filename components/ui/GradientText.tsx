@@ -10,8 +10,9 @@ type Props = {
 };
 
 /**
- * GradientText — использует MaskedView + LinearGradient для text-fill gradient.
- * Нужно на iOS и Android (Web не поддерживается MaskedView — fallback на plain text).
+ * GradientText — uses MaskedView + LinearGradient for text-fill gradient.
+ * Works on iOS and Android (Web does not support MaskedView — falls back to
+ * plain text).
  */
 export function GradientText({ children, style, gradient = 'heroHorizontal' }: Props) {
   const g = gradients[gradient];

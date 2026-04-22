@@ -144,7 +144,7 @@ export default function Paywall() {
             <Text style={styles.priceLabel}>Annual</Text>
             <Text style={styles.priceMain}>{annualPrice}</Text>
             <Text style={styles.pricePerMonth}>{annualPerMo}</Text>
-            <Text style={styles.priceSave}>save 44%</Text>
+            <Text style={styles.priceSave}>save 33%</Text>
           </Pressable>
 
           <Pressable

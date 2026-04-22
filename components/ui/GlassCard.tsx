@@ -31,8 +31,9 @@ const TINT_BORDER: Record<Tint, string> = {
 };
 
 /**
- * GlassCard — frosted-glass контейнер.
- * iOS: expo-blur BlurView. Android: semi-transparent fallback (expo-blur на Android шумит).
+ * GlassCard — frosted-glass container.
+ * iOS: expo-blur BlurView. Android: semi-transparent fallback (expo-blur is
+ * noisy on Android).
  */
 export function GlassCard({
   tint = 'default',
@@ -61,7 +62,7 @@ export function GlassCard({
     );
   }
 
-  // Android fallback — solid-ish tint без blur
+  // Android fallback — solid-ish tint without blur
   const androidBg = TINT_BG[tint].replace(/[\d.]+\)$/, (m) => {
     const alpha = parseFloat(m);
     return `${Math.min(1, alpha + 0.3)})`;

@@ -11,9 +11,10 @@ type Props = {
 };
 
 /**
- * AtmosphericGradient — canvas для всех screens.
- * Default = Dawn (3-radial-имитация через stacked LinearGradient).
- * Theme variants — для специфичных экранов: Progress (darkHorizon), Onboarding (sunriseGreens), etc.
+ * AtmosphericGradient — canvas for every screen.
+ * Default = Dawn (3-radial imitation via stacked LinearGradient).
+ * Theme variants for specific screens: Progress (darkHorizon), Onboarding
+ * (sunriseGreens), etc.
  */
 export function AtmosphericGradient({ theme = 'dawn', children, style }: Props) {
   if (theme === 'dawn') {

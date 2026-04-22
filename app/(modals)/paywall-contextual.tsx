@@ -93,7 +93,7 @@ export default function PaywallContextual() {
             <Text style={styles.priceLabel}>Annual</Text>
             <Text style={styles.priceMain}>$79.99</Text>
             <Text style={styles.pricePerMonth}>$6.67 / month</Text>
-            <Text style={styles.priceSave}>save 44%</Text>
+            <Text style={styles.priceSave}>save 33%</Text>
           </Pressable>
           <Pressable
             style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
