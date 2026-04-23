@@ -255,7 +255,7 @@ export default function ProgressScreen() {
         >
           <View style={styles.stat}>
             <Text style={styles.statNumber}>{cravingsMet}</Text>
-            <Text style={styles.statLabel}>cravings met</Text>
+            <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>

@@ -161,8 +161,17 @@ export default function Curriculum() {
                 <View style={styles.lessonsList}>
                   {phase.lessons.map((lesson, li) => {
                     const state = computeLessonState(lesson.day, currentDay);
+                    const stateLabel =
+                      state === 'done' ? 'completed'
+                      : state === 'current' ? 'today'
+                      : 'upcoming';
                     return (
-                      <Pressable key={lesson.day} onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}>
+                      <Pressable
+                        key={lesson.day}
+                        onPress={() => router.push(`/(tabs)/curriculum/${lesson.day}` as any)}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Day ${lesson.day} · ${lesson.title} · ${lesson.minutes} min · ${stateLabel}`}
+                      >
                         <GlassCard
                           tint={state === 'current' ? 'peach' : 'default'}
                           style={[

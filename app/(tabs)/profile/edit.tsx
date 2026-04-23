@@ -44,11 +44,23 @@ export default function EditProfile() {
   return (
     <AtmosphericGradient theme="dawn">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={handleBack} hitSlop={12} style={styles.headerSide}>
+        <Pressable
+          onPress={handleBack}
+          hitSlop={12}
+          style={styles.headerSide}
+          accessibilityRole="button"
+          accessibilityLabel="Back without saving"
+        >
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Edit profile</Text>
-        <Pressable onPress={handleSave} hitSlop={12} style={styles.headerSideRight}>
+        <Pressable
+          onPress={handleSave}
+          hitSlop={12}
+          style={styles.headerSideRight}
+          accessibilityRole="button"
+          accessibilityLabel="Save profile changes"
+        >
           <Text style={styles.headerLink}>Save</Text>
         </Pressable>
       </View>
@@ -65,6 +77,8 @@ export default function EditProfile() {
           <Pressable
             onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
             hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel="Change profile photo"
           >
             <Text style={styles.avatarLink}>Change photo</Text>
           </Pressable>
@@ -82,6 +96,8 @@ export default function EditProfile() {
               style={styles.input}
               autoCapitalize="words"
               returnKeyType="done"
+              textContentType="givenName"
+              accessibilityLabel="Your first name"
             />
           </View>
         </View>
@@ -97,7 +113,12 @@ export default function EditProfile() {
 
         {/* Bottom actions */}
         <View style={styles.footer}>
-          <Pressable onPress={handleBack} hitSlop={12}>
+          <Pressable
+            onPress={handleBack}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel="Cancel editing profile"
+          >
             <Text style={styles.cancelLink}>Cancel</Text>
           </Pressable>
           <PillCTA label="Save" onPress={handleSave} variant="inline" />
@@ -114,6 +135,8 @@ function FieldRow({ label, value }: { label: string; value: string }) {
       <Pressable
         onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
         style={styles.pickerRow}
+        accessibilityRole="button"
+        accessibilityLabel={`${label}: ${value}. Tap to change.`}
       >
         <Text style={styles.pickerValue}>{value}</Text>
         <Text style={styles.pickerArrow}>→</Text>

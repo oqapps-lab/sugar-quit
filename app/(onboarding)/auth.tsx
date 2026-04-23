@@ -133,12 +133,22 @@ export default function Auth() {
               onPress={onSubmit}
               disabled={submitting}
             />
-            <Pressable onPress={() => setIsSignUp((v) => !v)} style={styles.toggleBtn}>
+            <Pressable
+              onPress={() => setIsSignUp((v) => !v)}
+              style={styles.toggleBtn}
+              accessibilityRole="button"
+              accessibilityLabel={isSignUp ? 'Switch to sign in' : 'Switch to sign up'}
+            >
               <Text style={styles.toggleText}>
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
               </Text>
             </Pressable>
-            <Pressable onPress={() => setMode('menu')} style={styles.backBtn}>
+            <Pressable
+              onPress={() => setMode('menu')}
+              style={styles.backBtn}
+              accessibilityRole="button"
+              accessibilityLabel="Back to other sign-in options"
+            >
               <Text style={styles.toggleText}>← Other options</Text>
             </Pressable>
           </Animated.View>

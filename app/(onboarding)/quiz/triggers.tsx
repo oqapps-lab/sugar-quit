@@ -50,7 +50,14 @@ export default function QuizTriggers() {
           {options.map((o) => {
             const isOn = selected.includes(o.key);
             return (
-              <Pressable key={o.key} style={styles.gridItem} onPress={() => toggle(o.key)}>
+              <Pressable
+                key={o.key}
+                style={styles.gridItem}
+                onPress={() => toggle(o.key)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: isOn }}
+                accessibilityLabel={o.title}
+              >
                 <GlassCard
                   tint={isOn ? 'peach' : 'default'}
                   style={[styles.optionCard, isOn && styles.optionCardOn]}
@@ -67,7 +74,9 @@ export default function QuizTriggers() {
         <PillCTA
           label="Continue"
           variant="onboarding"
+          disabled={selected.length === 0}
           onPress={() => {
+            if (selected.length === 0) return;
             setTriggers(selected);
             router.push('/(onboarding)/quiz/consumption');
           }}

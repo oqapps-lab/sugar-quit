@@ -8,8 +8,8 @@ type Props = {
 };
 
 /**
- * TokenDot — малый круглый индикатор (streak, timeline, quiz progress).
- * filled: primary + glow. empty: outline-variant без glow.
+ * TokenDot — small round indicator (streak, timeline, quiz progress).
+ * filled: primary + glow. empty: outline-variant without glow.
  */
 export function TokenDot({ filled = true, size = 6, color = colors.primary }: Props) {
   return (

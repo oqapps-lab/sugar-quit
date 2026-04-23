@@ -44,7 +44,12 @@ export default function PushPermission() {
 
         <Animated.View entering={FadeInDown.delay(400).duration(450)} style={styles.footer}>
           <PillCTA label="Turn on predictions" onPress={finish} />
-          <Pressable onPress={finish} style={styles.laterBtn}>
+          <Pressable
+            onPress={finish}
+            style={styles.laterBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Maybe later, skip notifications"
+          >
             <Text style={styles.laterLabel}>Maybe later</Text>
           </Pressable>
         </Animated.View>

@@ -69,7 +69,12 @@ export default function CheckIn() {
       </View>
       {/* Header */}
       <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.backBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close check-in"
+        >
           <Text style={styles.backArrow}>←</Text>
         </Pressable>
         <Text style={styles.headerTitle}>Daily check-in</Text>
@@ -98,7 +103,12 @@ export default function CheckIn() {
           <View style={styles.cardsCol}>
             {SUGAR_OPTIONS.map((opt, idx) => (
               <Animated.View key={opt.key} entering={FadeInDown.delay(250 + idx * 80).duration(400)}>
-                <Pressable onPress={() => onSugar(opt.key)}>
+                <Pressable
+                  onPress={() => onSugar(opt.key)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: sugar === opt.key }}
+                  accessibilityLabel={`${opt.title} — ${opt.body}`}
+                >
                   <GlassCard tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
                     <View style={styles.optionRow}>
                       <View style={styles.optionText}>
@@ -134,7 +144,13 @@ export default function CheckIn() {
 
           <Animated.View entering={FadeInDown.delay(280).duration(400)} style={styles.moodGrid}>
             {MOODS.map((m) => (
-              <Pressable key={m.value} onPress={() => onMood(m.value)}>
+              <Pressable
+                key={m.value}
+                onPress={() => onMood(m.value)}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: mood === m.value }}
+                accessibilityLabel={`Mood: ${m.label}`}
+              >
                 <View style={[styles.moodTile, mood === m.value && styles.moodTileActive]}>
                   <Text style={[styles.moodGlyph, mood === m.value && styles.moodGlyphActive]}>{m.emoji}</Text>
                   <Text style={[styles.moodLabel, mood === m.value && styles.moodLabelActive]}>{m.label}</Text>

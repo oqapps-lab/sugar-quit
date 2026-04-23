@@ -38,7 +38,12 @@ export default function Disclaimer() {
       </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close disclaimer"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>
@@ -67,7 +72,12 @@ export default function Disclaimer() {
 
       <Animated.View entering={FadeInDown.delay(600).duration(400)} style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="I understand — let's talk" onPress={onAccept} />
-        <Pressable onPress={() => router.dismiss()} style={styles.cancelBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.cancelBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Not now, dismiss disclaimer"
+        >
           <Text style={styles.cancelLabel}>Not now</Text>
         </Pressable>
       </Animated.View>

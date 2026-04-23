@@ -101,7 +101,12 @@ export default function ChatScreen() {
           <AuraBlob tint="peach" size={280} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
         </View>
         <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
+          <Pressable
+            onPress={() => router.dismiss()}
+            style={styles.backBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Close SOS"
+          >
             <Text style={styles.backArrow}>←</Text>
           </Pressable>
           <View style={{ width: 40 }} />
@@ -122,7 +127,12 @@ export default function ChatScreen() {
           </Animated.Text>
           <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.blockedActions}>
             <PillCTA label="Try Premium free" onPress={() => router.replace('/(modals)/paywall-contextual')} />
-            <Pressable onPress={() => router.dismiss()} style={styles.blockedSkip}>
+            <Pressable
+              onPress={() => router.dismiss()}
+              style={styles.blockedSkip}
+              accessibilityRole="button"
+              accessibilityLabel="Not now, close SOS limit screen"
+            >
               <Text style={styles.blockedSkipText}>Not now</Text>
             </Pressable>
           </Animated.View>
@@ -145,7 +155,12 @@ export default function ChatScreen() {
       >
         {/* Header */}
         <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
+          <Pressable
+            onPress={() => router.dismiss()}
+            style={styles.backBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Close SOS"
+          >
             <Text style={styles.backArrow}>←</Text>
           </Pressable>
           <View style={styles.headerCenter}>
@@ -209,8 +224,16 @@ export default function ChatScreen() {
               style={styles.input}
               onSubmitEditing={send}
               returnKeyType="send"
+              accessibilityLabel="Message to the coach"
+              accessibilityHint="Type what you're feeling and press send"
             />
-            <Pressable onPress={send} style={[styles.sendBtn, !input.trim() && styles.sendBtnDisabled]}>
+            <Pressable
+              onPress={send}
+              style={[styles.sendBtn, !input.trim() && styles.sendBtnDisabled]}
+              accessibilityRole="button"
+              accessibilityLabel="Send message"
+              accessibilityState={{ disabled: !input.trim() }}
+            >
               <Text style={styles.sendArrow}>↑</Text>
             </Pressable>
           </View>

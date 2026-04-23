@@ -40,7 +40,12 @@ export default function PaywallContextual() {
       </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close paywall"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>
@@ -80,16 +85,22 @@ export default function PaywallContextual() {
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
             onPress={() => pickTier('annual')}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: tier === 'annual' }}
+            accessibilityLabel="Annual plan, $79.99, $6.67 per month, best value"
           >
             {tier === 'annual' && <View style={styles.bestBadge}><Text style={styles.bestBadgeText}>BEST VALUE</Text></View>}
             <Text style={styles.priceLabel}>Annual</Text>
             <Text style={styles.priceMain}>$79.99</Text>
             <Text style={styles.pricePerMonth}>$6.67 / month</Text>
-            <Text style={styles.priceSave}>save 44%</Text>
+            <Text style={styles.priceSave}>save 33%</Text>
           </Pressable>
           <Pressable
             style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
             onPress={() => pickTier('monthly')}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: tier === 'monthly' }}
+            accessibilityLabel="Monthly plan, $9.99 per month, cancel anytime"
           >
             <Text style={styles.priceLabel}>Monthly</Text>
             <Text style={styles.priceMain}>$9.99</Text>
@@ -101,7 +112,11 @@ export default function PaywallContextual() {
 
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
         <PillCTA label="Try 7 days free" onPress={() => router.dismiss()} style={{ alignSelf: 'stretch' }} />
-        <Pressable onPress={() => router.dismiss()}>
+        <Pressable
+          onPress={() => router.dismiss()}
+          accessibilityRole="button"
+          accessibilityLabel="Not now, dismiss paywall"
+        >
           <Text style={styles.notNow}>Not now</Text>
         </Pressable>
       </View>

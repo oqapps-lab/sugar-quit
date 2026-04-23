@@ -93,8 +93,8 @@ export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Pro
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="SOS — получить помощь с тягой к сахару"
-        accessibilityHint="Открывает AI-чат для помощи в момент тяги"
+        accessibilityLabel="SOS — get help with a sugar craving"
+        accessibilityHint="Opens an AI conversation to walk you through the craving"
         onPress={handlePress}
         style={({ pressed }) => [
           styles.pressable,

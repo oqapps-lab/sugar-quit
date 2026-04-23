@@ -10,11 +10,38 @@ AI-powered sugar addiction coach. "Reframe for sugar." SOS button for craving mo
 - Claude API / OpenAI API (SOS craving conversations, trigger prediction)
 
 ## Getting started
+
+### Clean clone (first-time setup)
 ```bash
-npm install
-cp .env.example .env  # fill in real keys
-npm start
+npm install --legacy-peer-deps   # reanimated@4 peer conflict — legacy flag required
+cp .env.example .env              # fill in real keys (or leave placeholders — app runs in demo mode)
+npx expo start                    # opens Metro, press `i` for iOS simulator
 ```
+
+### On your feature branch (student workflow)
+```bash
+git checkout feature/<your-github-handle>
+git fetch origin
+git merge origin/main             # pull the latest scaffold + fixes
+# (conflicts should only hit files you touched; docs/ changes merge cleanly)
+npm install --legacy-peer-deps
+npx expo start
+```
+
+### Common issues
+- **`expo-haptics` plugin resolver error** — already removed from `app.json`
+  plugins; if you re-added it, take it out (it's a runtime API, not a config
+  plugin).
+- **TurboModule `PlatformConstants` error in Expo Go** — versions out of
+  sync. Run `npx expo install --check` then `npx expo install --fix`.
+- **Port 8081 already in use** — another Metro is running. Start on an
+  alternate port: `npx expo start --port 8082`.
+- **Hard keyboard prevents software keyboard from appearing in the sim** —
+  iOS Simulator menu → I/O → Keyboard → toggle off "Connect Hardware
+  Keyboard".
+
+### Port convention (if you run multiple oqapps-lab projects in parallel)
+Sugar Quit defaults to 8081. If taken, 8082. Check `lsof -iTCP:8081`.
 
 ## Project structure
 See `CLAUDE.md` for the full architectural rules and the 3-layer layout system.

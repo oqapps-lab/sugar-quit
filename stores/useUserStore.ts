@@ -201,8 +201,16 @@ export const useUserStore = create<UserStore>()(
       setOnboarded: (v) => set({ onboarded: v }),
 
       setFirstName: (name) => {
-        const trimmed = name.trim();
-        set({ firstName: trimmed.length > 0 ? trimmed : null });
+        // Sanitize: strip control chars (\n, \r, \t, backslash), collapse
+        // whitespace, trim, cap at 40. Prevents literal "\n" or pasted
+        // paragraphs from leaking into the app-wide greeting. Empty after
+        // cleanup → null, so Home eyebrow falls back to "TODAY'S FORECAST".
+        const cleaned = name
+          .replace(/[\u0000-\u001F\u007F\\]/g, '')  // control chars + literal backslash
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 40);
+        set({ firstName: cleaned.length > 0 ? cleaned : null });
       },
 
       setGoal: (g) => set({ goal: g }),
