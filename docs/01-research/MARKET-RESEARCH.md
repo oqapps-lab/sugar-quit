@@ -1,6 +1,6 @@
 # AI-Powered Sugar Addiction/Quitting App: Comprehensive Market Research
 
-**Date:** April 7, 2026
+**Date:** April 25, 2026 (updated)
 **Category:** Health / Productivity
 **Target:** 25-40 year olds, office workers, entrepreneurs, health-conscious individuals
 
@@ -720,3 +720,480 @@ Avoid positioning as "addiction treatment" (controversy). Position as:
 6. **Clear monetization**: $79-99/year subscription, with coaching and B2B upsell potential
 
 **The window is open now. The sugar-quitting app space is where the quit-drinking space was in 2019 -- early, fragmented, and waiting for a category-defining product.**
+
+---
+
+## 17. Unit Economics Model
+
+### 17.1 Customer Acquisition Cost (CAC) — Benchmarks
+
+| Канал | CAC (Health Apps, 2025) | Прогноз Sugar Quit (Year 1) |
+|-------|------------------------|----------------------------|
+| Paid Social (Meta/TikTok) | $18–45 | $25–40 |
+| Apple Search Ads | $8–22 | $12–20 |
+| Google UAC | $10–30 | $15–25 |
+| Influencer (micro, 10K-100K) | $3–12 (per install) | $5–10 |
+| Organic / ASO | $0 | $0 |
+| Content / SEO | $2–8 (attributed) | $3–6 |
+| Community (Reddit, Discord) | $1–4 | $2–4 |
+| **Blended CAC (target)** | — | **$18–28** |
+
+**Бенчмарки аналогов:**
+- Reframe (alcohol): ~$22 blended CAC в Year 1, снизился до ~$14 к Year 3
+- Headspace: ~$30–45 blended CAC
+- I Am Sober: <$5 (almost entirely organic — exceptional outlier)
+
+### 17.2 Lifetime Value (LTV)
+
+**Модель для Sugar Quit (консервативная):**
+
+| Параметр | Значение | Обоснование |
+|----------|---------|-------------|
+| Средняя цена подписки | $8.50/мес | Mix: ~60% monthly ($9.99) + ~40% annual ($79.99/12=$6.67) |
+| Apple/Google комиссия | 15-30% | 30% Year 1, 15% Year 2+ |
+| Чистая выручка/мес | ~$6.50/мес | После комиссии магазинов |
+| Avg. subscription duration | 6.5 мес | Аналоги: Headspace ~7 мес, Noom ~5-6 мес, Reframe ~8 мес |
+| **LTV** | **~$42** | $6.50 × 6.5 |
+
+**Оптимистичная модель (Year 2+, с улучшением retention):**
+
+| Параметр | Значение |
+|----------|---------|
+| Avg. subscription duration | 9 мес |
+| LTV | **~$58** |
+
+### 17.3 LTV:CAC Ratio
+
+| Сценарий | LTV | CAC | LTV:CAC | Оценка |
+|---------|-----|-----|---------|--------|
+| Консервативный (Year 1) | $42 | $28 | **1.5x** | Ниже цели (3x+) — нормально для early stage |
+| Базовый (Year 2) | $50 | $22 | **2.3x** | Улучшается по мере органики |
+| Оптимистичный (Year 3) | $58 | $16 | **3.6x** | Устойчивая экономика |
+
+**Ключевой вывод:** LTV:CAC выходит на устойчивый уровень 3x+ к Year 3 при улучшении retention и росте органического трафика. До этого — инвестиционная фаза (нормально при наличии seed-финансирования $2-3M).
+
+### 17.4 Payback Period
+
+| Сценарий | CAC | Чистая выручка/мес | Payback |
+|---------|-----|-------------------|---------|
+| Year 1 | $28 | $6.50 | **4.3 мес** |
+| Year 2 | $22 | $6.80 | **3.2 мес** |
+
+Payback period <6 месяцев — отличный показатель для subscription health app.
+
+### 17.5 AI Cost Analysis
+
+**SOS AI разговор (Claude Haiku 4.5):**
+- Средняя длина разговора: ~800 токенов input + ~400 output
+- Стоимость без кэша: ~$0.007/разговор
+- Со prompt caching (90% cache hit rate): ~$0.001/разговор
+- Среднее кол-во SOS разговоров/мес на активного пользователя: ~8
+
+**AI cost per active user/month: ~$0.008–$0.056**
+
+| Метрика | Значение |
+|---------|---------|
+| AI cost/пользователь/мес | ~$0.03 (среднее) |
+| Как % от выручки | **<0.5%** |
+| Break-even threshold | Любой платящий пользователь |
+
+**Вывод: AI — конкурентное преимущество практически без себестоимости.** При $8.50 ARR в месяц AI стоит $0.03 = 0.35% от выручки.
+
+---
+
+## 18. Channel Analysis — Детальная стратегия привлечения
+
+### 18.1 TikTok / Reels (Приоритет 1)
+
+**Почему это главный канал:**
+- "No sugar challenge" — вирусный формат с десятками миллионов просмотров
+- #sugarfree — 3B+ просмотров на TikTok
+- #nochallenge, #sugardetox, #quittingsugar — активные сообщества
+- Демография 18-35 совпадает с Сарой и Хлоей
+
+**Контент-стратегии:**
+1. **Before/After Day Diaries** — "Day 1 vs Day 30 без сахара" от реальных пользователей
+2. **Hidden Sugar Shocks** — "В этом йогурте БОЛЬШЕ сахара, чем в Snickers"
+3. **3pm Craving POV** — "Что происходит в твоём мозге в момент тяги"
+4. **AI SOS демонстрация** — показать живой разговор с AI в момент тяги
+5. **Science Takes** — "Вот что сахар делает с вашим дофамином"
+
+**Benchmark CPIs (cost per install):**
+- TikTok Ads: $2.50–$6.00 (health category)
+- Organic viral: $0 (цель — хотя бы 1 viral видео/мес)
+- Micro-influencer partnership: $3–8/install
+
+**Бюджет Year 1:** $120K на TikTok (paid + influencer)
+
+### 18.2 Apple Search Ads (Приоритет 2)
+
+**Ключевые поисковые запросы с высокой конверсией:**
+
+| Ключевик | Поисковый объём | Конкуренция | Стратегия |
+|---------|----------------|-------------|-----------|
+| "quit sugar app" | Low-Medium | Low | Захват — наш exact term |
+| "sugar detox app" | Medium | Low | Захват |
+| "no sugar challenge app" | Low | Low | Захват |
+| "sugar tracker" | Medium | Medium | Bid |
+| "habit tracker" | High | High | Selective — дорого |
+| "sugar addiction" | Low | Low | Нишевый, высокая конверсия |
+| "pre diabetes app" | Low | Medium | Paul persona |
+| "stop eating sugar" | Low | Low | Intent-driven |
+
+**Тактика:** Aggressive bidding на нишевых терминах (низкая конкуренция, высокий intent) + competitor brand bidding на "Sugarfree app", "Sugarless app".
+
+**Benchmark:** Apple Search Ads TTR (tap-through rate) в health — 8–12%. Конверсия в install — 50–65%.
+
+### 18.3 SEO / Content Marketing (Приоритет 3 — долгосрочный)
+
+**Высокоприоритетные статьи для блога:**
+
+| Тема | Поисковый объём (est.) | Коммерческий intent |
+|------|----------------------|---------------------|
+| "Hidden sugar in foods list" | 40K+/мес | High |
+| "How to stop sugar cravings at work" | 15K+/мес | Very High |
+| "Sugar withdrawal symptoms day by day" | 25K+/мес | High |
+| "What to eat instead of sugar when craving" | 20K+/мес | Very High |
+| "How to reduce sugar intake prediabetes" | 10K+/мес | Very High (Paul) |
+| "No sugar challenge results" | 30K+/мес | High |
+| "Best quit sugar app 2027" | 5K+/мес | Very High |
+
+**Стратегия:** 2 статьи в неделю начиная с Month 3. Каждая оптимизирована для конкретного болевого момента и включает CTA для скачивания.
+
+**Timeline до органического трафика:** 6–9 месяцев (типично для SEO).
+
+### 18.4 Influencer Marketing
+
+**Tier структура:**
+
+| Tier | Подписчики | CPM | Est. CPI | Кол-во/квартал |
+|------|-----------|-----|----------|---------------|
+| Nano (1K-10K) | 1K–10K | $10-30 | $1-5 | 20-30 |
+| Micro (10K-100K) | 10K–100K | $8-20 | $3-10 | 8-12 |
+| Mid (100K-1M) | 100K–1M | $6-15 | $8-20 | 2-3 |
+| Macro (1M+) | 1M+ | $5-12 | $15-40 | 0-1 (selective) |
+
+**Лучшая стратегия для Sugar Quit:** Ставка на micro-influencers в нишах:
+- Health & Wellness (primary)
+- "Clean eating" / whole foods
+- Mental health & stress management
+- Pre-diabetics / GLP-1 users
+- Office workers / productivity creators
+
+**Ключевые метрики для партнёрства:** Engagement rate >3%, аудитория 25-45 лет, US/UK/CA/AU geography.
+
+### 18.5 Community / Organic Growth
+
+**Reddit стратегия:**
+- Аутентичное участие в r/sugarfree, r/nutrition, r/prediabetes
+- Нельзя спамить — нужно реально помогать людям
+- Soft launches: "Мы создаём приложение, ищем beta-тестеров" (работает в r/sugarfree)
+- AMA (Ask Me Anything) от founder или advisor
+
+**App Store Ratings Loop:**
+- In-app prompt после ключевых моментов успеха (Day 7, Day 30, successful SOS)
+- Цель: 500+ оценок к Month 3, средний рейтинг 4.7+
+- Ответы на все отзывы в первые 6 месяцев
+
+---
+
+## 19. B2B / Corporate Wellness Opportunity
+
+### 19.1 Размер рынка корпоративного велнеса
+
+| Метрика | Значение | Источник |
+|---------|---------|---------|
+| Global corporate wellness market (2025) | $63.3B | Grand View Research |
+| US corporate wellness market | $17.5B | IBISWorld |
+| CAGR | 4.8% | GVR |
+| % компаний Fortune 500 с wellness-программами | 85%+ | Rand Corporation |
+| Средняя wellness-субсидия на сотрудника | $300-800/год | Mercer |
+
+### 19.2 Обоснование для работодателей
+
+**ROI корпоративных wellness-программ (сахар-специфичный):**
+- Диабет 2 типа обходится работодателям $13,741/год дополнительных расходов на застрахованного (ADA)
+- Прогрессирование preD→T2D: ~10% в год без вмешательства; ~2-4% при активном lifestyle изменении
+- Для компании с 1,000 сотрудников: 8-12% имеют preD → 80-120 человек
+- Стоимость без вмешательства: $80-120 × $13,741 = $1.1M–$1.6M дополнительных затрат/год
+- Стоимость Sugar Quit B2B: $5-8/employee/month = $60-96/year/employee
+- **ROI: >10:1** для компаний с высокой долей preD-сотрудников
+
+### 19.3 B2B Pricing Model
+
+| Tier | Цена | Описание |
+|------|------|---------|
+| **Starter** | $5/employee/мес | Unlimited app access, monthly aggregate reporting |
+| **Business** | $8/employee/мес | + admin dashboard, HRIS integration, custom challenges |
+| **Enterprise** | $12/employee/мес | + dedicated success manager, custom content, SSO, SOC 2 |
+| **Insurance** | Custom | Per-outcome pricing (A1C improvement, weight loss metrics) |
+
+### 19.4 Путь к B2B
+
+**Фазы:**
+1. **Month 1-12:** B2C launch only. Накопить user data, testimonials, outcome metrics
+2. **Month 12-18:** Пилот с 3-5 SMB (50-200 сотрудников). Free/discounted для case studies
+3. **Month 18-24:** B2B product suite. Dedicated sales hire. Targeting HR и Benefits managers
+4. **Year 3+:** Insurance partnerships (Humana, Aetna, Cigna). CDC DPP recognition
+
+**Target B2B buyers:**
+- HR Directors / Benefits Managers
+- Occupational Health Nurses
+- CFOs (ROI-driven conversation)
+- Insurance brokers (distribution channel)
+
+**Каналы B2B продаж:**
+- LinkedIn (targeting Benefits/HR roles)
+- HR conferences (SHRM Annual, HLTH)
+- Insurance broker partnerships
+- Direct outreach через referrals от corporate users
+
+### 19.5 Insurance Integration Opportunity
+
+**CDC Diabetes Prevention Program (DPP):**
+- CDC-признанные digital DPP programs получают Medicare/Medicaid reimbursement
+- Требования: ≥5% weight loss outcome у ≥5% участников в Year 1
+- Noom получил Full CDC DPP Recognition в 2024 — прецедент для мобильных приложений
+- **Sugar Quit Path:** Clinical pilot → Data → CDC recognition → Insurance reimbursement
+- Timeline: 2-3 года от launch до первых reimbursements
+
+---
+
+## 20. Retention & Engagement Benchmarks
+
+### 20.1 Industry Benchmarks — Health Apps
+
+| Метрика | Средний health app | Top quartile | Цель Sugar Quit |
+|---------|------------------|-------------|----------------|
+| Day 1 Retention | 25-35% | 45-55% | **45%** |
+| Day 7 Retention | 10-18% | 25-35% | **25%** |
+| Day 30 Retention | 5-10% | 15-20% | **18%** |
+| Day 90 Retention | 2-5% | 8-12% | **10%** |
+| Monthly Active Rate | 30-40% | 55-70% | **60%** |
+
+**Источник:** Adjust Mobile App Trends Report 2025, AppsFlyer State of App Marketing 2025
+
+### 20.2 Что движет retention в behavior change apps
+
+**Исследование: Top retention drivers в habit/health apps (RevenueCat, 2025):**
+
+| Фактор | Влияние на Day 30 retention | Реализация в Sugar Quit |
+|--------|---------------------------|------------------------|
+| Push notification (персонализированные) | +12-18% | Trigger predictions + daily check-in reminders |
+| Streak механика | +8-15% | Streak counter + "Don't break the chain" |
+| Social features | +10-20% | Community + accountability partners |
+| Personalization (AI) | +15-25% | ML trigger prediction + adaptive AI coach |
+| Milestone celebrations | +6-10% | Day 7/14/30/60/90 animations + rewards |
+| In-app messaging (proactive) | +8-12% | AI-initiated "How did yesterday go?" |
+
+### 20.3 Critical Moments — Когда пользователи уходят
+
+| Момент | % пользователей, которые уходят | Наш ответ |
+|--------|--------------------------------|-----------|
+| Онбординг (первые 5 минут) | 40-50% | Instant value: SOS AI demo в онбординге |
+| Day 3-5 (withdrawal wall) | 20-30% | Проактивное уведомление: "Дни 3-5 — самые тяжёлые. Это нормально." |
+| После первого срыва | 35-45% | Non-judgmental AI response: "Срыв — это данные, не провал" |
+| Day 14 (plateau в мотивации) | 15-25% | Milestone + новый модуль + community challenge |
+| After free trial ends | 50-60% | Strong value demonstration до конца триала |
+| Month 2 (habit established, feels less needed) | 20-30% | Shift messaging: от "quit" к "optimize" |
+
+### 20.4 Engagement Benchmarks — Аналоги
+
+| Приложение | DAU/MAU | Sessions/day | Session length |
+|-----------|---------|--------------|---------------|
+| Headspace | 12-15% | 1.2 | 8-12 мин |
+| Duolingo | 32-38% | 1.8 | 5-7 мин |
+| Reframe | ~18% | 1.5 | 6-10 мин |
+| **Sugar Quit (цель)** | **20%** | **1.3** | **4-8 мин** |
+
+**Прогнозируемые engagement паттерны Sugar Quit:**
+- Утро: daily check-in (2-3 мин)
+- 14:45: proactive craving alert (1-2 мин или SOS разговор 5-10 мин)
+- Вечер: reflection + завтрашний план (2-3 мин)
+
+---
+
+## 21. Инвестиционный ландшафт
+
+### 21.1 Comparable Funding Rounds (Health Behavior Change, 2022-2026)
+
+| Компания | Категория | Раунд | Сумма | Год | Ключевые инвесторы |
+|---------|----------|-------|-------|-----|-------------------|
+| Reframe | Quit drinking | Seed + Series A | $12.5M | 2022-2023 | Grand Ventures, Draper Associates |
+| Sunnyside | Moderate drinking | Seed + Series A | $14.6M | 2022-2024 | Mark Cuban, Springboard Fund |
+| Noom | Weight/diet | Series F+ | $540M total | — | Sequoia, Silver Lake |
+| Hinge Health | MSK / pain | Series E | $600M | 2021 | Coatue, Tiger Global |
+| NOCD | OCD therapy | Series B | $33M | 2022 | — |
+| Brightline | Children's behavioral health | Series C | $105M | 2023 | Oak HC/FT |
+| Lark Health | Chronic disease prevention | Series D | $70M | 2022 | Deerfield Management |
+| Cerebral | Mental health | Series C | $300M | 2021 | SoftBank |
+
+### 21.2 Что ищут инвесторы в health behavior change
+
+**Ключевые метрики для Seed ($2-3M):**
+- Problema + Solution validation (user interviews, landing page CVR >5%)
+- Founder-market fit (почему именно вы?)
+- MVP с первыми 100-500 платящими пользователями
+- Early retention signal (Day 7 >20%, Day 30 >10%)
+- Clear TAM ($1B+) — есть ✓
+
+**Для Series A ($8-15M) — к Year 2:**
+- 5,000-20,000 платящих подписчиков
+- MoM рост >15%
+- LTV:CAC >2x (путь к 3x)
+- NPS >40
+- Cohort retention: Month 3 >15%
+
+### 21.3 Целевые инвесторы для Sugar Quit
+
+**Tier 1 — Фокус на health behavior change:**
+- General Catalyst (Headspace investor)
+- Rock Health (digital health seed fund)
+- Bessemer Venture Partners (Healthie, Brightline)
+- Oak HC/FT (NOCD, Brightline, Lyra)
+- a16z (Bio + health portfolio)
+
+**Tier 2 — Consumer health / wellness:**
+- Andreessen Horowitz (consumer)
+- Forerunner Ventures (consumer)
+- Torch Capital (health/wellness)
+
+**Angels для первого раунда:**
+- Founders of Reframe, Sunnyside, Calm, Headspace
+- Former Noom executives
+- HealthTech operators
+
+### 21.4 Pitch Narrative для инвесторов
+
+**Одна фраза:** "Reframe for sugar — и рынок в 5 раз больше."
+
+**Key points:**
+1. Reframe: $10M+ ARR, $12.5M raised, alcohol market (~15% of adults trying to quit)
+2. Sugar: 75% of adults trying to reduce — рынок в 5x+ больше
+3. AI меняет unit economics: SOS conversations за $0.03 делают то, за что Reframe берёт $9.99/мес дополнительно
+4. Zero venture-backed competitor in sugar space
+5. January 2027 launch window — scalable opportunity
+
+---
+
+## 22. Международные рынки
+
+### 22.1 Приоритет рынков
+
+| Рынок | Размер (25-45, English-speaking) | Sugar trend | App store maturity | Regulatory | Приоритет |
+|-------|--------------------------------|-------------|-------------------|------------|-----------|
+| **США** | 58M target users | ★★★★★ | ★★★★★ | Благоприятный | **1 (Launch)** |
+| **Великобритания** | 11M target users | ★★★★★ | ★★★★☆ | Умеренный (GDPR lite) | **2 (Month 6)** |
+| **Канада** | 7M target users | ★★★★☆ | ★★★★☆ | Благоприятный | **2 (Month 6)** |
+| **Австралия** | 5M target users | ★★★★☆ | ★★★★☆ | Благоприятный | **3 (Month 12)** |
+| **Германия/Нидерланды** | 8M target users | ★★★★☆ | ★★★★☆ | Сложный (GDPR, локализация) | **4 (Year 2)** |
+| **Бразилия** | 12M target users | ★★★☆☆ | ★★★☆☆ | Умеренный | **5 (Year 2+)** |
+
+### 22.2 UK Market — Priority #2
+
+**Почему UK важна:**
+- Самая высокая сахарная осведомлённость в мире после US — Sugar Tax (SDIL) вызвал широкую дискуссию
+- NHS активно продвигает сокращение сахара; NHS-рекомендованные приложения — реальный канал
+- Английский язык = нулевые расходы на локализацию
+- Сильная wellness-культура, высокий ARPU ($79.99/yr benchmark — аналогично US)
+
+**UK-специфичные каналы:**
+- NHS App Library (prestige + distribution)
+- Partnerships с Boots, Holland & Barrett (health retail)
+- UK health influencers (different social graph от US)
+
+### 22.3 Локализационные требования (базовые)
+
+| Рынок | Валюта | Единицы | Ключевые изменения |
+|-------|--------|---------|-------------------|
+| UK | GBP (£) | grams | "teaspoons" → "grams" preferred в UK |
+| Canada | CAD ($) | grams/tsp | Dual language (FR в Quebec) |
+| Australia | AUD ($) | grams | Продуктовые базы данных — другие |
+| Germany | EUR (€) | grams | Full DE localization needed |
+
+---
+
+## 23. App Store Optimization (ASO)
+
+### 23.1 Keyword Strategy
+
+**Primary keywords (высокий intent, низкая конкуренция):**
+- "quit sugar app" — наш exact brand term; volume low, conversion очень высокий
+- "sugar detox app" — volume medium, competition low
+- "no sugar challenge app" — seasonality-driven (Jan spike)
+- "sugar addiction help" — высокий intent, Paul persona
+
+**Secondary keywords (средний volume, средняя конкуренция):**
+- "sugar tracker"
+- "sugar free diet app"
+- "sugar habit tracker"
+- "craving control app"
+- "healthy eating coach"
+
+**Competitor brand keywords (в Apple Search Ads, не в metadata):**
+- "sugarfree app", "sugarless app", "sugarcut"
+
+### 23.2 App Store Page Optimization
+
+**Title (30 chars max):**
+`Sugar Quit: AI Craving Coach`
+
+**Subtitle (30 chars max):**
+`Quit Sugar. Beat Cravings. Now.`
+
+**Preview Screenshots — порядок:**
+1. SOS AI conversation в момент тяги (главный дифференциатор)
+2. Trigger prediction: "Тяга через 20 мин" — proactive alert
+3. "Eat This Instead" — конкретная альтернатива
+4. 90-day progress + withdrawal timeline
+5. Community + streak
+
+**Preview Video (30 сек):**
+- 0-3с: Пользователь в 3pm у candy bowl → открывает SOS
+- 3-15с: AI разговор — персонализированный, эмпатичный
+- 15-25с: Выбирает альтернативу → чувствует победу
+- 25-30с: Day 30 milestone celebration
+
+### 23.3 Рейтинги — Стратегия
+
+**Ключевые сигналы для алгоритма:**
+- Количество рейтингов (volume)
+- Средний рейтинг (качество)
+- Velocity — скорость набора рейтингов
+- Retention после install
+
+**Tactics:**
+- In-app prompt ТОЛЬКО после success moment (не сразу после запуска)
+- Respond to every negative review <24 часа
+- "Thank you" responses на позитивные (повышает retention у написавших)
+- Цель: 100 ratings к Week 4, 500 к Month 3, 2000 к Month 6
+
+---
+
+## 24. Обновлённые данные (Апрель 2026)
+
+### 24.1 Новые рыночные данные
+
+- **GLP-1 + Sugar:** ~22% взрослых американцев попробовали GLP-1 к Q1 2026 (Nielsen). Многие ищут "поддержку между курсами" — Sugar Quit может позиционироваться как комплементарный инструмент
+- **AI Health App Adoption:** 38% health app пользователей в US говорят, что готовы платить больше за app с AI-коучингом (Morning Consult, Mar 2026)
+- **STOPPR update:** Заявленные 250K users не верифицированы — App Store показывает <5K ratings, несмотря на claims. Настороженность
+- **MyFitnessPal:** Потерял ~18% MAU за 2025 (Sensor Tower) — возможность для сахар-специфичных apps
+
+### 24.2 Обновлённые конкурентные данные (Q1 2026)
+
+| Приложение | Ratings iOS (Q1 2026) | Изменение за 6 мес | Вывод |
+|-----------|----------------------|-------------------|-------|
+| Sugarfree (JoyInApps) | 812 | +6 | Стагнация. Нет роста |
+| Sugarless | 128 | +2 | Стагнация |
+| Sugarcut | 11 | +3 | Нет traction |
+| STOPPR | 278 | +18 | Единственный с ростом |
+| No Sugar Challenge | 72 | +72 | Новый — быстрый старт |
+
+**Главный вывод:** Никто не прорвался. STOPPR — единственный с ощутимым ростом, но women-only + без AI. Окно открыто.
+
+### 24.3 Технологические обновления (Q1 2026)
+
+- **Claude Haiku 4.5** (released): 10x быстрее предыдущей версии, cost down 40% — SOS conversations ещё дешевле
+- **Apple Intelligence (iOS 18.4):** On-device LLM открывает возможности для offline SOS support
+- **Core ML 8:** Улучшенные возможности для on-device trigger prediction без отправки данных в облако
+- **HealthKit Nutritional Data API (расширен в iOS 18.3):** Сахар теперь отдельной категорией — интеграция для автоматического трекинга
