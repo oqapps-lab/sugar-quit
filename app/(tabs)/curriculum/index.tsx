@@ -83,8 +83,10 @@ function heroForDay(day: number): string {
 export default function Curriculum() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
+  const firstName = useUserStore((s) => s.firstName);
   const currentDay = Math.max(1, streakDays);
   const progressPct = (currentDay / 90) * 100;
+  const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -94,7 +96,7 @@ export default function Curriculum() {
           <View style={styles.logoMark} />
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
-        <View style={styles.avatar}><Text style={styles.avatarInitial}>S</Text></View>
+        <View style={styles.avatar}><Text style={styles.avatarInitial}>{avatarInitial}</Text></View>
       </View>
 
       <ScrollView

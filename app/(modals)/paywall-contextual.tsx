@@ -9,6 +9,8 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { purchase } from '../../lib/adapty';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * 4.1 Contextual paywall — SOS free limit hit.
@@ -26,10 +28,33 @@ const BENEFITS = [
 export default function PaywallContextual() {
   const insets = useSafeAreaInsets();
   const [tier, setTier] = useState<Tier>('annual');
+  const [purchasing, setPurchasing] = useState(false);
+  const setPremium = useUserStore((s) => s.setPremium);
 
   const pickTier = (t: Tier) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTier(t);
+  };
+
+  const onStartTrial = async () => {
+    if (purchasing) return;
+    setPurchasing(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const result = await purchase(tier);
+    setPurchasing(false);
+    if (!result.ok) {
+      if (result.code === 'cancelled') return; // user backed out of system sheet
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      // In skeleton mode, even on error we flip premium so the demo can
+      // continue exercising the unlocked flows. Replace with strict failure
+      // handling when real Adapty is wired up.
+      setPremium(true);
+      router.dismiss();
+      return;
+    }
+    setPremium(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    router.dismiss();
   };
 
   return (
@@ -111,7 +136,12 @@ export default function PaywallContextual() {
       </ScrollView>
 
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
-        <PillCTA label="Try 7 days free" onPress={() => router.dismiss()} style={{ alignSelf: 'stretch' }} />
+        <PillCTA
+          label={purchasing ? '…' : 'Try 7 days free'}
+          onPress={onStartTrial}
+          disabled={purchasing}
+          style={{ alignSelf: 'stretch' }}
+        />
         <Pressable
           onPress={() => router.dismiss()}
           accessibilityRole="button"

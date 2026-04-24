@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -144,8 +144,8 @@ export default function Profile() {
               { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
               { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
               { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Support',        icon: '◐', onPress: undefined },
-              { label: 'Privacy Policy', icon: '◉', onPress: undefined },
+              { label: 'Support',        icon: '◐', onPress: () => Linking.openURL('mailto:support@sugarquit.app?subject=Sugar%20Quit%20Support') },
+              { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL('https://sugarquit.app/privacy') },
             ].map((m) => (
               <Pressable
                 key={m.label}

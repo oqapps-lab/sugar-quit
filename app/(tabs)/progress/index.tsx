@@ -18,9 +18,11 @@ import { useUserStore } from '../../../stores/useUserStore';
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
+  const firstName = useUserStore((s) => s.firstName);
   const cravings = useUserStore((s) => s.cravings);
   const sosLog = useUserStore((s) => s.sosLog);
   const currentDay = Math.max(1, streakDays);
+  const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
   // Hero copy by phase — replaces hardcoded "The subtle shift / Two weeks in"
   const phase: { title: string; body: string } =
@@ -52,13 +54,89 @@ export default function ProgressScreen() {
     router.push('/(tabs)/progress/milestones');
   };
 
-  const nodes = [
-    { label: 'Arrival',  phase: 'Week 1', state: 'done' as const,     glyph: 'compass' as const },
-    { label: 'Detox',    phase: 'Week 2', state: 'done' as const,     glyph: 'flame' as const },
-    { label: 'Exhale',   phase: 'Now',    state: 'current' as const,  glyph: 'moon' as const },
-    { label: 'Clarity',  phase: 'Week 4', state: 'upcoming' as const, glyph: 'sun' as const },
-    { label: 'Horizon',  phase: 'Day 90', state: 'goal' as const,     glyph: 'orbit' as const },
+  // Timeline nodes — state derived from currentDay so the "NOW" marker
+  // moves with the user instead of being hardcoded on Exhale.
+  // Days  1–3  Arrival, 4–10 Detox, 11–24 Exhale, 25–60 Clarity, 60+ Horizon.
+  const phaseIndex =
+    currentDay <= 3  ? 0 :
+    currentDay <= 10 ? 1 :
+    currentDay <= 24 ? 2 :
+    currentDay <= 60 ? 3 : 4;
+
+  const nodeBase = [
+    { label: 'Arrival',  phase: 'Week 1', glyph: 'compass' as const },
+    { label: 'Detox',    phase: 'Week 2', glyph: 'flame' as const },
+    { label: 'Exhale',   phase: 'Week 3', glyph: 'moon' as const },
+    { label: 'Clarity',  phase: 'Week 4', glyph: 'sun' as const },
+    { label: 'Horizon',  phase: 'Day 90', glyph: 'orbit' as const },
   ];
+  const nodes = nodeBase.map((n, i) => ({
+    ...n,
+    phase: i === phaseIndex ? 'Now' : n.phase,
+    state:
+      i < phaseIndex          ? 'done'     as const
+      : i === phaseIndex      ? 'current'  as const
+      : i === nodeBase.length - 1 && phaseIndex < nodeBase.length - 1
+                              ? 'goal'     as const
+                              : 'upcoming' as const,
+  }));
+
+  // Today's Focus — phase-aware copy + practices, replaces hardcoded
+  // "Deepening the rhythmic pattern" that always read week-3 regardless of day.
+  const focus =
+    currentDay <= 3
+      ? {
+          title: 'Landing in the first day',
+          sub: "Two short practices anchor the new rhythm before willpower fatigues.",
+          practices: [
+            { title: 'Two slow breaths', body: '60 sec · before any sugar reach' },
+            { title: 'Name the moment',  body: 'Say "this is the loop" out loud' },
+          ],
+        }
+      : currentDay <= 7
+      ? {
+          title: 'Riding through the storm',
+          sub: 'Withdrawal peaks; physiology stabilises with two anchors.',
+          practices: [
+            { title: 'Hydrate first',     body: 'Glass of water before any decision' },
+            { title: 'Move 3 minutes',    body: 'Walk anywhere — kitchen counts' },
+          ],
+        }
+      : currentDay <= 14
+      ? {
+          title: 'Deepening the rhythmic pattern',
+          sub: 'Your body is learning a new cadence. Two practices to support the shift.',
+          practices: [
+            { title: 'Conscious breathwork', body: '15 min · morning session' },
+            { title: 'Mental mapping',       body: 'Reflect on transition points' },
+          ],
+        }
+      : currentDay <= 30
+      ? {
+          title: 'Building new defaults',
+          sub: 'Replacement rituals harden into habit. Two cues, two responses.',
+          practices: [
+            { title: 'Pre-decide your snack', body: 'Before 2pm, name your option' },
+            { title: 'Evening tea ritual',    body: 'A warm cup replaces dessert' },
+          ],
+        }
+      : currentDay <= 60
+      ? {
+          title: 'Identity over effort',
+          sub: 'Choices stop costing willpower — they cost nothing.',
+          practices: [
+            { title: 'Notice the non-reach',  body: 'Catch yourself NOT reaching' },
+            { title: 'Share the protocol',    body: 'Teach one person what works' },
+          ],
+        }
+      : {
+          title: 'Walking the horizon',
+          sub: 'The path is yours. Maintenance is just paying attention.',
+          practices: [
+            { title: 'Weekly review',         body: '5 min · look at your week' },
+            { title: 'Choose your next mile', body: 'Set the next 90-day frontier' },
+          ],
+        };
 
   // Health Timeline — physiological markers per FEATURES.md.
   // Each entry has a `unlocksAt` day. Items with day <= currentDay show as
@@ -89,7 +167,7 @@ export default function ProgressScreen() {
         </View>
         <Text style={styles.roadmapLabel}>Journey</Text>
         <View style={styles.avatar}>
-          <Text style={styles.avatarInitial}>S</Text>
+          <Text style={styles.avatarInitial}>{avatarInitial}</Text>
         </View>
       </View>
 
@@ -178,27 +256,19 @@ export default function ProgressScreen() {
             <Text style={styles.detailsLabel}>TODAY'S FOCUS</Text>
           </View>
 
-          <Text style={styles.detailsTitle}>Deepening the rhythmic pattern</Text>
-          <Text style={styles.detailsSub}>
-            Your body is learning a new cadence. Two practices to support the shift.
-          </Text>
+          <Text style={styles.detailsTitle}>{focus.title}</Text>
+          <Text style={styles.detailsSub}>{focus.sub}</Text>
 
           <View style={styles.practicesList}>
-            <View style={styles.practiceRow}>
-              <View style={styles.practiceNumber}><Text style={styles.practiceNumberText}>1</Text></View>
-              <View style={styles.practiceContent}>
-                <Text style={styles.practiceTitle}>Conscious breathwork</Text>
-                <Text style={styles.practiceBody}>15 min · morning session</Text>
+            {focus.practices.map((p, i) => (
+              <View key={i} style={styles.practiceRow}>
+                <View style={styles.practiceNumber}><Text style={styles.practiceNumberText}>{i + 1}</Text></View>
+                <View style={styles.practiceContent}>
+                  <Text style={styles.practiceTitle}>{p.title}</Text>
+                  <Text style={styles.practiceBody}>{p.body}</Text>
+                </View>
               </View>
-            </View>
-
-            <View style={styles.practiceRow}>
-              <View style={styles.practiceNumber}><Text style={styles.practiceNumberText}>2</Text></View>
-              <View style={styles.practiceContent}>
-                <Text style={styles.practiceTitle}>Mental mapping</Text>
-                <Text style={styles.practiceBody}>Reflect on transition points</Text>
-              </View>
-            </View>
+            ))}
           </View>
 
           <PillCTA
