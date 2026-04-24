@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
@@ -68,7 +69,7 @@ export default function ForecastWindow() {
     <AtmosphericGradient theme="dawn">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn} accessibilityRole="button" accessibilityLabel="Close">
+        <Pressable onPress={() => safeDismiss()} style={styles.closeBtn} accessibilityRole="button" accessibilityLabel="Close">
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>
@@ -109,7 +110,7 @@ export default function ForecastWindow() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Got it" onPress={() => router.dismiss()} />
+        <PillCTA label="Got it" onPress={() => safeDismiss()} />
       </View>
     </AtmosphericGradient>
   );

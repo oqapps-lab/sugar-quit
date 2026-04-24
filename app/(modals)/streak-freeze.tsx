@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,14 +39,14 @@ export default function StreakFreeze() {
       // (this is a soft "freeze counts as check-in").
       useUserStore.setState({ lastCheckInDate: getTodayISODate() });
     }
-    router.dismiss();
+    safeDismiss();
   };
 
   const onReset = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     resetStreak();
     useUserStore.setState({ lastCheckInDate: getTodayISODate() });
-    router.dismiss();
+    safeDismiss();
   };
 
   return (
@@ -56,7 +57,7 @@ export default function StreakFreeze() {
       </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable onPress={() => safeDismiss()} style={styles.closeBtn}>
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>

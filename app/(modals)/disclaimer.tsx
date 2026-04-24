@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
@@ -39,7 +40,7 @@ export default function Disclaimer() {
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.closeBtn}
           accessibilityRole="button"
           accessibilityLabel="Close disclaimer"
@@ -73,7 +74,7 @@ export default function Disclaimer() {
       <Animated.View entering={FadeInDown.delay(600).duration(400)} style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="I understand — let's talk" onPress={onAccept} />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.cancelBtn}
           accessibilityRole="button"
           accessibilityLabel="Not now, dismiss disclaimer"

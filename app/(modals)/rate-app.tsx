@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -33,7 +34,7 @@ export default function RateApp() {
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.closeBtn}
           accessibilityRole="button"
           accessibilityLabel="Close rate app"
@@ -85,11 +86,11 @@ export default function RateApp() {
       <Animated.View entering={FadeInDown.delay(700).duration(400)} style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
           label="Leave a review on the App Store"
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           disabled={rating === null}
         />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.laterBtn}
           accessibilityRole="button"
           accessibilityLabel="Maybe later, dismiss rating prompt"

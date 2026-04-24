@@ -1,5 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -102,7 +103,7 @@ export default function ChatScreen() {
         </View>
         <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <Pressable
-            onPress={() => router.dismiss()}
+            onPress={() => safeDismiss()}
             style={styles.backBtn}
             accessibilityRole="button"
             accessibilityLabel="Close SOS"
@@ -128,7 +129,7 @@ export default function ChatScreen() {
           <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.blockedActions}>
             <PillCTA label="Try Premium free" onPress={() => router.replace('/(modals)/paywall-contextual')} />
             <Pressable
-              onPress={() => router.dismiss()}
+              onPress={() => safeDismiss()}
               style={styles.blockedSkip}
               accessibilityRole="button"
               accessibilityLabel="Not now, close SOS limit screen"
@@ -156,7 +157,7 @@ export default function ChatScreen() {
         {/* Header */}
         <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
           <Pressable
-            onPress={() => router.dismiss()}
+            onPress={() => safeDismiss()}
             style={styles.backBtn}
             accessibilityRole="button"
             accessibilityLabel="Close SOS"

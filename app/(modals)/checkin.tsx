@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
@@ -70,7 +71,7 @@ export default function CheckIn() {
       {/* Header */}
       <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.backBtn}
           accessibilityRole="button"
           accessibilityLabel="Close check-in"
@@ -194,7 +195,7 @@ export default function CheckIn() {
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(420).duration(400)} style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-            <PillCTA label="Back to today" onPress={() => router.dismiss()} />
+            <PillCTA label="Back to today" onPress={() => safeDismiss()} />
           </Animated.View>
         </View>
       )}

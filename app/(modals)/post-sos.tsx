@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -43,7 +44,7 @@ export default function PostSOS() {
     if (!picked) return;
     logSosOutcome(sessionId, picked);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    router.dismiss();
+    safeDismiss();
   };
 
   return (
@@ -55,7 +56,7 @@ export default function PostSOS() {
       <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>After the wave</Text>
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+        <Pressable onPress={() => safeDismiss()} style={styles.closeBtn}>
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </Animated.View>

@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,7 +36,7 @@ export default function ShareCard() {
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>Share your chapter</Text>
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.closeBtn}
           accessibilityRole="button"
           accessibilityLabel="Close share card"

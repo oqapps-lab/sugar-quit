@@ -10,6 +10,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { purchase } from '../../lib/adapty';
+import { safeDismiss } from '../../lib/nav';
 import { useUserStore } from '../../stores/useUserStore';
 
 /**
@@ -49,12 +50,12 @@ export default function PaywallContextual() {
       // continue exercising the unlocked flows. Replace with strict failure
       // handling when real Adapty is wired up.
       setPremium(true);
-      router.dismiss();
+      safeDismiss();
       return;
     }
     setPremium(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    router.dismiss();
+    safeDismiss();
   };
 
   return (
@@ -66,7 +67,7 @@ export default function PaywallContextual() {
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           style={styles.closeBtn}
           accessibilityRole="button"
           accessibilityLabel="Close paywall"
@@ -143,7 +144,7 @@ export default function PaywallContextual() {
           style={{ alignSelf: 'stretch' }}
         />
         <Pressable
-          onPress={() => router.dismiss()}
+          onPress={() => safeDismiss()}
           accessibilityRole="button"
           accessibilityLabel="Not now, dismiss paywall"
         >

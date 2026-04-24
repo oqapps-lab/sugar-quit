@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { safeDismiss } from '../../lib/nav';
 import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -38,7 +39,7 @@ export default function CravingLog() {
     if (intensity === null || outcome === null) return;
     logCraving({ intensity, triggers, outcome, notes: notes.trim() });
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    router.dismiss();
+    safeDismiss();
   };
 
   const toggleTrigger = (t: string) => {
@@ -69,7 +70,7 @@ export default function CravingLog() {
           <View style={{ width: 36 }} />
           <Text style={styles.headerTitle}>Log a craving</Text>
           <Pressable
-            onPress={() => router.dismiss()}
+            onPress={() => safeDismiss()}
             style={styles.closeBtn}
             accessibilityRole="button"
             accessibilityLabel="Close craving log"
