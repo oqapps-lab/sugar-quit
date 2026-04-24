@@ -56,7 +56,12 @@ export default function PostSOS() {
       <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
         <Text style={styles.headerTitle}>After the wave</Text>
-        <Pressable onPress={() => safeDismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => safeDismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close post-SOS reflection"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </Animated.View>
