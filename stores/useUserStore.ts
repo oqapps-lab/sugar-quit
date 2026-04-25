@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import {
+  cancelPendingPushes,
   pullUserData,
   pushCraving,
   pushProfileDebounced,
@@ -220,6 +221,9 @@ export const useUserStore = create<UserStore>()(
       },
 
       clearSession: () => {
+        // Cancel any debounced profile/streak push that's pending — we don't
+        // want a timer to fire post-signOut, lose its JWT, and 401-warning.
+        cancelPendingPushes();
         set({ ...initialState });
       },
 

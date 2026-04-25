@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -40,6 +40,17 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Reset on focus — same reasoning as sign-up: redepending on autofill /
+  // strong-password popup interactions, the input view and React state can
+  // diverge after an aborted attempt. Cleaner UX to start fresh each time.
+  useFocusEffect(
+    useCallback(() => {
+      setError(null);
+      // Intentionally NOT clearing email/password — sign-in users typically
+      // want their last value back. Just clear stale errors.
+    }, []),
+  );
 
   const onSubmit = async (): Promise<void> => {
     if (submitting) return;

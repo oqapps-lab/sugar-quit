@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -40,6 +40,20 @@ export default function SignUp() {
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Reset local form state every time the screen gains focus. Without this,
+  // returning to /(auth)/sign-up via deep-link or back-navigation keeps the
+  // previous email/password/error around — the iOS Strong Password popup
+  // dismissal already wipes the inputs in the underlying TextInput, so the
+  // mismatch between React state and the input can produce duplicated text.
+  useFocusEffect(
+    useCallback(() => {
+      setEmail('');
+      setPassword('');
+      setConfirm('');
+      setError(null);
+    }, []),
+  );
 
   const onSubmit = async (): Promise<void> => {
     if (submitting) return;

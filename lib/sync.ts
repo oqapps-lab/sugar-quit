@@ -154,7 +154,19 @@ export async function pullUserData(userId: string): Promise<PulledData | null> {
 // ─── Push: profile (debounced) ───────────────────────────────────────────
 
 let profileTimer: ReturnType<typeof setTimeout> | null = null;
+let streakTimer: ReturnType<typeof setTimeout> | null = null;
 const PROFILE_DEBOUNCE_MS = 250;
+
+/**
+ * Cancel any pending debounced profile/streak push. Called from
+ * `clearSession()` so a sign-out cancels in-flight timers — otherwise the
+ * timer fires post-signOut, the JWT is gone, and the request 401s and
+ * surfaces a "Network request failed" warning.
+ */
+export function cancelPendingPushes(): void {
+  if (profileTimer) { clearTimeout(profileTimer); profileTimer = null; }
+  if (streakTimer)  { clearTimeout(streakTimer);  streakTimer  = null; }
+}
 
 export function pushProfileDebounced(userId: string, state: UserState): void {
   if (!userId) return;
@@ -189,7 +201,6 @@ export async function pushProfileNow(userId: string, state: UserState): Promise<
 
 // ─── Push: streak (debounced) ────────────────────────────────────────────
 
-let streakTimer: ReturnType<typeof setTimeout> | null = null;
 const STREAK_DEBOUNCE_MS = 250;
 
 export function pushStreakDebounced(userId: string, state: UserState): void {

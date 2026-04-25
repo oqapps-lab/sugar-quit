@@ -128,24 +128,23 @@ on top of any local edits, so QA loops are reproducible.
 
 ## Known issues / left for next pass
 
-- **Sign-up screen state stale on re-mount**: opening sign-up via deep-link a
-  second time keeps the previous email value in React state — typing appends
-  rather than replaces. Triggered specifically when iOS Strong Password popup
-  was previously dismissed. Workaround: clear field manually. Fix: reset
-  local state in `useFocusEffect` when the route gains focus.
 - **`example.com` and `.test` TLDs**: Supabase Auth on this project rejects
   both as "invalid". Use `gmail.com` or a real domain for sign-up tests.
   (admin API ignores this rule, which is why seed accounts on `.test` work.)
-- **Transient "TypeError: Network request failed"** banner: surfaces when a
-  debounced push fires moments after sign-out, with the JWT already cleared.
-  Push helpers should bail when `getSession()` returns null. Fix: add a
-  session-check guard to `pushProfileNow` / `pushStreakNow` before the
-  REST call.
-- **Onboarding-complete push**: each onboarding step's setter pushes profile
-  on its own (already wired), but the `setOnboarded(true)` call at the end
-  of the quiz hasn't been tap-through verified through the full 15-step
-  flow. Single-action plumbing is verified via Profile/Edit; full quiz
-  E2E remains for when we revisit onboarding copy.
+- **Push write-through silently fails on RN client** (TRACKING). Pull (sign-in →
+  hydrate) works and cross-account isolation is intact. But mutations made
+  through Edit Profile or the craving-log modal update the local Zustand
+  store correctly yet do NOT appear in Supabase rows — verified via psql
+  before/after each test. The same write succeeds via curl with the same
+  JWT and the same row shape, so the schema, RLS, and credentials are not
+  at fault. Suspect: supabase-js JWT refresh / fetch-polyfill interaction
+  in Expo SDK 55, or a load-order issue around `getSupabase()` inside the
+  store's setter→pushHelper closure. Doesn't block local UX (Zustand persist
+  caches everything for offline use) but means today, edits don't propagate
+  to other devices. **Next session priority.**
+- **Onboarding-complete push**: each onboarding step's setter calls
+  pushProfileDebounced (wired in store), but bound by the same write-through
+  silent fail above. Local quiz still completes and home renders correctly.
 - **Avatar initial fallback** on Home for empty user: shows "S" instead of
   expected "Y". Pre-existing; unrelated to this Stage A work; logged for the
   next UI sweep.
