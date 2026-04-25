@@ -5,6 +5,15 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
+
+/** Mask "alex@sugarquit.test" → "a***@sugarquit.test" for the Settings row. */
+function maskEmail(email: string | null): string {
+  if (!email) return 'Sign in to set';
+  const at = email.indexOf('@');
+  if (at < 1) return email;
+  return `${email[0]}***${email.slice(at)}`;
+}
 
 /**
  * 2.4.2 Settings — grouped lists: Notifications / Account / Data / About.
@@ -38,43 +47,47 @@ type Section = {
   rows: Row[];
 };
 
-const SECTIONS: Section[] = [
-  {
-    label: 'NOTIFICATIONS',
-    rows: [
-      { kind: 'toggle', label: 'Morning check-in',    sub: '08:00', initial: true  },
-      { kind: 'toggle', label: 'Daily lesson',        sub: '09:30', initial: true  },
-      { kind: 'toggle', label: 'Motivation of the day',             initial: false },
-      { kind: 'toggle', label: 'Streak at risk',      sub: '21:00', initial: true  },
-    ],
-  },
-  {
-    label: 'ACCOUNT',
-    rows: [
-      { kind: 'link', label: 'Email',             value: 's***@gmail.com' },
-      { kind: 'link', label: 'Change password' },
-      { kind: 'link', label: 'Restore purchases' },
-    ],
-  },
-  {
-    label: 'DATA',
-    rows: [
-      { kind: 'link', label: 'Export my data' },
-      { kind: 'link', label: 'Delete account', warning: true },
-    ],
-  },
-  {
-    label: 'ABOUT',
-    rows: [
-      { kind: 'link',   label: 'Privacy Policy' },
-      { kind: 'link',   label: 'Terms of Service' },
-      { kind: 'static', label: 'Version', value: '0.1.0' },
-    ],
-  },
-];
+function buildSections(emailMasked: string): Section[] {
+  return [
+    {
+      label: 'NOTIFICATIONS',
+      rows: [
+        { kind: 'toggle', label: 'Morning check-in',    sub: '08:00', initial: true  },
+        { kind: 'toggle', label: 'Daily lesson',        sub: '09:30', initial: true  },
+        { kind: 'toggle', label: 'Motivation of the day',             initial: false },
+        { kind: 'toggle', label: 'Streak at risk',      sub: '21:00', initial: true  },
+      ],
+    },
+    {
+      label: 'ACCOUNT',
+      rows: [
+        { kind: 'link', label: 'Email',             value: emailMasked },
+        { kind: 'link', label: 'Change password' },
+        { kind: 'link', label: 'Restore purchases' },
+      ],
+    },
+    {
+      label: 'DATA',
+      rows: [
+        { kind: 'link', label: 'Export my data' },
+        { kind: 'link', label: 'Delete account', warning: true },
+      ],
+    },
+    {
+      label: 'ABOUT',
+      rows: [
+        { kind: 'link',   label: 'Privacy Policy' },
+        { kind: 'link',   label: 'Terms of Service' },
+        { kind: 'static', label: 'Version', value: '0.1.0' },
+      ],
+    },
+  ];
+}
 
 export default function Settings() {
   const insets = useSafeAreaInsets();
+  const email = useUserStore((s) => s.email);
+  const SECTIONS = buildSections(maskEmail(email));
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

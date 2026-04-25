@@ -117,7 +117,7 @@ export default function CravingLog() {
                     key={t}
                     onPress={() => toggleTrigger(t)}
                     style={[styles.chip, active && styles.chipActive]}
-                    accessibilityRole="checkbox"
+                    accessibilityRole="button"
                     accessibilityState={{ checked: active }}
                     accessibilityLabel={t}
                   >

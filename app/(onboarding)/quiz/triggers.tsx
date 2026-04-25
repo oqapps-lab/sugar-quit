@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
@@ -50,20 +49,25 @@ export default function QuizTriggers() {
           {options.map((o) => {
             const isOn = selected.includes(o.key);
             return (
+              // Plain Pressable + View instead of GlassCard — iOS BlurView
+              // (expo-blur) does NOT honor RN's pointerEvents on its host
+              // UIVisualEffectView, so any touchable nested in or wrapping a
+              // GlassCard is silently swallowed. Use a flat semi-transparent
+              // background to approximate the glass tint.
               <Pressable
                 key={o.key}
-                style={styles.gridItem}
+                style={[
+                  styles.gridItem,
+                  styles.optionCard,
+                  isOn ? styles.optionCardOn : styles.optionCardOff,
+                ]}
                 onPress={() => toggle(o.key)}
-                accessibilityRole="checkbox"
-                accessibilityState={{ checked: isOn }}
-                accessibilityLabel={o.title}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={`${o.title}${isOn ? ', selected' : ''}`}
+                hitSlop={4}
               >
-                <GlassCard
-                  tint={isOn ? 'peach' : 'default'}
-                  style={[styles.optionCard, isOn && styles.optionCardOn]}
-                >
-                  <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
-                </GlassCard>
+                <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
               </Pressable>
             );
           })}
@@ -97,8 +101,22 @@ const styles = StyleSheet.create({
   sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   gridItem: { width: '48.5%' },
-  optionCard: { paddingVertical: spacing.md + 4, paddingHorizontal: spacing.md, alignItems: 'center' },
-  optionCardOn: { borderColor: colors.primary, borderWidth: 1.5 },
+  optionCard: {
+    paddingVertical: spacing.md + 4,
+    paddingHorizontal: spacing.md,
+    alignItems: 'center',
+    borderRadius: radius.sm,
+    borderWidth: 1,
+  },
+  optionCardOff: {
+    backgroundColor: 'rgba(255,255,255,0.55)',
+    borderColor: 'rgba(255,255,255,0.5)',
+  },
+  optionCardOn: {
+    backgroundColor: 'rgba(255,172,160,0.4)',
+    borderColor: colors.primary,
+    borderWidth: 1.5,
+  },
   optionTitle: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleMedium, color: colors.onSurface },
   optionTitleOn: { color: colors.primary },
   footer: { paddingHorizontal: spacing.lg, alignItems: 'center' },

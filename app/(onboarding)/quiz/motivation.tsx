@@ -59,7 +59,7 @@ export default function QuizMotivation() {
               <Pressable
                 key={o.key}
                 onPress={() => toggle(o.key)}
-                accessibilityRole="checkbox"
+                accessibilityRole="button"
                 accessibilityState={{ checked: isOn }}
                 accessibilityLabel={o.title}
               >

@@ -49,6 +49,12 @@ export function GlassCard({
       <BlurView
         intensity={blurIntensity}
         tint={isDark ? 'dark' : 'light'}
+        // pointerEvents="box-none" — BlurView is purely visual; without this,
+        // iOS UIVisualEffectView captures touches and breaks any parent
+        // <Pressable> wrapping the card (e.g. onboarding trigger chips,
+        // craving log option chips). The inner content View still receives
+        // touches normally for any interactive children placed inside.
+        pointerEvents="box-none"
         style={[
           styles.card,
           { borderRadius, borderColor: TINT_BORDER[tint] },
@@ -56,7 +62,10 @@ export function GlassCard({
           style,
         ]}
       >
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: TINT_BG[tint] }]} />
+        <View
+          pointerEvents="none"
+          style={[StyleSheet.absoluteFill, { backgroundColor: TINT_BG[tint] }]}
+        />
         <View style={styles.content}>{children}</View>
       </BlurView>
     );
