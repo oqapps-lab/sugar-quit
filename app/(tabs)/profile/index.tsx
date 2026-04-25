@@ -142,7 +142,17 @@ export default function Profile() {
             {[
               { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
               { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
+              {
+                // Subscription row is premium-aware:
+                //  - free → upgrade paywall
+                //  - premium → iOS native "Manage subscription" sheet
+                //    (universal link, opens App Store → Account → Subscriptions)
+                label: isPremium ? 'Manage subscription' : 'Subscription',
+                icon: '◆',
+                onPress: isPremium
+                  ? () => Linking.openURL('https://apps.apple.com/account/subscriptions')
+                  : () => router.push('/(modals)/paywall-contextual'),
+              },
               { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
               { label: 'Support',        icon: '◐', onPress: () => Linking.openURL('mailto:support@sugarquit.app?subject=Sugar%20Quit%20Support') },
               { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL('https://sugarquit.app/privacy') },

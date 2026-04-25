@@ -4,15 +4,28 @@
     "slug": "sugar-quit",
     "version": "0.1.0",
     "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
     "scheme": "sugarquit",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FBF9F5"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.gazetastreet.sugarquit"
     },
     "android": {
-      "package": "com.gazetastreet.sugarquit"
+      "package": "com.gazetastreet.sugarquit",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#FBF9F5"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",

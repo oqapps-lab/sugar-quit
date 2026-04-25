@@ -37,7 +37,9 @@ export default function Milestone() {
   const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
   const cravingsMet = sosWalked + cravingsWalked;
   const dollarsSaved = (dayShown * 1.5).toFixed(0);
-  const kgSugarAvoided = (dayShown * 0.025).toFixed(1);
+  // Cross-surface consistency: Profile / Progress / Share-card all use toFixed(2)
+  // so a 1-day user reads "0.03kg" everywhere rather than "0.0" in some surfaces.
+  const kgSugarAvoided = (dayShown * 0.025).toFixed(2);
 
   // C4: Milestone celebration — Success notification + mark celebrated so the
   // Home auto-trigger stops re-pushing this modal in a loop.

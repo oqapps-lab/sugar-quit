@@ -43,7 +43,7 @@ export default function ProgressScreen() {
   const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
   const cravingsMet = sosWalked + cravingsWalked;
   const dollarsSaved = (currentDay * 1.5).toFixed(0);
-  const kgSugar = (currentDay * 0.025).toFixed(1);
+  const kgSugar = (currentDay * 0.025).toFixed(2);
 
   const goWeekly = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

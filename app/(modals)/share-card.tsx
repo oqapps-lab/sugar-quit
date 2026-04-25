@@ -7,10 +7,12 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * 3.4 Share card — preview + native share sheet placeholder.
- * 9:16 aspect card preview with headline + stats.
+ * 9:16 aspect card preview with the user's actual stats (replaces the
+ * earlier hardcoded 30/42/$72/1.8 KG mock template).
  */
 
 const ACTIONS = [
@@ -21,6 +23,18 @@ const ACTIONS = [
 
 export default function ShareCard() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
+  const cravings = useUserStore((s) => s.cravings);
+  const sosLog = useUserStore((s) => s.sosLog);
+
+  // Same formulas as Profile / Progress / Milestone — single source of truth.
+  const currentDay = Math.max(1, streakDays);
+  const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
+  const cravingsMet = sosWalked + cravingsWalked;
+  const dollarsSaved = (currentDay * 1.5).toFixed(0);
+  const kgSugar = (currentDay * 0.025).toFixed(2);
+  const dayLabel = currentDay === 1 ? 'day quieter with sugar' : 'days quieter with sugar';
 
   const onAction = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -56,23 +70,23 @@ export default function ShareCard() {
               </View>
 
               <View style={styles.cardCenter}>
-                <Text style={styles.cardNumber}>30</Text>
-                <Text style={styles.cardHeadline}>days quieter with sugar</Text>
+                <Text style={styles.cardNumber}>{currentDay}</Text>
+                <Text style={styles.cardHeadline}>{dayLabel}</Text>
               </View>
 
               <View style={styles.cardStatsRow}>
                 <View style={styles.cardStat}>
-                  <Text style={styles.cardStatNum}>42</Text>
+                  <Text style={styles.cardStatNum}>{cravingsMet}</Text>
                   <Text style={styles.cardStatLabel}>CRAVINGS MET</Text>
                 </View>
                 <View style={styles.cardStatDivider} />
                 <View style={styles.cardStat}>
-                  <Text style={styles.cardStatNum}>$72</Text>
+                  <Text style={styles.cardStatNum}>${dollarsSaved}</Text>
                   <Text style={styles.cardStatLabel}>SAVED</Text>
                 </View>
                 <View style={styles.cardStatDivider} />
                 <View style={styles.cardStat}>
-                  <Text style={styles.cardStatNum}>1.8</Text>
+                  <Text style={styles.cardStatNum}>{kgSugar}</Text>
                   <Text style={styles.cardStatLabel}>KG AVOIDED</Text>
                 </View>
               </View>
