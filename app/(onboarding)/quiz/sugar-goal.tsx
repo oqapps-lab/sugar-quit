@@ -56,7 +56,7 @@ export default function QuizSugarGoal() {
               <Pressable
                 key={o.key}
                 onPress={() => pick(o.key)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: isOn }}
                 accessibilityLabel={o.title}
               >

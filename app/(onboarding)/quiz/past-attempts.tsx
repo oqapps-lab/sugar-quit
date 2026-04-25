@@ -58,7 +58,7 @@ export default function QuizPastAttempts() {
               <Pressable
                 key={o.key}
                 onPress={() => pick(o.key)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: isOn }}
                 accessibilityLabel={`${o.title}. ${o.body}`}
               >

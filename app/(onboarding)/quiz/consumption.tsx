@@ -59,7 +59,7 @@ export default function QuizConsumption() {
               <Pressable
                 key={l.key}
                 onPress={() => pick(l.key)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: isOn }}
                 accessibilityLabel={`${l.title}. ${l.hint}`}
               >

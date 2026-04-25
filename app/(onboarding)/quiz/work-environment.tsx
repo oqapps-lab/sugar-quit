@@ -59,7 +59,7 @@ export default function QuizWorkEnvironment() {
                 key={o.key}
                 style={styles.gridItem}
                 onPress={() => pick(o.key)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: isOn }}
                 accessibilityLabel={o.title}
               >
