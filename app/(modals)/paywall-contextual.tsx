@@ -1,0 +1,269 @@
+import { router } from 'expo-router';
+import { useState } from 'react';
+import * as Haptics from 'expo-haptics';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
+import { PillCTA } from '../../components/ui/PillCTA';
+import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+
+/**
+ * 4.1 Contextual paywall — SOS free limit hit.
+ * Compact variant of onboarding paywall.
+ */
+
+type Tier = 'annual' | 'monthly';
+
+const BENEFITS = [
+  { glyph: '∞', label: 'Unlimited SOS, any hour' },
+  { glyph: '◉', label: 'Your trigger prediction' },
+  { glyph: '❄', label: 'Streak Freeze, weekly' },
+];
+
+export default function PaywallContextual() {
+  const insets = useSafeAreaInsets();
+  const [tier, setTier] = useState<Tier>('annual');
+
+  const pickTier = (t: Tier) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setTier(t);
+  };
+
+  return (
+    <AtmosphericGradient theme="cravingProfile">
+      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+        <View style={{ width: 36 }} />
+        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
+          <Text style={styles.closeX}>×</Text>
+        </Pressable>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.limitCard}>
+          <Text style={styles.limitLabel}>FREE LIMIT REACHED</Text>
+          <Text style={styles.limitHeadline}>3 of 3 SOS used this month</Text>
+        </View>
+
+        <Text style={styles.eyebrow}>KEEP THE COACH CLOSE</Text>
+        <Text style={styles.title}>
+          <Text style={styles.titleAccent}>$0.22</Text> / day
+        </Text>
+        <Text style={styles.sub}>Less than the candy you just skipped.</Text>
+
+        <View style={styles.benefitsCard}>
+          {BENEFITS.map((b, i) => (
+            <View key={i} style={[styles.benefitRow, i > 0 && styles.benefitBorder]}>
+              <View style={styles.benefitGlyph}>
+                <Text style={styles.benefitGlyphText}>{b.glyph}</Text>
+              </View>
+              <Text style={styles.benefitLabel}>{b.label}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.pricingRow}>
+          <Pressable
+            style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
+            onPress={() => pickTier('annual')}
+          >
+            {tier === 'annual' && <View style={styles.bestBadge}><Text style={styles.bestBadgeText}>BEST VALUE</Text></View>}
+            <Text style={styles.priceLabel}>Annual</Text>
+            <Text style={styles.priceMain}>$79.99</Text>
+            <Text style={styles.pricePerMonth}>$6.67 / month</Text>
+            <Text style={styles.priceSave}>save 44%</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
+            onPress={() => pickTier('monthly')}
+          >
+            <Text style={styles.priceLabel}>Monthly</Text>
+            <Text style={styles.priceMain}>$9.99</Text>
+            <Text style={styles.pricePerMonth}>per month</Text>
+            <Text style={styles.priceSave}>cancel anytime</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+
+      <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
+        <PillCTA label="Try 7 days free" onPress={() => router.dismiss()} style={{ alignSelf: 'stretch' }} />
+        <Pressable onPress={() => router.dismiss()}>
+          <Text style={styles.notNow}>Not now</Text>
+        </Pressable>
+      </View>
+    </AtmosphericGradient>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.sm,
+  },
+  closeBtn: {
+    width: 36, height: 36, borderRadius: radius.full,
+    backgroundColor: 'rgba(49,51,47,0.06)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  closeX: { fontSize: 22, color: colors.onSurfaceVariant, lineHeight: 22, fontFamily: fonts.headlineLight },
+
+  scroll: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: 220,
+    gap: spacing.md,
+  },
+
+  limitCard: {
+    backgroundColor: 'rgba(255,172,160,0.35)',
+    borderRadius: radius.sm,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(165,60,48,0.3)',
+    alignItems: 'center',
+    gap: 4,
+  },
+  limitLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+  },
+  limitHeadline: {
+    fontFamily: fonts.headlineSemibold,
+    fontSize: typeScale.titleMedium,
+    color: colors.onPrimaryContainer,
+  },
+
+  eyebrow: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    letterSpacing: tracking.labelWide,
+    marginTop: spacing.sm,
+  },
+  title: {
+    fontFamily: fonts.headlineExtraBold,
+    fontSize: typeScale.displayLarge,
+    color: colors.onSurface,
+    letterSpacing: -1,
+    lineHeight: 38,
+  },
+  titleAccent: { color: colors.primary },
+  sub: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+    marginTop: -2,
+  },
+
+  benefitsCard: {
+    backgroundColor: 'rgba(255,255,255,0.55)',
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.7)',
+    padding: spacing.sm,
+    marginTop: spacing.xs,
+  },
+  benefitRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xs,
+  },
+  benefitBorder: {
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(49,51,47,0.06)',
+  },
+  benefitGlyph: {
+    width: 26, height: 26, borderRadius: radius.full,
+    backgroundColor: colors.primaryContainer,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  benefitGlyphText: {
+    fontFamily: fonts.headlineBold,
+    fontSize: 13,
+    color: colors.primary,
+  },
+  benefitLabel: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurface,
+    flex: 1,
+  },
+
+  pricingRow: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xs },
+  priceCard: {
+    flex: 1,
+    padding: spacing.md,
+    borderRadius: radius.sm,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.6)',
+    gap: 2,
+    position: 'relative',
+  },
+  priceCardActive: {
+    backgroundColor: 'rgba(255,172,160,0.3)',
+    borderColor: colors.primary,
+  },
+  bestBadge: {
+    position: 'absolute',
+    top: -10, right: 12,
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
+    borderRadius: radius.full,
+  },
+  bestBadgeText: {
+    fontFamily: fonts.label,
+    fontSize: 9,
+    color: colors.onPrimary,
+    letterSpacing: tracking.widest,
+  },
+  priceLabel: {
+    fontFamily: fonts.label,
+    fontSize: typeScale.labelSmall,
+    color: colors.onSurfaceVariant,
+    letterSpacing: tracking.labelWide,
+    marginBottom: 4,
+  },
+  priceMain: {
+    fontFamily: fonts.headlineExtraBold,
+    fontSize: typeScale.displayMedium,
+    color: colors.onSurface,
+    letterSpacing: -0.8,
+    lineHeight: 32,
+  },
+  pricePerMonth: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+  },
+  priceSave: {
+    fontFamily: fonts.bodyLight,
+    fontSize: typeScale.labelSmall,
+    color: colors.primary,
+    marginTop: 2,
+  },
+
+  ctaFooter: {
+    position: 'absolute',
+    bottom: 0, left: 0, right: 0,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    backgroundColor: 'rgba(254,225,217,0.7)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.5)',
+    gap: spacing.sm,
+    alignItems: 'center',
+  },
+  notNow: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodyMedium,
+    color: colors.onSurfaceVariant,
+    padding: spacing.sm,
+  },
+});
