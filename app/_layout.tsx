@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
 import {
   PlusJakartaSans_300Light,
   PlusJakartaSans_400Regular,
@@ -18,6 +19,8 @@ import {
 } from '@expo-google-fonts/manrope';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import { getSupabase } from '../lib/supabase';
+import { useUserStore } from '../stores/useUserStore';
 
 /**
  * Root Stack. Three groups:
@@ -43,6 +46,29 @@ export default function RootLayout() {
     Manrope_600SemiBold,
   });
 
+  // Auth bootstrap — mirror Supabase session into the Zustand store. Runs
+  // once at root mount; supabase-js with persistSession=true emits
+  // INITIAL_SESSION on cold start, then SIGNED_IN/SIGNED_OUT on transitions.
+  // We pull canonical cloud state on each successful sign-in.
+  useEffect(() => {
+    const sb = getSupabase();
+    if (!sb) return;
+    const { data: sub } = sb.auth.onAuthStateChange((event, session) => {
+      const store = useUserStore.getState();
+      if (session?.user) {
+        const incomingId = session.user.id;
+        const sameUser = store.userId === incomingId;
+        store.setSession({ userId: incomingId, email: session.user.email ?? null });
+        if (event === 'SIGNED_IN' || (event === 'INITIAL_SESSION' && !sameUser)) {
+          void store.hydrateFromCloud();
+        }
+      } else if (event === 'SIGNED_OUT') {
+        store.clearSession();
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   if (!fontsLoaded) {
     return <View style={{ flex: 1, backgroundColor: '#fbf9f5' }} />;
   }
@@ -58,6 +84,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
         <Stack.Screen name="(onboarding)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen

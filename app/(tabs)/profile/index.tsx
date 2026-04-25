@@ -6,6 +6,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { signOut as supabaseSignOut } from '../../../lib/supabase';
 import { useUserStore } from '../../../stores/useUserStore';
 
 const TRIGGER_LABELS: Record<string, string> = {
@@ -24,6 +25,7 @@ const TRIGGER_LABELS: Record<string, string> = {
 export default function Profile() {
   const insets = useSafeAreaInsets();
   const firstName = useUserStore((s) => s.firstName);
+  const email = useUserStore((s) => s.email);
   const goal = useUserStore((s) => s.goal);
   const peakHour = useUserStore((s) => s.peakHour);
   const triggers = useUserStore((s) => s.triggers);
@@ -31,6 +33,7 @@ export default function Profile() {
   const isPremium = useUserStore((s) => s.isPremium);
   const cravings = useUserStore((s) => s.cravings);
   const sosLog = useUserStore((s) => s.sosLog);
+  const clearSession = useUserStore((s) => s.clearSession);
 
   const displayName = firstName ?? 'You';
   const initial = displayName[0]?.toUpperCase() ?? 'Y';
@@ -82,6 +85,7 @@ export default function Profile() {
           <View style={styles.planBadge}>
             <Text style={styles.planBadgeText}>{planLabel}</Text>
           </View>
+          {email && <Text style={styles.email}>{email}</Text>}
         </Animated.View>
 
         {/* Stats — computed from real activity (cravings + SOS log + days).
@@ -156,6 +160,15 @@ export default function Profile() {
               { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
               { label: 'Support',        icon: '◐', onPress: () => Linking.openURL('mailto:support@sugarquit.app?subject=Sugar%20Quit%20Support') },
               { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL('https://sugarquit.app/privacy') },
+              {
+                label: 'Sign out',
+                icon: '↗',
+                onPress: async () => {
+                  await supabaseSignOut();
+                  clearSession();
+                  router.replace('/(auth)/sign-in');
+                },
+              },
             ].map((m) => (
               <Pressable
                 key={m.label}
@@ -210,6 +223,7 @@ const styles = StyleSheet.create({
   name: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displaySmall, color: colors.onSurface, letterSpacing: -0.6 },
   planBadge: { backgroundColor: 'rgba(165,60,48,0.1)', paddingHorizontal: spacing.md, paddingVertical: 4, borderRadius: radius.full },
   planBadgeText: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
+  email: { fontFamily: fonts.bodyLight, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.wide, marginTop: 2 },
 
   statsCard: { padding: spacing.md },
   statsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

@@ -1,6 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import {
+  pullUserData,
+  pushCraving,
+  pushProfileDebounced,
+  pushSosOpen,
+  pushSosOutcome,
+  pushStreakDebounced,
+} from '../lib/sync';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -30,6 +38,10 @@ export type SosLogEntry = {
 };
 
 export type UserState = {
+  // session (cloud auth)
+  userId: string | null;
+  email: string | null;
+
   // identity
   onboarded: boolean;
   firstName: string | null;
@@ -72,6 +84,9 @@ export type UserState = {
 };
 
 export type UserActions = {
+  setSession: (s: { userId: string; email: string | null }) => void;
+  clearSession: () => void;
+  hydrateFromCloud: () => Promise<void>;
   setOnboarded: (v: boolean) => void;
   setFirstName: (name: string) => void;
   setGoal: (g: Goal) => void;
@@ -156,6 +171,8 @@ export function getMilestoneDueIfAny(
 // ---------------------------------------------------------------------------
 
 const initialState: UserState = {
+  userId: null,
+  email: null,
   onboarded: false,
   firstName: null,
 
@@ -198,7 +215,26 @@ export const useUserStore = create<UserStore>()(
     (set, get) => ({
       ...initialState,
 
-      setOnboarded: (v) => set({ onboarded: v }),
+      setSession: ({ userId, email }) => {
+        set({ userId, email });
+      },
+
+      clearSession: () => {
+        set({ ...initialState });
+      },
+
+      hydrateFromCloud: async () => {
+        const userId = get().userId;
+        if (!userId) return;
+        const merged = await pullUserData(userId);
+        if (merged) set(merged);
+      },
+
+      setOnboarded: (v) => {
+        set({ onboarded: v });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
       setFirstName: (name) => {
         // Sanitize: strip control chars (\n, \r, \t, backslash), collapse
@@ -211,21 +247,51 @@ export const useUserStore = create<UserStore>()(
           .trim()
           .slice(0, 40);
         set({ firstName: cleaned.length > 0 ? cleaned : null });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
       },
 
-      setGoal: (g) => set({ goal: g }),
+      setGoal: (g) => {
+        set({ goal: g });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setPeakHour: (h) => set({ peakHour: h }),
+      setPeakHour: (h) => {
+        set({ peakHour: h });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setTriggers: (t) => set({ triggers: t }),
+      setTriggers: (t) => {
+        set({ triggers: t });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setMotivations: (m) => set({ motivations: m }),
+      setMotivations: (m) => {
+        set({ motivations: m });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setConsumption: (c) => set({ consumption: c }),
+      setConsumption: (c) => {
+        set({ consumption: c });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setPastAttempts: (p) => set({ pastAttempts: p }),
+      setPastAttempts: (p) => {
+        set({ pastAttempts: p });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
-      setWorkEnvironment: (w) => set({ workEnvironment: w }),
+      setWorkEnvironment: (w) => {
+        set({ workEnvironment: w });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
       completeCheckIn: (status) => {
         const state = get();
@@ -260,6 +326,8 @@ export const useUserStore = create<UserStore>()(
           bestStreak,
           lastCheckInDate: today,
         });
+        const userId = get().userId;
+        if (userId) pushStreakDebounced(userId, get());
       },
 
       useStreakFreeze: () => {
@@ -268,10 +336,16 @@ export const useUserStore = create<UserStore>()(
           return false;
         }
         set({ streakFreezesUsedThisWeek: state.streakFreezesUsedThisWeek + 1 });
+        const userId = get().userId;
+        if (userId) pushStreakDebounced(userId, get());
         return true;
       },
 
-      resetStreak: () => set({ streakDays: 0 }),
+      resetStreak: () => {
+        set({ streakDays: 0 });
+        const userId = get().userId;
+        if (userId) pushStreakDebounced(userId, get());
+      },
 
       logSosOpen: () => {
         const state = get();
@@ -306,6 +380,12 @@ export const useUserStore = create<UserStore>()(
           sosLog: [...state.sosLog, session],
         });
 
+        const userId = get().userId;
+        if (userId) {
+          pushStreakDebounced(userId, get());
+          void pushSosOpen(userId, session);
+        }
+
         const remaining = Number.isFinite(limit) ? Math.max(0, limit - next) : Infinity;
         return { allowed: true, remainingThisMonth: remaining, sessionId };
       },
@@ -317,24 +397,28 @@ export const useUserStore = create<UserStore>()(
           // Session not found — append a stand-alone outcome entry so the data
           // isn't lost (covers the case where post-sos opens without going
           // through logSosOpen, e.g. deep link).
-          set({
-            sosLog: [
-              ...state.sosLog,
-              {
-                id: sessionId || `sos_${Date.now()}`,
-                timestamp: new Date().toISOString(),
-                outcome,
-              },
-            ],
-          });
+          const newId = sessionId || `sos_${Date.now()}`;
+          const orphan: SosLogEntry = {
+            id: newId,
+            timestamp: new Date().toISOString(),
+            outcome,
+          };
+          set({ sosLog: [...state.sosLog, orphan] });
+          const userId = get().userId;
+          if (userId) void pushSosOpen(userId, orphan);
           return;
         }
         const next = [...state.sosLog];
         next[idx] = { ...next[idx], outcome };
         set({ sosLog: next });
+        void pushSosOutcome(sessionId, outcome);
       },
 
-      acceptSosDisclaimer: () => set({ sosDisclaimerAccepted: true }),
+      acceptSosDisclaimer: () => {
+        set({ sosDisclaimerAccepted: true });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
       logCraving: (entry) => {
         const state = get();
@@ -344,26 +428,39 @@ export const useUserStore = create<UserStore>()(
           timestamp: new Date().toISOString(),
         };
         set({ cravings: [...state.cravings, full] });
+        const userId = get().userId;
+        if (userId) void pushCraving(userId, full);
       },
 
       markMilestoneCelebrated: (day) => {
         const state = get();
         if (state.milestonesCelebrated.includes(day)) return;
         set({ milestonesCelebrated: [...state.milestonesCelebrated, day] });
+        const userId = get().userId;
+        if (userId) pushStreakDebounced(userId, get());
       },
 
-      setPremium: (v) =>
+      setPremium: (v) => {
         set({
           isPremium: v,
           sosFreeLimit: v ? Number.POSITIVE_INFINITY : 3,
           streakFreezesAvailableThisWeek: v ? 3 : 1,
-        }),
+        });
+        const userId = get().userId;
+        if (userId) {
+          pushProfileDebounced(userId, get());
+          pushStreakDebounced(userId, get());
+        }
+      },
 
-      markPushDenied: () =>
+      markPushDenied: () => {
         set({
           pushPermissionDenied: true,
           pushDeniedAt: getTodayISODate(),
-        }),
+        });
+        const userId = get().userId;
+        if (userId) pushProfileDebounced(userId, get());
+      },
 
       reset: () => set({ ...initialState }),
     }),
@@ -390,6 +487,8 @@ export const useUserStore = create<UserStore>()(
       },
       // Persist everything in UserState — actions are re-attached on rehydrate.
       partialize: (state) => ({
+        userId: state.userId,
+        email: state.email,
         onboarded: state.onboarded,
         firstName: state.firstName,
         goal: state.goal,
