@@ -8,6 +8,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { peakWindow24h } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
 /**
@@ -62,8 +63,13 @@ export default function ForecastWindow() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ slot?: string }>();
   const slot: Slot = (params.slot === 'peak' || params.slot === 'evening') ? params.slot : (params.slot === 'morning' ? 'morning' : 'peak');
-  const c = CONTENT[slot];
   const peakHour = useUserStore((s) => s.peakHour);
+  // Peak window eyebrow is derived from the user's peakHour, so a 9pm peak
+  // doesn't render "15:00 — 18:00" at the top of the modal.
+  const c = {
+    ...CONTENT[slot],
+    eyebrow: slot === 'peak' ? peakWindow24h(peakHour) : CONTENT[slot].eyebrow,
+  };
 
   return (
     <AtmosphericGradient theme="dawn">

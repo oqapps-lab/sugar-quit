@@ -6,6 +6,8 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { shortPeak } from '../../lib/peakHour';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
  * 1.17 Push Permission — framed as a promise, not a permission.
@@ -13,6 +15,7 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../const
  */
 export default function PushPermission() {
   const insets = useSafeAreaInsets();
+  const peakHour = useUserStore((s) => s.peakHour);
   const finish = () => router.replace('/(tabs)/home');
 
   return (
@@ -26,7 +29,7 @@ export default function PushPermission() {
       <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
         <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
           <Text style={styles.eyebrow}>THE PROMISE</Text>
-          <Text style={styles.title}>We'll warn you 15 minutes before your 3pm</Text>
+          <Text style={styles.title}>We'll warn you 15 minutes before your {shortPeak(peakHour)}</Text>
           <Text style={styles.sub}>One push when the pattern predicts a craving. That's it. No spam, ever.</Text>
         </Animated.View>
 

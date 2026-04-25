@@ -10,17 +10,11 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { getTiers, purchase, type Tier as AdaptyTier } from '../../lib/adapty';
+import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
 type Tier = 'annual' | 'monthly';
 type GlyphVariant = 'lightning' | 'orbit' | 'compass' | 'snowflake';
-
-const BENEFITS: { glyph: GlyphVariant; label: string }[] = [
-  { glyph: 'lightning', label: 'Unlimited SOS conversations, any hour' },
-  { glyph: 'orbit',     label: 'Your personalized 90-day program' },
-  { glyph: 'compass',   label: 'Trigger prediction tuned to your 3pm' },
-  { glyph: 'snowflake', label: 'Streak Freeze — one missed day forgiven per week' },
-];
 
 export default function Paywall() {
   const insets = useSafeAreaInsets();
@@ -29,6 +23,14 @@ export default function Paywall() {
   const [purchasing, setPurchasing] = useState(false);
   const firstName = useUserStore((s) => s.firstName);
   const peakHour = useUserStore((s) => s.peakHour);
+  // Personalize the trigger-prediction benefit so a 9pm-peak user doesn't
+  // see "tuned to your 3pm" — the universal "stress eater = afternoon" copy.
+  const BENEFITS: { glyph: GlyphVariant; label: string }[] = [
+    { glyph: 'lightning', label: 'Unlimited SOS conversations, any hour' },
+    { glyph: 'orbit',     label: 'Your personalized 90-day program' },
+    { glyph: 'compass',   label: `Trigger prediction tuned to your ${shortPeak(peakHour)}` },
+    { glyph: 'snowflake', label: 'Streak Freeze — one missed day forgiven per week' },
+  ];
   const setPremium = useUserStore((s) => s.setPremium);
   const eyebrow = firstName
     ? `${firstName.toUpperCase()}, YOUR PLAN IS READY`

@@ -12,6 +12,7 @@ import { SOSFab } from '../../components/ui/SOSFab';
 import { StreakOrb } from '../../components/ui/StreakOrb';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { peakWindow24h } from '../../lib/peakHour';
 import {
   getMilestoneDueIfAny,
   getTodayISODate,
@@ -339,7 +340,7 @@ export default function Home() {
                     <View style={styles.forecastText}>
                       <View style={styles.peakTitleRow}>
                         <DecorGlyph variant="lightning" size={28} />
-                        <Text style={styles.timeLabelPeak}>15:00 — 18:00</Text>
+                        <Text style={styles.timeLabelPeak}>{peakWindow24h(useUserStore.getState().peakHour)}</Text>
                       </View>
                       <Text style={styles.forecastTitlePeak}>High surge</Text>
                       <Text style={styles.forecastBodyPeak}>
@@ -347,11 +348,26 @@ export default function Home() {
                       </Text>
                     </View>
                     {(() => {
-                      // Peak badge — split user's peakHour ("3:00 PM") into number + AM/PM.
+                      // Peak badge — split user's peakHour into number + AM/PM.
+                      // Accepts both "3:00 PM" (12h, picker default) and
+                      // "21:00" (24h, server seed) formats.
                       const raw = useUserStore.getState().peakHour ?? '3:00 PM';
-                      const m = raw.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
-                      const num = m?.[1] ?? '3:00';
-                      const ampm = (m?.[2] ?? 'PM').toUpperCase();
+                      const m12 = raw.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i);
+                      let num = '3:00';
+                      let ampm = 'PM';
+                      if (m12) {
+                        num = m12[1];
+                        ampm = m12[2].toUpperCase();
+                      } else {
+                        const m24 = raw.match(/^(\d{1,2}):(\d{2})$/);
+                        if (m24) {
+                          let h = parseInt(m24[1], 10);
+                          ampm = h >= 12 ? 'PM' : 'AM';
+                          if (h > 12) h -= 12;
+                          if (h === 0) h = 12;
+                          num = `${h}:${m24[2]}`;
+                        }
+                      }
                       return (
                         <View style={styles.peakBadge}>
                           <Text style={styles.peakBadgeNumber}>{num}</Text>
