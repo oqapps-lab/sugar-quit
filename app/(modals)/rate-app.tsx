@@ -10,15 +10,34 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { useUserStore } from '../../stores/useUserStore';
 
 /**
- * 4.6 Rate app — after Day 7 milestone.
+ * 4.6 Rate app — typically opened after a milestone.
  * "A small ask." Five tappable stones.
+ *
+ * Eyebrow is phase-aware: "SEVEN DAYS IN" / "TWO WEEKS IN" / "ONE MONTH IN"
+ * etc — was hardcoded to "SEVEN DAYS IN" so a Day-47 user saw a one-week
+ * label.
  */
+
+function eyebrowForDay(day: number): string {
+  if (day <= 1) return 'ONE DAY IN';
+  if (day <= 3) return 'A FEW DAYS IN';
+  if (day <= 7) return 'SEVEN DAYS IN';
+  if (day <= 14) return 'TWO WEEKS IN';
+  if (day <= 21) return 'THREE WEEKS IN';
+  if (day <= 35) return 'ONE MONTH IN';
+  if (day <= 60) return 'TWO MONTHS IN';
+  if (day <= 90) return 'THREE MONTHS IN';
+  return `${day} DAYS IN`;
+}
 
 export default function RateApp() {
   const insets = useSafeAreaInsets();
   const [rating, setRating] = useState<number | null>(null);
+  const streakDays = useUserStore((s) => s.streakDays);
+  const eyebrowText = eyebrowForDay(Math.max(1, streakDays));
 
   const pickStone = (n: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -48,7 +67,7 @@ export default function RateApp() {
           <DecorGlyph variant="heart" size={88} />
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(120).duration(400)} style={styles.eyebrow}>
-          SEVEN DAYS IN
+          {eyebrowText}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.title}>
           A small ask

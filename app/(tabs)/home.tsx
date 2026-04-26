@@ -428,20 +428,42 @@ export default function Home() {
           </Pressable>
         )}
 
-        {/* Lesson card */}
+        {/* Lesson card — phase-aware insight, not "Day 14 reference" for a
+            Day 47 user. Bands match the Progress timeline phase model so
+            copy stays consistent across surfaces. */}
         <Pressable onPress={() => router.push('/(tabs)/curriculum')}>
           <GlassCard tint="lavender" style={styles.lessonCard}>
             <Text style={styles.lessonLabel}>DAILY INSIGHT</Text>
-            <Text style={styles.lessonTitle}>
-              {isDayOne
-                ? 'Day 1 — why sugar catches the brain'
-                : `Day ${Math.max(1, streakDays)} — your taste buds are waking up`}
-            </Text>
-            <Text style={styles.lessonBody}>
-              {isDayOne
-                ? '7 min · neuroscience + first practice.'
-                : 'Fruit will taste 40% sweeter by day 14. 5 min read.'}
-            </Text>
+            {(() => {
+              const day = Math.max(1, streakDays);
+              let title: string;
+              let body: string;
+              if (day === 1) {
+                title = 'Day 1 — why sugar catches the brain';
+                body = '7 min · neuroscience + first practice.';
+              } else if (day <= 3) {
+                title = `Day ${day} — the storm settling in`;
+                body = 'Cortisol withdrawal peaks around now. 4 min read.';
+              } else if (day <= 10) {
+                title = `Day ${day} — the 72-hour fog lifts`;
+                body = "After day 3, the spike fades. Receptors recalibrate. 4 min read.";
+              } else if (day <= 24) {
+                title = `Day ${day} — your taste buds are waking up`;
+                body = 'Fruit gets noticeably sweeter around the two-week mark. 5 min read.';
+              } else if (day <= 60) {
+                title = `Day ${day} — choices stop costing willpower`;
+                body = 'You no longer ask "should I." You just don\'t. 6 min read.';
+              } else {
+                title = `Day ${day} — identity, not effort`;
+                body = 'The path you placed has become who you are. 5 min read.';
+              }
+              return (
+                <>
+                  <Text style={styles.lessonTitle}>{title}</Text>
+                  <Text style={styles.lessonBody}>{body}</Text>
+                </>
+              );
+            })()}
           </GlassCard>
         </Pressable>
 
