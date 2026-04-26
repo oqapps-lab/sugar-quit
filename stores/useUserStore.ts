@@ -82,6 +82,15 @@ export type UserState = {
   // push
   pushPermissionDenied: boolean;
   pushDeniedAt: string | null; // ISO date to detect 3-day escalation
+
+  // notification preferences (persisted local; backend wiring comes with
+  // the push notifications service in Stage 6)
+  notificationPrefs: {
+    morningCheckIn: boolean;
+    dailyLesson: boolean;
+    motivation: boolean;
+    streakAtRisk: boolean;
+  };
 };
 
 export type UserActions = {
@@ -107,6 +116,7 @@ export type UserActions = {
   markMilestoneCelebrated: (day: number) => void;
   setPremium: (v: boolean) => void;
   markPushDenied: () => void;
+  setNotificationPref: (key: keyof UserState['notificationPrefs'], on: boolean) => void;
   reset: () => void; // for dev / sign-out
 };
 
@@ -205,6 +215,13 @@ const initialState: UserState = {
 
   pushPermissionDenied: false,
   pushDeniedAt: null,
+
+  notificationPrefs: {
+    morningCheckIn: true,
+    dailyLesson: true,
+    motivation: false,
+    streakAtRisk: true,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -466,6 +483,15 @@ export const useUserStore = create<UserStore>()(
         if (userId) pushProfileDebounced(userId, get());
       },
 
+      setNotificationPref: (key, on) => {
+        const state = get();
+        set({
+          notificationPrefs: { ...state.notificationPrefs, [key]: on },
+        });
+        // Local-only for now; once the push notifications backend is wired
+        // (Stage 6), schedule a debounced cloud push of these prefs.
+      },
+
       reset: () => set({ ...initialState }),
     }),
     {
@@ -517,6 +543,7 @@ export const useUserStore = create<UserStore>()(
         isPremium: state.isPremium,
         pushPermissionDenied: state.pushPermissionDenied,
         pushDeniedAt: state.pushDeniedAt,
+        notificationPrefs: state.notificationPrefs,
       }),
     },
   ),
