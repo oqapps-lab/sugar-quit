@@ -9,12 +9,17 @@ import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
 
-type GoalOption = 'quit' | 'reduce' | 'explore';
+type GoalOption = 'quit' | 'reduce';
 
 /**
- * 1.2 Quiz: Goal — "What's the shape of your goal?" (single-select, 3 options).
+ * 1.2 Quiz: Goal — "What's the shape of your goal?" (single-select, 2 options).
  * Consistent pattern with Step 4 (sugar-goal): pick → visible selection →
- * explicit Continue. No more auto-advance on tap.
+ * explicit Continue.
+ *
+ * Earlier this had a third "I'm exploring" option that mapped to no value
+ * in the store (the Goal type union is `'quit' | 'reduce'`), leaving Profile
+ * showing "Goal — —" forever. Dropped — the user can revisit goal in
+ * Profile/Edit.
  */
 export default function QuizGoal() {
   const insets = useSafeAreaInsets();
@@ -24,7 +29,6 @@ export default function QuizGoal() {
   const options: { key: GoalOption; title: string; body: string }[] = [
     { key: 'quit',    title: 'Quit completely',  body: 'Zero added sugar, for my reasons.' },
     { key: 'reduce',  title: 'Reduce gradually', body: 'Less sugar, more often, better mood.' },
-    { key: 'explore', title: "I'm exploring",    body: "Not sure yet. Show me what's possible." },
   ];
 
   const pick = (key: GoalOption) => {
@@ -34,7 +38,7 @@ export default function QuizGoal() {
 
   const handleContinue = () => {
     if (!selected) return;
-    if (selected === 'quit' || selected === 'reduce') setGoal(selected);
+    setGoal(selected);
     router.push('/(onboarding)/quiz/motivation');
   };
 

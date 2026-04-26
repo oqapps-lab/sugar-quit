@@ -8,7 +8,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
-import { peakWindow24h } from '../../lib/peakHour';
+import { peakWindow24h, thirtyMinBefore } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
 /**
@@ -44,7 +44,10 @@ const CONTENT: Record<Slot, {
     title: 'Peak surge',
     subtitle: 'The hour you booked sugar in your past.',
     body: "We've watched your pattern: this is when energy dips, cortisol kicks back up, and your brain reaches for the fastest fix. Most cravings happen in this 3-hour window. Knowing it is half the work.",
-    practice: 'Tip: pre-decide. Have water + protein ready *before* 14:30.',
+    // Practice text is templated with the user's peak time — see the
+    // .replace below in render so a 9pm-peak user reads "before 20:30"
+    // not "before 14:30".
+    practice: 'Tip: pre-decide. Have water + protein ready *before* {{thirtyBefore}}.',
     tint: 'peach',
     glyph: 'lightning',
   },
@@ -64,12 +67,16 @@ export default function ForecastWindow() {
   const params = useLocalSearchParams<{ slot?: string }>();
   const slot: Slot = (params.slot === 'peak' || params.slot === 'evening') ? params.slot : (params.slot === 'morning' ? 'morning' : 'peak');
   const peakHour = useUserStore((s) => s.peakHour);
-  // Peak window eyebrow is derived from the user's peakHour, so a 9pm peak
-  // doesn't render "15:00 — 18:00" at the top of the modal.
-  const c = {
-    ...CONTENT[slot],
-    eyebrow: slot === 'peak' ? peakWindow24h(peakHour) : CONTENT[slot].eyebrow,
-  };
+  // Peak window eyebrow + practice tip derived from the user's peakHour, so
+  // a 9pm peak doesn't render "15:00 — 18:00" or "before 14:30".
+  const base = CONTENT[slot];
+  const c = slot === 'peak'
+    ? {
+        ...base,
+        eyebrow: peakWindow24h(peakHour),
+        practice: base.practice.replace('{{thirtyBefore}}', thirtyMinBefore(peakHour)),
+      }
+    : base;
 
   return (
     <AtmosphericGradient theme="dawn">

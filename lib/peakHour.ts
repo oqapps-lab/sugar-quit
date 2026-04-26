@@ -49,3 +49,13 @@ export function shortPeak(peakHour: string | null): string {
   if (h12 === 0) h12 = 12;
   return `${h12}${ampm}`;
 }
+
+/** "20:30" — thirty minutes before peakHour, 24h format. Used for "have
+ *  water ready *before* 20:30" practice tips. */
+export function thirtyMinBefore(peakHour: string | null): string {
+  const p = parse(peakHour);
+  if (!p) return '14:30';
+  // Subtract 30 min: peak is on the hour, so result = (h-1):30 with wrap.
+  const h = (p.h24 - 1 + 24) % 24;
+  return `${String(h).padStart(2, '0')}:30`;
+}
