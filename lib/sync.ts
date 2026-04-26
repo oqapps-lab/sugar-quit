@@ -128,8 +128,9 @@ export async function pullUserData(userId: string): Promise<PulledData | null> {
     merged.streakFreezesAvailableThisWeek = s.streak_freezes_available_this_week;
     merged.sosUsedThisMonth = s.sos_used_this_month;
     merged.sosResetMonth = s.sos_reset_month;
-    // sosFreeLimit may be Infinity locally — server stores 9999 as proxy.
-    merged.sosFreeLimit = s.sos_free_limit >= 9999 ? Number.POSITIVE_INFINITY : s.sos_free_limit;
+    // 9999 sentinel = unlimited (premium); store keeps the integer
+    // sentinel so JSON persist round-trips cleanly (Bug 26).
+    merged.sosFreeLimit = s.sos_free_limit;
     merged.milestonesCelebrated = s.milestones_celebrated ?? [];
   }
 
@@ -257,14 +258,11 @@ export async function pushCraving(userId: string, entry: CravingLogEntry): Promi
 export async function pushSosOpen(userId: string, entry: SosLogEntry): Promise<void> {
   const sb = getSupabase();
   if (!sb || !userId) return;
-  // Same as pushCraving — store IDs are "sos_<ts>_<rand>", not UUIDs.
-  // Omit `id`, let DB assign. Outcome update happens on-completion via
-  // pushSosOutcome and is keyed by the LOCAL id we last logged for the
-  // user — which won't match the DB row… so this part of the flow has
-  // a known limitation: SOS outcomes don't propagate cloud-side until
-  // we either store the DB-assigned id back into Zustand or change the
-  // schema to accept text ids.
-  const row = {
+  // Schema 0002 changed sos_log.id to text so the local store id
+  // (`sos_<ts>_<rand>`) round-trips. pushSosOutcome can now key updates
+  // by the same id without a back-fill layer.
+  const row: SosLogRow = {
+    id: entry.id,
     user_id: userId,
     started_at: entry.timestamp,
     outcome: entry.outcome,
@@ -274,10 +272,8 @@ export async function pushSosOpen(userId: string, entry: SosLogEntry): Promise<v
 }
 
 export async function pushSosOutcome(sosId: string, outcome: 'walked' | 'softer' | 'gave'): Promise<void> {
-  // Tracker for SOS outcome propagation — see pushSosOpen comment.
-  // Since the local sosId doesn't match any DB row's id, this update
-  // touches zero rows. Skip the request entirely until the id-mapping
-  // is implemented.
-  void sosId;
-  void outcome;
+  const sb = getSupabase();
+  if (!sb) return;
+  const { error } = await sb.from('sos_log').update({ outcome }).eq('id', sosId);
+  warn('push sos_outcome', error);
 }

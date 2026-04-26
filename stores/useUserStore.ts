@@ -67,7 +67,11 @@ export type UserState = {
   sosUsedThisMonth: number;
   sosResetMonth: string | null; // "YYYY-MM" tracked for auto-reset
   sosDisclaimerAccepted: boolean;
-  sosFreeLimit: number; // 3 on free, Infinity on premium
+  // 3 on free, 9999 sentinel on premium (treated as unlimited).
+  // Stored as integer so Zustand persist (JSON) round-trips cleanly —
+  // earlier `Infinity` serialized to "null" and reset to 3 on rehydrate,
+  // breaking premium unlimited-SOS access on cold restart (Bug 26).
+  sosFreeLimit: number;
   sosLog: SosLogEntry[]; // every open + outcome (newest last)
 
   // craving log
@@ -407,7 +411,8 @@ export const useUserStore = create<UserStore>()(
           void pushSosOpen(userId, session);
         }
 
-        const remaining = Number.isFinite(limit) ? Math.max(0, limit - next) : Infinity;
+        // limit >= 9999 means unlimited (premium); otherwise finite cap.
+        const remaining = limit >= 9999 ? Infinity : Math.max(0, limit - next);
         return { allowed: true, remainingThisMonth: remaining, sessionId };
       },
 
@@ -464,7 +469,7 @@ export const useUserStore = create<UserStore>()(
       setPremium: (v) => {
         set({
           isPremium: v,
-          sosFreeLimit: v ? Number.POSITIVE_INFINITY : 3,
+          sosFreeLimit: v ? 9999 : 3,
           streakFreezesAvailableThisWeek: v ? 3 : 1,
         });
         const userId = get().userId;
