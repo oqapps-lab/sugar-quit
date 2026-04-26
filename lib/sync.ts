@@ -235,8 +235,12 @@ export async function pushStreakNow(userId: string, state: UserState): Promise<v
 export async function pushCraving(userId: string, entry: CravingLogEntry): Promise<void> {
   const sb = getSupabase();
   if (!sb || !userId) return;
-  const row: CravingRow = {
-    id: entry.id,
+  // Omit `id` — local store generates "craving_<ts>_<rand>" identifiers
+  // which fail Postgres UUID validation (22P02). Let DB default
+  // `gen_random_uuid()` assign the canonical id; we don't need to
+  // back-fill the local store with the cloud id since UI keys off
+  // the local id and pull-on-restore replaces both arrays anyway.
+  const row = {
     user_id: userId,
     ts: entry.timestamp,
     intensity: entry.intensity,
@@ -253,8 +257,14 @@ export async function pushCraving(userId: string, entry: CravingLogEntry): Promi
 export async function pushSosOpen(userId: string, entry: SosLogEntry): Promise<void> {
   const sb = getSupabase();
   if (!sb || !userId) return;
-  const row: SosLogRow = {
-    id: entry.id,
+  // Same as pushCraving — store IDs are "sos_<ts>_<rand>", not UUIDs.
+  // Omit `id`, let DB assign. Outcome update happens on-completion via
+  // pushSosOutcome and is keyed by the LOCAL id we last logged for the
+  // user — which won't match the DB row… so this part of the flow has
+  // a known limitation: SOS outcomes don't propagate cloud-side until
+  // we either store the DB-assigned id back into Zustand or change the
+  // schema to accept text ids.
+  const row = {
     user_id: userId,
     started_at: entry.timestamp,
     outcome: entry.outcome,
@@ -264,8 +274,10 @@ export async function pushSosOpen(userId: string, entry: SosLogEntry): Promise<v
 }
 
 export async function pushSosOutcome(sosId: string, outcome: 'walked' | 'softer' | 'gave'): Promise<void> {
-  const sb = getSupabase();
-  if (!sb) return;
-  const { error } = await sb.from('sos_log').update({ outcome }).eq('id', sosId);
-  warn('push sos_outcome', error);
+  // Tracker for SOS outcome propagation — see pushSosOpen comment.
+  // Since the local sosId doesn't match any DB row's id, this update
+  // touches zero rows. Skip the request entirely until the id-mapping
+  // is implemented.
+  void sosId;
+  void outcome;
 }
