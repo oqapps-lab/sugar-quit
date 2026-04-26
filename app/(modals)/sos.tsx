@@ -10,6 +10,7 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { requestSosCoachReply, type ChatTurn } from '../../lib/sosChat';
 import { useUserStore } from '../../stores/useUserStore';
 
 type Msg = { role: 'ai' | 'user'; text: string };
@@ -49,8 +50,9 @@ export default function ChatScreen() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [showOffline, setShowOffline] = useState(false);
+  const [aiTyping, setAiTyping] = useState(false);
   const sessionIdRef = useRef<string | null>(null);
-  const aiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const offlineTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // On mount: spend one SOS credit (or surface limit-reached UI). Heavy haptic
   // per UX-SPEC §4.2 C1 — SOS is the most urgent surface in the app.
@@ -63,27 +65,57 @@ export default function ChatScreen() {
       return;
     }
     sessionIdRef.current = result.sessionId;
+    return () => {
+      if (offlineTimerRef.current) clearTimeout(offlineTimerRef.current);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const send = () => {
-    if (!input.trim()) return;
-    const userMsg: Msg = { role: 'user', text: input };
+  const send = async () => {
+    const text = input.trim();
+    if (!text) return;
+    const userMsg: Msg = { role: 'user', text };
+    // Snapshot pre-user history so we can build the API payload without
+    // racing against the setMessages above (state updates are async).
+    const historySnapshot = messages;
     setMessages((m) => [...m, userMsg]);
     setInput('');
     setShowOffline(false);
-    if (aiTimerRef.current) clearTimeout(aiTimerRef.current);
-    // Mock AI response (700ms). Offline-fallback fires after 6 s with no
-    // response arriving — graceful degradation per FEATURES.md F1.
-    let arrived = false;
-    aiTimerRef.current = setTimeout(() => {
-      arrived = true;
-      setMessages((m) => [...m, ...AI_FOLLOWUP]);
-      setShowSuggestions(true);
-    }, 700);
-    setTimeout(() => {
-      if (!arrived) setShowOffline(true);
+    setAiTyping(true);
+
+    // Offline tip after 6 s if the fetch is still in-flight or already
+    // failed — graceful degradation per FEATURES.md F1.
+    if (offlineTimerRef.current) clearTimeout(offlineTimerRef.current);
+    let resolved = false;
+    offlineTimerRef.current = setTimeout(() => {
+      if (!resolved) setShowOffline(true);
     }, 6000);
+
+    // Build the conversation in the shape the edge function expects.
+    // The two greeting bubbles count as the assistant's opening turn.
+    const turns: ChatTurn[] = [
+      ...historySnapshot.map((m): ChatTurn => ({
+        role: m.role === 'ai' ? 'assistant' : 'user',
+        content: m.text,
+      })),
+      { role: 'user', content: text },
+    ];
+
+    const reply = await requestSosCoachReply(turns);
+    resolved = true;
+    setAiTyping(false);
+
+    if (reply) {
+      setMessages((m) => [...m, { role: 'ai', text: reply }]);
+      setShowSuggestions(true);
+      return;
+    }
+
+    // Fallback: edge function unavailable (no key set, offline, etc.) —
+    // serve the canned coaching turn so the user still gets *something*
+    // useful while the urge passes.
+    setMessages((m) => [...m, ...AI_FOLLOWUP]);
+    setShowSuggestions(true);
   };
 
   const onEnd = () => {
@@ -189,6 +221,14 @@ export default function ChatScreen() {
               </View>
             </View>
           ))}
+
+          {aiTyping && (
+            <View style={styles.aiRow} accessibilityLabel="Coach is typing">
+              <View style={styles.aiBubble}>
+                <Text style={styles.aiText}>…</Text>
+              </View>
+            </View>
+          )}
 
           {showSuggestions && (
             <View style={styles.suggestionsBlock}>

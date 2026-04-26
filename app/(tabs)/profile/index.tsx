@@ -145,7 +145,9 @@ export default function Profile() {
           <View style={styles.menu}>
             {[
               { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
-              { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
+              // Removed standalone "Notifications" row — it routed to the same
+              // Settings page where NOTIFICATIONS is already the first
+              // section (Bug 19: deduplicated). Tap "Settings" to manage.
               {
                 // Subscription row is premium-aware:
                 //  - free → upgrade paywall

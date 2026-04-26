@@ -115,6 +115,22 @@ const LESSONS: Record<number, LessonContent> = {
     body: 'Not all substitutes are equal. A handful of almonds + one square of 85% dark chocolate lands in the same reward slot as a cookie, without the crash. We\'ll test three combinations this week.',
   },
 
+  12: {
+    phase: 'CLARITY PHASE',
+    title: 'When dopamine baselines shift',
+    minutes: 5,
+    kicker: 'reward system + small wins',
+    body: "By day 12 the reward loop has loosened. Tiny gains — a clean morning, a deep breath before reaching — register more vividly than they did before. This is the brain learning to value the new normal. Notice one small win today and name it.",
+  },
+
+  13: {
+    phase: 'CLARITY PHASE',
+    title: 'The check-in becomes a ritual',
+    minutes: 4,
+    kicker: 'habits compound',
+    body: "You've been showing up. Two-week mark is the cliff where most stops happen — and where the rest gets easier. The check-in stops feeling like a chore and starts being a moment of self-respect. Tonight, mark the day as you would any anchor.",
+  },
+
   // --- Deeper markers (used by milestone flow) ---
   14: {
     phase: 'CLARITY PHASE',
