@@ -196,7 +196,11 @@ export default function ProgressScreen() {
           accessibilityRole="button"
           accessibilityLabel="Weekly progress details"
         >
-          <View style={styles.horizonLine} />
+          {/* Horizontal connector line removed — it was rendering behind
+              circle backgrounds that are too transparent (rgba 0.06-0.18
+              alpha), so the line bled through visibly across each circle.
+              The five spaced circles already convey horizontal progression
+              without a track. */}
           <View style={styles.nodesRow}>
             {nodes.map((n, i) => (
               <View key={i} style={styles.nodeCol}>
@@ -541,7 +545,10 @@ const styles = StyleSheet.create({
   practicesList: { gap: spacing.md, marginBottom: spacing.lg },
   practiceRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // align number circle to title baseline, not row vertical center.
+    // Earlier `alignItems: 'center'` left the "1" floating between
+    // title and body, looking misaligned with the title it labels.
+    alignItems: 'flex-start',
     gap: spacing.md,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
@@ -551,6 +558,9 @@ const styles = StyleSheet.create({
     width: 28, height: 28, borderRadius: radius.full,
     backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center', justifyContent: 'center',
+    // Nudge number down slightly so its visual center aligns with the
+    // title's cap-height baseline (title fontSize ~17, lineHeight 22).
+    marginTop: 1,
   },
   practiceNumberText: {
     fontFamily: fonts.headlineBold,
