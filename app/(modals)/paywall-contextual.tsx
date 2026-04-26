@@ -11,6 +11,7 @@ import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { purchase } from '../../lib/adapty';
 import { safeDismiss } from '../../lib/nav';
+import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
 /**
@@ -20,17 +21,20 @@ import { useUserStore } from '../../stores/useUserStore';
 
 type Tier = 'annual' | 'monthly';
 
-const BENEFITS = [
-  { glyph: '∞', label: 'Unlimited SOS, any hour' },
-  { glyph: '◉', label: 'Your trigger prediction' },
-  { glyph: '❄', label: 'Streak Freeze, weekly' },
-];
-
 export default function PaywallContextual() {
   const insets = useSafeAreaInsets();
   const [tier, setTier] = useState<Tier>('annual');
   const [purchasing, setPurchasing] = useState(false);
   const setPremium = useUserStore((s) => s.setPremium);
+  const peakHour = useUserStore((s) => s.peakHour);
+  // Personalize the trigger-prediction benefit so it matches the
+  // onboarding paywall (Bug 25 cross-surface drift fix). Free-user
+  // never set peakHour → shortPeak() falls back to "3pm".
+  const BENEFITS = [
+    { glyph: '∞', label: 'Unlimited SOS, any hour' },
+    { glyph: '◉', label: `Trigger prediction tuned to your ${shortPeak(peakHour)}` },
+    { glyph: '❄', label: 'Streak Freeze, weekly' },
+  ];
 
   const pickTier = (t: Tier) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

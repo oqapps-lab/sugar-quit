@@ -384,7 +384,28 @@ export default function Home() {
               </Pressable>
             </Animated.View>
 
-            <Animated.View entering={FadeInDown.delay(300).duration(500)}>
+            {(() => {
+              // Bug 24 fix: don't render Exhale if peak window already runs
+              // into the 18:00-22:00 evening (e.g. peakHour=21:00 → peak
+              // ends at 00:00, fully consumes evening). Two cards on the
+              // same hour was confusing.
+              const raw = useUserStore.getState().peakHour ?? '3:00 PM';
+              const m12 = raw.match(/(\d{1,2}):\d{2}\s*(AM|PM)/i);
+              let peakStartH = 15;
+              if (m12) {
+                let h = parseInt(m12[1], 10);
+                if (m12[2].toUpperCase() === 'PM' && h < 12) h += 12;
+                if (m12[2].toUpperCase() === 'AM' && h === 12) h = 0;
+                peakStartH = h;
+              } else {
+                const m24 = raw.match(/^(\d{1,2}):/);
+                if (m24) peakStartH = parseInt(m24[1], 10);
+              }
+              const peakEndH = (peakStartH + 3) % 24;
+              // Hide Exhale if peak overlaps 18:00-22:00 window.
+              if (peakStartH >= 18 || peakEndH > 18 || peakEndH === 0) return null;
+              return (
+              <Animated.View entering={FadeInDown.delay(300).duration(500)}>
               <Pressable
                 onPress={() => router.push('/(modals)/forecast-window?slot=evening')}
                 accessibilityRole="button"
@@ -404,6 +425,8 @@ export default function Home() {
                 </GlassCard>
               </Pressable>
             </Animated.View>
+              );
+            })()}
           </View>
         )}
 
