@@ -85,7 +85,7 @@ export default function PostSOS() {
             <Animated.View key={a.key} entering={FadeInDown.delay(300 + idx * 90).duration(400)}>
               <Pressable
                 onPress={() => onPick(a.key)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: picked === a.key }}
                 accessibilityLabel={`${a.title}. ${a.body}`}
               >

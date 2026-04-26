@@ -129,18 +129,24 @@ export default function EditProfile() {
 }
 
 function FieldRow({ label, value }: { label: string; value: string }) {
+  // Read-only display row. The earlier Pressable claimed "Tap to change" in
+  // its a11y label but only fired Haptics — no picker existed. That's a
+  // misleading affordance: the row LOOKS interactive (chevron arrow,
+  // pressable styling) and is announced as a button to VoiceOver, but tap
+  // changes nothing. Until proper picker modals exist for goal / peak hour
+  // / trigger, render the field as a non-interactive label so the user
+  // doesn't expect editability that's not there. Re-onboarding via sign-out
+  // remains the workaround for editing these fields.
   return (
     <View style={styles.fieldBlock}>
       <Text style={styles.fieldLabel}>{label}</Text>
-      <Pressable
-        onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+      <View
         style={styles.pickerRow}
-        accessibilityRole="button"
-        accessibilityLabel={`${label}: ${value}. Tap to change.`}
+        accessible
+        accessibilityLabel={`${label}: ${value}`}
       >
         <Text style={styles.pickerValue}>{value}</Text>
-        <Text style={styles.pickerArrow}>→</Text>
-      </Pressable>
+      </View>
     </View>
   );
 }

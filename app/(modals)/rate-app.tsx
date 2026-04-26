@@ -84,7 +84,7 @@ export default function RateApp() {
                 <Pressable
                   onPress={() => pickStone(n)}
                   style={[styles.stone, active && styles.stoneActive]}
-                  accessibilityRole="radio"
+                  accessibilityRole="button"
                   accessibilityState={{ selected: rating === n }}
                   accessibilityLabel={`Rate ${n} out of 5`}
                 >

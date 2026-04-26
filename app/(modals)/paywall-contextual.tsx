@@ -111,7 +111,7 @@ export default function PaywallContextual() {
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
             onPress={() => pickTier('annual')}
-            accessibilityRole="radio"
+            accessibilityRole="button"
             accessibilityState={{ selected: tier === 'annual' }}
             accessibilityLabel="Annual plan, $79.99, $6.67 per month, best value"
           >
@@ -124,7 +124,7 @@ export default function PaywallContextual() {
           <Pressable
             style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
             onPress={() => pickTier('monthly')}
-            accessibilityRole="radio"
+            accessibilityRole="button"
             accessibilityState={{ selected: tier === 'monthly' }}
             accessibilityLabel="Monthly plan, $9.99 per month, cancel anytime"
           >

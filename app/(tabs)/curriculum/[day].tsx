@@ -248,7 +248,7 @@ export default function Lesson() {
                     key={n}
                     onPress={() => onRate(n)}
                     hitSlop={6}
-                    accessibilityRole="radio"
+                    accessibilityRole="button"
                     accessibilityState={{ selected: active }}
                     accessibilityLabel={`Rate ${n} of 5`}
                     style={[styles.ratingStone, active && styles.ratingStoneActive]}

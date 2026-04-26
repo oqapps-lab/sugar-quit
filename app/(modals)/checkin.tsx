@@ -106,7 +106,7 @@ export default function CheckIn() {
               <Animated.View key={opt.key} entering={FadeInDown.delay(250 + idx * 80).duration(400)}>
                 <Pressable
                   onPress={() => onSugar(opt.key)}
-                  accessibilityRole="radio"
+                  accessibilityRole="button"
                   accessibilityState={{ selected: sugar === opt.key }}
                   accessibilityLabel={`${opt.title} — ${opt.body}`}
                 >
@@ -148,7 +148,7 @@ export default function CheckIn() {
               <Pressable
                 key={m.value}
                 onPress={() => onMood(m.value)}
-                accessibilityRole="radio"
+                accessibilityRole="button"
                 accessibilityState={{ selected: mood === m.value }}
                 accessibilityLabel={`Mood: ${m.label}`}
               >

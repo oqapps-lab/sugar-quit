@@ -95,7 +95,7 @@ export default function CravingLog() {
                     key={n}
                     onPress={() => pickIntensity(n as Intensity)}
                     style={[styles.stone, active && styles.stoneActive]}
-                    accessibilityRole="radio"
+                    accessibilityRole="button"
                     accessibilityState={{ selected: intensity === n }}
                     accessibilityLabel={`Craving intensity ${n} of 5`}
                   >
@@ -137,7 +137,7 @@ export default function CravingLog() {
                   key={o.key}
                   onPress={() => pickOutcome(o.key)}
                   style={{ flex: 1 }}
-                  accessibilityRole="radio"
+                  accessibilityRole="button"
                   accessibilityState={{ selected: outcome === o.key }}
                   accessibilityLabel={`${o.title}. ${o.body}`}
                 >

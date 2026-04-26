@@ -138,7 +138,7 @@ export default function Paywall() {
           <Pressable
             style={[styles.priceCard, tier === 'annual' && styles.priceCardActive]}
             onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setTier('annual'); }}
-            accessibilityRole="radio"
+            accessibilityRole="button"
             accessibilityState={{ selected: tier === 'annual' }}
             accessibilityLabel={`Annual plan, ${annualPrice}, ${annualPerMo}`}
           >
@@ -152,7 +152,7 @@ export default function Paywall() {
           <Pressable
             style={[styles.priceCard, tier === 'monthly' && styles.priceCardActive]}
             onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setTier('monthly'); }}
-            accessibilityRole="radio"
+            accessibilityRole="button"
             accessibilityState={{ selected: tier === 'monthly' }}
             accessibilityLabel={`Monthly plan, ${monthlyPrice} per month`}
           >
