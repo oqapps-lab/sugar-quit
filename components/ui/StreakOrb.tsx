@@ -1,6 +1,6 @@
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -34,7 +34,14 @@ type Props = {
   size?: number;
 };
 
-export function StreakOrb({ count, size = 240 }: Props) {
+// Memoized — re-renders only when `count` or `size` actually change.
+// Without this, parent Home.tsx re-renders on any Zustand selector
+// change (cravings, sosUsedThisMonth, freezesAvail, etc.) caused the
+// orb to re-evaluate its JSX, which doesn't reset the shared-value
+// animations directly but adds frame cost. Memo keeps it stable
+// per Rule 29 (animation continuity) — defensive against future
+// parent state changes that might insert a key prop or conditional.
+function StreakOrbInner({ count, size = 240 }: Props) {
   const rm = useReducedMotion();
 
   const rotation = useSharedValue(0);
@@ -281,6 +288,8 @@ export function StreakOrb({ count, size = 240 }: Props) {
     </View>
   );
 }
+
+export const StreakOrb = React.memo(StreakOrbInner);
 
 const styles = StyleSheet.create({
   wrap: {
