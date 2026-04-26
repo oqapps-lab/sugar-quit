@@ -197,14 +197,14 @@ export default function Lesson() {
         {/* Divider */}
         <View style={styles.divider} />
 
-        {/* Section 1 — What's happening */}
+        {/* Section 1 — What's happening.
+            Earlier this rendered a hardcoded "2019 Michigan study" citation
+            below every lesson body — same quote on Day 1, Day 7, Day 30 etc.
+            Per Rule 5 (text-pair duplicate check) — moved into the per-lesson
+            body where appropriate so each day reads unique content. */}
         <Animated.View entering={FadeInDown.delay(150).duration(400)}>
           <Text style={styles.sectionLabel}>WHAT'S HAPPENING</Text>
           <Text style={styles.body}>{lesson.body}</Text>
-          <Text style={styles.body}>
-            A 2019 University of Michigan study showed a 40% increase in perceived
-            fruit sweetness after two weeks of sugar reduction.
-          </Text>
         </Animated.View>
 
         {/* Illustration — centered phase glyph (128px) with a bloom halo behind */}
