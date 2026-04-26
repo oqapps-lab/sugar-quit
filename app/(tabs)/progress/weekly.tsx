@@ -1,18 +1,13 @@
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { GlassCard } from '../../../components/ui/GlassCard';
-import { PillCTA } from '../../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { PillCTA } from '../../../components/primitives/PillCTA';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 
-/**
- * 2.3.2 Weekly Summary — "The Chapter".
- * Narrative week-report: 7-day curve, 3 stat numbers, pattern insight, next-week focus.
- * SKELETON.
- */
 export default function Weekly() {
   const insets = useSafeAreaInsets();
 
@@ -22,18 +17,18 @@ export default function Weekly() {
   };
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
         <Pressable
           onPress={handleBack}
           hitSlop={12}
-          style={styles.headerSide}
+          style={styles.headerLeft}
           accessibilityRole="button"
           accessibilityLabel="Back to Progress tab"
         >
-          <Text style={styles.backArrow}>←</Text>
-          <Text style={styles.headerCrumb}>Week 2 · 13–19 APR</Text>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
+        <Eyebrow color={colors.textSecondary}>Week 2 · 13–19 APR</Eyebrow>
         <View style={styles.headerSpacer} />
       </View>
 
@@ -41,78 +36,67 @@ export default function Weekly() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.eyebrow}>THE CHAPTER</Text>
-        <Text style={styles.hero}>
+        <Eyebrow color={colors.primary} style={styles.eyebrow}>THE CHAPTER</Eyebrow>
+        <Txt variant="displayMd" style={styles.hero}>
           The week you stopped fearing the 3pm dip
-        </Text>
+        </Txt>
 
-        {/* Numbers row */}
-        <GlassCard tint="default" style={styles.numbersCard}>
+        <Card bordered style={styles.numbersCard}>
           <View style={styles.numbersRow}>
             <View style={styles.numberBlock}>
-              <Text style={styles.numberBig}>6</Text>
-              <Text style={styles.numberLabel}>met</Text>
+              <Txt variant="displayMd" color={colors.primary} style={styles.numberBig}>6</Txt>
+              <Txt variant="labelSm" color={colors.textSecondary}>met</Txt>
             </View>
             <View style={styles.numberDivider} />
             <View style={styles.numberBlock}>
-              <Text style={styles.numberBig}>5</Text>
-              <Text style={styles.numberLabel}>walked through</Text>
+              <Txt variant="displayMd" color={colors.primary} style={styles.numberBig}>5</Txt>
+              <Txt variant="labelSm" color={colors.textSecondary}>walked through</Txt>
             </View>
             <View style={styles.numberDivider} />
             <View style={styles.numberBlock}>
-              <Text style={styles.numberBig}>1</Text>
-              <Text style={styles.numberLabel}>given to</Text>
+              <Txt variant="displayMd" color={colors.primary} style={styles.numberBig}>1</Txt>
+              <Txt variant="labelSm" color={colors.textSecondary}>given to</Txt>
             </View>
           </View>
-        </GlassCard>
+        </Card>
 
-        {/* Flowing curve card (static rect stand-in) */}
-        <GlassCard tint="lavender" style={styles.curveCard}>
-          <Text style={styles.sectionLabel}>YOUR WEEK IN ONE BREATH</Text>
+        <Card bordered style={styles.curveCard}>
+          <Eyebrow color={colors.textSecondary}>YOUR WEEK IN ONE BREATH</Eyebrow>
           <View style={styles.curveBox}>
-            <LinearGradient
-              colors={['#ffaca0', '#efdbff', '#cfe0df']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={styles.curveGradient}
-            />
+            <View style={styles.curveGradient} />
             <View style={styles.curveAxisRow}>
-              <Text style={styles.curveAxisLabel}>MON</Text>
-              <Text style={styles.curveAxisLabel}>SUN</Text>
+              <Txt variant="labelSm" color={colors.onSurface}>MON</Txt>
+              <Txt variant="labelSm" color={colors.onSurface}>SUN</Txt>
             </View>
           </View>
-          <Text style={styles.curveCaption}>
+          <Txt variant="bodySm" color={colors.textSecondary} style={styles.curveCaption}>
             Intensity softened after Wednesday. The curve found a rhythm.
-          </Text>
-        </GlassCard>
+          </Txt>
+        </Card>
 
-        {/* Pattern card — sage/mint tint */}
-        <GlassCard tint="mint" style={styles.patternCard}>
-          <Text style={[styles.sectionLabel, { color: colors.onTertiaryContainer }]}>
-            A PATTERN EMERGED
-          </Text>
-          <Text style={styles.patternTitle}>
+        <Card bordered style={styles.patternCard}>
+          <Eyebrow color={colors.success}>A PATTERN EMERGED</Eyebrow>
+          <Txt variant="titleLg" color={colors.onSurface} style={styles.patternTitle}>
             Your stress-trigger dropped by 30%.
-          </Text>
-          <Text style={styles.patternBody}>
+          </Txt>
+          <Txt variant="bodyMd" color={colors.onSurface}>
             Boredom-cravings leading: 2 of 6. A new front opens.
-          </Text>
-        </GlassCard>
+          </Txt>
+        </Card>
 
-        {/* Next week focus — saturated peach */}
-        <GlassCard tint="peach" style={styles.nextCard}>
-          <Text style={styles.nextEyebrow}>NEXT WEEK · MEETING YOUR TRIGGERS</Text>
-          <Text style={styles.nextTitle}>
+        <Card bordered style={styles.nextCard}>
+          <Eyebrow color={colors.primary}>NEXT WEEK · MEETING YOUR TRIGGERS</Eyebrow>
+          <Txt variant="titleLg" color={colors.onSurface} style={styles.nextTitle}>
             Bring curiosity to the boredom window.
-          </Text>
-          <Text style={styles.nextBody}>
+          </Txt>
+          <Txt variant="bodyMd" color={colors.onSurface}>
             Three micro-rituals for the 2–4pm lull. Short reads, no pressure.
-          </Text>
+          </Txt>
           <View style={styles.nextChevronRow}>
-            <Text style={styles.nextAction}>Preview the plan</Text>
-            <Text style={styles.nextArrow}>→</Text>
+            <Txt variant="bodyMd" color={colors.primary}>Preview the plan</Txt>
+            <Txt variant="bodyMd" color={colors.primary}>→</Txt>
           </View>
-        </GlassCard>
+        </Card>
 
         <View style={styles.ctaWrap}>
           <PillCTA
@@ -121,75 +105,36 @@ export default function Weekly() {
           />
         </View>
       </ScrollView>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-    zIndex: 10,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  headerSide: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  headerSpacer: { width: 32 },
-  backArrow: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onSurface,
-  },
-  headerCrumb: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.labelWide,
-  },
+  headerLeft: { minWidth: 72 },
+  headerSpacer: { minWidth: 72 },
 
-  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, gap: spacing.lg },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.md },
 
-  eyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginBottom: spacing.sm,
-  },
-  hero: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium,
-    color: colors.onSurface,
-    letterSpacing: -0.8,
-    lineHeight: 34,
-    marginBottom: spacing.sm,
-  },
+  eyebrow: { marginBottom: spacing.sm },
+  hero: { letterSpacing: -0.8, lineHeight: 34, marginBottom: spacing.sm },
 
-  numbersCard: { padding: spacing.lg },
+  numbersCard: {},
   numbersRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   numberBlock: { flex: 1, alignItems: 'center', gap: 2 },
-  numberBig: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium,
-    color: colors.primary,
-    letterSpacing: -1,
-  },
-  numberLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-  },
-  numberDivider: { width: 1, height: 36, backgroundColor: 'rgba(49,51,47,0.08)' },
+  numberBig: { letterSpacing: -1 },
+  numberDivider: { width: 1, height: 36, backgroundColor: colors.outline },
 
-  curveCard: { padding: spacing.lg, gap: spacing.sm },
-  sectionLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.secondary,
-    letterSpacing: tracking.labelWide,
-  },
+  curveCard: { gap: spacing.sm },
   curveBox: {
     height: 100,
     borderRadius: radius.sm,
@@ -197,65 +142,17 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
     justifyContent: 'space-between',
     padding: spacing.sm,
+    backgroundColor: colors.primaryContainer,
   },
-  curveGradient: { ...StyleSheet.absoluteFillObject },
-  curveAxisRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    flex: 1,
-  },
-  curveAxisLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurface,
-    letterSpacing: tracking.wide,
-  },
-  curveCaption: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    lineHeight: 20,
-    marginTop: spacing.xs,
-  },
+  curveGradient: { ...StyleSheet.absoluteFillObject, backgroundColor: colors.primaryContainer, opacity: 0.6 },
+  curveAxisRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 },
+  curveCaption: { lineHeight: 20, marginTop: spacing.xs },
 
-  patternCard: { padding: spacing.lg, gap: 4 },
-  patternTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onTertiaryContainer,
-    letterSpacing: -0.4,
-    marginTop: 2,
-  },
-  patternBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onTertiaryContainer,
-    lineHeight: 20,
-    marginTop: 4,
-  },
+  patternCard: { gap: spacing.xs },
+  patternTitle: { letterSpacing: -0.4, marginTop: 2 },
 
-  nextCard: { padding: spacing.lg, gap: spacing.xs },
-  nextEyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onPrimaryContainer,
-    letterSpacing: tracking.labelWide,
-  },
-  nextTitle: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onPrimaryContainer,
-    letterSpacing: -0.4,
-    marginTop: 2,
-  },
-  nextBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onPrimaryContainer,
-    lineHeight: 20,
-    marginTop: 2,
-  },
+  nextCard: { gap: spacing.xs },
+  nextTitle: { letterSpacing: -0.4, marginTop: 2 },
   nextChevronRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -263,16 +160,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     marginTop: spacing.sm,
   },
-  nextAction: {
-    fontFamily: fonts.bodySemibold,
-    fontSize: typeScale.bodyMedium,
-    color: colors.primary,
-  },
-  nextArrow: {
-    fontFamily: fonts.bodySemibold,
-    fontSize: typeScale.bodyMedium,
-    color: colors.primary,
-  },
 
-  ctaWrap: { alignItems: 'center', marginTop: spacing.md },
+  ctaWrap: { alignItems: 'center', marginTop: spacing.sm, paddingBottom: spacing.md },
 });

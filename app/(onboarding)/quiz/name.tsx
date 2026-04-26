@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -6,24 +7,18 @@ import {
   Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { PillCTA } from '../../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { PillCTA } from '../../../components/primitives/PillCTA';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
 
-/**
- * 1.12 Quiz: Name — optional text input + Skip + Continue.
- *
- * Keyboard handling:
- * - KeyboardAvoidingView keeps the Continue CTA above the keyboard (iOS padding).
- * - Tapping anywhere outside the TextInput dismisses the keyboard.
- */
 export default function QuizName() {
   const insets = useSafeAreaInsets();
   const stored = useUserStore((s) => s.firstName);
@@ -31,88 +26,98 @@ export default function QuizName() {
   const [name, setName] = useState(stored ?? '');
 
   const goNext = () => {
-    // Persist whatever they typed (empty string clears to null in the store helper).
     setFirstName(name);
     router.push('/(onboarding)/loading');
   };
 
   return (
-    <AtmosphericGradient theme="sunriseGreens">
-      <KeyboardAvoidingView
-        style={StyleSheet.absoluteFill}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={StyleSheet.absoluteFill}>
-            <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-              <Pressable onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back">
-                <Text style={styles.back}>←</Text>
-              </Pressable>
-              <Text style={styles.progressLabel}>STEP 12 OF 15</Text>
-              <Pressable onPress={goNext} accessibilityRole="button" accessibilityLabel="Skip name">
-                <Text style={styles.skipLabel}>Skip</Text>
-              </Pressable>
-            </View>
-
-            <View style={styles.body}>
-              <Text style={styles.eyebrow}>ONE LAST THING</Text>
-              <Text style={styles.hero}>What should we call you?</Text>
-              <Text style={styles.sub}>Optional. We'll keep it soft and personal.</Text>
-
-              <View style={styles.inputWrap}>
-                <TextInput
-                  value={name}
-                  onChangeText={setName}
-                  placeholder="Your first name"
-                  placeholderTextColor={colors.outline}
-                  style={styles.input}
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  returnKeyType="done"
-                  onSubmitEditing={goNext}
-                  textContentType="givenName"
-                  accessibilityLabel="Your first name"
-                  accessibilityHint="Optional. Press Done or Continue to proceed."
-                />
-              </View>
-            </View>
-
-            <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-              <PillCTA label="Continue" variant="onboarding" onPress={goNext} />
-            </View>
+    <KeyboardAvoidingView
+      style={styles.kav}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={[styles.root, { paddingTop: insets.top }]}>
+          <View style={styles.header}>
+            <Pressable onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }} hitSlop={8}
+              accessibilityRole="button" style={styles.backBtn}>
+              <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
+            </Pressable>
+            <Txt variant="labelSm" color={colors.textSecondary}>STEP 12 OF 15</Txt>
+            <Pressable onPress={goNext} hitSlop={8} accessibilityRole="button" accessibilityLabel="Skip">
+              <Txt variant="bodyMd" color={colors.textSecondary}>Skip</Txt>
+            </Pressable>
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </AtmosphericGradient>
+
+          <View style={styles.body}>
+            <Animated.View entering={FadeInUp.duration(400)} style={styles.textBlock}>
+              <Eyebrow color={colors.primary}>One last thing</Eyebrow>
+              <Txt variant="displayMd" style={styles.hero}>What should we call you?</Txt>
+              <Txt variant="bodyLg" color={colors.textSecondary} style={styles.sub}>
+                Optional. We'll keep it soft and personal.
+              </Txt>
+            </Animated.View>
+
+            <Animated.View entering={FadeInDown.delay(120).duration(400)}>
+              <TextInput
+                value={name}
+                onChangeText={setName}
+                placeholder="Your first name"
+                placeholderTextColor={colors.outline}
+                style={styles.input}
+                autoCapitalize="words"
+                autoCorrect={false}
+                returnKeyType="done"
+                onSubmitEditing={goNext}
+                textContentType="givenName"
+                accessibilityLabel="Your first name"
+              />
+            </Animated.View>
+          </View>
+
+          <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <PillCTA label="Continue" onPress={goNext} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
-  backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
-  back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  progressLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.labelWide },
-  skipLabel: { fontFamily: fonts.bodyMedium, fontSize: typeScale.bodyMedium, color: colors.onSurfaceVariant },
-  body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: spacing.sm },
-  eyebrow: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
-  hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 34, marginTop: spacing.sm },
-  sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
-  inputWrap: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+  kav: { flex: 1, backgroundColor: colors.canvas },
+  root: { flex: 1 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
+  },
+  backBtn: { minWidth: 60 },
+
+  body: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    gap: spacing.lg,
+  },
+  textBlock: { gap: spacing.sm },
+  hero: { letterSpacing: -0.6, marginTop: spacing.xs },
+  sub: { lineHeight: 22 },
+
+  input: {
+    backgroundColor: colors.surface,
     borderRadius: radius.sm,
     borderWidth: 1,
-    borderColor: 'rgba(49,51,47,0.1)',
+    borderColor: colors.outline,
     paddingHorizontal: spacing.md,
-    paddingVertical: 4,
-    marginTop: spacing.sm,
-  },
-  input: {
-    fontFamily: fonts.headlineMedium,
-    fontSize: typeScale.titleLarge,
-    color: colors.onSurface,
     paddingVertical: spacing.md,
+    fontSize: 20,
+    color: colors.onSurface,
     letterSpacing: -0.3,
   },
+
   footer: { paddingHorizontal: spacing.lg, alignItems: 'center' },
 });

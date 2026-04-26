@@ -1,30 +1,20 @@
+import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { GlassCard } from '../../components/ui/GlassCard';
-import { PillCTA } from '../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { Card } from '../../components/primitives/Card';
+import { Eyebrow } from '../../components/primitives/Eyebrow';
+import { PillCTA } from '../../components/primitives/PillCTA';
+import { Txt } from '../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../constants/tokens';
 import { useUserStore, type SosOutcome } from '../../stores/useUserStore';
 
-/**
- * 4.5 Post-SOS reflection.
- * Non-judgmental: any answer is valid data, no moral framing.
- *
- * Receives optional `?session=<sosId>` so we can attach the outcome to the
- * same SosLogEntry that logSosOpen created. If absent, logSosOutcome creates
- * a stand-alone entry.
- */
-
-const ANSWERS: { key: SosOutcome; title: string; body: string; tint: 'mint' | 'peach' | 'default' }[] = [
-  { key: 'walked', title: 'Walked through it',        body: "The wave came, you stayed.",              tint: 'mint' },
-  { key: 'softer', title: 'Softer, but still there',  body: 'Noisier than before, quieter than peak.', tint: 'peach' },
-  { key: 'gave',   title: 'Gave in to it',            body: "Honest answer. Data, not failure.",       tint: 'default' },
+const ANSWERS: { key: SosOutcome; title: string; body: string; accent: string }[] = [
+  { key: 'walked', title: 'Walked through it',       body: 'The wave came. You stayed.',             accent: colors.success },
+  { key: 'softer', title: 'Softer, but still there', body: 'Noisier than before, quieter than peak.', accent: colors.warning },
+  { key: 'gave',   title: 'Gave in to it',           body: 'Honest answer. Data, not failure.',       accent: colors.textSecondary },
 ];
 
 export default function PostSOS() {
@@ -34,9 +24,9 @@ export default function PostSOS() {
   const logSosOutcome = useUserStore((s) => s.logSosOutcome);
   const [picked, setPicked] = useState<SosOutcome | null>(null);
 
-  const onPick = (a: SosOutcome) => {
+  const onPick = (key: SosOutcome) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setPicked(a);
+    setPicked(key);
   };
 
   const onSave = () => {
@@ -47,154 +37,127 @@ export default function PostSOS() {
   };
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
-        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
-      </View>
-      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <View style={{ width: 36 }} />
-        <Text style={styles.headerTitle}>After the wave</Text>
-        <Pressable onPress={() => router.dismiss()} style={styles.closeBtn}>
-          <Text style={styles.closeX}>×</Text>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable onPress={() => router.dismiss()} style={styles.backBtn} hitSlop={8}
+          accessibilityRole="button" accessibilityLabel="Close">
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-      </Animated.View>
+        <Txt variant="titleSm">After the wave</Txt>
+        <View style={styles.headerRight} />
+      </View>
 
+      {/* Body */}
       <View style={styles.body}>
-        <Animated.View entering={FadeInUp.delay(80).duration(400)} style={styles.heroGlyphWrap}>
-          <DecorGlyph variant="heart" size={88} />
+        <Animated.View entering={FadeInUp.duration(400)}>
+          <Eyebrow color={colors.primary}>Check-out</Eyebrow>
+          <Txt variant="displayMd" style={styles.title}>How are you now?</Txt>
+          <Txt variant="bodyLg" color={colors.textSecondary} style={styles.sub}>
+            Whatever the answer — it's worth logging.
+          </Txt>
         </Animated.View>
-        <Animated.Text entering={FadeInUp.delay(140).duration(400)} style={styles.eyebrow}>
-          CHECK-OUT
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(190).duration(400)} style={styles.title}>
-          How are you now?
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.sub}>
-          Whatever the answer — it's worth logging.
-        </Animated.Text>
 
         <View style={styles.cards}>
-          {ANSWERS.map((a, idx) => (
-            <Animated.View key={a.key} entering={FadeInDown.delay(300 + idx * 90).duration(400)}>
-              <Pressable
-                onPress={() => onPick(a.key)}
-                accessibilityRole="radio"
-                accessibilityState={{ selected: picked === a.key }}
-                accessibilityLabel={`${a.title}. ${a.body}`}
-              >
-                <GlassCard tint={a.tint} style={[styles.card, picked === a.key && styles.cardActive]}>
-                  <View style={styles.row}>
-                    <View style={{ flex: 1, gap: 2 }}>
-                      <Text style={styles.cardTitle}>{a.title}</Text>
-                      <Text style={styles.cardBody}>{a.body}</Text>
+          {ANSWERS.map((a, idx) => {
+            const active = picked === a.key;
+            return (
+              <Animated.View key={a.key} entering={FadeInDown.delay(120 + idx * 80).duration(350)}>
+                <Pressable
+                  onPress={() => onPick(a.key)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  accessibilityLabel={`${a.title}. ${a.body}`}
+                >
+                  <Card style={[styles.card, active && { borderColor: a.accent, borderWidth: 2 }]}>
+                    <View style={[styles.accentBar, { backgroundColor: a.accent }]} />
+                    <View style={styles.cardContent}>
+                      <Txt variant="titleMd" style={active && { color: a.accent }}>{a.title}</Txt>
+                      <Txt variant="bodyMd" color={colors.textSecondary}>{a.body}</Txt>
                     </View>
-                    <View style={[styles.arrow, picked === a.key && styles.arrowActive]}>
-                      <Text style={[styles.arrowText, picked === a.key && styles.arrowTextActive]}>→</Text>
-                    </View>
-                  </View>
-                </GlassCard>
-              </Pressable>
-            </Animated.View>
-          ))}
+                    {active && (
+                      <View style={[styles.checkCircle, { backgroundColor: a.accent }]}>
+                        <Txt variant="labelSm" color={colors.onPrimary}>✓</Txt>
+                      </View>
+                    )}
+                  </Card>
+                </Pressable>
+              </Animated.View>
+            );
+          })}
         </View>
       </View>
 
-      <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
+      {/* Footer */}
+      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="Save & close" onPress={onSave} disabled={!picked} />
       </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.canvas,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
-  },
-  closeBtn: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
+  backBtn: { minWidth: 60 },
+  headerRight: { minWidth: 60 },
 
-  // Background aura layer
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -110,
-  },
-  auraBottomLeft: {
-    position: 'absolute',
-    bottom: -60,
-    left: -100,
-  },
-
-  body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.sm },
-  heroGlyphWrap: {
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  eyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
+  body: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xl,
+    gap: spacing.lg,
   },
   title: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium + 2,
-    color: colors.onSurface,
-    letterSpacing: -0.8,
+    letterSpacing: -0.6,
     lineHeight: 34,
+    marginTop: spacing.xs,
   },
   sub: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurfaceVariant,
-    lineHeight: 22,
-    marginBottom: spacing.lg,
+    lineHeight: 24,
+    marginTop: spacing.sm,
   },
 
   cards: { gap: spacing.sm },
-  card: { padding: spacing.lg },
-  cardActive: { borderColor: colors.primary, borderWidth: 2 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  cardTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-    letterSpacing: -0.3,
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.outline,
+    padding: 0,
+    overflow: 'hidden',
   },
-  cardBody: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    lineHeight: 18,
+  accentBar: {
+    width: 4,
+    alignSelf: 'stretch',
   },
-  arrow: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
+  cardContent: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    gap: 2,
   },
-  arrowActive: { backgroundColor: colors.primary },
-  arrowText: { color: colors.onSurfaceVariant, fontSize: 16 },
-  arrowTextActive: { color: colors.onPrimary },
+  checkCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: radius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
 
-  ctaWrap: {
+  footer: {
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },

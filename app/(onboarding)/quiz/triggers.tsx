@@ -1,53 +1,56 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { GlassCard } from '../../../components/ui/GlassCard';
-import { PillCTA } from '../../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { PillCTA } from '../../../components/primitives/PillCTA';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
 
-/**
- * 1.7 Quiz: Triggers — multi-select 6 options.
- */
+const OPTIONS = [
+  { key: 'stress',   title: 'Stress',         accent: '#C05840' },
+  { key: 'boredom',  title: 'Boredom',         accent: '#7A8090' },
+  { key: 'meals',    title: 'After meals',     accent: '#D4900A' },
+  { key: 'social',   title: 'Social pressure', accent: '#5A7AA8' },
+  { key: 'emotions', title: 'Emotions',        accent: '#C96C80' },
+  { key: 'night',    title: 'Late-night',      accent: '#4A4A70' },
+];
+
 export default function QuizTriggers() {
   const insets = useSafeAreaInsets();
   const setTriggers = useUserStore((s) => s.setTriggers);
   const [selected, setSelected] = useState<string[]>([]);
 
-  const options = [
-    { key: 'stress',   title: 'Stress' },
-    { key: 'boredom',  title: 'Boredom' },
-    { key: 'meals',    title: 'After meals' },
-    { key: 'social',   title: 'Social pressure' },
-    { key: 'emotions', title: 'Emotions' },
-    { key: 'night',    title: 'Late-night' },
-  ];
-
   const toggle = (key: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelected((s) => (s.includes(key) ? s.filter((k) => k !== key) : [...s, key]));
+    setSelected((s) => s.includes(key) ? s.filter((k) => k !== key) : [...s, key]);
   };
 
   return (
-    <AtmosphericGradient theme="sunriseGreens">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.back}>←</Text>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <Pressable onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }} hitSlop={8} accessibilityRole="button" style={styles.backBtn}>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 7 OF 15</Text>
-        <View style={{ width: 40 }} />
+        <Txt variant="labelSm" color={colors.textSecondary}>STEP 7 OF 15</Txt>
+        <View style={styles.headerRight} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR TRIGGERS</Text>
-        <Text style={styles.hero}>What tends to set it off?</Text>
-        <Text style={styles.sub}>Pick any that ring true.</Text>
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.textBlock}>
+          <Eyebrow color={colors.primary}>Your triggers</Eyebrow>
+          <Txt variant="displayMd" style={styles.hero}>What tends to set it off?</Txt>
+          <Txt variant="bodyLg" color={colors.textSecondary} style={styles.sub}>
+            Pick any that ring true.
+          </Txt>
+        </Animated.View>
 
-        <View style={styles.grid}>
-          {options.map((o) => {
+        <Animated.View entering={FadeInDown.delay(120).duration(400)} style={styles.grid}>
+          {OPTIONS.map((o) => {
             const isOn = selected.includes(o.key);
             return (
               <Pressable
@@ -58,22 +61,26 @@ export default function QuizTriggers() {
                 accessibilityState={{ checked: isOn }}
                 accessibilityLabel={o.title}
               >
-                <GlassCard
-                  tint={isOn ? 'peach' : 'default'}
-                  style={[styles.optionCard, isOn && styles.optionCardOn]}
+                <Card
+                  style={[
+                    styles.optionCard,
+                    { backgroundColor: o.accent + '1A' },
+                    isOn && styles.optionCardOn,
+                  ]}
                 >
-                  <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
-                </GlassCard>
+                  <Txt variant="titleMd" color={isOn ? colors.primary : colors.onSurface} center>
+                    {o.title}
+                  </Txt>
+                </Card>
               </Pressable>
             );
           })}
-        </View>
+        </Animated.View>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
           label="Continue"
-          variant="onboarding"
           disabled={selected.length === 0}
           onPress={() => {
             if (selected.length === 0) return;
@@ -82,24 +89,48 @@ export default function QuizTriggers() {
           }}
         />
       </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
-  backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
-  back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  progressLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.labelWide },
-  body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: spacing.sm },
-  eyebrow: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
-  hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 34, marginTop: spacing.sm },
-  sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
+  root: { flex: 1, backgroundColor: colors.canvas },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
+  },
+  backBtn: { minWidth: 60 },
+  headerRight: { minWidth: 60 },
+
+  body: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    gap: spacing.lg,
+  },
+  textBlock: { gap: spacing.sm },
+  hero: { letterSpacing: -0.6, marginTop: spacing.xs },
+  sub: { lineHeight: 22 },
+
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   gridItem: { width: '48.5%' },
-  optionCard: { paddingVertical: spacing.md + 4, paddingHorizontal: spacing.md, alignItems: 'center' },
-  optionCardOn: { borderColor: colors.primary, borderWidth: 1.5 },
-  optionTitle: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleMedium, color: colors.onSurface },
-  optionTitleOn: { color: colors.primary },
+  optionCard: {
+    aspectRatio: 1.4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.sm,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  optionCardOn: { borderColor: colors.primary },
+
   footer: { paddingHorizontal: spacing.lg, alignItems: 'center' },
 });

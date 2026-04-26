@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   labelOnLight: {
-    color: colors.darkHorizonRose900,
+    color: colors.onSurface,
     fontFamily: fonts.headline,
     fontSize: 15,
     fontWeight: '700',

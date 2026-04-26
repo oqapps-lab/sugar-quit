@@ -14,21 +14,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { colors, fonts } from '../../constants/tokens';
 
-/**
- * StreakOrb — the ceremonial centerpiece for the streak section.
- * Architecture from back to front:
- *   1. Soft diffuse aura (coral/golden blur spots drifting slowly)
- *   2. Rotating outer ring (honey gradient, 22s linear)
- *   3. Rotating mid ring (opposite direction, slower, thinner)
- *   4. Pulsing glow behind the central disc (3.6s ease)
- *   5. Frosted glass disc with internal radial-style gradient
- *   6. Big streak number with layered text shadows
- *   7. Small orbiting petals (3 tiny circles circling the orb)
- *
- * All motion is reduce-motion aware (useReducedMotion) — if on, the orb is
- * static but still visually rich.
- */
-
 type Props = {
   count: number;
   size?: number;
@@ -89,22 +74,19 @@ export function StreakOrb({ count, size = 240 }: Props) {
     transform: [{ rotate: `${petalRot.value}deg` }],
   }));
 
-  // Sizes derived from prop
   const S = size;
   const outerRing = S;
   const midRing = S * 0.82;
   const discSize = S * 0.56;
   const glowSize = S * 0.75;
 
-  // Petal positions (3 small circles evenly spaced around the orb)
-  const petalTrack = S * 0.49; // orbit radius
+  const petalTrack = S * 0.49;
   const petalSize = S * 0.055;
   const petalAngles = [0, 120, 240];
 
   return (
     <View style={[styles.wrap, { width: S, height: S }]}>
-      {/* 1. Outer soft aura — single soft coral halo (was two-tone, read
-          as too chromatic). Rendered as a circle so edges are round. */}
+      {/* 1. Outer soft aura */}
       <View
         style={[
           styles.auraWrap,
@@ -131,8 +113,7 @@ export function StreakOrb({ count, size = 240 }: Props) {
         pointerEvents="none"
       />
 
-      {/* 2. Outer rotating ring — single coral tone with transparent midpoints
-          (avoids the previous "rainbow" feel from 5+ stop honey gradient) */}
+      {/* 2. Outer rotating ring */}
       <Animated.View
         style={[
           styles.ring,
@@ -152,7 +133,7 @@ export function StreakOrb({ count, size = 240 }: Props) {
         />
       </Animated.View>
 
-      {/* 3. Mid hollow ring — counter-rotating thinner gradient */}
+      {/* 3. Mid counter-rotating ring */}
       <Animated.View
         style={[
           styles.midRingOuter,
@@ -224,7 +205,6 @@ export function StreakOrb({ count, size = 240 }: Props) {
             ]}
           />
         )}
-        {/* Inner radial-like gradient fill */}
         <LinearGradient
           colors={['rgba(255,255,255,0.85)', 'rgba(255,215,208,0.55)'] as const}
           start={{ x: 0.3, y: 0.2 }}
@@ -234,9 +214,15 @@ export function StreakOrb({ count, size = 240 }: Props) {
         />
       </View>
 
-      {/* 6. The number — big, with layered shadow */}
+      {/* 6. The number */}
       <View style={[styles.numberWrap, { width: outerRing, height: outerRing }]}>
-        <Text style={[styles.number, { fontSize: discSize * 0.56 }]}>{count}</Text>
+        <Text
+          style={[styles.number, { fontSize: discSize * 0.56 }]}
+          adjustsFontSizeToFit
+          numberOfLines={1}
+        >
+          {count}
+        </Text>
       </View>
 
       {/* 7. Orbiting petals */}
@@ -323,7 +309,8 @@ const styles = StyleSheet.create({
   number: {
     fontFamily: fonts.headlineExtraBold,
     color: colors.primary,
-    letterSpacing: -3,
+    textAlign: 'center',
+    includeFontPadding: false,
     textShadowColor: 'rgba(165,60,48,0.35)',
     textShadowOffset: { width: 0, height: 3 },
     textShadowRadius: 12,

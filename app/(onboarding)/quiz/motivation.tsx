@@ -1,34 +1,32 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { GlassCard } from '../../../components/ui/GlassCard';
-import { PillCTA } from '../../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { PillCTA } from '../../../components/primitives/PillCTA';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
 
-/**
- * 1.3 Quiz: Motivation — "What's pulling you here?" (multi-select, min 1).
- */
+const OPTIONS = [
+  { key: 'health',  title: 'A health concern',      accent: '#5BA858' },
+  { key: 'energy',  title: 'My energy levels',      accent: '#D4900A' },
+  { key: 'body',    title: 'My weight',              accent: '#C96C80' },
+  { key: 'cost',    title: 'My mood',                accent: '#5A7AA8' },
+  { key: 'charge',  title: 'I feel hooked on it',   accent: '#7A6BA8' },
+];
+
 export default function QuizMotivation() {
   const insets = useSafeAreaInsets();
-  const stored = useUserStore((s) => s.motivations);
   const setMotivations = useUserStore((s) => s.setMotivations);
-  const [selected, setSelected] = useState<string[]>(stored);
-
-  const options = [
-    { key: 'health',   title: 'Health is asking me to',   tint: 'peach' as const },
-    { key: 'energy',   title: 'I want clearer energy',    tint: 'default' as const },
-    { key: 'body',     title: 'My body feels different',  tint: 'mint' as const },
-    { key: 'cost',     title: "It's costing too much",    tint: 'default' as const },
-    { key: 'charge',   title: 'I just want to feel in charge', tint: 'peach' as const },
-  ];
+  const [selected, setSelected] = useState<string[]>([]);
 
   const toggle = (key: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelected((s) => (s.includes(key) ? s.filter((k) => k !== key) : [...s, key]));
+    setSelected((s) => s.includes(key) ? s.filter((k) => k !== key) : [...s, key]);
   };
 
   const handleContinue = () => {
@@ -38,74 +36,106 @@ export default function QuizMotivation() {
   };
 
   return (
-    <AtmosphericGradient theme="sunriseGreens">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.back}>←</Text>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <Pressable onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }} hitSlop={8} accessibilityRole="button" style={styles.backBtn}>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 3 OF 15</Text>
-        <View style={{ width: 40 }} />
+        <Txt variant="labelSm" color={colors.textSecondary}>STEP 3 OF 15</Txt>
+        <View style={styles.headerRight} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR MOTIVATION</Text>
-        <Text style={styles.hero}>What's pulling you here?</Text>
-        <Text style={styles.sub}>Pick any that feel true. Choose more than one.</Text>
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.textBlock}>
+          <Eyebrow color={colors.primary}>Your motivation</Eyebrow>
+          <Txt variant="displayMd" style={styles.hero}>What's pulling you here?</Txt>
+          <Txt variant="bodyLg" color={colors.textSecondary} style={styles.sub}>
+            Pick any that feel true. Choose more than one.
+          </Txt>
+        </Animated.View>
 
-        <View style={styles.optionsCol}>
-          {options.map((o) => {
+        <Animated.View entering={FadeInDown.delay(120).duration(400)} style={styles.optionsCol}>
+          {OPTIONS.map((o) => {
             const isOn = selected.includes(o.key);
             return (
               <Pressable
                 key={o.key}
                 onPress={() => toggle(o.key)}
+                style={styles.optionItem}
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked: isOn }}
                 accessibilityLabel={o.title}
               >
-                <GlassCard tint={isOn ? 'peach' : o.tint} style={[styles.optionCard, isOn && styles.optionCardOn]}>
+                <Card
+                  padding={spacing.lg}
+                  style={[
+                    styles.optionCard,
+                    { backgroundColor: o.accent + '1A' },
+                    isOn && styles.optionCardOn,
+                  ]}
+                >
                   <View style={styles.optionRow}>
-                    <Text style={[styles.optionTitle, isOn && styles.optionTitleOn]}>{o.title}</Text>
+                    <Txt variant="titleMd" color={isOn ? colors.primary : colors.onSurface} style={styles.optionLabel}>
+                      {o.title}
+                    </Txt>
                     <View style={[styles.checkDot, isOn && styles.checkDotOn]}>
-                      {isOn ? <Text style={styles.checkGlyph}>✓</Text> : null}
+                      {isOn && <Txt variant="labelSm" color={colors.onPrimary}>✓</Txt>}
                     </View>
                   </View>
-                </GlassCard>
+                </Card>
               </Pressable>
             );
           })}
-        </View>
+        </Animated.View>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA
-          label="Continue"
-          variant="onboarding"
-          onPress={handleContinue}
-          disabled={selected.length === 0}
-        />
+        <PillCTA label="Continue" onPress={handleContinue} disabled={selected.length === 0} />
       </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
-  backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
-  back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  progressLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.labelWide },
-  body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: spacing.sm },
-  eyebrow: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
-  hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 34, marginTop: spacing.sm },
-  sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
-  optionsCol: { gap: spacing.sm },
-  optionCard: { padding: spacing.md + 2 },
-  optionCardOn: { borderColor: colors.primary, borderWidth: 1.5 },
-  optionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md },
-  optionTitle: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleMedium, color: colors.onSurface, flex: 1 },
-  optionTitleOn: { color: colors.primary },
-  checkDot: { width: 22, height: 22, borderRadius: radius.full, borderWidth: 1.5, borderColor: 'rgba(49,51,47,0.25)', alignItems: 'center', justifyContent: 'center' },
+  root: { flex: 1, backgroundColor: colors.canvas },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
+  },
+  backBtn: { minWidth: 60 },
+  headerRight: { minWidth: 60 },
+
+  body: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
+  },
+  textBlock: { gap: spacing.sm, marginBottom: spacing.lg },
+  hero: { letterSpacing: -0.6, marginTop: spacing.xs },
+  sub: { lineHeight: 22 },
+
+  optionsCol: { flex: 1, gap: spacing.sm },
+  optionItem: { flex: 1 },
+  optionCard: { flex: 1, justifyContent: 'center', borderRadius: radius.sm, borderWidth: 2, borderColor: 'transparent' },
+  optionCardOn: { borderColor: colors.primary },
+  optionRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  optionLabel: { flex: 1 },
+  checkDot: {
+    width: 22,
+    height: 22,
+    borderRadius: radius.full,
+    borderWidth: 1.5,
+    borderColor: colors.outline,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   checkDotOn: { backgroundColor: colors.primary, borderColor: colors.primary },
-  checkGlyph: { color: colors.onPrimary, fontSize: 12, fontFamily: fonts.headlineBold },
-  footer: { paddingHorizontal: spacing.lg, alignItems: 'center' },
+
+  footer: { paddingHorizontal: spacing.lg, alignItems: 'center', paddingTop: spacing.sm },
 });

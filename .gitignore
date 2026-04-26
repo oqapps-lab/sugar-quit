@@ -17,3 +17,13 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+# Generated native directories (Expo managed workflow — prebuild output)
+android/
+ios/
+
+# Claude Code internal memory
+.claude/
+
+# macOS
+.DS_Store

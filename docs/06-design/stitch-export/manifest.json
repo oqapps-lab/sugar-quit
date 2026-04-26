@@ -70,5 +70,310 @@
     "title": "Daily Wellness Weather Report",
     "id": "ebf9e36602b641fdbe8d94db6b01ffb5",
     "ok": true
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"API keys are not supported by this API. Expected OAuth2 access token or other authentication credentials that assert a principal. See https://cloud.google.com/docs/authentication\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"API keys are not supported by this API. Expected OAuth2 access token or other authentication credentials that assert a principal. See https://cloud.google.com/docs/authentication\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"API keys are not supported by this API. Expected OAuth2 access token or other authentication credentials that assert a principal. See https://cloud.google.com/docs/authentication\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"API keys are not supported by this API. Expected OAuth2 access token or other authentication credentials that assert a principal. See https://cloud.google.com/docs/authentication\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 403: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Your application is authenticating by using local Application Default Credentials. The stitch.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "HTTP 401: {\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"content\":[{\"text\":\"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",\"type\":\"text\"}],\"isError\":true}}"
+  },
+  {
+    "slug": "13-home-dashboard-day8",
+    "title": "Home Dashboard (Day 8)",
+    "id": "c47797a518494e4581e659a4bd54b609",
+    "ok": true
+  },
+  {
+    "slug": "14-checkin-celebration",
+    "title": "Daily Check-in: Celebration",
+    "id": "ee3d4a119478485998bba489f3da02bb",
+    "ok": true
+  },
+  {
+    "slug": "15-sos-ai-chat",
+    "title": "SOS AI Chat",
+    "id": "018e72053f0d463b9d3632680cae2130",
+    "ok": true
+  },
+  {
+    "slug": "16-design-system",
+    "title": "Design System",
+    "id": "asset-stub-assets-b1d97a6b694e43aaa857173a5d5e1f33-1776424336904",
+    "ok": false,
+    "error": "Requested entity was not found."
   }
 ]

@@ -1,29 +1,23 @@
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { GlassCard } from '../../components/ui/GlassCard';
-import { PillCTA } from '../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { Card } from '../../components/primitives/Card';
+import { Eyebrow } from '../../components/primitives/Eyebrow';
+import { PillCTA } from '../../components/primitives/PillCTA';
+import { Txt } from '../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
 
 const TRIGGER_TYPE_BY_KEY: Record<string, string> = {
-  stress: 'Stress Eater',
-  emotions: 'Emotional Eater',
-  boredom: 'Comfort Eater',
-  meals: 'Habit Eater',
-  social: 'Social Eater',
-  night: 'Late-Night Eater',
+  stress:   'Stress-Triggered',
+  emotions: 'Emotion-Triggered',
+  boredom:  'Comfort-Seeking',
+  meals:    'Habit & Routine',
+  social:   'Socially Triggered',
+  night:    'Late-Night',
 };
 
-/**
- * Result Screen — post-onboarding "Your Craving Profile".
- * Personalises the hero based on the dominant trigger picked in quiz/triggers.
- * Adapts peak hour from quiz/peak-time.
- */
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const triggers = useUserStore((s) => s.triggers);
@@ -32,114 +26,92 @@ export default function ProfileScreen() {
   const dominantTrigger = triggers[0] ?? 'stress';
   const personaName = TRIGGER_TYPE_BY_KEY[dominantTrigger] ?? 'Stress Eater';
   const peakLabel = peakHour ?? '3:00 PM';
-  // Build a sub-headline with the picked time, e.g. "with a 3pm crash"
   const peakHourShort = peakLabel.replace(/(:00 )?(AM|PM)/, '$2').toLowerCase();
-  const subline = `with a ${peakHourShort} crash`;
 
   return (
-    <AtmosphericGradient theme="cravingProfile">
-      {/* Background aura blobs — ambient warmth */}
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={24} />
-        <AuraBlob tint="lavender" size={280} style={styles.auraMidLeft} intensity={0.45} drift={18} />
-        <AuraBlob tint="mint" size={220} style={styles.auraBottomRight} intensity={0.4} drift={16} />
-      </View>
-
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <View style={styles.brandRow}>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.logoRow}>
           <View style={styles.logoMark} />
-          <Text style={styles.brandWord}>Sugar Quit</Text>
+          <Txt variant="titleSm">Sugar Quit</Txt>
         </View>
-        <Pressable onPress={() => router.back()}>
-          <Text style={styles.skipLabel}>Skip</Text>
-        </Pressable>
+        <View style={styles.logoRow} />
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 100 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero — persona + peak + flame glyph */}
+        {/* Hero */}
         <Animated.View entering={FadeInUp.duration(500)} style={styles.heroSection}>
-          <View style={styles.heroEyebrowRow}>
-            <DecorGlyph variant="flame" size={40} />
-            <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
-          </View>
-          <Text style={styles.heroTitle}>
-            You're a <Text style={styles.heroTitleAccent}>{personaName}</Text>
-          </Text>
-          <Text style={styles.heroSubtitle}>{subline}</Text>
-          <Text style={styles.heroBody}>
+          <Eyebrow color={colors.primary} style={styles.heroEyebrow}>Your craving profile</Eyebrow>
+          <Txt variant="displayLg" style={styles.heroTitle}>
+            Your pattern:{'\n'}
+            <Txt variant="displayLg" color={colors.onSurface}>{personaName}</Txt>
+          </Txt>
+          <Txt variant="displaySm" color={colors.textSecondary} style={styles.heroSub}>
+            with a {peakHourShort} crash
+          </Txt>
+          <Txt variant="bodyLg" color={colors.textSecondary} style={styles.heroBody}>
             Your body seeks rapid energy drops to counter cortisol peaks.
             We'll replace the spike with steady emotional grounding.
-          </Text>
+          </Txt>
         </Animated.View>
 
         {/* Cards */}
         <View style={styles.cardsCol}>
+          {/* Peak window */}
           <Animated.View entering={FadeInDown.delay(200).duration(450)}>
-            <GlassCard tint="default" style={styles.insightCard}>
-              <View style={styles.cardHeader}>
-                <View style={styles.cardIcon}>
-                  <DecorGlyph variant="compass" size={22} />
-                </View>
-                <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
-              </View>
-              <Text style={styles.cardTitle}>{peakLabel}</Text>
-              <Text style={styles.cardBody}>
+            <Card bordered style={styles.insightCard}>
+              <Eyebrow color={colors.primary}>Peak window</Eyebrow>
+              <Txt variant="titleLg" style={styles.cardTitle}>{peakLabel}</Txt>
+              <Txt variant="bodyMd" style={styles.cardBody}>
                 Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
                 breath protocol right before the craving hits.
-              </Text>
-            </GlassCard>
+              </Txt>
+            </Card>
           </Animated.View>
 
+          {/* Week 1 */}
           <Animated.View entering={FadeInDown.delay(300).duration(450)}>
-            <GlassCard tint="peach" style={styles.insightCardLarge}>
-              <View style={styles.cardHeader}>
-                <View style={styles.cardIconAccent}>
-                  <DecorGlyph variant="lightning" size={22} />
-                </View>
-                <Text style={styles.cardEyebrowAccent}>WEEK 1</Text>
-              </View>
-              <Text style={styles.cardTitleLarge}>Withdrawal, then clarity</Text>
-              <Text style={styles.cardBody}>
+            <Card bordered style={styles.insightCard}>
+              <Eyebrow color={colors.primary}>Week 1</Eyebrow>
+              <Txt variant="titleLg" style={styles.cardTitle}>Withdrawal, then clarity</Txt>
+              <Txt variant="bodyMd" style={styles.cardBody}>
                 The first 4 days are a physiological unbinding. By day 7, the mental
                 fog lifts and the deep fatigue subsides. Expect emotional turbulence,
                 met with soft interventions.
-              </Text>
+              </Txt>
               <View style={styles.timelineRow}>
                 <View style={styles.timelineDay}>
-                  <Text style={styles.timelineDayNumber}>1–4</Text>
-                  <Text style={styles.timelineDayLabel}>unbind</Text>
+                  <Txt variant="titleMd" color={colors.primary}>Day 1–4</Txt>
+                  <Txt variant="labelSm" color={colors.primary}>unbind</Txt>
                 </View>
-                <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+                <Txt variant="bodyMd" color={colors.textSecondary} style={styles.timelineArrow}>→</Txt>
                 <View style={styles.timelineDay}>
-                  <Text style={styles.timelineDayNumber}>5–6</Text>
-                  <Text style={styles.timelineDayLabel}>turbulence</Text>
+                  <Txt variant="titleMd" color={colors.warning}>Day 5–6</Txt>
+                  <Txt variant="labelSm" color={colors.warning}>turbulence</Txt>
                 </View>
-                <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
+                <Txt variant="bodyMd" color={colors.textSecondary} style={styles.timelineArrow}>→</Txt>
                 <View style={styles.timelineDay}>
-                  <Text style={[styles.timelineDayNumber, { color: colors.primary }]}>7</Text>
-                  <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>clarity</Text>
+                  <Txt variant="titleMd" color={colors.success}>Day 7</Txt>
+                  <Txt variant="labelSm" color={colors.success}>clarity</Txt>
                 </View>
               </View>
-            </GlassCard>
+            </Card>
           </Animated.View>
 
+          {/* By day 30 */}
           <Animated.View entering={FadeInDown.delay(400).duration(450)}>
-            <GlassCard tint="mint" style={styles.insightCard}>
-              <View style={styles.cardHeader}>
-                <View style={styles.cardIconMint}>
-                  <DecorGlyph variant="heart" size={22} />
-                </View>
-                <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>BY DAY 30</Text>
-              </View>
-              <Text style={styles.cardTitle}>Taste buds reset</Text>
-              <Text style={styles.cardBody}>
+            <Card bordered style={styles.insightCard}>
+              <Eyebrow color={colors.success}>By day 30</Eyebrow>
+              <Txt variant="titleLg" style={styles.cardTitle}>Taste buds reset</Txt>
+              <Txt variant="bodyMd" style={styles.cardBody}>
                 Natural foods will taste vibrant again. The compulsion fades into
                 a gentle, manageable whisper.
-              </Text>
-            </GlassCard>
+              </Txt>
+            </Card>
           </Animated.View>
         </View>
       </ScrollView>
@@ -147,151 +119,36 @@ export default function ProfileScreen() {
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA label="Begin the program" onPress={() => router.push('/(onboarding)/paywall')} />
       </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -120,
-  },
-  auraMidLeft: {
-    position: 'absolute',
-    top: '35%',
-    left: -140,
-  },
-  auraBottomRight: {
-    position: 'absolute',
-    bottom: '20%',
-    right: -80,
-  },
+  root: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  brandRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  logoRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   logoMark: { width: 10, height: 10, borderRadius: radius.full, backgroundColor: colors.primary },
-  brandWord: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleSmall,
-    color: colors.onSurface,
-    letterSpacing: -0.2,
-  },
-  skipLabel: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-  },
 
   scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
 
-  heroSection: {
-    gap: spacing.xs,
-    marginBottom: spacing.lg,
-  },
-  heroEyebrowRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    marginBottom: spacing.sm,
-  },
-  eyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
-  heroTitle: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayLarge + 4,
-    color: colors.onSurface,
-    letterSpacing: -1.2,
-    lineHeight: 44,
-  },
-  heroTitleAccent: {
-    color: colors.primary,
-  },
-  heroSubtitle: {
-    fontFamily: fonts.headlineLight,
-    fontSize: typeScale.displaySmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: -0.5,
-    marginBottom: spacing.sm,
-  },
-  heroBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurfaceVariant,
-    lineHeight: 22,
-    marginTop: spacing.xs,
-    maxWidth: 360,
-  },
+  heroSection: { gap: spacing.sm, marginBottom: spacing.lg },
+  heroEyebrow: { marginBottom: spacing.xs },
+  heroTitle: { letterSpacing: -0.8, lineHeight: 44 },
+  heroSub: { letterSpacing: -0.4, marginTop: spacing.xs },
+  heroBody: { lineHeight: 22, marginTop: spacing.sm, maxWidth: 360 },
 
   cardsCol: { gap: spacing.md },
-  insightCard: { padding: spacing.lg, gap: spacing.sm },
-  insightCardLarge: { padding: spacing.lg, gap: spacing.sm },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    marginBottom: spacing.xs,
-  },
-  cardIcon: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(165,60,48,0.1)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  cardIconAccent: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  cardIconMint: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(207,224,223,0.6)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  cardEyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
-  cardEyebrowAccent: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
-  cardTitle: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.titleLarge + 2,
-    color: colors.onSurface,
-    letterSpacing: -0.4,
-    lineHeight: 28,
-  },
-  cardTitleLarge: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.displaySmall,
-    color: colors.onSurface,
-    letterSpacing: -0.6,
-    lineHeight: 30,
-  },
-  cardBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    lineHeight: 20,
-  },
+  insightCard: { gap: spacing.sm },
+  cardTitle: { letterSpacing: -0.3, lineHeight: 26 },
+  cardBody: { lineHeight: 20 },
 
   timelineRow: {
     flexDirection: 'row',
@@ -300,26 +157,12 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
     paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(49,51,47,0.08)',
+    borderTopColor: colors.outline,
   },
   timelineDay: { alignItems: 'center', gap: 2 },
-  timelineDayNumber: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-  },
-  timelineDayLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-  },
-  timelineArrow: { opacity: 0.3 },
-  timelineArrowText: { fontSize: 14, color: colors.onSurfaceVariant },
+  timelineArrow: { opacity: 0.4 },
 
   ctaWrap: {
-    position: 'absolute',
-    bottom: 0, left: 0, right: 0,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },

@@ -40,8 +40,8 @@ export function BottomNav({ tabs, onPress, dark = false }: Props) {
             style={[
               styles.icon,
               { color: t.active
-                ? (dark ? '#ffffff' : colors.darkHorizonRose900)
-                : (dark ? 'rgba(255,255,255,0.3)' : 'rgba(136,19,55,0.4)') },
+                ? (dark ? '#ffffff' : colors.primary)
+                : (dark ? 'rgba(255,255,255,0.3)' : 'rgba(255,107,107,0.4)') },
             ]}
           >
             {t.icon}

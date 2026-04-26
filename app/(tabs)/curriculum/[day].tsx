@@ -1,32 +1,25 @@
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../../components/ui/DecorGlyph';
-import { GlassCard } from '../../../components/ui/GlassCard';
-import { PillCTA } from '../../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { PillCTA } from '../../../components/primitives/PillCTA';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 
-// Per-phase hero glyph for lesson screens — matches the curriculum phase
-const PHASE_GLYPH_BY_LABEL: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'> = {
-  'ACUTE PHASE': 'flame',
-  'ADAPTATION': 'sun',
-  'CLARITY PHASE': 'compass',
-  'INTEGRATION': 'orbit',
+const PHASE_COLORS: Record<string, string> = {
+  'ACUTE PHASE':    colors.primary,
+  'ADAPTATION':     colors.warning,
+  'CLARITY PHASE':  colors.success,
+  'INTEGRATION':    colors.primary,
 };
 
 type LessonContent = { phase: string; title: string; body: string };
 
-// Source of truth: keep titles + phases in sync with curriculum/index.tsx PHASES.
-// Every day referenced in the index must have a LESSONS entry — otherwise the
-// lesson screen silently falls back to a different day's body (drift bug).
 const LESSONS: Record<number, LessonContent> = {
-  // --- Acute (Days 1–3) ---
   1: {
     phase: 'ACUTE PHASE',
     title: 'Why sugar catches the brain',
@@ -40,32 +33,28 @@ const LESSONS: Record<number, LessonContent> = {
   3: {
     phase: 'ACUTE PHASE',
     title: 'First quiet morning',
-    body: 'You wake up and something is different. The first thought isn\'t "sugar". That moment — where the loop doesn\'t fire — is your new baseline forming. Notice it, don\'t rush past it.',
+    body: "You wake up and something is different. The first thought isn't \"sugar\". That moment — where the loop doesn't fire — is your new baseline forming. Notice it, don't rush past it.",
   },
-
-  // --- Adaptation (Days 4–7) ---
   4: {
     phase: 'ADAPTATION',
     title: 'Your 3pm pattern, mapped',
-    body: 'The afternoon crash is cortisol + blood sugar swinging together. We\'ve tuned your forecast to this window. A 2-minute breath protocol 10 minutes before the dip is worth more than willpower after.',
+    body: "The afternoon crash is cortisol + blood sugar swinging together. We've tuned your forecast to this window. A 2-minute breath protocol 10 minutes before the dip is worth more than willpower after.",
   },
   5: {
     phase: 'ADAPTATION',
     title: 'Why fruit tastes bland',
-    body: 'A banana used to taste "not sweet enough". That\'s not the banana — that\'s your taste receptors numbed by processed sugar. Over the next two weeks, sensitivity returns. Fruit gets its flavor back.',
+    body: "A banana used to taste \"not sweet enough\". That's not the banana — that's your taste receptors numbed by processed sugar. Over the next two weeks, sensitivity returns. Fruit gets its flavor back.",
   },
   6: {
     phase: 'ADAPTATION',
     title: 'The sleep–sugar loop',
-    body: 'Short sleep spikes ghrelin (hunger hormone) and blunts leptin (satiety). One bad night → next-day sugar cravings feel 30% stronger. Guard tonight\'s sleep as a craving-management tool.',
+    body: "Short sleep spikes ghrelin (hunger hormone) and blunts leptin (satiety). One bad night → next-day sugar cravings feel 30% stronger. Guard tonight's sleep as a craving-management tool.",
   },
   7: {
     phase: 'ADAPTATION',
     title: 'One whole week',
     body: 'Your insulin sensitivity has measurably improved. Energy is steadier between meals. Sleep deepens. This is the floor of the adaptation phase — everything from here compounds.',
   },
-
-  // --- Clarity (Days 8–14) ---
   8: {
     phase: 'CLARITY PHASE',
     title: 'Your taste buds are waking up',
@@ -84,10 +73,8 @@ const LESSONS: Record<number, LessonContent> = {
   11: {
     phase: 'CLARITY PHASE',
     title: 'Alternatives that actually work',
-    body: 'Not all substitutes are equal. A handful of almonds + one square of 85% dark chocolate lands in the same reward slot as a cookie, without the crash. We\'ll test three combinations this week.',
+    body: "Not all substitutes are equal. A handful of almonds + one square of 85% dark chocolate lands in the same reward slot as a cookie, without the crash. We'll test three combinations this week.",
   },
-
-  // --- Deeper markers (used by milestone flow) ---
   14: {
     phase: 'CLARITY PHASE',
     title: 'Two weeks — the subtle shift',
@@ -96,7 +83,7 @@ const LESSONS: Record<number, LessonContent> = {
   30: {
     phase: 'INTEGRATION',
     title: 'Day 30 — taste reset',
-    body: 'Natural foods taste vibrant again. The compulsion fades into a manageable whisper. You\'ve rewired the reward loop — the identity catches up next.',
+    body: "Natural foods taste vibrant again. The compulsion fades into a manageable whisper. You've rewired the reward loop — the identity catches up next.",
   },
 };
 
@@ -105,9 +92,9 @@ export default function Lesson() {
   const params = useLocalSearchParams<{ day?: string }>();
   const dayNum = Math.max(1, Math.min(90, parseInt(params.day ?? '8', 10) || 8));
   const lesson = LESSONS[dayNum] ?? LESSONS[8];
-  // Mini-task: rate the fruit's sweetness 1-5. Local state — would persist
-  // to a future `lessonProgress[day]` slice in the store; out of scope here.
   const [rating, setRating] = useState<number | null>(null);
+
+  const phaseColor = PHASE_COLORS[lesson.phase] ?? colors.primary;
 
   const onRate = (n: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -115,99 +102,60 @@ export default function Lesson() {
   };
 
   return (
-    <AtmosphericGradient theme="dawn">
-      {/* Background aura blobs — ambient depth behind all content */}
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="lavender" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
-        <AuraBlob tint="peach" size={260} style={styles.auraBottomLeft} intensity={0.5} drift={18} />
-      </View>
-
-      {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }}
           style={styles.backBtn}
           accessibilityRole="button"
           accessibilityLabel="Back to curriculum"
         >
-          <Text style={styles.backArrow}>←</Text>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-        <View style={styles.headerCenter}>
-          <Text style={styles.headerLabel}>DAY {dayNum} OF 90</Text>
-        </View>
-        <View style={{ width: 40 }} />
+        <Eyebrow color={colors.primary}>{`DAY ${dayNum} OF 90`}</Eyebrow>
+        <View style={{ width: 72 }} />
       </View>
 
-      {/* Thin progress */}
       <View style={styles.progressRail}>
-        <View style={[styles.progressFill, { width: `${(dayNum / 90) * 100}%` }]} />
+        <View style={[styles.progressFill, { width: `${(dayNum / 90) * 100}%` as `${number}%` }]} />
       </View>
 
       <ScrollView
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 240 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero — now with a large phase glyph that anchors the screen */}
         <Animated.View entering={FadeInUp.duration(400)} style={styles.heroRow}>
-          <View style={styles.heroCol}>
-            <Text style={styles.lessonEyebrow}>{lesson.phase}</Text>
-            <Text style={styles.lessonTitle}>{lesson.title}</Text>
-            <Text style={styles.lessonMeta}>5 min · neuroscience + one practice</Text>
-          </View>
-          <View style={styles.heroGlyphWrap}>
-            <DecorGlyph
-              variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'orbit'}
-              size={72}
-            />
-          </View>
+          <Eyebrow color={phaseColor} style={styles.lessonEyebrow}>{lesson.phase}</Eyebrow>
+          <Txt variant="displayLg" style={styles.lessonTitle}>{lesson.title}</Txt>
+          <Txt variant="bodyMd" color={colors.textSecondary}>5 min · neuroscience + one practice</Txt>
         </Animated.View>
 
-        {/* Divider */}
         <View style={styles.divider} />
 
-        {/* Section 1 — What's happening */}
         <Animated.View entering={FadeInDown.delay(150).duration(400)}>
-          <Text style={styles.sectionLabel}>WHAT'S HAPPENING</Text>
-          <Text style={styles.body}>{lesson.body}</Text>
-          <Text style={styles.body}>
-            A 2019 University of Michigan study showed a 40% increase in perceived
-            fruit sweetness after two weeks of sugar reduction.
-          </Text>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>WHAT'S HAPPENING</Eyebrow>
+          <Txt variant="bodyLg" color={colors.onSurface} style={styles.body}>{lesson.body}</Txt>
+          <Txt variant="bodyLg" color={colors.onSurface} style={styles.body}>
+            A 2019 University of Michigan study showed a 40% increase in perceived fruit sweetness after two weeks of sugar reduction.
+          </Txt>
         </Animated.View>
 
-        {/* Illustration — centered phase glyph (128px) with a bloom halo behind */}
-        <Animated.View entering={FadeInUp.delay(250).duration(500)} style={styles.illustration}>
-          <View style={styles.illoHalo} />
-          <DecorGlyph
-            variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'heart'}
-            size={128}
-          />
-        </Animated.View>
-
-        {/* Section 2 — Practice */}
         <Animated.View entering={FadeInDown.delay(350).duration(400)}>
-          <Text style={styles.sectionLabel}>THE PRACTICE</Text>
-          <Text style={styles.body}>
-            Tonight, eat a fruit you used to find "not sweet enough" — a Granny Smith
-            apple, a grapefruit, blueberries.
-          </Text>
-          <Text style={styles.body}>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>THE PRACTICE</Eyebrow>
+          <Txt variant="bodyLg" color={colors.onSurface} style={styles.body}>
+            Tonight, eat a fruit you used to find "not sweet enough" — a Granny Smith apple, a grapefruit, blueberries.
+          </Txt>
+          <Txt variant="bodyLg" color={colors.onSurface} style={styles.body}>
             Notice. No judgment, no measuring. Just notice.
-          </Text>
+          </Txt>
         </Animated.View>
 
-        {/* Section 3 — Mini-task (anchor card). Interactive 1-5 rating.
-            Wrapped in an internal gradient overlay for depth (like home SOS counter). */}
-        <Animated.View entering={FadeInDown.delay(450).duration(400)} style={styles.taskWrap}>
-          <LinearGradient
-            colors={['rgba(255,215,168,0.4)', 'rgba(255,172,160,0.22)'] as const}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.taskGradient}
-          />
-          <GlassCard tint="peach" style={styles.taskCard}>
-            <Text style={styles.taskLabel}>TONIGHT'S NOTE</Text>
-            <Text style={styles.taskTitle}>Rate the fruit's sweetness</Text>
+        <Animated.View entering={FadeInDown.delay(450).duration(400)}>
+          <Card bordered style={styles.taskCard}>
+            <Eyebrow color={colors.primary}>TONIGHT'S NOTE</Eyebrow>
+            <Txt variant="titleLg" color={colors.onSurface} style={styles.taskTitle}>
+              Rate the fruit's sweetness
+            </Txt>
             <View style={styles.ratingRow}>
               {[1, 2, 3, 4, 5].map((n) => {
                 const active = rating === n;
@@ -221,62 +169,56 @@ export default function Lesson() {
                     accessibilityLabel={`Rate ${n} of 5`}
                     style={[styles.ratingStone, active && styles.ratingStoneActive]}
                   >
-                    <Text style={[styles.ratingStoneText, active && styles.ratingStoneTextActive]}>{n}</Text>
+                    <Txt
+                      variant="bodyLg"
+                      color={active ? colors.onPrimary : colors.textSecondary}
+                    >
+                      {String(n)}
+                    </Txt>
                   </Pressable>
                 );
               })}
             </View>
             <View style={styles.ratingLabels}>
-              <Text style={styles.ratingLabel}>sour</Text>
-              <Text style={styles.ratingLabel}>sweet</Text>
+              <Txt variant="labelSm" color={colors.textSecondary}>sour</Txt>
+              <Txt variant="labelSm" color={colors.textSecondary}>sweet</Txt>
             </View>
             {rating !== null && (
-              <Text style={styles.ratingHint}>
+              <Txt variant="bodyMd" color={colors.primary} center style={styles.ratingHint}>
                 {rating <= 2 ? 'Less sweet than you remembered.' :
                  rating === 3 ? 'About what you expected.' :
                  'Sweeter than before — your taste is recalibrating.'}
-              </Text>
+              </Txt>
             )}
-          </GlassCard>
+          </Card>
         </Animated.View>
 
-        {/* Source */}
-        <Text style={styles.source}>Source: Wise et al., 2019, Nutrients</Text>
+        <Txt variant="labelSm" color={colors.textSecondary} center style={styles.source}>
+          Source: Wise et al., 2019, Nutrients
+        </Txt>
       </ScrollView>
 
-      {/* CTA — sits above the floating tab bar (bar takes ~114pt from bottom) */}
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 110 }]}>
         <PillCTA label="Mark lesson complete" onPress={() => router.back()} />
       </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xs,
+    paddingVertical: spacing.sm,
   },
-  backBtn: {
-    width: 40, height: 40, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  backArrow: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  headerCenter: { flex: 1, alignItems: 'center' },
-  headerLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
+  backBtn: { minWidth: 72 },
 
   progressRail: {
     height: 3,
-    backgroundColor: 'rgba(49,51,47,0.08)',
+    backgroundColor: colors.outline,
     marginHorizontal: spacing.lg,
     borderRadius: 2,
     overflow: 'hidden',
@@ -285,182 +227,56 @@ const styles = StyleSheet.create({
 
   scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
 
-  lessonEyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.secondary,
-    letterSpacing: tracking.labelWide,
-    marginBottom: spacing.sm,
-  },
-  lessonTitle: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayLarge,
-    color: colors.onSurface,
-    letterSpacing: -1.2,
-    lineHeight: 40,
-    marginBottom: spacing.sm,
-  },
-  lessonMeta: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    marginBottom: spacing.lg,
-  },
+  heroRow: { gap: spacing.sm, marginBottom: spacing.sm },
+  lessonEyebrow: { marginBottom: 2 },
+  lessonTitle: { letterSpacing: -1.2, lineHeight: 40 },
 
   divider: {
     height: 1,
-    backgroundColor: 'rgba(49,51,47,0.1)',
+    backgroundColor: colors.outline,
     marginVertical: spacing.lg,
   },
 
-  sectionLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  body: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
-    lineHeight: 26,
-    marginBottom: spacing.md,
-  },
+  sectionLabel: { marginTop: spacing.lg, marginBottom: spacing.sm },
+  body: { lineHeight: 26, marginBottom: spacing.md },
 
-  illustration: {
-    alignItems: 'center',
-    marginVertical: spacing.xl,
-    height: 180,
-    justifyContent: 'center',
-  },
-  illoHalo: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: (180 - 170) / 2,
-    width: 170, height: 170, borderRadius: 85,
-    backgroundColor: colors.primaryContainer,
-    opacity: 0.55,
-    shadowColor: colors.primary,
-    shadowOpacity: 0.25,
-    shadowRadius: 28,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
-  },
-
-  // Hero layout (title left, glyph right)
-  heroRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  heroCol: { flex: 1, gap: spacing.xs },
-  heroGlyphWrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  taskWrap: {
-    marginTop: spacing.lg,
-    marginBottom: spacing.lg,
-    borderRadius: radius.sm,
-    overflow: 'hidden',
-  },
-  taskGradient: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: radius.sm,
-  },
-  taskCard: {
-    padding: spacing.lg,
-    gap: spacing.sm,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-  },
-  taskLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
-  taskTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onSurface,
-    letterSpacing: -0.4,
-  },
+  taskCard: { gap: spacing.sm, marginTop: spacing.lg, marginBottom: spacing.lg },
+  taskTitle: { letterSpacing: -0.4 },
   ratingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: spacing.md,
   },
   ratingStone: {
-    width: 44, height: 44, borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    width: 44,
+    height: 44,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.8)',
-    alignItems: 'center', justifyContent: 'center',
+    borderColor: colors.outline,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ratingStoneActive: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
-  ratingStoneText: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurfaceVariant,
-  },
-  ratingStoneTextActive: { color: colors.onPrimary },
   ratingLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: spacing.sm,
     paddingHorizontal: spacing.xs,
   },
-  ratingLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-  },
-  ratingHint: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.primary,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-    fontStyle: 'italic',
-  },
+  ratingHint: { marginTop: spacing.sm },
 
-  source: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    textAlign: 'center',
-    marginTop: spacing.xl,
-    fontStyle: 'italic',
-  },
+  source: { marginTop: spacing.xl, marginBottom: spacing.lg, opacity: 0.6 },
 
   ctaWrap: {
     position: 'absolute',
-    bottom: 0, left: 0, right: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
-  },
-
-  // Background aura layer
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -110,
-  },
-  auraBottomLeft: {
-    position: 'absolute',
-    bottom: '18%',
-    left: -120,
   },
 });

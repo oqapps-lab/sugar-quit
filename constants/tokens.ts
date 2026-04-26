@@ -1,76 +1,68 @@
 /**
  * Sugar Quit — Design Tokens
- * Source: docs/06-design/DESIGN-TOKENS.md
- * Extracted from 12 Stitch screens (stitch-export/), with conflicts resolved.
+ * Source: docs/06-design/stitch-raw/screenshots/ (visual inspection Apr 2026)
  */
 
 export const colors = {
-  // primary — rust / terracotta (brand core)
-  primary: '#a53c30',
-  primaryDim: '#953025',
-  primaryContainer: '#ffaca0',
-  primaryFixed: '#ffaca0',
-  primaryFixedDim: '#ff9788',
-  onPrimary: '#fff7f6',
-  onPrimaryContainer: '#761911',
-  onPrimaryFixed: '#570202',
-  onPrimaryFixedVariant: '#822219',
-  inversePrimary: '#fd7d6c',
+  // canvas — warm parchment background
+  canvas: '#FEF9F0',
 
-  // surface — cream
-  surface: '#fbf9f5',
-  background: '#fbf9f5',
-  surfaceBright: '#fbf9f5',
-  surfaceDim: '#dadad4',
-  surfaceContainerLowest: '#ffffff',
-  surfaceContainerLow: '#f5f3ef',
-  surfaceContainer: '#efeee9',
-  surfaceContainerHigh: '#e9e8e3',
-  surfaceContainerHighest: '#e3e3dd',
-  surfaceVariant: '#e3e3dd',
-  inverseSurface: '#0e0e0d',
-  inverseOnSurface: '#9e9d9a',
+  // primary — coral (SOS button, streak ring, key accents)
+  primary: '#FF6B6B',
+  primaryDim: '#E55555',
+  primaryContainer: '#FFD6D6',
+  onPrimary: '#FFFFFF',
+  onPrimaryContainer: '#8B0000',
+  inversePrimary: '#FF9B9B',
 
-  // on-surface — warm near-black
-  onSurface: '#31332f',
-  onSurfaceVariant: '#5e605b',
-  onBackground: '#31332f',
-  outline: '#7a7b76',
-  outlineVariant: '#b2b2ad',
+  // surface — white cards on canvas
+  surface: '#FFFFFF',
+  background: '#FEF9F0',
+  surfaceBright: '#FFFFFF',
+  surfaceDim: '#F0EBE0',
+  surfaceContainerLowest: '#FFFFFF',
+  surfaceContainerLow: '#FAF6EE',
+  surfaceContainer: '#F5F0E8',
+  surfaceContainerHigh: '#EDE8DF',
+  surfaceContainerHighest: '#E5E0D7',
+  surfaceVariant: '#E5E0D7',
+  inverseSurface: '#1A1A1A',
+  inverseOnSurface: '#9A9590',
 
-  // secondary — muted lavender
-  secondary: '#6a577f',
-  secondaryDim: '#5e4b72',
-  secondaryContainer: '#efdbff',
-  secondaryFixed: '#efdbff',
-  secondaryFixedDim: '#e3cbfa',
-  onSecondary: '#fff6ff',
-  onSecondaryContainer: '#5c4a71',
-  onSecondaryFixed: '#49385d',
-  onSecondaryFixedVariant: '#66547b',
+  // on-surface — warm near-black text
+  onSurface: '#2D2D2D',
+  onSurfaceVariant: '#8A8580',
+  onBackground: '#2D2D2D',
+  outline: '#C5C0B8',
+  outlineVariant: '#DDD8D0',
 
-  // tertiary — muted teal / pale mint
-  tertiary: '#526262',
-  tertiaryDim: '#465656',
-  tertiaryContainer: '#cfe0df',
-  tertiaryFixed: '#cfe0df',
-  tertiaryFixedDim: '#c1d2d1',
-  onTertiary: '#eafdfc',
-  onTertiaryContainer: '#415151',
-  onTertiaryFixed: '#2f3f3e',
-  onTertiaryFixedVariant: '#4b5b5b',
+  // success — teal/mint (coach, sugar-free state)
+  secondary: '#2EC4A0',
+  secondaryDim: '#25A889',
+  secondaryContainer: '#C0F0E8',
+  onSecondary: '#FFFFFF',
+  onSecondaryContainer: '#00544A',
 
-  // error
-  error: '#ac3434',
-  errorDim: '#70030f',
-  errorContainer: '#f56965',
-  onError: '#fff7f6',
-  onErrorContainer: '#65000b',
+  // warning — amber (partial relapse)
+  tertiary: '#FFAA33',
+  tertiaryDim: '#E09020',
+  tertiaryContainer: '#FFE8B0',
+  onTertiary: '#FFFFFF',
+  onTertiaryContainer: '#7A4800',
 
-  // theme variant — Dark Horizon (Progress screen only)
-  darkHorizonDeepNavy: '#1a1c2c',
-  darkHorizonRose100: '#ffe4e6',
-  darkHorizonRose900: '#881337',
+  // error / full relapse
+  error: '#FF6B6B',
+  errorDim: '#E55555',
+  errorContainer: '#FFD6D6',
+  onError: '#FFFFFF',
+  onErrorContainer: '#8B0000',
+
+  // semantic aliases for readability
+  success: '#2EC4A0',
+  warning: '#FFAA33',
+  textPrimary: '#2D2D2D',
+  textSecondary: '#8A8580',
+  chatBackground: '#EEF5F2',
 } as const;
 
 export const radius = {
@@ -157,53 +149,46 @@ export const blur = {
  * Atmospheric background is achieved by stacking 3 LinearGradients absolutely.
  */
 export const gradients = {
-  // Primary CTA pill — horizontal 90deg
+  // Primary CTA pill — horizontal
   pillCta: {
-    colors: ['#a53c30', '#c75b48'] as const,
+    colors: ['#FF6B6B', '#FF8E8E'] as const,
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
   },
   // SOS FAB — diagonal
   fab: {
-    colors: ['#a53c30', '#ac3434'] as const,
+    colors: ['#FF6B6B', '#E55555'] as const,
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
   },
   // Hero number vertical fill
   heroVertical: {
-    colors: ['#a53c30', '#5e4b72'] as const,
+    colors: ['#FF6B6B', '#2EC4A0'] as const,
     start: { x: 0, y: 0 },
     end: { x: 0, y: 1 },
   },
-  // Hero word horizontal fill ("Stress Eater")
+  // Hero word horizontal fill
   heroHorizontal: {
-    colors: ['#a53c30', '#d87158'] as const,
+    colors: ['#FF6B6B', '#FF9B9B'] as const,
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
   },
-  // Insight card purple-to-rust (Sleep Insight pattern)
+  // Insight card teal-to-coral
   insightCard: {
-    colors: ['#6a577f', '#a53c30'] as const,
+    colors: ['#2EC4A0', '#FF6B6B'] as const,
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
   },
-  // Dark Horizon body gradient
-  darkHorizon: {
-    colors: ['#1a1c2c', '#6a577f', '#a53c30', '#fbf9f5'] as const,
-    locations: [0, 0.4, 0.85, 1] as const,
+  // Canvas warm fade
+  canvasFade: {
+    colors: ['#FEF9F0', '#FFF5E8', '#FEF9F0'] as const,
+    locations: [0, 0.5, 1] as const,
     start: { x: 0.5, y: 0 },
     end: { x: 0.5, y: 1 },
   },
-  // Craving Profile 5-stop linear
-  cravingProfile: {
-    colors: ['#fbf9f5', '#fdf0e9', '#ffdcd5', '#ffe1d9', '#eef7f6'] as const,
-    locations: [0, 0.2, 0.45, 0.65, 1] as const,
-    start: { x: 0.5, y: 0 },
-    end: { x: 0.5, y: 1 },
-  },
-  // Onboarding Sunrise Greens
+  // Onboarding warm sunrise
   sunriseGreens: {
-    colors: ['#fefcf4', '#f8cec2', '#ccebc2'] as const,
+    colors: ['#FEF9F0', '#FFD6D6', '#C0F0E8'] as const,
     locations: [0, 0.5, 1] as const,
     start: { x: 0.5, y: 0 },
     end: { x: 0.5, y: 1 },
@@ -217,21 +202,21 @@ export const gradients = {
 export const shadows = {
   // Glow shadows (halo around elements)
   glowDotSm: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.4,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 0 },
     elevation: 2,
   },
   glowToken: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.2,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 0 },
     elevation: 3,
   },
   glowBreath: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.3,
     shadowRadius: 80,
     shadowOffset: { width: 0, height: 0 },
@@ -246,21 +231,21 @@ export const shadows = {
     elevation: 1,
   },
   cardWarm: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.03,
     shadowRadius: 40,
     shadowOffset: { width: 0, height: 8 },
     elevation: 2,
   },
   buttonMd: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.4,
     shadowRadius: 40,
     shadowOffset: { width: 0, height: 12 },
     elevation: 12,
   },
   pillLg: {
-    shadowColor: '#a53c30',
+    shadowColor: '#FF6B6B',
     shadowOpacity: 0.4,
     shadowRadius: 40,
     shadowOffset: { width: 0, height: 20 },

@@ -1,29 +1,23 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import * as Haptics from 'expo-haptics';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { GlassCard } from '../../components/ui/GlassCard';
-import { PillCTA } from '../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { Card } from '../../components/primitives/Card';
+import { Eyebrow } from '../../components/primitives/Eyebrow';
+import { PillCTA } from '../../components/primitives/PillCTA';
+import { Txt } from '../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
-
-/**
- * 3.3 Quick craving log.
- * Intensity (1-5 stones) → triggers (multi-select chips) → outcome → optional notes.
- */
 
 type Intensity = 1 | 2 | 3 | 4 | 5;
 type Outcome = 'walked' | 'gave';
 
 const TRIGGERS = ['Stress', 'Boredom', 'After meal', 'Social', 'Emotion', 'Late-night'];
-const OUTCOMES: { key: Outcome; title: string; body: string; tint: 'mint' | 'default' }[] = [
-  { key: 'walked', title: 'Walked through', body: 'Rode the wave.',     tint: 'mint' },
-  { key: 'gave',   title: 'Gave in to it',  body: 'Honest. Data only.', tint: 'default' },
+const OUTCOMES: { key: Outcome; title: string; body: string; accent: string }[] = [
+  { key: 'walked', title: 'Walked through', body: 'Rode the wave.',     accent: colors.success },
+  { key: 'gave',   title: 'Gave in to it',  body: 'Honest. Data only.', accent: colors.textSecondary },
 ];
 
 export default function CravingLog() {
@@ -34,260 +28,231 @@ export default function CravingLog() {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [notes, setNotes] = useState('');
 
+  const canSave = intensity !== null && outcome !== null;
+
   const onSave = () => {
-    if (intensity === null || outcome === null) return;
-    logCraving({ intensity, triggers, outcome, notes: notes.trim() });
+    if (!canSave) return;
+    logCraving({ intensity: intensity!, triggers, outcome: outcome!, notes: notes.trim() });
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.dismiss();
   };
 
   const toggleTrigger = (t: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setTriggers((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+    setTriggers((cur) => cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]);
   };
-
-  const pickIntensity = (n: Intensity) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setIntensity(n);
-  };
-
-  const pickOutcome = (o: Outcome) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setOutcome(o);
-  };
-
-  const canSave = intensity !== null && outcome !== null;
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
-        <AuraBlob tint="mint" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
-      </View>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <View style={{ width: 36 }} />
-          <Text style={styles.headerTitle}>Log a craving</Text>
-          <Pressable
-            onPress={() => router.dismiss()}
-            style={styles.closeBtn}
-            accessibilityRole="button"
-            accessibilityLabel="Close craving log"
-          >
-            <Text style={styles.closeX}>×</Text>
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={{ paddingTop: insets.top }}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Pressable onPress={() => router.dismiss()} style={styles.backBtn} hitSlop={8}
+            accessibilityRole="button" accessibilityLabel="Close craving log">
+            <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
           </Pressable>
+          <Txt variant="titleSm">Log a craving</Txt>
+          <View style={styles.headerRight} />
+        </View>
+      </View>
+
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Intensity */}
+        <Animated.View entering={FadeInUp.duration(400)}>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>Intensity</Eyebrow>
+          <View style={styles.stonesRow}>
+            {[1, 2, 3, 4, 5].map((n) => {
+              const active = intensity !== null && intensity >= n;
+              return (
+                <Pressable
+                  key={n}
+                  onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setIntensity(n as Intensity); }}
+                  style={[styles.stone, active && styles.stoneActive]}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: intensity === n }}
+                  accessibilityLabel={`Craving intensity ${n} of 5`}
+                >
+                  <Txt variant="titleMd" color={active ? colors.onPrimary : colors.textSecondary}>{n}</Txt>
+                </Pressable>
+              );
+            })}
+          </View>
         </Animated.View>
 
-        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-          <Animated.View entering={FadeInUp.delay(80).duration(400)} style={styles.heroGlyphWrap}>
-            <DecorGlyph variant="lightning" size={80} />
-          </Animated.View>
+        {/* Triggers */}
+        <Animated.View entering={FadeInUp.delay(120).duration(400)} style={styles.section}>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>Trigger · tap any</Eyebrow>
+          <View style={styles.chips}>
+            {TRIGGERS.map((t) => {
+              const active = triggers.includes(t);
+              return (
+                <Pressable
+                  key={t}
+                  onPress={() => toggleTrigger(t)}
+                  style={[styles.chip, active && styles.chipActive]}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: active }}
+                  accessibilityLabel={t}
+                >
+                  <Txt variant="bodyMd" color={active ? colors.primary : colors.textSecondary}>{t}</Txt>
+                </Pressable>
+              );
+            })}
+          </View>
+        </Animated.View>
 
-          {/* Intensity */}
-          <Animated.View entering={FadeInUp.delay(150).duration(400)}>
-            <Text style={styles.sectionLabel}>INTENSITY</Text>
-            <View style={styles.stonesRow}>
-              {[1, 2, 3, 4, 5].map((n) => {
-                const active = intensity !== null && intensity >= n;
-                return (
-                  <Pressable
-                    key={n}
-                    onPress={() => pickIntensity(n as Intensity)}
-                    style={[styles.stone, active && styles.stoneActive]}
-                    accessibilityRole="radio"
-                    accessibilityState={{ selected: intensity === n }}
-                    accessibilityLabel={`Craving intensity ${n} of 5`}
-                  >
-                    <Text style={[styles.stoneNum, active && styles.stoneNumActive]}>{n}</Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </Animated.View>
-
-          {/* Triggers */}
-          <Animated.View entering={FadeInUp.delay(220).duration(400)} style={styles.sectionBlock}>
-            <Text style={styles.sectionLabel}>TRIGGER · TAP ANY</Text>
-            <View style={styles.chipsWrap}>
-              {TRIGGERS.map((t) => {
-                const active = triggers.includes(t);
-                return (
-                  <Pressable
-                    key={t}
-                    onPress={() => toggleTrigger(t)}
-                    style={[styles.chip, active && styles.chipActive]}
-                    accessibilityRole="checkbox"
-                    accessibilityState={{ checked: active }}
-                    accessibilityLabel={t}
-                  >
-                    <Text style={[styles.chipLabel, active && styles.chipLabelActive]}>{t}</Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </Animated.View>
-
-          {/* Outcome */}
-          <Animated.View entering={FadeInDown.delay(290).duration(400)} style={styles.sectionBlock}>
-            <Text style={styles.sectionLabel}>OUTCOME</Text>
-            <View style={styles.outcomeRow}>
-              {OUTCOMES.map((o) => (
+        {/* Outcome */}
+        <Animated.View entering={FadeInDown.delay(200).duration(400)} style={styles.section}>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>Outcome</Eyebrow>
+          <View style={styles.outcomeRow}>
+            {OUTCOMES.map((o) => {
+              const active = outcome === o.key;
+              return (
                 <Pressable
                   key={o.key}
-                  onPress={() => pickOutcome(o.key)}
+                  onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setOutcome(o.key); }}
                   style={{ flex: 1 }}
                   accessibilityRole="radio"
-                  accessibilityState={{ selected: outcome === o.key }}
-                  accessibilityLabel={`${o.title}. ${o.body}`}
+                  accessibilityState={{ selected: active }}
                 >
-                  <GlassCard tint={o.tint} style={[styles.outcomeCard, outcome === o.key && styles.outcomeActive]}>
-                    <Text style={styles.outcomeTitle}>{o.title}</Text>
-                    <Text style={styles.outcomeBody}>{o.body}</Text>
-                  </GlassCard>
+                  <Card style={[styles.outcomeCard, active && { borderColor: o.accent, borderWidth: 2 }]}>
+                    <View style={[styles.accentBar, { backgroundColor: o.accent }]} />
+                    <View style={styles.outcomeContent}>
+                      <Txt variant="titleSm">{o.title}</Txt>
+                      <Txt variant="bodySm" color={colors.textSecondary}>{o.body}</Txt>
+                    </View>
+                  </Card>
                 </Pressable>
-              ))}
-            </View>
-          </Animated.View>
+              );
+            })}
+          </View>
+        </Animated.View>
 
-          {/* Notes */}
-          <Animated.View entering={FadeInDown.delay(360).duration(400)} style={styles.sectionBlock}>
-            <Text style={styles.sectionLabel}>NOTE · OPTIONAL</Text>
-            <TextInput
-              value={notes}
-              onChangeText={setNotes}
-              placeholder="what was happening…"
-              placeholderTextColor={colors.outline}
-              multiline
-              style={styles.notesInput}
-              accessibilityLabel="Optional note about the craving"
-            />
-          </Animated.View>
-        </ScrollView>
+        {/* Notes */}
+        <Animated.View entering={FadeInDown.delay(280).duration(400)} style={styles.section}>
+          <Eyebrow color={colors.primary} style={styles.sectionLabel}>Note · optional</Eyebrow>
+          <TextInput
+            value={notes}
+            onChangeText={setNotes}
+            placeholder="what was happening…"
+            placeholderTextColor={colors.textSecondary}
+            multiline
+            style={styles.notesInput}
+            accessibilityLabel="Optional note about the craving"
+          />
+        </Animated.View>
+      </ScrollView>
 
-        <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-          <PillCTA label="Save craving" onPress={onSave} disabled={!canSave} />
-        </View>
-      </KeyboardAvoidingView>
-    </AtmosphericGradient>
+      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
+        <PillCTA label="Save craving" onPress={onSave} disabled={!canSave} />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.canvas,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
-  },
-  closeBtn: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  closeX: { fontSize: 22, color: colors.onSurface, lineHeight: 22, fontFamily: fonts.headlineLight },
+  backBtn: { minWidth: 60 },
+  headerRight: { minWidth: 60 },
 
-  scroll: { padding: spacing.lg, paddingBottom: spacing.xxxl + 40 },
-
-  // Background aura layer
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -110,
-  },
-  auraBottomLeft: {
-    position: 'absolute',
-    bottom: -60,
-    left: -100,
+  scroll: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.xxxl ?? spacing.xl,
+    gap: spacing.xs,
   },
 
-  heroGlyphWrap: {
-    alignItems: 'center',
-    marginBottom: spacing.lg,
-  },
-  sectionBlock: {
-    marginTop: spacing.lg,
-  },
-  sectionLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginBottom: spacing.sm,
-  },
+  sectionLabel: { marginBottom: spacing.sm },
+  section: { marginTop: spacing.lg },
 
-  stonesRow: { flexDirection: 'row', gap: spacing.sm, justifyContent: 'space-between' },
+  stonesRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    justifyContent: 'space-between',
+  },
   stone: {
     flex: 1,
     aspectRatio: 1,
     borderRadius: radius.sm,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.7)',
-    alignItems: 'center', justifyContent: 'center',
+    borderColor: colors.outline,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  stoneActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  stoneNum: {
-    fontFamily: fonts.headlineBold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onSurfaceVariant,
+  stoneActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
-  stoneNumActive: { color: colors.onPrimary },
 
-  chipsWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+  chips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
   chip: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.full,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.7)',
+    borderColor: colors.outline,
   },
-  chipActive: { backgroundColor: colors.primaryContainer, borderColor: colors.primary },
-  chipLabel: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurface,
+  chipActive: {
+    backgroundColor: colors.primary + '18',
+    borderColor: colors.primary,
   },
-  chipLabelActive: { color: colors.onPrimaryContainer, fontFamily: fonts.bodySemibold },
 
   outcomeRow: { flexDirection: 'row', gap: spacing.sm },
-  outcomeCard: { padding: spacing.md, minHeight: 90, gap: 4 },
-  outcomeActive: { borderColor: colors.primary, borderWidth: 2 },
-  outcomeTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleSmall,
-    color: colors.onSurface,
+  outcomeCard: {
+    flexDirection: 'row',
+    padding: 0,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.outline,
+    minHeight: 80,
   },
-  outcomeBody: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodySmall,
-    color: colors.onSurfaceVariant,
+  accentBar: { width: 4, alignSelf: 'stretch' },
+  outcomeContent: {
+    flex: 1,
+    padding: spacing.md,
+    gap: 2,
+    justifyContent: 'center',
   },
 
   notesInput: {
     minHeight: 90,
     borderRadius: radius.sm,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.7)',
+    borderColor: colors.outline,
     padding: spacing.md,
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
+    fontSize: 16,
+    color: colors.textPrimary,
     textAlignVertical: 'top',
+    lineHeight: 22,
   },
 
-  ctaWrap: {
+  footer: {
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },

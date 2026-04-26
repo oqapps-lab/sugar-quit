@@ -1,232 +1,234 @@
+import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { DecorGlyph } from '../../../components/ui/DecorGlyph';
-import { GlassCard } from '../../../components/ui/GlassCard';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppHeader } from '../../../components/primitives/AppHeader';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
 
 const TRIGGER_LABELS: Record<string, string> = {
-  stress: 'stress',
-  boredom: 'boredom',
-  meals: 'after meals',
-  social: 'social pressure',
-  emotions: 'emotions',
-  night: 'late-night',
+  stress:   'Stress',
+  boredom:  'Boredom',
+  meals:    'After meals',
+  social:   'Social pressure',
+  emotions: 'Emotions',
+  night:    'Late-night',
 };
 
-/**
- * 2.4.1 Profile tab — real profile, distinct from onboarding Result screen.
- * Reads identity, craving profile, stats from the persistent user store.
- */
 export default function Profile() {
   const insets = useSafeAreaInsets();
-  const firstName = useUserStore((s) => s.firstName);
-  const goal = useUserStore((s) => s.goal);
-  const peakHour = useUserStore((s) => s.peakHour);
-  const triggers = useUserStore((s) => s.triggers);
-  const streakDays = useUserStore((s) => s.streakDays);
-  const isPremium = useUserStore((s) => s.isPremium);
-  const cravings = useUserStore((s) => s.cravings);
-  const sosLog = useUserStore((s) => s.sosLog);
+  const firstName   = useUserStore((s) => s.firstName);
+  const goal        = useUserStore((s) => s.goal);
+  const peakHour    = useUserStore((s) => s.peakHour);
+  const triggers    = useUserStore((s) => s.triggers);
+  const streakDays  = useUserStore((s) => s.streakDays);
+  const isPremium   = useUserStore((s) => s.isPremium);
+  const cravings    = useUserStore((s) => s.cravings);
+  const sosLog      = useUserStore((s) => s.sosLog);
+  const totalDaysClean = useUserStore((s) => s.totalDaysClean);
 
-  const displayName = firstName ?? 'You';
-  const initial = displayName[0]?.toUpperCase() ?? 'Y';
-  const planLabel = isPremium ? 'PREMIUM' : 'FREE PLAN';
-  const goalLabel =
-    goal === 'quit' ? 'Quit completely' : goal === 'reduce' ? 'Reduce gradually' : '—';
-  const peakLabel = peakHour ?? '—';
-  const triggerLabel =
-    triggers.length > 0
-      ? triggers.map((t) => TRIGGER_LABELS[t] ?? t).slice(0, 2).join(', ')
-      : '—';
+  const displayName  = firstName ?? 'You';
+  const initial      = displayName[0]?.toUpperCase() ?? 'Y';
+  const planLabel    = isPremium ? 'PREMIUM' : 'FREE PLAN';
+  const goalLabel    = goal === 'quit' ? 'Quit completely' : goal === 'reduce' ? 'Reduce gradually' : '—';
+  const PEAK_TIMES: Record<string, string> = {
+    morning: '9:00 AM', afternoon: '3:00 PM', evening: '7:00 PM', night: '11:00 PM',
+  };
+  const peakLabel = peakHour ? (PEAK_TIMES[peakHour] ?? peakHour) : '—';
+  const triggerLabel = triggers.length > 0
+    ? triggers.map((t) => TRIGGER_LABELS[t] ?? t).join(', ')
+    : '—';
 
-  // Stats — computed from real activity, not hardcoded multipliers.
-  // - cravingsMet: each craving entry where user "walked through" + each SOS
-  //   session resolved as "walked" or "softer".
-  // - dollarsSaved: rough heuristic — average chocolate bar / candy unit
-  //   $1.50/day (USD), times days clean. Conservative.
-  // - kgSugar: average ~25g added sugar avoided per day = 0.025kg/day.
-  const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
-  const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
-  const cravingsMet = sosWalked + cravingsWalked;
-  const dollarsSaved = (streakDays * 1.5).toFixed(0);
-  const kgSugarAvoided = (streakDays * 0.025).toFixed(2);
+  const CONSUMPTION_LABELS: Record<string, string> = {
+    little: 'Just a bit', moderate: 'Here and there',
+    alot: 'Most days', great: 'Honestly, daily', runs: 'It runs my day',
+  };
+  const consumption     = useUserStore((s) => s.consumption);
+  const consumptionLabel = consumption ? (CONSUMPTION_LABELS[consumption] ?? consumption) : '—';
+
+  const sosWalked    = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const cravingsMet  = sosWalked + cravings.filter((c) => c.outcome === 'walked').length;
+  const dollarsSaved = (totalDaysClean * 1.5).toFixed(0);
+  const kgSugar      = (totalDaysClean * 0.025).toFixed(1);
+
+  const go = (fn: () => void) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    fn();
+  };
+
+  const menuItems = [
+    { label: 'Edit profile',   icon: 'account-edit-outline',      onPress: () => go(() => router.push('/(tabs)/profile/edit')) },
+    { label: 'Notifications',  icon: 'bell-outline',               onPress: () => go(() => router.push('/(tabs)/profile/settings')) },
+    { label: 'Subscription',   icon: 'crown-outline',              onPress: () => go(() => router.push('/(modals)/paywall-contextual')) },
+    { label: 'Settings',       icon: 'cog-outline',                onPress: () => go(() => router.push('/(tabs)/profile/settings')) },
+    { label: 'Support',        icon: 'help-circle-outline',        onPress: undefined },
+    { label: 'Privacy Policy', icon: 'shield-lock-outline',        onPress: undefined },
+  ];
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Text style={styles.title}>Profile</Text>
-      </View>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <AppHeader center="Profile" />
 
       <ScrollView
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Avatar + name + plan. Avatar has a soft halo (concentric glow).
-            Decorative flame next to the name marks the streak context. */}
+        {/* Avatar hero */}
         <Animated.View entering={FadeInUp.duration(400)} style={styles.heroBlock}>
-          <View style={styles.avatarHaloWrap}>
-            <View style={styles.avatarHaloOuter} />
-            <View style={styles.avatarHaloInner} />
+          <Pressable onPress={() => go(() => router.push('/(tabs)/profile/edit'))} accessibilityRole="button">
+          <View style={styles.avatarWrap}>
+            <View style={styles.avatarHalo} />
             <View style={styles.avatar}>
-              <Text style={styles.avatarInitial}>{initial}</Text>
+              <Txt variant="displayMd" color={colors.primary} style={styles.avatarInitial}>{initial}</Txt>
             </View>
           </View>
-          <View style={styles.nameRow}>
-            <Text style={styles.name}>{displayName}</Text>
-            {streakDays > 0 && <DecorGlyph variant="flame" size={32} style={{ marginLeft: 6 }} />}
-          </View>
-          <View style={styles.planBadge}>
-            <Text style={styles.planBadgeText}>{planLabel}</Text>
+          </Pressable>
+          <Txt variant="displaySm" style={styles.name}>{displayName}</Txt>
+          <View style={[styles.planBadge, isPremium && styles.planBadgePremium]}>
+            <Eyebrow color={isPremium ? colors.success : colors.primary}>{planLabel}</Eyebrow>
           </View>
         </Animated.View>
 
-        {/* Stats — computed from real activity (cravings + SOS log + days).
-            Numbers are honest: zero on Day 1, grow with use. */}
-        <Animated.View entering={FadeInDown.delay(150).duration(400)}>
-          <GlassCard tint="peach" style={styles.statsCard}>
-            <View style={styles.statsRow}>
-              <View style={styles.stat}>
-                <DecorGlyph variant="flame" size={24} />
-                <Text style={styles.statNumber}>{streakDays}</Text>
-                <Text style={styles.statLabel}>{streakDays === 1 ? 'day clean' : 'days clean'}</Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.stat}>
-                <DecorGlyph variant="heart" size={24} />
-                <Text style={styles.statNumber}>{cravingsMet}</Text>
-                <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.stat}>
-                <DecorGlyph variant="compass" size={24} />
-                <Text style={styles.statNumber}>${dollarsSaved}</Text>
-                <Text style={styles.statLabel}>saved</Text>
-              </View>
-            </View>
-            <Text style={styles.statsHint}>
-              Approx {kgSugarAvoided}kg of added sugar avoided.
-              {' '}<Text style={styles.statsHintMuted}>(~25g/day baseline)</Text>
-            </Text>
-          </GlassCard>
+        {/* Stats tiles */}
+        <Animated.View entering={FadeInDown.delay(150).duration(400)} style={styles.statsRow}>
+          <View style={[styles.statTile, { backgroundColor: colors.primary + '15' }]}>
+            <Txt variant="displaySm" color={colors.primary} style={styles.statNumber}>{cravingsMet}</Txt>
+            <Txt variant="labelSm" color={colors.textSecondary} style={styles.statLabel}>
+              {cravingsMet === 1 ? 'CRAVING MET' : 'CRAVINGS MET'}
+            </Txt>
+          </View>
+          <View style={[styles.statTile, { backgroundColor: colors.success + '15' }]}>
+            <Txt variant="displaySm" color={colors.success} style={styles.statNumber}>${dollarsSaved}</Txt>
+            <Txt variant="labelSm" color={colors.textSecondary} style={styles.statLabel}>SAVED</Txt>
+          </View>
+          <View style={[styles.statTile, { backgroundColor: colors.warning + '15' }]}>
+            <Txt variant="displaySm" color={colors.warning} style={styles.statNumber}>{kgSugar}kg</Txt>
+            <Txt variant="labelSm" color={colors.textSecondary} style={styles.statLabel}>SUGAR AVOIDED</Txt>
+          </View>
         </Animated.View>
 
-        {/* Craving profile — replace emoji leaders (they render as ? box
-            inside Plus Jakarta Sans) with DecorGlyph composition icons. */}
+
+        {/* Craving profile */}
         <Animated.View entering={FadeInDown.delay(250).duration(400)}>
-          <GlassCard tint="default" style={styles.infoCard}>
-            <Text style={styles.infoLabel}>YOUR CRAVING PROFILE</Text>
-            <View style={styles.infoRow}>
-              <DecorGlyph variant="compass" size={22} />
-              <Text style={styles.infoText}>Goal — {goalLabel}</Text>
-            </View>
-            <View style={styles.infoRow}>
-              <DecorGlyph variant="sun" size={22} />
-              <Text style={styles.infoText}>Peak hour — {peakLabel}</Text>
-            </View>
-            <View style={styles.infoRow}>
-              <DecorGlyph variant="lightning" size={22} />
-              <Text style={styles.infoText}>Main trigger — {triggerLabel}</Text>
-            </View>
-          </GlassCard>
+          <Pressable onPress={() => go(() => router.push('/(tabs)/profile/edit'))} accessibilityRole="button">
+          <Card bordered style={styles.infoCard}>
+            <Eyebrow color={colors.primary} style={styles.infoEyebrow}>YOUR CRAVING PROFILE</Eyebrow>
+            {[
+              { label: 'Goal',         value: goalLabel        },
+              { label: 'Peak hour',    value: peakLabel        },
+              { label: 'Main trigger', value: triggerLabel     },
+              { label: 'Sugar intake', value: consumptionLabel },
+            ].map((row) => (
+              <View key={row.label} style={styles.infoRow}>
+                <Txt variant="bodyMd" color={colors.textSecondary} style={styles.infoRowLabel}>{row.label}</Txt>
+                <Txt variant="bodyMd" color={colors.onSurface} style={styles.infoRowValue}>{row.value}</Txt>
+              </View>
+            ))}
+          </Card>
+          </Pressable>
         </Animated.View>
 
-        {/* Menu — icons are unicode BMP characters that render reliably
-            across iOS fonts (emoji like 🔒 silently fall back to ? inside
-            Plus Jakarta Sans). "✎ ♪ ◆ ⚙ ◐ ◉" all ship in the font. */}
+        {/* Menu */}
         <Animated.View entering={FadeInDown.delay(350).duration(400)}>
-          <View style={styles.menu}>
-            {[
-              { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
-              { label: 'Notifications',  icon: '♪', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Subscription',   icon: '◆', onPress: () => router.push('/(modals)/paywall-contextual') },
-              { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Support',        icon: '◐', onPress: undefined },
-              { label: 'Privacy Policy', icon: '◉', onPress: undefined },
-            ].map((m) => (
+          <Card bordered style={styles.menu}>
+            {menuItems.map((m, i) => (
               <Pressable
                 key={m.label}
-                style={styles.menuRow}
+                style={[styles.menuRow, i < menuItems.length - 1 && styles.menuRowBorder]}
                 onPress={m.onPress}
                 accessibilityRole="button"
                 accessibilityLabel={m.label}
               >
-                <Text style={styles.menuIcon}>{m.icon}</Text>
-                <Text style={styles.menuLabel}>{m.label}</Text>
-                <Text style={styles.menuArrow}>→</Text>
+                <View style={styles.menuIconWrap}>
+                  <MaterialCommunityIcons
+                    name={m.icon as any}
+                    size={18}
+                    color={colors.textSecondary}
+                  />
+                </View>
+                <Txt variant="bodyLg" color={colors.onSurface} style={styles.menuLabel}>{m.label}</Txt>
+                <MaterialCommunityIcons name="chevron-right" size={18} color={colors.outline} />
               </Pressable>
             ))}
-          </View>
+          </Card>
         </Animated.View>
 
-        <Text style={styles.version}>v0.1.0</Text>
+        <Txt variant="labelSm" color={colors.textSecondary} center style={styles.version}>v0.1.0</Txt>
       </ScrollView>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { paddingHorizontal: spacing.lg, paddingBottom: spacing.sm, alignItems: 'center' },
-  title: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleLarge, color: colors.onSurface, letterSpacing: -0.3 },
+  root: { flex: 1, backgroundColor: colors.canvas },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.md },
 
-  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.lg },
-  heroBlock: { alignItems: 'center', gap: spacing.sm, marginBottom: spacing.md },
-
-  avatarHaloWrap: { alignItems: 'center', justifyContent: 'center', width: 128, height: 128 },
-  avatarHaloOuter: {
+  heroBlock: { alignItems: 'center', gap: spacing.sm, paddingVertical: spacing.md },
+  avatarWrap: { alignItems: 'center', justifyContent: 'center', width: 100, height: 100 },
+  avatarHalo: {
     position: 'absolute',
-    width: 128, height: 128, borderRadius: 64,
-    backgroundColor: 'rgba(255,172,160,0.2)',
-  },
-  avatarHaloInner: {
-    position: 'absolute',
-    width: 104, height: 104, borderRadius: 52,
-    backgroundColor: 'rgba(255,172,160,0.35)',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: colors.primaryContainer,
   },
   avatar: {
-    width: 80, height: 80, borderRadius: radius.full,
+    width: 72,
+    height: 72,
+    borderRadius: radius.full,
     backgroundColor: colors.primaryContainer,
-    alignItems: 'center', justifyContent: 'center',
-    shadowColor: colors.primary,
-    shadowOpacity: 0.25, shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  avatarInitial: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium, color: colors.primary },
-  nameRow: { flexDirection: 'row', alignItems: 'center' },
-  name: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displaySmall, color: colors.onSurface, letterSpacing: -0.6 },
-  planBadge: { backgroundColor: 'rgba(165,60,48,0.1)', paddingHorizontal: spacing.md, paddingVertical: 4, borderRadius: radius.full },
-  planBadgeText: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
-
-  statsCard: { padding: spacing.md },
-  statsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  stat: { flex: 1, alignItems: 'center', gap: 4 },
-  statNumber: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.titleLarge + 4, color: colors.onSurface, letterSpacing: -0.5 },
-  statLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.wide },
-  statDivider: { width: 1, height: 28, backgroundColor: 'rgba(49,51,47,0.1)' },
-  statsHint: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    textAlign: 'center',
-    marginTop: spacing.sm,
+  avatarInitial: { letterSpacing: -1, lineHeight: 28, includeFontPadding: false },
+  name: { letterSpacing: -0.6 },
+  planBadge: {
+    backgroundColor: colors.primaryContainer,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 4,
+    borderRadius: radius.full,
   },
-  statsHintMuted: { opacity: 0.6 },
+  planBadgePremium: {
+    backgroundColor: colors.success + '22',
+  },
 
-  infoCard: { padding: spacing.md, gap: spacing.sm },
-  infoLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide, marginBottom: spacing.xs },
-  infoRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  infoIcon: { fontSize: 16, width: 22 },
-  infoText: { fontFamily: fonts.body, fontSize: typeScale.bodyMedium, color: colors.onSurface },
+  statsRow: { flexDirection: 'row', gap: spacing.sm, alignItems: 'stretch' },
+  statTile: {
+    flex: 1,
+    borderRadius: radius.sm,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.sm,
+    alignItems: 'center',
+    gap: 4,
+  },
+  statNumber: { letterSpacing: -0.6 },
+  statLabel: { textAlign: 'center', lineHeight: 14 },
+  sugarHint: { opacity: 0.5, marginTop: -spacing.xs },
 
-  menu: { backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: radius.sm, borderWidth: 1, borderColor: 'rgba(255,255,255,0.7)' },
-  menuRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.md, paddingHorizontal: spacing.md, borderBottomWidth: 1, borderBottomColor: 'rgba(49,51,47,0.05)' },
-  menuIcon: { width: 22, fontSize: 14, color: colors.onSurfaceVariant, textAlign: 'center' },
-  menuLabel: { flex: 1, fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurface },
-  menuArrow: { color: colors.onSurfaceVariant, fontSize: 16, opacity: 0.5 },
+  infoCard: { gap: spacing.sm },
+  infoEyebrow: { marginBottom: spacing.xs },
+  infoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm, paddingVertical: 2 },
+  infoRowLabel: { width: 100, opacity: 0.6, flexShrink: 0 },
+  infoRowValue: { flex: 1 },
 
-  version: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, textAlign: 'center', opacity: 0.4, marginTop: spacing.md },
+  menu: { gap: 0 },
+  menuRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  menuRowBorder: { borderBottomWidth: 1, borderBottomColor: colors.outline },
+  menuIconWrap: {
+    width: 28,
+    alignItems: 'center',
+  },
+  menuLabel: { flex: 1 },
+
+  version: { opacity: 0.4, marginTop: spacing.sm },
 });

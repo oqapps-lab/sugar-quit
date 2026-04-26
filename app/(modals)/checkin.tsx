@@ -1,58 +1,56 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { GlassCard } from '../../components/ui/GlassCard';
-import { PillCTA } from '../../components/ui/PillCTA';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Card } from '../../components/primitives/Card';
+import { Divider } from '../../components/primitives/Divider';
+import { Eyebrow } from '../../components/primitives/Eyebrow';
+import { PillCTA } from '../../components/primitives/PillCTA';
+import { Txt } from '../../components/primitives/Txt';
+import { colors, fonts, radius, spacing, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
 
-type Step = 'sugar' | 'mood' | 'done';
+type Step  = 'sugar' | 'mood' | 'done';
 type Sugar = 'free' | 'some' | 'relapse';
-type Mood = 1 | 2 | 3 | 4 | 5;
+type Mood  = 1 | 2 | 3 | 4 | 5;
 
-const SUGAR_OPTIONS: { key: Sugar; title: string; body: string; tint: 'mint' | 'peach' | 'default' }[] = [
-  { key: 'free',    title: 'Sugar-free',      body: 'Whole day. Added nothing.',          tint: 'mint' },
-  { key: 'some',    title: 'Had a little',    body: 'A bit. Deliberate or small.',        tint: 'peach' },
-  { key: 'relapse', title: 'Lost the thread', body: "A full return. Data, not failure.",  tint: 'default' },
+const SUGAR_OPTIONS: { key: Sugar; title: string; body: string; accent: string; iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'] }[] = [
+  { key: 'free',    title: 'Sugar-free!',  body: "I didn't have added sugar",       accent: colors.success, iconName: 'check-circle-outline' },
+  { key: 'some',    title: 'Had a little', body: 'Some sugar, but I\'m aware of it', accent: colors.warning, iconName: 'cookie-outline' },
+  { key: 'relapse', title: 'Full relapse', body: "It's data, not failure",           accent: colors.primary, iconName: 'restore' },
 ];
 
-const MOODS: { value: Mood; label: string; emoji: string }[] = [
-  { value: 5, label: 'Great',   emoji: '◎' },
-  { value: 4, label: 'Good',    emoji: '◐' },
-  { value: 3, label: 'Okay',    emoji: '◯' },
-  { value: 2, label: 'Low',     emoji: '◑' },
-  { value: 1, label: 'Rough',   emoji: '●' },
+const MOODS: { value: Mood; label: string; body: string; accent: string; iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'] }[] = [
+  { value: 5, label: 'Great',  body: 'Energised and in control',  accent: '#2EC4A0',  iconName: 'emoticon-excited-outline' },
+  { value: 4, label: 'Good',   body: 'Calm, managing well',       accent: '#72C15A',  iconName: 'emoticon-happy-outline' },
+  { value: 3, label: 'Okay',   body: 'Neutral, nothing special',  accent: '#FFAA33',  iconName: 'emoticon-neutral-outline' },
+  { value: 2, label: 'Low',    body: 'Tired or a bit stressed',   accent: '#FF7043',  iconName: 'emoticon-sad-outline' },
+  { value: 1, label: 'Rough',  body: 'Struggling today',          accent: '#D94F4F',  iconName: 'emoticon-cry-outline' },
 ];
 
 export default function CheckIn() {
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState<Step>('sugar');
+  const [step,  setStep]  = useState<Step>('sugar');
   const [sugar, setSugar] = useState<Sugar | null>(null);
-  const [mood, setMood] = useState<Mood | null>(null);
+  const [mood,  setMood]  = useState<Mood | null>(null);
   const completeCheckIn = useUserStore((s) => s.completeCheckIn);
-  const streakDays = useUserStore((s) => s.streakDays);
+  const streakDays      = useUserStore((s) => s.streakDays);
 
   const onSugar = (s: Sugar) => {
-    // Per UX-SPEC §4.2: Check-in submit = Medium impact
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSugar(s);
-    setTimeout(() => setStep('mood'), 240);
-  };
-  const onMood = (m: Mood) => {
-    // Per UX-SPEC §4.2: Check-in submit = Medium impact
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setMood(m);
-    setTimeout(() => setStep('done'), 240);
+    setTimeout(() => setStep('mood'), 220);
   };
 
-  // C3: On step 3 — actually persist the check-in via store, then celebrate
-  // with Success notification haptic per UX-SPEC §4.2.
+  const onMood = (m: Mood) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setMood(m);
+    setTimeout(() => setStep('done'), 220);
+  };
+
   useEffect(() => {
     if (step === 'done' && sugar) {
       completeCheckIn(sugar);
@@ -62,351 +60,319 @@ export default function CheckIn() {
   }, [step]);
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
-        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
-      </View>
+    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+
       {/* Header */}
-      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+      <View style={styles.header}>
         <Pressable
           onPress={() => router.dismiss()}
-          style={styles.backBtn}
           accessibilityRole="button"
-          accessibilityLabel="Close check-in"
+          accessibilityLabel="Close"
+          style={styles.backBtn}
+          hitSlop={8}
         >
-          <Text style={styles.backArrow}>←</Text>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← back</Txt>
         </Pressable>
-        <Text style={styles.headerTitle}>Daily check-in</Text>
-        <View style={styles.stepIndicator}>
-          <View style={[styles.stepDot, (step === 'sugar' || step === 'mood' || step === 'done') && styles.stepDotActive]} />
-          <View style={[styles.stepDot, (step === 'mood' || step === 'done') && styles.stepDotActive]} />
-          <View style={[styles.stepDot, step === 'done' && styles.stepDotActive]} />
-        </View>
-      </Animated.View>
+        <Txt variant="titleSm">Daily Check-in</Txt>
+        <View style={styles.headerRight} />
+      </View>
 
-      {step === 'sugar' && (
-        <View style={styles.body}>
-          <Animated.View entering={FadeInUp.duration(400)} style={styles.stepGlyphWrap}>
-            <DecorGlyph variant="flame" size={88} />
-          </Animated.View>
-          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.stepEyebrow}>
-            STEP 1 OF 3 · TONIGHT
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.stepTitle}>
-            How did the day go?
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.stepBody}>
-            Honest only. No streak is worth a lie.
-          </Animated.Text>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-          <View style={styles.cardsCol}>
-            {SUGAR_OPTIONS.map((opt, idx) => (
-              <Animated.View key={opt.key} entering={FadeInDown.delay(250 + idx * 80).duration(400)}>
-                <Pressable
-                  onPress={() => onSugar(opt.key)}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: sugar === opt.key }}
-                  accessibilityLabel={`${opt.title} — ${opt.body}`}
-                >
-                  <GlassCard tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
-                    <View style={styles.optionRow}>
-                      <View style={styles.optionText}>
-                        <Text style={styles.optionTitle}>{opt.title}</Text>
-                        <Text style={styles.optionBody}>{opt.body}</Text>
+        {/* ── Step 1: Sugar ── */}
+        {step === 'sugar' && (
+          <Animated.View entering={FadeInUp.duration(300)} style={styles.stepWrap}>
+            <Txt variant="displayMd" style={styles.question}>
+              How did yesterday go?
+            </Txt>
+            <Txt variant="bodyLg" color={colors.textSecondary} style={styles.questionSub}>
+              Be honest — all answers help you learn
+            </Txt>
+
+            <View style={styles.optionList}>
+              {SUGAR_OPTIONS.map((opt, idx) => (
+                <Animated.View key={opt.key} entering={FadeInDown.delay(idx * 60).duration(300)}>
+                  <Pressable
+                    onPress={() => onSugar(opt.key)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: sugar === opt.key }}
+                    accessibilityLabel={`${opt.title} — ${opt.body}`}
+                  >
+                    <Card
+                      noPadding
+                      style={[
+                        styles.optionCard,
+                        sugar === opt.key && { borderColor: opt.accent, borderWidth: 2 },
+                      ]}
+                    >
+                      <View style={[styles.optionBar, { backgroundColor: opt.accent }]} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionIconWrap}>
+                          <MaterialCommunityIcons name={opt.iconName} size={20} color={opt.accent} />
+                        </View>
+                        <View style={styles.optionText}>
+                          <Txt variant="titleMd">{opt.title}</Txt>
+                          <Txt variant="bodyMd" color={colors.textSecondary}>{opt.body}</Txt>
+                        </View>
+                        <Txt variant="bodyLg" color={colors.textSecondary}>›</Txt>
                       </View>
-                      <View style={[styles.optionArrow, sugar === opt.key && styles.optionArrowActive]}>
-                        <Text style={[styles.optionArrowText, sugar === opt.key && styles.optionArrowTextActive]}>→</Text>
-                      </View>
-                    </View>
-                  </GlassCard>
-                </Pressable>
-              </Animated.View>
-            ))}
-          </View>
-        </View>
-      )}
+                    </Card>
+                  </Pressable>
+                </Animated.View>
+              ))}
+            </View>
 
-      {step === 'mood' && (
-        <View style={styles.body}>
-          <Animated.View entering={FadeInUp.duration(400)} style={styles.stepGlyphWrap}>
-            <DecorGlyph variant="heart" size={88} />
+            <Txt variant="bodySm" color={colors.textSecondary} center style={styles.bottomHint}>
+              Every check-in makes your plan smarter
+            </Txt>
+            <View style={styles.stepDots}>
+              <View style={[styles.dot, styles.dotActive]} />
+              <View style={[styles.dot, styles.dotInactive]} />
+            </View>
           </Animated.View>
-          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.stepEyebrow}>
-            STEP 2 OF 3
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.stepTitle}>
-            How are you feeling?
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.stepBody}>
-            Tap the closest one.
-          </Animated.Text>
+        )}
 
-          <Animated.View entering={FadeInDown.delay(280).duration(400)} style={styles.moodGrid}>
-            {MOODS.map((m) => (
-              <Pressable
-                key={m.value}
-                onPress={() => onMood(m.value)}
-                accessibilityRole="radio"
-                accessibilityState={{ selected: mood === m.value }}
-                accessibilityLabel={`Mood: ${m.label}`}
-              >
-                <View style={[styles.moodTile, mood === m.value && styles.moodTileActive]}>
-                  <Text style={[styles.moodGlyph, mood === m.value && styles.moodGlyphActive]}>{m.emoji}</Text>
-                  <Text style={[styles.moodLabel, mood === m.value && styles.moodLabelActive]}>{m.label}</Text>
+        {/* ── Step 2: Mood ── */}
+        {step === 'mood' && (
+          <Animated.View entering={FadeInUp.duration(300)} style={styles.stepWrap}>
+            <Txt variant="displayMd" style={styles.question}>
+              How are you feeling?
+            </Txt>
+            <Txt variant="bodyLg" color={colors.textSecondary} style={styles.questionSub}>
+              Tap the closest one.
+            </Txt>
+
+            <View style={styles.optionList}>
+              {MOODS.map((m, idx) => (
+                <Animated.View key={m.value} entering={FadeInDown.delay(idx * 60).duration(300)}>
+                  <Pressable
+                    onPress={() => onMood(m.value)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: mood === m.value }}
+                    accessibilityLabel={`${m.label} — ${m.body}`}
+                  >
+                    <Card
+                      noPadding
+                      style={[
+                        styles.optionCard,
+                        mood === m.value && { borderColor: m.accent, borderWidth: 2 },
+                      ]}
+                    >
+                      <View style={[styles.optionBar, { backgroundColor: m.accent }]} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionIconWrap}>
+                          <MaterialCommunityIcons name={m.iconName} size={20} color={m.accent} />
+                        </View>
+                        <View style={styles.optionText}>
+                          <Txt variant="titleMd">{m.label}</Txt>
+                          <Txt variant="bodyMd" color={colors.textSecondary}>{m.body}</Txt>
+                        </View>
+                        <Txt variant="bodyLg" color={colors.textSecondary}>›</Txt>
+                      </View>
+                    </Card>
+                  </Pressable>
+                </Animated.View>
+              ))}
+            </View>
+            <View style={styles.stepDots}>
+              <View style={[styles.dot, styles.dotInactive]} />
+              <View style={[styles.dot, styles.dotActive]} />
+            </View>
+          </Animated.View>
+        )}
+
+        {/* ── Step 3: Done ── */}
+        {step === 'done' && (
+          <Animated.View entering={FadeInUp.duration(350)} style={styles.doneWrap}>
+            <View style={styles.doneOrb}>
+              <Text style={styles.doneNumber} adjustsFontSizeToFit numberOfLines={1}>
+                {streakDays}
+              </Text>
+            </View>
+
+            <Animated.View entering={FadeInUp.delay(100).duration(300)}>
+              <Eyebrow color={colors.primary} style={styles.center}>
+                {`Day ${streakDays} · Streak intact`}
+              </Eyebrow>
+            </Animated.View>
+
+            <Animated.View entering={FadeInUp.delay(160).duration(300)}>
+              <Txt variant="displayMd" style={[styles.doneTitle, styles.center]}>
+                Thank you for the honest note.
+              </Txt>
+            </Animated.View>
+
+            <Animated.View entering={FadeInUp.delay(220).duration(300)}>
+              <Txt variant="bodyLg" color={colors.textSecondary} center style={styles.doneBody}>
+                Every day you answer is a sentence in your story.
+              </Txt>
+            </Animated.View>
+
+            <Animated.View entering={FadeInDown.delay(280).duration(300)}>
+              <Card style={styles.summaryCard}>
+                <View style={styles.summaryRow}>
+                  <View style={styles.summaryItem}>
+                    <Eyebrow>Sugar</Eyebrow>
+                    <Txt variant="titleMd">
+                      {sugar === 'free' ? 'Clean' : sugar === 'some' ? 'A little' : 'Slip'}
+                    </Txt>
+                  </View>
+                  <Divider style={styles.summaryDivider} />
+                  <View style={styles.summaryItem}>
+                    <Eyebrow>Mood</Eyebrow>
+                    <Txt variant="titleMd">{MOODS.find((x) => x.value === mood)?.label}</Txt>
+                  </View>
                 </View>
-              </Pressable>
-            ))}
-          </Animated.View>
-        </View>
-      )}
+              </Card>
+            </Animated.View>
 
-      {step === 'done' && (
-        <View style={styles.bodyCenter}>
-          <Animated.View entering={FadeInUp.duration(450)} style={styles.completeGlyphOverlay}>
-            <DecorGlyph variant="orbit" size={200} />
+            <Animated.View entering={FadeInDown.delay(340).duration(300)} style={styles.ctaWrap}>
+              <PillCTA
+                variant="success"
+                label="Back to today ✓"
+                onPress={() => router.dismiss()}
+              />
+            </Animated.View>
           </Animated.View>
-          <Animated.View entering={FadeInUp.delay(80).duration(450)} style={styles.completeGlow}>
-            <View style={styles.completeOrb}>
-              <Text style={styles.completeStreak}>{streakDays}</Text>
-            </View>
-          </Animated.View>
-          <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.completeEyebrow}>
-            {`DAY ${streakDays} · STREAK INTACT`}
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.completeTitle}>
-            Thank you for the honest note.
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.completeBody}>
-            Every day you answer is a sentence in your story.
-          </Animated.Text>
-
-          <Animated.View entering={FadeInDown.delay(360).duration(400)} style={styles.summaryRow}>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>SUGAR</Text>
-              <Text style={styles.summaryValue}>{sugar === 'free' ? 'Clean' : sugar === 'some' ? 'A little' : 'Slip'}</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>MOOD</Text>
-              <Text style={styles.summaryValue}>{MOODS.find((x) => x.value === mood)?.label}</Text>
-            </View>
-          </Animated.View>
-
-          <Animated.View entering={FadeInDown.delay(420).duration(400)} style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-            <PillCTA label="Back to today" onPress={() => router.dismiss()} />
-          </Animated.View>
-        </View>
-      )}
-    </AtmosphericGradient>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.canvas,
+  },
+
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  backBtn: {
-    width: 44, height: 44, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  backArrow: { fontSize: 22, color: colors.onSurface, fontFamily: fonts.headlineLight, lineHeight: 22 },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
-  },
-  stepIndicator: { flexDirection: 'row', gap: 6, alignItems: 'center' },
-  stepDot: {
-    width: 8, height: 3, borderRadius: 2,
-    backgroundColor: 'rgba(49,51,47,0.15)',
-  },
-  stepDotActive: { backgroundColor: colors.primary },
+  backBtn: { minWidth: 60 },
+  headerRight: { minWidth: 60 },
 
-  // Background aura layer
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
+  },
+
+  stepWrap: { gap: spacing.lg },
+
+  question: { letterSpacing: -0.8, lineHeight: 36 },
+  questionSub: { marginTop: -spacing.sm, lineHeight: 22 },
+
+  // Sugar options
+  optionList: { gap: spacing.md },
+  optionCard: {
+    flexDirection: 'row',
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.outline,
   },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -110,
-  },
-  auraBottomLeft: {
-    position: 'absolute',
-    bottom: -60,
-    left: -100,
-  },
-
-  body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.sm },
-  bodyCenter: { flex: 1, paddingHorizontal: spacing.lg, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
-  stepGlyphWrap: {
+  optionBar: { width: 4 },
+  optionContent: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: spacing.md,
-    marginBottom: spacing.lg,
+    padding: spacing.lg,
+    gap: spacing.md,
   },
-  completeGlyphOverlay: {
-    position: 'absolute',
-    top: '18%',
-    opacity: 0.35,
+  optionIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: radius.full,
+    backgroundColor: colors.canvas,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-
-  stepEyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginTop: spacing.md,
-  },
-  stepTitle: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium + 2,
-    color: colors.onSurface,
-    letterSpacing: -0.8,
-    lineHeight: 34,
-  },
-  stepBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurfaceVariant,
-    lineHeight: 22,
-    marginBottom: spacing.lg,
-  },
-
-  cardsCol: { gap: spacing.sm, marginTop: spacing.sm },
-  optionCard: { padding: spacing.lg },
-  optionCardActive: {
-    borderColor: colors.primary,
-    borderWidth: 2,
-  },
-  optionRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   optionText: { flex: 1, gap: 2 },
-  optionTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-    letterSpacing: -0.3,
-  },
-  optionBody: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    lineHeight: 18,
-  },
-  optionArrow: {
-    width: 36, height: 36, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  optionArrowActive: { backgroundColor: colors.primary },
-  optionArrowText: { color: colors.onSurfaceVariant, fontSize: 16 },
-  optionArrowTextActive: { color: colors.onPrimary },
 
+  stepDots: {
+    flexDirection: 'row',
+    gap: 6,
+    alignSelf: 'center',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: radius.full,
+  },
+  dotActive: { backgroundColor: colors.primary },
+  dotInactive: { backgroundColor: colors.outline },
+
+  bottomHint: { fontStyle: 'italic', marginTop: spacing.sm },
+
+  // Mood grid
   moodGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
     justifyContent: 'center',
-    marginTop: spacing.xl,
+    marginTop: spacing.lg,
   },
   moodTile: {
-    width: 100, height: 100, borderRadius: radius.sm,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    width: 96,
+    height: 96,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.7)',
-    alignItems: 'center', justifyContent: 'center',
-    gap: 8,
+    borderColor: colors.outline,
   },
-  moodTileActive: {
-    backgroundColor: colors.primaryContainer,
-    borderColor: colors.primary,
-  },
-  moodGlyph: { fontSize: 32, color: colors.onSurface, fontFamily: fonts.headlineBold, lineHeight: 32 },
-  moodGlyphActive: { color: colors.primary },
-  moodLabel: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurface,
-  },
-  moodLabelActive: { color: colors.primary, fontFamily: fonts.bodySemibold },
 
-  completeGlow: {
-    width: 160, height: 160, borderRadius: radius.full,
-    backgroundColor: 'rgba(165,60,48,0.08)',
-    alignItems: 'center', justifyContent: 'center',
-    marginBottom: spacing.lg,
+  // Done state
+  doneWrap: {
+    alignItems: 'center',
+    gap: spacing.lg,
+    paddingTop: spacing.xl,
   },
-  completeOrb: {
-    width: 110, height: 110, borderRadius: radius.full,
-    backgroundColor: colors.primary,
-    alignItems: 'center', justifyContent: 'center',
-    shadowColor: colors.primary,
-    shadowOpacity: 0.4, shadowRadius: 30, shadowOffset: { width: 0, height: 12 },
-    elevation: 10,
+  doneOrb: {
+    width: 140,
+    height: 140,
+    borderRadius: radius.full,
+    backgroundColor: colors.success,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: colors.success,
+    shadowOpacity: 0.35,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
-  completeStreak: {
+  doneNumber: {
     fontFamily: fonts.headlineExtraBold,
     fontSize: typeScale.heroNumber,
     color: colors.onPrimary,
-    letterSpacing: -2,
-    lineHeight: 72,
-  },
-  completeEyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginTop: spacing.md,
-  },
-  completeTitle: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium,
-    color: colors.onSurface,
     textAlign: 'center',
-    letterSpacing: -0.8,
-    lineHeight: 32,
-    marginTop: spacing.xs,
-    marginBottom: spacing.sm,
-    maxWidth: 300,
+    width: 140,
+    includeFontPadding: false,
   },
-  completeBody: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurfaceVariant,
-    textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 320,
-    marginBottom: spacing.xl,
+  center: { textAlign: 'center' },
+  doneTitle: { letterSpacing: -0.6, lineHeight: 34, maxWidth: 280 },
+  doneBody: { lineHeight: 22, maxWidth: 300 },
+
+  summaryCard: {
+    alignSelf: 'stretch',
+    borderWidth: 1,
+    borderColor: colors.outline,
   },
   summaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.lg,
-    backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: radius.sm,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    marginBottom: spacing.xxl,
+    justifyContent: 'center',
+    gap: spacing.xl,
   },
-  summaryItem: { alignItems: 'center', gap: 2 },
-  summaryLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.labelWide,
-  },
-  summaryValue: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-  },
-  summaryDivider: { width: 1, height: 28, backgroundColor: 'rgba(49,51,47,0.1)' },
+  summaryItem: { alignItems: 'center', gap: 4 },
+  summaryDivider: { width: 1, height: 32, marginVertical: 0 },
 
-  ctaWrap: { position: 'absolute', bottom: 0, left: 0, right: 0, paddingHorizontal: spacing.lg, alignItems: 'center' },
+  ctaWrap: { alignSelf: 'stretch' },
 });

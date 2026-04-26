@@ -6,13 +6,13 @@
     "orientation": "portrait",
     "scheme": "sugarquit",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.gazetastreet.sugarquit"
     },
     "android": {
-      "package": "com.gazetastreet.sugarquit"
+      "package": "com.gazetastreet.sugarquit",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "plugins": [
       "expo-router",
@@ -21,6 +21,13 @@
     ],
     "experiments": {
       "typedRoutes": false
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "33c25a73-971f-4133-89c4-5ea1079674a4"
+      }
+    },
+    "owner": "artur-bardymov"
   }
 }

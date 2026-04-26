@@ -48,7 +48,7 @@ export function AtmosphericGradient({ theme = 'dawn', children, style }: Props) 
 
   if (theme === 'darkHorizon') {
     return (
-      <View style={[styles.root, { backgroundColor: colors.darkHorizonDeepNavy }, style]}>
+      <View style={[styles.root, { backgroundColor: colors.canvas }, style]}>
         <LinearGradient
           colors={['#1a1c2c', '#6a577f', '#a53c30', '#fbf9f5']}
           locations={[0, 0.4, 0.85, 1]}

@@ -10,7 +10,7 @@ export type Goal = 'quit' | 'reduce';
 export type CheckInStatus = 'free' | 'some' | 'relapse';
 export type Consumption = 'little' | 'moderate' | 'alot' | 'great' | 'runs';
 export type PastAttempts = 'first' | 'short' | 'longer' | 'many';
-export type WorkEnvironment = 'office' | 'home' | 'feet' | 'mobile';
+export type WorkEnvironment = 'office' | 'home' | 'feet' | 'mobile' | 'night';
 export type SosOutcome = 'walked' | 'softer' | 'gave';
 
 export type CravingLogEntry = {
@@ -46,6 +46,7 @@ export type UserState = {
   // streak
   streakDays: number;
   bestStreak: number;
+  totalDaysClean: number; // cumulative clean days, never resets
   lastCheckInDate: string | null; // ISO date YYYY-MM-DD
   streakFreezesUsedThisWeek: number;
   streakFreezesAvailableThisWeek: number; // 1 on free, 3 on premium
@@ -157,18 +158,19 @@ export function getMilestoneDueIfAny(
 
 const initialState: UserState = {
   onboarded: false,
-  firstName: null,
+  firstName: 'Sarah',
 
-  goal: null,
-  peakHour: null,
-  triggers: [],
-  motivations: [],
-  consumption: null,
-  pastAttempts: null,
-  workEnvironment: null,
+  goal: 'quit',
+  peakHour: '3:00 PM',
+  triggers: ['stress', 'boredom'],
+  motivations: ['health', 'energy'],
+  consumption: 'moderate',
+  pastAttempts: 'short',
+  workEnvironment: 'office',
 
-  streakDays: 0,
-  bestStreak: 0,
+  streakDays: 10,
+  bestStreak: 12,
+  totalDaysClean: 10,
   lastCheckInDate: null,
   streakFreezesUsedThisWeek: 0,
   streakFreezesAvailableThisWeek: 1,
@@ -249,15 +251,19 @@ export const useUserStore = create<UserStore>()(
           // so the user sees credit for showing up.
           streakDays = state.streakDays > 0 ? state.streakDays : 1;
         } else {
-          // relapse → reset.
-          streakDays = 0;
+          // relapse → day 1 of new attempt (today is the fresh start).
+          streakDays = 1;
         }
 
         const bestStreak = Math.max(state.bestStreak, streakDays);
+        const totalDaysClean = status === 'free'
+          ? state.totalDaysClean + 1
+          : state.totalDaysClean;
 
         set({
           streakDays,
           bestStreak,
+          totalDaysClean,
           lastCheckInDate: today,
         });
       },
@@ -401,6 +407,7 @@ export const useUserStore = create<UserStore>()(
         workEnvironment: state.workEnvironment,
         streakDays: state.streakDays,
         bestStreak: state.bestStreak,
+        totalDaysClean: state.totalDaysClean,
         lastCheckInDate: state.lastCheckInDate,
         streakFreezesUsedThisWeek: state.streakFreezesUsedThisWeek,
         streakFreezesAvailableThisWeek: state.streakFreezesAvailableThisWeek,

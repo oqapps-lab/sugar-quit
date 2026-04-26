@@ -1,254 +1,255 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 import { MILESTONE_DAYS, useUserStore } from '../../../stores/useUserStore';
 
-/**
- * 2.3.3 Milestones — "Your stones".
- * Dark-horizon grid of 7 milestone cards. Status is computed from streakDays:
- *  - day < streakDays → earned
- *  - day === current milestone (largest day ≤ streakDays) → current
- *  - day > streakDays && day < 90 → upcoming
- *  - day === 90 → goal
- */
 type Status = 'earned' | 'current' | 'upcoming' | 'goal';
 
 type Milestone = {
   day: number;
   title: string;
+  phrase: string;
   status: Status;
 };
 
-const TITLES: Record<number, string> = {
-  1:  'The first decision',
-  3:  'First quiet morning',
-  7:  'First week, whole',
-  14: 'Adaptation',
-  30: 'Taste reset',
-  60: 'New identity',
-  90: 'The horizon',
+const MILESTONE_META: Record<number, { title: string; phrase: string }> = {
+  1:  { title: 'The first decision',  phrase: 'You showed up.'       },
+  3:  { title: 'First quiet morning', phrase: 'The storm passed.'    },
+  7:  { title: 'First week, whole',   phrase: 'One whole week.'      },
+  14: { title: 'Adaptation',          phrase: 'The body adjusts.'    },
+  30: { title: 'Taste reset',         phrase: 'Taste reset begins.'  },
+  60: { title: 'New identity',        phrase: 'You are different.'   },
+  90: { title: 'The horizon',         phrase: 'The path is yours.'   },
 };
 
 function buildMilestones(streakDays: number): Milestone[] {
-  // The "current" stone is the largest milestone ≤ streakDays. Everything below
-  // it is earned, everything above is upcoming. Day 90 always reads as goal
-  // unless reached.
-  const earnedDays = MILESTONE_DAYS.filter((d) => d <= streakDays);
-  const currentDay = earnedDays.length > 0 ? earnedDays[earnedDays.length - 1] : null;
   return MILESTONE_DAYS.map((day) => {
+    const meta = MILESTONE_META[day] ?? { title: `Day ${day}`, phrase: '' };
     let status: Status;
     if (day === 90 && streakDays < 90) status = 'goal';
-    else if (day === currentDay) status = 'current';
-    else if (day < streakDays) status = 'earned';
+    else if (day <= streakDays) status = day === MILESTONE_DAYS.filter((d) => d <= streakDays).at(-1) ? 'current' : 'earned';
     else status = 'upcoming';
-    return { day, title: TITLES[day] ?? `Day ${day}`, status };
+    return { day, ...meta, status };
   });
 }
 
 export default function Milestones() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
+  const milestonesCelebrated = useUserStore((s) => s.milestonesCelebrated);
   const milestones = buildMilestones(streakDays);
   const earnedCount = milestones.filter((m) => m.status === 'earned' || m.status === 'current').length;
 
-  const handleBack = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.back();
+  const openMilestone = (day: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    useUserStore.setState({
+      milestonesCelebrated: milestonesCelebrated.filter((d) => d !== day),
+    });
+    router.push('/(modals)/milestone');
   };
 
   return (
-    <AtmosphericGradient theme="darkHorizon">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
         <Pressable
-          onPress={handleBack}
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }}
           hitSlop={12}
-          style={styles.backBtn}
+          style={styles.headerSide}
           accessibilityRole="button"
-          accessibilityLabel="Back to Progress tab"
         >
-          <Text style={styles.backArrow}>←</Text>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-        <Text style={styles.headerTitle}>Your stones</Text>
-        <View style={styles.backBtn} />
+        <Txt variant="titleMd" style={styles.headerTitle}>Your stones</Txt>
+        <View style={styles.headerSide} />
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 60 }]}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.heroNumber}>
-          {earnedCount === 1 ? '1 stone placed' : `${earnedCount} stones placed`}
-        </Text>
-        <Text style={styles.heroSub}>Each one a day you chose yourself.</Text>
+        {/* Hero */}
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.hero}>
+          <Txt variant="displayMd" style={styles.heroNumber}>
+            {earnedCount === 1 ? '1 stone placed' : `${earnedCount} stones placed`}
+          </Txt>
+          <Txt variant="bodyLg" color={colors.textSecondary} center style={styles.heroSub}>
+            Each one, a day you chose.
+          </Txt>
 
-        <View style={styles.grid}>
-          {milestones.map((m) => (
-            <MilestoneCard key={m.day} milestone={m} />
+          {/* Stone row */}
+          <View style={styles.stoneRow}>
+            {milestones.map((m) => (
+              <View
+                key={m.day}
+                style={[
+                  styles.stone,
+                  m.status === 'earned'   && styles.stoneEarned,
+                  m.status === 'current'  && styles.stoneCurrent,
+                  m.status === 'goal'     && styles.stoneGoal,
+                ]}
+              />
+            ))}
+          </View>
+          <Txt variant="labelSm" color={colors.textSecondary} style={styles.stoneHint}>
+            {earnedCount} of {milestones.length}
+          </Txt>
+        </Animated.View>
+
+        {/* List */}
+        <View style={styles.list}>
+          {milestones.map((m, i) => (
+            <Animated.View key={m.day} entering={FadeInDown.delay(100 + i * 60).duration(400)}>
+              <MilestoneRow
+                milestone={m}
+                onOpen={openMilestone}
+              />
+            </Animated.View>
           ))}
         </View>
       </ScrollView>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
-function MilestoneCard({ milestone }: { milestone: Milestone }) {
-  const { day, title, status } = milestone;
-
-  const cardStyle = [
-    styles.card,
-    status === 'earned'   && styles.cardEarned,
-    status === 'current'  && styles.cardCurrent,
-    status === 'upcoming' && styles.cardUpcoming,
-    status === 'goal'     && styles.cardGoal,
-    status === 'current'  && shadows.glowToken,
-  ];
-
-  const glyphStyle = [
-    styles.glyph,
-    status === 'earned'   && styles.glyphEarned,
-    status === 'current'  && styles.glyphCurrent,
-    status === 'upcoming' && styles.glyphUpcoming,
-    status === 'goal'     && styles.glyphGoal,
-  ];
-
-  const textColor =
-    status === 'upcoming' ? 'rgba(255,255,255,0.45)' :
-    status === 'goal'     ? 'rgba(255,255,255,0.7)' :
-    '#ffffff';
+function MilestoneRow({ milestone, onOpen }: { milestone: Milestone; onOpen: (day: number) => void }) {
+  const { day, title, phrase, status } = milestone;
+  const earned = status === 'earned' || status === 'current';
 
   return (
     <Pressable
-      onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-      style={cardStyle}
+      onPress={() => earned ? onOpen(day) : Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+      style={[styles.row, earned && styles.rowEarned, status === 'goal' && styles.rowGoal]}
       accessibilityRole="button"
       accessibilityLabel={`Day ${day}: ${title}, ${status}`}
     >
-      <View style={glyphStyle} />
-      <Text style={[styles.cardDayLabel, { color: textColor, opacity: status === 'upcoming' ? 0.6 : 1 }]}>
-        DAY {day}
-      </Text>
-      <Text style={[styles.cardTitle, { color: textColor }]} numberOfLines={2}>
-        {title}
-      </Text>
-      {status === 'current' && (
-        <Text style={styles.currentBadge}>IN PROGRESS</Text>
-      )}
-      {status === 'goal' && (
-        <Text style={styles.goalBadge}>THE GOAL</Text>
-      )}
+      {/* Day number */}
+      <View style={[styles.dayBox, earned && styles.dayBoxEarned]}>
+        <Txt
+          variant="displaySm"
+          color={earned ? colors.success : colors.outline}
+          style={styles.dayNumber}
+        >
+          {day}
+        </Txt>
+      </View>
+
+      {/* Content */}
+      <View style={styles.rowContent}>
+        <Txt
+          variant="titleSm"
+          color={earned ? colors.onSurface : colors.textSecondary}
+          style={[styles.rowTitle, !earned && styles.rowTitleDim]}
+        >
+          {title}
+        </Txt>
+        {earned ? (
+          <Txt variant="bodySm" color={colors.success} style={styles.rowPhrase}>{phrase}</Txt>
+        ) : (
+          <Txt variant="bodySm" color={colors.outline} style={styles.rowPhrase}>Day {day}</Txt>
+        )}
+      </View>
+
+      {/* Status indicator */}
+      <View style={[styles.statusDot, earned && styles.statusDotEarned, status === 'current' && styles.statusDotCurrent]} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-    zIndex: 10,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  backBtn: { width: 32, alignItems: 'flex-start' },
-  backArrow: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleLarge,
-    color: '#ffffff',
-  },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: '#ffffff',
-    letterSpacing: -0.2,
-  },
+  headerSide: { minWidth: 72 },
+  headerTitle: { letterSpacing: -0.2 },
 
-  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.xl },
 
-  heroNumber: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium,
-    color: '#ffffff',
-    letterSpacing: -0.8,
-    textAlign: 'center',
-  },
-  heroSub: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodyLarge,
-    color: 'rgba(255,255,255,0.7)',
-    textAlign: 'center',
-    marginTop: spacing.xs,
-    marginBottom: spacing.xl,
-  },
+  hero: { alignItems: 'center', gap: spacing.sm },
+  heroNumber: { letterSpacing: -0.8 },
+  heroSub: { opacity: 0.7 },
 
-  grid: {
+  stoneRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-    justifyContent: 'space-between',
-  },
-
-  card: {
-    width: '47%',
-    minHeight: 150,
-    borderRadius: radius.sm,
-    padding: spacing.md,
     gap: spacing.sm,
-    borderWidth: 1,
+    alignItems: 'center',
+    marginTop: spacing.sm,
   },
-  cardEarned: {
-    backgroundColor: 'rgba(255, 172, 160, 0.18)',
-    borderColor: 'rgba(255, 172, 160, 0.35)',
-  },
-  cardCurrent: {
-    backgroundColor: 'rgba(165, 60, 48, 0.35)',
-    borderColor: '#ff9788',
-  },
-  cardUpcoming: {
-    backgroundColor: 'rgba(255,255,255,0.04)',
-    borderColor: 'rgba(255,255,255,0.12)',
-  },
-  cardGoal: {
-    backgroundColor: 'transparent',
-    borderColor: 'rgba(255,255,255,0.35)',
-    borderStyle: 'dashed',
-  },
-
-  glyph: {
+  stone: {
     width: 28,
     height: 28,
     borderRadius: radius.full,
+    backgroundColor: colors.outline + '60',
+    borderWidth: 1.5,
+    borderColor: colors.outline,
   },
-  glyphEarned:   { backgroundColor: '#ffaca0' },
-  glyphCurrent:  { backgroundColor: '#fd7d6c' },
-  glyphUpcoming: { backgroundColor: 'rgba(255,255,255,0.12)' },
-  glyphGoal:     { backgroundColor: 'transparent', borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)' },
+  stoneEarned: {
+    backgroundColor: colors.success + '30',
+    borderColor: colors.success + '80',
+  },
+  stoneCurrent: {
+    backgroundColor: colors.success + '50',
+    borderColor: colors.success,
+    borderWidth: 2,
+  },
+  stoneGoal: {
+    borderStyle: 'dashed',
+    borderColor: colors.outline,
+    backgroundColor: 'transparent',
+  },
+  stoneHint: { opacity: 0.5, marginTop: spacing.xs },
 
-  cardDayLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    letterSpacing: tracking.labelWide,
+  list: { gap: spacing.sm },
+
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.outline,
+    backgroundColor: colors.surface,
   },
-  cardTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleSmall,
-    letterSpacing: -0.2,
-    lineHeight: 19,
+  rowEarned: {
+    backgroundColor: colors.success + '08',
+    borderColor: colors.success + '25',
   },
-  currentBadge: {
-    fontFamily: fonts.label,
-    fontSize: 9,
-    color: '#ffe4e6',
-    letterSpacing: tracking.widest,
-    marginTop: spacing.xs,
+  rowGoal: {
+    borderStyle: 'dashed',
   },
-  goalBadge: {
-    fontFamily: fonts.label,
-    fontSize: 9,
-    color: 'rgba(255,255,255,0.7)',
-    letterSpacing: tracking.widest,
-    marginTop: spacing.xs,
+
+  dayBox: {
+    width: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  dayBoxEarned: {},
+  dayNumber: { letterSpacing: -1, lineHeight: 26, includeFontPadding: false },
+
+  rowContent: { flex: 1, gap: 2 },
+  rowTitle: { letterSpacing: -0.2 },
+  rowTitleDim: { opacity: 0.45 },
+  rowPhrase: { lineHeight: 16 },
+
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: radius.full,
+    backgroundColor: colors.outline,
+  },
+  statusDotEarned: { backgroundColor: colors.success + '60' },
+  statusDotCurrent: { backgroundColor: colors.success, width: 10, height: 10 },
 });

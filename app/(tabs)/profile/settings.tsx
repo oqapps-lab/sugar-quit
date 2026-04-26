@@ -1,51 +1,27 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { Card } from '../../../components/primitives/Card';
+import { Eyebrow } from '../../../components/primitives/Eyebrow';
+import { Txt } from '../../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../../constants/tokens';
 
-/**
- * 2.4.2 Settings — grouped lists: Notifications / Account / Data / About.
- * SKELETON.
- */
-
-type ToggleRow = {
-  kind: 'toggle';
-  label: string;
-  sub?: string;
-  initial: boolean;
-};
-
-type LinkRow = {
-  kind: 'link';
-  label: string;
-  value?: string;
-  warning?: boolean;
-};
-
-type StaticRow = {
-  kind: 'static';
-  label: string;
-  value: string;
-};
-
+type ToggleRow = { kind: 'toggle'; label: string; sub?: string; initial: boolean };
+type LinkRow   = { kind: 'link';   label: string; value?: string; warning?: boolean };
+type StaticRow = { kind: 'static'; label: string; value: string };
 type Row = ToggleRow | LinkRow | StaticRow;
-
-type Section = {
-  label: string;
-  rows: Row[];
-};
+type Section = { label: string; rows: Row[] };
 
 const SECTIONS: Section[] = [
   {
     label: 'NOTIFICATIONS',
     rows: [
-      { kind: 'toggle', label: 'Morning check-in',    sub: '08:00', initial: true  },
-      { kind: 'toggle', label: 'Daily lesson',        sub: '09:30', initial: true  },
-      { kind: 'toggle', label: 'Motivation of the day',             initial: false },
-      { kind: 'toggle', label: 'Streak at risk',      sub: '21:00', initial: true  },
+      { kind: 'toggle', label: 'Morning check-in',     sub: '08:00', initial: true  },
+      { kind: 'toggle', label: 'Daily lesson',          sub: '09:30', initial: true  },
+      { kind: 'toggle', label: 'Motivation of the day',              initial: false },
+      { kind: 'toggle', label: 'Streak at risk',        sub: '21:00', initial: true  },
     ],
   },
   {
@@ -82,8 +58,8 @@ export default function Settings() {
   };
 
   return (
-    <AtmosphericGradient theme="dawn">
-      <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+    <View style={[styles.root, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
         <Pressable
           onPress={handleBack}
           hitSlop={12}
@@ -91,9 +67,9 @@ export default function Settings() {
           accessibilityRole="button"
           accessibilityLabel="Back to profile"
         >
-          <Text style={styles.backArrow}>←</Text>
+          <Txt variant="bodyLg" color={colors.textSecondary}>← Back</Txt>
         </Pressable>
-        <Text style={styles.headerTitle}>Settings</Text>
+        <Txt variant="titleMd" style={styles.headerTitle}>Settings</Txt>
         <View style={styles.backBtn} />
       </View>
 
@@ -103,36 +79,36 @@ export default function Settings() {
       >
         {SECTIONS.map((section) => (
           <View key={section.label} style={styles.section}>
-            <Text style={styles.sectionLabel}>{section.label}</Text>
-            <View style={styles.sectionBody}>
+            <Eyebrow color={colors.primary} style={styles.sectionLabel}>{section.label}</Eyebrow>
+            <Card bordered style={styles.sectionCard}>
               {section.rows.map((row, idx) => (
-                <RenderRow
-                  key={`${section.label}-${row.label}-${idx}`}
+                <RowItem
+                  key={`${section.label}-${row.label}`}
                   row={row}
                   isLast={idx === section.rows.length - 1}
                 />
               ))}
-            </View>
+            </Card>
           </View>
         ))}
       </ScrollView>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
-function RenderRow({ row, isLast }: { row: Row; isLast: boolean }) {
-  const rowStyle = [styles.row, !isLast && styles.rowBorder];
+function RowItem({ row, isLast }: { row: Row; isLast: boolean }) {
+  const borderStyle = !isLast && styles.rowBorder;
 
   if (row.kind === 'toggle') {
-    return <ToggleItem label={row.label} sub={row.sub} initial={row.initial} style={rowStyle} />;
+    return <ToggleItem label={row.label} sub={row.sub} initial={row.initial} border={borderStyle} />;
   }
 
   if (row.kind === 'static') {
     return (
-      <View style={rowStyle}>
-        <View style={styles.rowIcon} />
-        <Text style={styles.rowLabel}>{row.label}</Text>
-        <Text style={styles.rowValueMuted}>{row.value}</Text>
+      <View style={[styles.row, borderStyle]}>
+        <View style={styles.rowDot} />
+        <Txt variant="bodyLg" color={colors.onSurface} style={styles.rowLabel}>{row.label}</Txt>
+        <Txt variant="bodyMd" color={colors.textSecondary}>{row.value}</Txt>
       </View>
     );
   }
@@ -140,17 +116,21 @@ function RenderRow({ row, isLast }: { row: Row; isLast: boolean }) {
   return (
     <Pressable
       onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-      style={rowStyle}
+      style={[styles.row, borderStyle]}
       accessibilityRole="button"
       accessibilityLabel={row.value ? `${row.label}: ${row.value}` : row.label}
       accessibilityHint={row.warning ? 'Destructive action' : undefined}
     >
-      <View style={styles.rowIcon} />
-      <Text style={[styles.rowLabel, row.warning && styles.rowLabelWarning]}>
+      <View style={styles.rowDot} />
+      <Txt
+        variant="bodyLg"
+        color={row.warning ? colors.error : colors.onSurface}
+        style={styles.rowLabel}
+      >
         {row.label}
-      </Text>
-      {row.value ? <Text style={styles.rowValueMuted}>{row.value}</Text> : null}
-      <Text style={[styles.rowChevron, row.warning && styles.rowChevronWarning]}>→</Text>
+      </Txt>
+      {row.value ? <Txt variant="bodyMd" color={colors.textSecondary}>{row.value}</Txt> : null}
+      <Txt variant="bodyMd" color={row.warning ? colors.error : colors.textSecondary} style={styles.rowChevron}>→</Txt>
     </Pressable>
   );
 }
@@ -159,12 +139,12 @@ function ToggleItem({
   label,
   sub,
   initial,
-  style,
+  border,
 }: {
   label: string;
   sub?: string;
   initial: boolean;
-  style: any;
+  border: object | false;
 }) {
   const [on, setOn] = useState(initial);
 
@@ -174,116 +154,65 @@ function ToggleItem({
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         setOn((v) => !v);
       }}
-      style={style}
+      style={[styles.row, border]}
       accessibilityRole="switch"
       accessibilityState={{ checked: on }}
       accessibilityLabel={sub ? `${label}, ${sub}` : label}
     >
-      <View style={styles.rowIcon} />
+      <View style={styles.rowDot} />
       <View style={styles.rowTextBlock}>
-        <Text style={styles.rowLabel}>{label}</Text>
-        {sub ? <Text style={styles.rowSub}>{sub}</Text> : null}
+        <Txt variant="bodyLg" color={colors.onSurface}>{label}</Txt>
+        {sub ? <Txt variant="labelSm" color={colors.textSecondary}>{sub}</Txt> : null}
       </View>
       <View style={[styles.togglePill, on ? styles.togglePillOn : styles.togglePillOff]}>
-        <Text style={[styles.toggleText, on ? styles.toggleTextOn : styles.toggleTextOff]}>
+        <Txt
+          variant="labelSm"
+          color={on ? colors.onPrimary : colors.textSecondary}
+          style={styles.toggleText}
+        >
           {on ? 'ON' : 'OFF'}
-        </Text>
+        </Txt>
       </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-    zIndex: 10,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.outline,
   },
-  backBtn: { width: 32, alignItems: 'flex-start' },
-  backArrow: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleLarge,
-    color: colors.onSurface,
-  },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-    letterSpacing: -0.2,
-  },
+  backBtn: { minWidth: 72 },
+  headerTitle: { letterSpacing: -0.2 },
 
-  scroll: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    gap: spacing.lg,
-  },
+  scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.lg },
 
   section: { gap: spacing.sm },
-  sectionLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-    marginLeft: spacing.sm,
-  },
-  sectionBody: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.7)',
-    overflow: 'hidden',
-  },
+  sectionLabel: { marginLeft: spacing.xs },
+  sectionCard: { gap: 0 },
 
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
-    paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
   },
-  rowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(49,51,47,0.06)',
-  },
-  rowIcon: {
+  rowBorder: { borderBottomWidth: 1, borderBottomColor: colors.outline },
+  rowDot: {
     width: 18,
     height: 18,
     borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.08)',
+    backgroundColor: colors.primaryContainer,
   },
   rowTextBlock: { flex: 1, gap: 2 },
-  rowLabel: {
-    flex: 1,
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
-  },
-  rowLabelWarning: { color: colors.errorContainer },
-  rowSub: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.wide,
-  },
-  rowValueMuted: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-  },
-  rowChevron: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-    opacity: 0.5,
-    marginLeft: spacing.xs,
-  },
-  rowChevronWarning: {
-    color: colors.errorContainer,
-    opacity: 0.8,
-  },
+  rowLabel: { flex: 1 },
+  rowChevron: { opacity: 0.5 },
 
   togglePill: {
     minWidth: 52,
@@ -293,17 +222,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  togglePillOn: { backgroundColor: colors.primary },
-  togglePillOff: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-  },
-  toggleText: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    letterSpacing: tracking.label,
-  },
-  toggleTextOn:  { color: colors.onPrimary },
-  toggleTextOff: { color: colors.outline },
+  togglePillOn:  { backgroundColor: colors.primary },
+  togglePillOff: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.outline },
+  toggleText: {},
 });

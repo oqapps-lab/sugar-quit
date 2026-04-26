@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
   Easing,
@@ -11,15 +11,10 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
-import { AuraBlob } from '../../components/ui/AuraBlob';
-import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { Eyebrow } from '../../components/primitives/Eyebrow';
+import { Txt } from '../../components/primitives/Txt';
+import { colors, radius, spacing } from '../../constants/tokens';
 
-/**
- * 1.13 Loading — "Writing your plan..." auto-advances to result after 4s.
- * Uses router.replace so loading isn't in back stack.
- */
 const DURATION_MS = 4000;
 
 const STATUS_LINES = [
@@ -33,37 +28,32 @@ export default function LoadingScreen() {
   const [statusIdx, setStatusIdx] = useState(0);
   const [percent, setPercent] = useState(0);
 
-  // Rotating orbit glyph
   const rm = useReducedMotion();
   const rotation = useSharedValue(0);
   useEffect(() => {
     if (rm) return;
     rotation.value = withRepeat(
-      withTiming(360, { duration: 6000, easing: Easing.linear }),
+      withTiming(360, { duration: 1800, easing: Easing.linear }),
       -1,
       false,
     );
   }, [rm, rotation]);
-  const orbitStyle = useAnimatedStyle(() => ({
+  const spinStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
   }));
 
   useEffect(() => {
     const startedAt = Date.now();
 
-    // Progress fill (tick every 80ms)
     const progressTick = setInterval(() => {
       const elapsed = Date.now() - startedAt;
-      const p = Math.min(100, (elapsed / DURATION_MS) * 100);
-      setPercent(p);
+      setPercent(Math.min(100, (elapsed / DURATION_MS) * 100));
     }, 80);
 
-    // Rotate status every ~1.33s
     const statusTick = setInterval(() => {
       setStatusIdx((i) => (i + 1) % STATUS_LINES.length);
     }, Math.floor(DURATION_MS / STATUS_LINES.length));
 
-    // Navigate once at 4s
     const done = setTimeout(() => {
       router.replace('/(onboarding)/result');
     }, DURATION_MS);
@@ -76,81 +66,59 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <AtmosphericGradient theme="sunriseGreens">
-      {/* Background aura blobs */}
-      <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
-        <AuraBlob tint="mint" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
+    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <View style={styles.body}>
+        {/* Spinner */}
+        <Animated.View entering={FadeInUp.duration(400)} style={styles.spinnerWrap}>
+          <Animated.View style={[styles.spinner, !rm && spinStyle]} />
+          <View style={styles.spinnerDot} />
+        </Animated.View>
+
+        <Animated.View entering={FadeInUp.delay(100).duration(400)}>
+          <Eyebrow color={colors.primary} style={styles.eyebrow}>One moment</Eyebrow>
+        </Animated.View>
+        <Animated.View entering={FadeInUp.delay(150).duration(400)}>
+          <Txt variant="displayMd" style={styles.headline}>Writing your plan…</Txt>
+        </Animated.View>
+
+        {/* Progress bar */}
+        <Animated.View entering={FadeInUp.delay(250).duration(400)} style={styles.progressWrap}>
+          <View style={styles.progressTrack}>
+            <View style={[styles.progressFill, { width: `${percent}%` as `${number}%` }]} />
+          </View>
+          <Txt variant="labelSm" color={colors.textSecondary}>{Math.round(percent)}%</Txt>
+        </Animated.View>
+
+        {/* Status lines */}
+        <Animated.View entering={FadeInUp.delay(350).duration(400)} style={styles.statusWrap}>
+          {STATUS_LINES.map((line, i) => {
+            const isActive = i === statusIdx;
+            const isPast = i < statusIdx;
+            return (
+              <View key={line} style={styles.statusRow}>
+                <View style={[
+                  styles.statusDot,
+                  isActive && styles.statusDotActive,
+                  isPast && styles.statusDotPast,
+                ]} />
+                <Txt
+                  variant={isActive ? 'bodyMd' : 'bodySm'}
+                  color={isActive ? colors.onSurface : undefined}
+                  style={isPast && styles.statusLinePast}
+                >
+                  {line}
+                </Txt>
+              </View>
+            );
+          })}
+        </Animated.View>
       </View>
-
-      <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <View style={styles.body}>
-          <Animated.View entering={FadeInUp.duration(400)} style={styles.orbitWrap}>
-            <Animated.View style={orbitStyle}>
-              <DecorGlyph variant="orbit" size={96} />
-            </Animated.View>
-          </Animated.View>
-
-          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-            ONE MOMENT
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.headline}>
-            Writing your plan…
-          </Animated.Text>
-
-          <Animated.View entering={FadeInUp.delay(250).duration(400)} style={styles.progressWrap}>
-            <View style={styles.progressTrack}>
-              <View style={[styles.progressFill, { width: `${percent}%` }]} />
-            </View>
-            <Text style={styles.percent}>{Math.round(percent)}%</Text>
-          </Animated.View>
-
-          <Animated.View entering={FadeInUp.delay(350).duration(400)} style={styles.statusWrap}>
-            {STATUS_LINES.map((line, i) => {
-              const isActive = i === statusIdx;
-              const isPast = i < statusIdx;
-              return (
-                <View key={line} style={styles.statusRow}>
-                  <View style={[
-                    styles.statusDot,
-                    isActive && styles.statusDotActive,
-                    isPast && styles.statusDotPast,
-                  ]} />
-                  <Text style={[
-                    styles.statusLine,
-                    isActive && styles.statusLineActive,
-                    isPast && styles.statusLinePast,
-                  ]}>
-                    {line}
-                  </Text>
-                </View>
-              );
-            })}
-          </Animated.View>
-        </View>
-      </View>
-    </AtmosphericGradient>
+    </View>
   );
 }
 
-const HONEY = '#d88c3f'; // thin honey line
-
 const styles = StyleSheet.create({
-  auraLayer: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-  auraTopRight: {
-    position: 'absolute',
-    top: -80,
-    right: -120,
-  },
-  auraBottomLeft: {
-    position: 'absolute',
-    bottom: -60,
-    left: -120,
-  },
-  container: { flex: 1 },
+  root: { flex: 1, backgroundColor: colors.canvas },
   body: {
     flex: 1,
     paddingHorizontal: spacing.xl,
@@ -158,27 +126,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.lg,
   },
-  orbitWrap: {
-    marginBottom: spacing.md,
+
+  spinnerWrap: {
+    width: 80,
+    height: 80,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  eyebrow: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWidest,
-    marginBottom: spacing.sm,
-  },
-  headline: {
-    fontFamily: fonts.headlineExtraBold,
-    fontSize: typeScale.displayMedium + 2,
-    color: colors.onSurface,
-    letterSpacing: -0.8,
-    textAlign: 'center',
-    lineHeight: 36,
     marginBottom: spacing.md,
   },
+  spinner: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    borderRadius: radius.full,
+    borderWidth: 3,
+    borderColor: colors.primary,
+    borderTopColor: 'transparent',
+  },
+  spinnerDot: {
+    width: 12,
+    height: 12,
+    borderRadius: radius.full,
+    backgroundColor: colors.primary,
+  },
+
+  eyebrow: { textAlign: 'center', marginBottom: spacing.xs },
+  headline: {
+    letterSpacing: -0.6,
+    textAlign: 'center',
+  },
+
   progressWrap: {
     width: '100%',
     maxWidth: 320,
@@ -189,43 +166,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 3,
     borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.08)',
+    backgroundColor: colors.outline,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: HONEY,
+    backgroundColor: colors.primary,
   },
-  percent: {
-    fontFamily: fonts.headlineMedium,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.labelWide,
-  },
+
   statusWrap: {
     gap: spacing.sm,
-    marginTop: spacing.md,
     alignSelf: 'flex-start',
     paddingHorizontal: spacing.sm,
   },
   statusRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   statusDot: {
-    width: 6, height: 6, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.2)',
+    width: 6,
+    height: 6,
+    borderRadius: radius.full,
+    backgroundColor: colors.outline,
   },
   statusDotActive: { backgroundColor: colors.primary },
-  statusDotPast: { backgroundColor: colors.tertiary },
-  statusLine: {
-    fontFamily: fonts.body,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
-  },
-  statusLineActive: {
-    fontFamily: fonts.bodySemibold,
-    color: colors.onSurface,
-  },
-  statusLinePast: {
-    color: colors.onSurfaceVariant,
-    opacity: 0.6,
-  },
+  statusDotPast: { backgroundColor: colors.success },
+  statusLinePast: { opacity: 0.5 },
 });
