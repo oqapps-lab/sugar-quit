@@ -85,7 +85,7 @@ export default function Paywall() {
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
         <Pressable
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))}
+          onPress={() => router.replace('/(onboarding)/auth')}
           style={styles.closeBtn}
           accessibilityRole="button"
           accessibilityLabel="Close paywall"
@@ -189,7 +189,7 @@ export default function Paywall() {
           </View>
         </View>
         <Pressable
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(onboarding)/result'))}
+          onPress={() => router.replace('/(onboarding)/auth')}
           accessibilityRole="button"
           accessibilityLabel="Maybe later, continue without starting trial"
         >
