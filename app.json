@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sugar Quit",
     "slug": "sugar-quit",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sugarquit",
@@ -34,6 +34,12 @@
     ],
     "experiments": {
       "typedRoutes": false
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "796339df-6b17-49ad-8f05-960c3a243f22"
+      }
     }
   }
 }
