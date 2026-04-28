@@ -7,77 +7,31 @@ import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
-
-// Map each phase to a decorative glyph — visual shorthand for the phase feel.
-const PHASE_GLYPHS: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'> = {
-  Acute: 'flame',        // burning withdrawal
-  Adaptation: 'sun',     // the sun comes out
-  Clarity: 'compass',    // direction appears
-  Integration: 'orbit',  // settling into orbit
-};
+import { PHASES, phaseForDay } from '../../../lib/phases';
 
 type LessonState = 'done' | 'current' | 'upcoming' | 'locked';
 type LessonStatic = { day: number; title: string; minutes: number };
-type Lesson = LessonStatic & { state: LessonState };
 
-// Phase content is static; per-lesson state is computed at render time from
-// the user's current streak. Keeps the source of truth in the store, not in
-// hand-edited card metadata.
-const PHASES: { name: string; days: string; lessons: LessonStatic[]; locked?: boolean }[] = [
-  {
-    name: 'Acute',
-    days: 'Days 1–3',
-    lessons: [
-      { day: 1, title: 'Why sugar catches the brain',    minutes: 7 },
-      { day: 2, title: 'The 72-hour storm',               minutes: 5 },
-      { day: 3, title: 'First quiet morning',             minutes: 4 },
-    ],
-  },
-  {
-    name: 'Adaptation',
-    days: 'Days 4–7',
-    lessons: [
-      { day: 4, title: 'Your 3pm pattern, mapped',        minutes: 6 },
-      { day: 5, title: 'Why fruit tastes bland',          minutes: 5 },
-      { day: 6, title: 'The sleep-sugar loop',            minutes: 6 },
-      { day: 7, title: 'One whole week',                  minutes: 4 },
-    ],
-  },
-  {
-    name: 'Clarity',
-    days: 'Days 8–14',
-    lessons: [
-      { day: 8,  title: 'Your taste buds are waking up',   minutes: 5 },
-      { day: 9,  title: 'Triggers without reactions',      minutes: 6 },
-      { day: 10, title: 'The stress-sugar reflex',         minutes: 5 },
-      { day: 11, title: 'Alternatives that actually work', minutes: 7 },
-    ],
-  },
-  {
-    name: 'Integration',
-    days: 'Days 15–30',
-    lessons: [], // locked phase (premium)
-    locked: true,
-  },
+// Lesson content — flat list keyed by day. Phase grouping is derived from the
+// canonical PHASES taxonomy in lib/phases.ts, never duplicated here.
+const LESSONS: readonly LessonStatic[] = [
+  { day: 1,  title: 'Why sugar catches the brain',     minutes: 7 },
+  { day: 2,  title: 'The 72-hour storm',                minutes: 5 },
+  { day: 3,  title: 'First quiet morning',              minutes: 4 },
+  { day: 4,  title: 'Your 3pm pattern, mapped',         minutes: 6 },
+  { day: 5,  title: 'Why fruit tastes bland',           minutes: 5 },
+  { day: 6,  title: 'The sleep-sugar loop',             minutes: 6 },
+  { day: 7,  title: 'One whole week',                   minutes: 4 },
+  { day: 8,  title: 'Your taste buds are waking up',    minutes: 5 },
+  { day: 9,  title: 'Triggers without reactions',       minutes: 6 },
+  { day: 10, title: 'The stress-sugar reflex',          minutes: 5 },
+  { day: 11, title: 'Alternatives that actually work',  minutes: 7 },
 ];
 
 function computeLessonState(day: number, currentDay: number): LessonState {
   if (day < currentDay) return 'done';
   if (day === currentDay) return 'current';
   return 'upcoming';
-}
-
-/**
- * Pick the hero subtitle based on which phase the user is in.
- * Drops the hardcoded "Week 2 · clarity phase" copy that read wrong on Day 1.
- */
-function heroForDay(day: number): string {
-  if (day <= 3) return `Acute phase. The first ${day === 1 ? 'day' : `${day} days`} — your brain notices the loop without judgment.`;
-  if (day <= 7) return 'Adaptation phase. The 72-hour storm has passed; cravings start losing their grip.';
-  if (day <= 14) return `Clarity phase. Two weeks in — your body and mind are catching up with each other.`;
-  if (day <= 30) return 'Integration phase. New defaults forming. Sugar slips out of the auto-reach.';
-  if (day <= 60) return 'Identity phase. You no longer ask "should I". You just don\'t.';
-  return 'Horizon. The path is yours now.';
 }
 
 export default function Curriculum() {
@@ -115,7 +69,7 @@ export default function Curriculum() {
         </Animated.View>
 
         <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.heroBody}>
-          {heroForDay(currentDay)}
+          {`${phaseForDay(currentDay).name} phase. ${phaseForDay(currentDay).heroBody}`}
         </Animated.Text>
 
         {/* Progress bar with bigger label and percentage */}
@@ -132,21 +86,25 @@ export default function Curriculum() {
 
         {/* Phases */}
         <View style={styles.phases}>
-          {PHASES.map((phase, pi) => (
+          {PHASES.map((phase, pi) => {
+            const phaseLessons = LESSONS.filter(
+              (l) => l.day >= phase.startDay && l.day <= phase.endDay,
+            );
+            return (
             <Animated.View
-              key={pi}
+              key={phase.name}
               entering={FadeInDown.delay(300 + pi * 80).duration(400)}
               style={styles.phaseBlock}
             >
               <View style={styles.phaseHeader}>
-                <DecorGlyph variant={PHASE_GLYPHS[phase.name] ?? 'orbit'} size={28} />
+                <DecorGlyph variant={phase.glyph} size={28} />
                 <View style={styles.phaseHeaderText}>
                   <Text style={styles.phaseName}>{phase.name}</Text>
-                  <Text style={styles.phaseDays}>{phase.days}</Text>
+                  <Text style={styles.phaseDays}>{phase.daysLabel}</Text>
                 </View>
               </View>
 
-              {phase.lessons.length === 0 ? (
+              {phaseLessons.length === 0 ? (
                 <Pressable
                   onPress={() => router.push('/(modals)/paywall-contextual')}
                   accessibilityRole="button"
@@ -161,7 +119,7 @@ export default function Curriculum() {
                 </Pressable>
               ) : (
                 <View style={styles.lessonsList}>
-                  {phase.lessons.map((lesson, li) => {
+                  {phaseLessons.map((lesson, li) => {
                     const state = computeLessonState(lesson.day, currentDay);
                     const stateLabel =
                       state === 'done' ? 'completed'
@@ -219,7 +177,8 @@ export default function Curriculum() {
                 </View>
               )}
             </Animated.View>
-          ))}
+            );
+          })}
         </View>
       </ScrollView>
 

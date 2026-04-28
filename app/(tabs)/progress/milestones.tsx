@@ -26,10 +26,10 @@ const TITLES: Record<number, string> = {
   1:  'The first decision',
   3:  'First quiet morning',
   7:  'First week, whole',
-  14: 'Adaptation',
-  30: 'Taste reset',
+  14: 'The fog lifts',
+  30: 'New defaults',
   60: 'New identity',
-  90: 'The horizon',
+  90: 'Walking free',
 };
 
 function buildMilestones(streakDays: number): Milestone[] {

@@ -11,14 +11,12 @@ import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { phaseForDay } from '../../../lib/phases';
 
-// Per-phase hero glyph for lesson screens — matches the curriculum phase
-const PHASE_GLYPH_BY_LABEL: Record<string, 'flame' | 'sun' | 'compass' | 'orbit'> = {
-  'ACUTE PHASE': 'flame',
-  'ADAPTATION': 'sun',
-  'CLARITY PHASE': 'compass',
-  'INTEGRATION': 'orbit',
-};
+// Phase label + glyph are derived from canonical PHASES taxonomy at render time
+// so the eyebrow + glyph always match the day's true phase. The `phase: '...'`
+// field on each LESSONS entry below is legacy — left in place to avoid a churn
+// migration but no longer read by the UI.
 
 type LessonContent = {
   phase: string;
@@ -198,13 +196,13 @@ export default function Lesson() {
         {/* Hero — now with a large phase glyph that anchors the screen */}
         <Animated.View entering={FadeInUp.duration(400)} style={styles.heroRow}>
           <View style={styles.heroCol}>
-            <Text style={styles.lessonEyebrow}>{lesson.phase}</Text>
+            <Text style={styles.lessonEyebrow}>{`${phaseForDay(dayNum).name.toUpperCase()} PHASE`}</Text>
             <Text style={styles.lessonTitle}>{lesson.title}</Text>
             <Text style={styles.lessonMeta}>{`${lesson.minutes} min · ${lesson.kicker}`}</Text>
           </View>
           <View style={styles.heroGlyphWrap}>
             <DecorGlyph
-              variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'orbit'}
+              variant={phaseForDay(dayNum).glyph}
               size={72}
             />
           </View>
@@ -227,7 +225,7 @@ export default function Lesson() {
         <Animated.View entering={FadeInUp.delay(250).duration(500)} style={styles.illustration}>
           <View style={styles.illoHalo} />
           <DecorGlyph
-            variant={PHASE_GLYPH_BY_LABEL[lesson.phase] ?? 'heart'}
+            variant={phaseForDay(dayNum).glyph}
             size={128}
           />
         </Animated.View>

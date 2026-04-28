@@ -57,7 +57,12 @@ export default function StreakFreeze() {
       </View>
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={{ width: 36 }} />
-        <Pressable onPress={() => safeDismiss()} style={styles.closeBtn}>
+        <Pressable
+          onPress={() => safeDismiss()}
+          style={styles.closeBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Close streak freeze"
+        >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
       </View>

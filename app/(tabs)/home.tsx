@@ -13,6 +13,7 @@ import { StreakOrb } from '../../components/ui/StreakOrb';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { peakWindow24h } from '../../lib/peakHour';
+import { phaseForDay } from '../../lib/phases';
 import {
   getMilestoneDueIfAny,
   getTodayISODate,
@@ -129,8 +130,15 @@ export default function Home() {
     if (daysSince >= 3) showPushBanner = true;
   }
 
+  const greetingForHour = (hour: number): string => {
+    if (hour < 5) return 'Late night';
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    if (hour < 22) return 'Good evening';
+    return 'Late night';
+  };
   const dateLabel = firstName
-    ? `Good morning, ${firstName}`.toUpperCase()
+    ? `${greetingForHour(new Date().getHours())}, ${firstName}`.toUpperCase()
     : "TODAY'S FORECAST";
   const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
@@ -459,31 +467,42 @@ export default function Home() {
             <Text style={styles.lessonLabel}>DAILY INSIGHT</Text>
             {(() => {
               const day = Math.max(1, streakDays);
-              let title: string;
-              let body: string;
-              if (day === 1) {
-                title = 'Day 1 — why sugar catches the brain';
-                body = '7 min · neuroscience + first practice.';
-              } else if (day <= 3) {
-                title = `Day ${day} — the storm settling in`;
-                body = 'Cortisol withdrawal peaks around now. 4 min read.';
-              } else if (day <= 10) {
-                title = `Day ${day} — the 72-hour fog lifts`;
-                body = "After day 3, the spike fades. Receptors recalibrate. 4 min read.";
-              } else if (day <= 24) {
-                title = `Day ${day} — your taste buds are waking up`;
-                body = 'Fruit gets noticeably sweeter around the two-week mark. 5 min read.';
-              } else if (day <= 60) {
-                title = `Day ${day} — choices stop costing willpower`;
-                body = 'You no longer ask "should I." You just don\'t. 6 min read.';
-              } else {
-                title = `Day ${day} — identity, not effort`;
-                body = 'The path you placed has become who you are. 5 min read.';
-              }
+              // Daily insight is keyed off canonical PHASES so the title +
+              // body match what the user sees on Curriculum/Progress hero.
+              const phase = phaseForDay(day);
+              const insightByPhase: Record<string, { title: string; body: string }> = {
+                Arrival: {
+                  title: day === 1
+                    ? 'Day 1 — why sugar catches the brain'
+                    : `Day ${day} — the storm settling in`,
+                  body: 'Cortisol withdrawal peaks around now. 4 min read.',
+                },
+                Detox: {
+                  title: `Day ${day} — the 72-hour fog lifts`,
+                  body: 'After day 3, the spike fades. Receptors recalibrate. 4 min read.',
+                },
+                Clarity: {
+                  title: `Day ${day} — your taste buds are waking up`,
+                  body: 'Fruit gets noticeably sweeter around the two-week mark. 5 min read.',
+                },
+                Integration: {
+                  title: `Day ${day} — new defaults forming`,
+                  body: 'Replacement rituals harden into habit. 5 min read.',
+                },
+                Identity: {
+                  title: `Day ${day} — choices stop costing willpower`,
+                  body: 'You no longer ask "should I." You just don\'t. 6 min read.',
+                },
+                Freedom: {
+                  title: `Day ${day} — walking free`,
+                  body: 'The habit is automatic. You walk past the candy aisle. 5 min read.',
+                },
+              };
+              const insight = insightByPhase[phase.name];
               return (
                 <>
-                  <Text style={styles.lessonTitle}>{title}</Text>
-                  <Text style={styles.lessonBody}>{body}</Text>
+                  <Text style={styles.lessonTitle}>{insight.title}</Text>
+                  <Text style={styles.lessonBody}>{insight.body}</Text>
                 </>
               );
             })()}

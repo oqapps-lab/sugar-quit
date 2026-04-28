@@ -10,6 +10,7 @@ import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { PHASES, phaseForDay, phaseIndexForDay } from '../../../lib/phases';
 
 /**
  * Progress — 90-Day Journey on Dark Horizon gradient.
@@ -24,19 +25,13 @@ export default function ProgressScreen() {
   const currentDay = Math.max(1, streakDays);
   const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
-  // Hero copy by phase — replaces hardcoded "The subtle shift / Two weeks in"
-  const phase: { title: string; body: string } =
-    currentDay <= 3
-      ? { title: 'The first decision', body: 'Day one or three or now — the only act that matters is that you started.' }
-      : currentDay <= 7
-      ? { title: 'The 72-hour line', body: 'Withdrawal peaks then eases. By the end of week one, the worst is behind you.' }
-      : currentDay <= 14
-      ? { title: 'The subtle shift', body: 'Two weeks in. The storm has passed; the quiet is starting to feel normal.' }
-      : currentDay <= 30
-      ? { title: 'New defaults forming', body: 'Your reflexes are rewiring. Sugar slips out of the auto-reach.' }
-      : currentDay <= 60
-      ? { title: 'Identity, not effort', body: "You don't decide each time anymore. The choice has become who you are." }
-      : { title: 'The horizon', body: 'You walk past the candy aisle without noticing it. The path is yours now.' };
+  // Hero copy is sourced from the canonical PHASES taxonomy — same phase used
+  // on Curriculum + Home so the user never sees conflicting labels.
+  const currentPhase = phaseForDay(currentDay);
+  const phase: { title: string; body: string } = {
+    title: currentPhase.heroTitle,
+    body: currentPhase.heroBody,
+  };
 
   // Stats — same honest formulas as Profile / Milestone
   const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
@@ -54,89 +49,74 @@ export default function ProgressScreen() {
     router.push('/(tabs)/progress/milestones');
   };
 
-  // Timeline nodes — state derived from currentDay so the "NOW" marker
-  // moves with the user instead of being hardcoded on Exhale.
-  // Days  1–3  Arrival, 4–10 Detox, 11–24 Exhale, 25–60 Clarity, 60+ Horizon.
-  const phaseIndex =
-    currentDay <= 3  ? 0 :
-    currentDay <= 10 ? 1 :
-    currentDay <= 24 ? 2 :
-    currentDay <= 60 ? 3 : 4;
-
-  const nodeBase = [
-    { label: 'Arrival',  phase: 'Week 1', glyph: 'compass' as const },
-    { label: 'Detox',    phase: 'Week 2', glyph: 'flame' as const },
-    { label: 'Exhale',   phase: 'Week 3', glyph: 'moon' as const },
-    { label: 'Clarity',  phase: 'Week 4', glyph: 'sun' as const },
-    { label: 'Horizon',  phase: 'Day 90', glyph: 'orbit' as const },
-  ];
-  const nodes = nodeBase.map((n, i) => ({
-    ...n,
-    phase: i === phaseIndex ? 'Now' : n.phase,
+  // Timeline nodes — derived from canonical PHASES so the "NOW" marker
+  // sits on the user's actual phase and labels match Curriculum/Home.
+  const phaseIndex = phaseIndexForDay(currentDay);
+  const lastIdx = PHASES.length - 1;
+  const nodes = PHASES.map((p, i) => ({
+    label: p.name,
+    phase: i === phaseIndex ? 'Now' : p.shortLabel,
+    glyph: p.glyph,
     state:
-      i < phaseIndex          ? 'done'     as const
-      : i === phaseIndex      ? 'current'  as const
-      : i === nodeBase.length - 1 && phaseIndex < nodeBase.length - 1
-                              ? 'goal'     as const
-                              : 'upcoming' as const,
+      i < phaseIndex                                    ? 'done'     as const
+      : i === phaseIndex                                ? 'current'  as const
+      : i === lastIdx && phaseIndex < lastIdx           ? 'goal'     as const
+      :                                                   'upcoming' as const,
   }));
 
-  // Today's Focus — phase-aware copy + practices, replaces hardcoded
-  // "Deepening the rhythmic pattern" that always read week-3 regardless of day.
-  const focus =
-    currentDay <= 3
-      ? {
-          title: 'Landing in the first day',
-          sub: "Two short practices anchor the new rhythm before willpower fatigues.",
-          practices: [
-            { title: 'Two slow breaths', body: '60 sec · before any sugar reach' },
-            { title: 'Name the moment',  body: 'Say "this is the loop" out loud' },
-          ],
-        }
-      : currentDay <= 7
-      ? {
-          title: 'Riding through the storm',
-          sub: 'Withdrawal peaks; physiology stabilises with two anchors.',
-          practices: [
-            { title: 'Hydrate first',     body: 'Glass of water before any decision' },
-            { title: 'Move 3 minutes',    body: 'Walk anywhere — kitchen counts' },
-          ],
-        }
-      : currentDay <= 14
-      ? {
-          title: 'Deepening the rhythmic pattern',
-          sub: 'Your body is learning a new cadence. Two practices to support the shift.',
-          practices: [
-            { title: 'Conscious breathwork', body: '15 min · morning session' },
-            { title: 'Mental mapping',       body: 'Reflect on transition points' },
-          ],
-        }
-      : currentDay <= 30
-      ? {
-          title: 'Building new defaults',
-          sub: 'Replacement rituals harden into habit. Two cues, two responses.',
-          practices: [
-            { title: 'Pre-decide your snack', body: 'Before 2pm, name your option' },
-            { title: 'Evening tea ritual',    body: 'A warm cup replaces dessert' },
-          ],
-        }
-      : currentDay <= 60
-      ? {
-          title: 'Identity over effort',
-          sub: 'Choices stop costing willpower — they cost nothing.',
-          practices: [
-            { title: 'Notice the non-reach',  body: 'Catch yourself NOT reaching' },
-            { title: 'Share the protocol',    body: 'Teach one person what works' },
-          ],
-        }
-      : {
-          title: 'Walking the horizon',
-          sub: 'The path is yours. Maintenance is just paying attention.',
-          practices: [
-            { title: 'Weekly review',         body: '5 min · look at your week' },
-            { title: 'Choose your next mile', body: 'Set the next 90-day frontier' },
-          ],
-        };
+  // Today's Focus — keyed by canonical phase name so a copy change to one
+  // phase doesn't drift between Curriculum/Progress/Home.
+  const focusByPhase: Record<string, { title: string; sub: string; practices: { title: string; body: string }[] }> = {
+    Arrival: {
+      title: 'Landing in the first day',
+      sub: "Two short practices anchor the new rhythm before willpower fatigues.",
+      practices: [
+        { title: 'Two slow breaths', body: '60 sec · before any sugar reach' },
+        { title: 'Name the moment',  body: 'Say "this is the loop" out loud' },
+      ],
+    },
+    Detox: {
+      title: 'Riding through the storm',
+      sub: 'Withdrawal peaks; physiology stabilises with two anchors.',
+      practices: [
+        { title: 'Hydrate first',  body: 'Glass of water before any decision' },
+        { title: 'Move 3 minutes', body: 'Walk anywhere — kitchen counts' },
+      ],
+    },
+    Clarity: {
+      title: 'Deepening the rhythmic pattern',
+      sub: 'Your body is learning a new cadence. Two practices to support the shift.',
+      practices: [
+        { title: 'Conscious breathwork', body: '15 min · morning session' },
+        { title: 'Mental mapping',       body: 'Reflect on transition points' },
+      ],
+    },
+    Integration: {
+      title: 'Building new defaults',
+      sub: 'Replacement rituals harden into habit. Two cues, two responses.',
+      practices: [
+        { title: 'Pre-decide your snack', body: 'Before 2pm, name your option' },
+        { title: 'Evening tea ritual',    body: 'A warm cup replaces dessert' },
+      ],
+    },
+    Identity: {
+      title: 'Identity over effort',
+      sub: 'Choices stop costing willpower — they cost nothing.',
+      practices: [
+        { title: 'Notice the non-reach', body: 'Catch yourself NOT reaching' },
+        { title: 'Share the protocol',   body: 'Teach one person what works' },
+      ],
+    },
+    Freedom: {
+      title: 'Walking free',
+      sub: 'The path is yours. Maintenance is just paying attention.',
+      practices: [
+        { title: 'Weekly review',         body: '5 min · look at your week' },
+        { title: 'Choose your next mile', body: 'Set the next 90-day frontier' },
+      ],
+    },
+  };
+  const focus = focusByPhase[currentPhase.name];
 
   // Health Timeline — physiological markers per FEATURES.md.
   // Each entry has a `unlocksAt` day. Items with day <= currentDay show as
