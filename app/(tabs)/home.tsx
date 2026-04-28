@@ -46,7 +46,16 @@ function computeForecast(
     return { tone: 'Steady', sub: "You reached out once. The next hours get easier from here." };
   }
   if (streakDays >= 14) {
-    return { tone: 'Calm', sub: "Two weeks in. Your body and brain have found their rhythm." };
+    // Phase-aware "calm day" subtitle. Earlier this read "Two weeks in"
+    // for ALL days >= 14, which felt stale on Day 48+ (Identity phase).
+    const phase = phaseForDay(streakDays);
+    const subByPhase: Record<string, string> = {
+      Clarity:     'The fog is lifting. Cravings are background noise now.',
+      Integration: 'New defaults are forming. The reach is dimming.',
+      Identity:    "You don't decide each time. The choice is who you are.",
+      Freedom:     'The habit is automatic. You walk past without noticing.',
+    };
+    return { tone: 'Calm', sub: subByPhase[phase.name] ?? "You've found your rhythm." };
   }
   if (isCheckedInToday) {
     return { tone: 'Light', sub: `Easy morning. Watch out for a craving around ${peakShort}.` };

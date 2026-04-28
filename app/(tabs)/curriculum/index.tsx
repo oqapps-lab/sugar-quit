@@ -38,6 +38,7 @@ export default function Curriculum() {
   const insets = useSafeAreaInsets();
   const streakDays = useUserStore((s) => s.streakDays);
   const firstName = useUserStore((s) => s.firstName);
+  const isPremium = useUserStore((s) => s.isPremium);
   const currentDay = Math.max(1, streakDays);
   const progressPct = (currentDay / 90) * 100;
   const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
@@ -105,18 +106,34 @@ export default function Curriculum() {
               </View>
 
               {phaseLessons.length === 0 ? (
-                <Pressable
-                  onPress={() => router.push('/(modals)/paywall-contextual')}
-                  accessibilityRole="button"
-                  accessibilityLabel={`${phase.name} phase locked — upgrade to unlock`}
-                >
+                isPremium ? (
+                  // Premium user: lessons not yet released for this phase.
+                  // Show "Coming soon" — never the upgrade paywall (they're already paid).
                   <GlassCard tint="default" style={styles.lockedCard}>
                     <View style={styles.lockedRow}>
-                      <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>🔒</Text></View>
-                      <Text style={styles.lockedText}>Unlocks as you walk</Text>
+                      <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>✨</Text></View>
+                      <Text
+                        style={styles.lockedText}
+                        accessibilityLabel={`${phase.name} phase content coming soon`}
+                      >
+                        Coming soon — keep walking
+                      </Text>
                     </View>
                   </GlassCard>
-                </Pressable>
+                ) : (
+                  <Pressable
+                    onPress={() => router.push('/(modals)/paywall-contextual')}
+                    accessibilityRole="button"
+                    accessibilityLabel={`${phase.name} phase locked — upgrade to unlock`}
+                  >
+                    <GlassCard tint="default" style={styles.lockedCard}>
+                      <View style={styles.lockedRow}>
+                        <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>🔒</Text></View>
+                        <Text style={styles.lockedText}>Unlocks as you walk</Text>
+                      </View>
+                    </GlassCard>
+                  </Pressable>
+                )
               ) : (
                 <View style={styles.lessonsList}>
                   {phaseLessons.map((lesson, li) => {
