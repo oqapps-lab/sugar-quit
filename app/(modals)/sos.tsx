@@ -8,6 +8,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
+import { Badge, Card, ThemedText, TopBar } from '../../components/primitives';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
 
@@ -100,13 +101,12 @@ export default function ChatScreen() {
           <AuraBlob tint="coral" size={340} style={styles.auraTopRight} intensity={0.55} drift={22} />
           <AuraBlob tint="peach" size={280} style={styles.auraBottomLeft} intensity={0.45} drift={18} />
         </View>
-        <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
-            <Text style={styles.backArrow}>←</Text>
-          </Pressable>
-          <View style={{ width: 40 }} />
-          <View style={{ width: 40 }} />
-        </View>
+        <TopBar
+          safeArea
+          onClose={() => router.dismiss()}
+          left={<Text style={styles.backArrow}>←</Text>}
+          style={styles.topBarStyle}
+        />
         <View style={styles.blockedContent}>
           <Animated.View entering={FadeInUp.duration(400)} style={styles.blockedGlyphWrap}>
             <DecorGlyph variant="flame" size={108} />
@@ -143,22 +143,31 @@ export default function ChatScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top : 0}
         style={{ flex: 1 }}
       >
-        {/* Header */}
-        <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
-            <Text style={styles.backArrow}>←</Text>
-          </Pressable>
-          <View style={styles.headerCenter}>
-            <View style={styles.headerDot} />
-            <Text style={styles.headerLabel}>COACH IS HERE</Text>
-          </View>
-          <Pressable onPress={onEnd} style={styles.endBtn} accessibilityRole="button" accessibilityLabel="End SOS — go to reflection">
-            <Text style={styles.endLabel}>End</Text>
-          </Pressable>
-        </Animated.View>
+          {/* TopBar primitive — left: back, title: centered, right: End */}
+        <TopBar
+          safeArea
+          title="COACH IS HERE"
+          onClose={() => router.dismiss()}
+          left={<Text style={styles.backArrow}>←</Text>}
+          right={
+            <Pressable
+              onPress={onEnd}
+              accessibilityRole="button"
+              accessibilityLabel="End SOS — go to reflection"
+            >
+              <ThemedText variant="bodyMedium" color={colors.onSurfaceVariant}>End</ThemedText>
+            </Pressable>
+          }
+          style={[styles.topBarStyle, { paddingTop: insets.top + spacing.xs }]}
+        />
 
-        {/* Disclaimer */}
-        <Text style={styles.disclaimer}>A companion, not a medical advisor.</Text>
+        {/* Badge primitive: AI LIVE status + disclaimer */}
+        <View style={styles.statusRow}>
+          <Badge label="AI · LIVE" variant="live" />
+          <ThemedText variant="labelSmall" style={styles.disclaimer}>
+            A companion, not a medical advisor.
+          </ThemedText>
+        </View>
 
         {/* Messages */}
         <ScrollView
@@ -168,9 +177,18 @@ export default function ChatScreen() {
         >
           {messages.map((msg, i) => (
             <View key={i} style={msg.role === 'ai' ? styles.aiRow : styles.userRow}>
-              <View style={msg.role === 'ai' ? styles.aiBubble : styles.userBubble}>
-                <Text style={msg.role === 'ai' ? styles.aiText : styles.userText}>{msg.text}</Text>
-              </View>
+              {msg.role === 'ai' ? (
+                /* Card primitive for AI bubbles — cream tint glass */
+                <Card tint="cream" padded style={styles.aiBubbleCard}>
+                  <ThemedText variant="bodyMedium" color={colors.onSurface} style={styles.aiTextInCard}>
+                    {msg.text}
+                  </ThemedText>
+                </Card>
+              ) : (
+                <View style={styles.userBubble}>
+                  <Text style={styles.userText}>{msg.text}</Text>
+                </View>
+              )}
             </View>
           ))}
 
@@ -221,47 +239,33 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: {
+  topBarStyle: {
+    backgroundColor: 'rgba(251,249,245,0.85)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: 'rgba(165,60,48,0.12)',
+  },
+  backArrow: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
+  statusRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingVertical: spacing.sm,
   },
-  backBtn: {
-    width: 40, height: 40, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  backArrow: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  headerCenter: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  headerDot: {
-    width: 8, height: 8, borderRadius: radius.full,
-    backgroundColor: colors.primary,
-  },
-  headerLabel: {
-    fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.primary,
-    letterSpacing: tracking.labelWide,
-  },
-  endBtn: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  endLabel: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
+  disclaimer: {
+    flex: 1,
+    textAlign: 'right',
+    opacity: 0.6,
   },
 
-  disclaimer: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    opacity: 0.6,
-    textAlign: 'center',
-    paddingBottom: spacing.md,
+  // AI bubble via Card primitive
+  aiBubbleCard: {
+    borderTopLeftRadius: 4,
+    maxWidth: '85%',
+  },
+  aiTextInCard: {
+    lineHeight: 22,
+    fontSize: typeScale.bodyLarge,
   },
 
   messages: { flex: 1 },

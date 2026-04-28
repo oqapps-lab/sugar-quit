@@ -11,6 +11,7 @@ import { GlassCard } from '../../components/ui/GlassCard';
 import { SOSFab } from '../../components/ui/SOSFab';
 import { StreakOrb } from '../../components/ui/StreakOrb';
 import { TokenDot } from '../../components/ui/TokenDot';
+import { Badge, Card, StatCell } from '../../components/primitives';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import {
   getMilestoneDueIfAny,
@@ -111,6 +112,15 @@ export default function Home() {
   const sosRemaining = Number.isFinite(sosFreeLimit)
     ? Math.max(0, sosFreeLimit - sosUsedThisMonth)
     : null;
+
+  // Stats for the quick-stats grid (WIREFRAMES.md § Home with data)
+  const cravings = useUserStore((s) => s.cravings);
+  const sosLog = useUserStore((s) => s.sosLog);
+  const isPremium = useUserStore((s) => s.isPremium);
+  const cravingsDefeated =
+    cravings.filter((c) => c.outcome === 'walked').length +
+    sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const dollarsSaved = Math.round(streakDays * 1.5);
 
   // Today's forecast — computed, not hardcoded "Light"
   const sosUsedToday = 0; // TODO: derive from sosLog when we add per-day filtering
@@ -412,6 +422,29 @@ export default function Home() {
           </Pressable>
         )}
 
+        {/* Quick-stats grid — WIREFRAMES.md § "Home with data" (cravings + money)
+            StatCell + Card primitives. Hidden on Day 1 (no data yet). */}
+        {!isDayOne && (
+          <Animated.View entering={FadeInDown.delay(180).duration(500)} style={styles.statsGrid}>
+            <Card tint="cream" style={styles.statCard}>
+              <StatCell label="CRAVINGS DEFEATED" value={cravingsDefeated} />
+            </Card>
+            <View style={styles.statVerticalDivider} />
+            <Card tint="cream" style={styles.statCard}>
+              <StatCell label="MONEY SAVED" value={`$${dollarsSaved}`} />
+            </Card>
+          </Animated.View>
+        )}
+
+        {/* Plan / subscription badge — Premium users see the badge */}
+        {!isDayOne && (
+          <Badge
+            label={isPremium ? 'Premium' : 'Free plan'}
+            variant={isPremium ? 'premium' : 'info'}
+            style={styles.planBadge}
+          />
+        )}
+
         {/* Lesson card */}
         <Pressable onPress={() => router.push('/(tabs)/curriculum')}>
           <GlassCard tint="lavender" style={styles.lessonCard}>
@@ -510,7 +543,7 @@ export default function Home() {
         )}
       </ScrollView>
 
-      <SOSFab onPress={onSos} bottom={insets.bottom + 96} position="right" />
+      <SOSFab onPress={onSos} bottom={insets.bottom + 96} />
     </AtmosphericGradient>
   );
 }
@@ -1110,6 +1143,32 @@ const styles = StyleSheet.create({
     fontSize: typeScale.bodyMedium,
     color: colors.onSurfaceVariant,
     lineHeight: 18,
+  },
+
+  // Quick-stats grid (StatCell + Card primitives)
+  statsGrid: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    marginBottom: spacing.lg,
+    backgroundColor: 'rgba(255,255,255,0.55)',
+    borderRadius: radius.sm,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.7)',
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: 0,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.md,
+  },
+  statVerticalDivider: {
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: colors.outlineVariant,
+    marginVertical: spacing.md,
+  },
+  planBadge: {
+    marginBottom: spacing.md,
   },
 
   // Background aura layer

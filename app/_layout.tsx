@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
 import {
   PlusJakartaSans_300Light,
   PlusJakartaSans_400Regular,
@@ -18,6 +19,8 @@ import {
 } from '@expo-google-fonts/manrope';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import { MOCK_USER } from '../mock/user';
+import { useUserStore } from '../stores/useUserStore';
 
 /**
  * Root Stack. Three groups:
@@ -29,6 +32,16 @@ import { View } from 'react-native';
  * returning users to (tabs)/home.
  */
 export default function RootLayout() {
+  // In dev: seed mock data on first launch so Home shows real content (Sarah, Day 8).
+  useEffect(() => {
+    if (__DEV__) {
+      const store = useUserStore.getState();
+      if (!store.onboarded) {
+        useUserStore.setState(MOCK_USER);
+      }
+    }
+  }, []);
+
   const [fontsLoaded] = useFonts({
     PlusJakartaSans_300Light,
     PlusJakartaSans_400Regular,

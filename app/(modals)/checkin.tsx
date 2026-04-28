@@ -7,8 +7,8 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
-import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
+import { Card, ProgressBar, ThemedText, TopBar } from '../../components/primitives';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
 
@@ -67,17 +67,22 @@ export default function CheckIn() {
         <AuraBlob tint="peach" size={320} style={styles.auraTopRight} intensity={0.5} drift={20} />
         <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={16} />
       </View>
-      {/* Header */}
-      <Animated.View entering={FadeInUp.duration(400)} style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Pressable onPress={() => router.dismiss()} style={styles.backBtn}>
-          <Text style={styles.backArrow}>←</Text>
-        </Pressable>
-        <Text style={styles.headerTitle}>Daily check-in</Text>
-        <View style={styles.stepIndicator}>
-          <View style={[styles.stepDot, (step === 'sugar' || step === 'mood' || step === 'done') && styles.stepDotActive]} />
-          <View style={[styles.stepDot, (step === 'mood' || step === 'done') && styles.stepDotActive]} />
-          <View style={[styles.stepDot, step === 'done' && styles.stepDotActive]} />
-        </View>
+      {/* TopBar + ProgressBar primitives — replaces manual header + step dots */}
+      <Animated.View entering={FadeInUp.duration(400)}>
+        <TopBar
+          title="Daily check-in"
+          safeArea
+          onClose={() => router.dismiss()}
+          left={<Text style={styles.backArrow}>←</Text>}
+          style={styles.topBarStyle}
+        />
+        {/* ProgressBar primitive: 3-step indicator (1/3, 2/3, 3/3) */}
+        <ProgressBar
+          progress={step === 'sugar' ? 1 / 3 : step === 'mood' ? 2 / 3 : 1}
+          gradient
+          height={3}
+          style={styles.stepBar}
+        />
       </Animated.View>
 
       {step === 'sugar' && (
@@ -95,21 +100,22 @@ export default function CheckIn() {
             Honest only. No streak is worth a lie.
           </Animated.Text>
 
+          {/* Card primitives for sugar-status options */}
           <View style={styles.cardsCol}>
             {SUGAR_OPTIONS.map((opt, idx) => (
               <Animated.View key={opt.key} entering={FadeInDown.delay(250 + idx * 80).duration(400)}>
                 <Pressable onPress={() => onSugar(opt.key)}>
-                  <GlassCard tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
+                  <Card tint={opt.tint} style={[styles.optionCard, sugar === opt.key && styles.optionCardActive]}>
                     <View style={styles.optionRow}>
                       <View style={styles.optionText}>
-                        <Text style={styles.optionTitle}>{opt.title}</Text>
-                        <Text style={styles.optionBody}>{opt.body}</Text>
+                        <ThemedText variant="titleMedium" color={colors.onSurface}>{opt.title}</ThemedText>
+                        <ThemedText variant="bodyMedium" style={styles.optionBodyText}>{opt.body}</ThemedText>
                       </View>
                       <View style={[styles.optionArrow, sugar === opt.key && styles.optionArrowActive]}>
                         <Text style={[styles.optionArrowText, sugar === opt.key && styles.optionArrowTextActive]}>→</Text>
                       </View>
                     </View>
-                  </GlassCard>
+                  </Card>
                 </Pressable>
               </Animated.View>
             ))}
@@ -187,30 +193,17 @@ export default function CheckIn() {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
-  },
-  backBtn: {
-    width: 44, height: 44, borderRadius: radius.full,
-    backgroundColor: 'rgba(49,51,47,0.06)',
-    alignItems: 'center', justifyContent: 'center',
+  topBarStyle: {
+    backgroundColor: 'rgba(251,249,245,0.85)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: 'rgba(165,60,48,0.1)',
   },
   backArrow: { fontSize: 22, color: colors.onSurface, fontFamily: fonts.headlineLight, lineHeight: 22 },
-  headerTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.bodyLarge,
-    color: colors.onSurface,
+  stepBar: {
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.xs,
+    marginBottom: spacing.sm,
   },
-  stepIndicator: { flexDirection: 'row', gap: 6, alignItems: 'center' },
-  stepDot: {
-    width: 8, height: 3, borderRadius: 2,
-    backgroundColor: 'rgba(49,51,47,0.15)',
-  },
-  stepDotActive: { backgroundColor: colors.primary },
 
   // Background aura layer
   auraLayer: {
@@ -264,6 +257,7 @@ const styles = StyleSheet.create({
   },
 
   cardsCol: { gap: spacing.sm, marginTop: spacing.sm },
+  // Card primitive already has padding.md; extra lg padding via style override
   optionCard: { padding: spacing.lg },
   optionCardActive: {
     borderColor: colors.primary,
@@ -271,17 +265,9 @@ const styles = StyleSheet.create({
   },
   optionRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   optionText: { flex: 1, gap: 2 },
-  optionTitle: {
-    fontFamily: fonts.headlineSemibold,
-    fontSize: typeScale.titleMedium,
-    color: colors.onSurface,
-    letterSpacing: -0.3,
-  },
-  optionBody: {
-    fontFamily: fonts.bodyLight,
-    fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
+  optionBodyText: {
     lineHeight: 18,
+    fontSize: typeScale.bodyMedium,
   },
   optionArrow: {
     width: 36, height: 36, borderRadius: radius.full,

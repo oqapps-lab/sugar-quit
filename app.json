@@ -19,6 +19,10 @@
       "expo-font",
       "expo-image"
     ],
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
     "experiments": {
       "typedRoutes": false
     }
