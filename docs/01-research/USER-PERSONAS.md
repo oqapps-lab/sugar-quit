@@ -1,230 +1,232 @@
-# Персоны пользователей: Sugar Quit
+# User Personas: Sugar Quit
 
-**Дата:** 13 апреля 2026
-**Companion Document:** [Market Research](./MARKET-RESEARCH.md), [Competitors](./COMPETITORS.md)
-
----
-
-## Персона 1: "Stress Sarah" — Офисный 3pm Craver
-
-### Профиль
-
-| Поле | Данные |
-|------|--------|
-| **Имя** | Сара Коллинз |
-| **Возраст** | 32 года |
-| **Профессия** | Marketing manager, tech-компания |
-| **Доход** | $85K/год |
-| **Город** | Остин, Техас |
-| **Семейное положение** | Незамужем, живёт с подругой |
-| **Телефон** | iPhone 15 |
-| **Подписки** | Headspace ($12.99/мес), фитнес-приложение ($9.99/мес), Spotify |
-
-### Контекст
-
-Сара работает в открытом офисе с 9 до 18. К 15:00 после серии встреч у неё наступает энергетический спад. Candy bowl на ресепшне — первое, что она видит, когда встаёт из-за стола. Коллеги приносят донаты по пятницам. 2-3 сладких кофе в день. По выходным — бранчи с сладкими коктейлями и выпечкой.
-
-### Боль
-
-**Конкретная проблема:** Каждый день в ~15:00 после afternoon energy crash Сара автоматически идёт к вending machine или candy bowl. Это не осознанный выбор — это autopilot. К вечеру она чувствует вину, обещает себе "завтра всё будет иначе", и на следующий день цикл повторяется. За последний год она набрала 7 кг.
-
-### Текущее решение
-
-- Пробовала Whole30 дважды — сдавалась к Дню 10 оба раза
-- Использует MyFitnessPal — "цифры сахара меня стрессят, но не помогают"
-- Держит пакет сухофруктов на столе, который никогда не трогает
-- Иногда читает r/sugarfree, но не участвует
-
-### Почему текущее решение не работает
-
-1. **Whole30** — слишком радикальный, all-or-nothing. На 10-й день социальное давление или стресс побеждают
-2. **MyFitnessPal** — показывает проблему, но не предлагает решение. "I can see I ate 80g of sugar, now what?"
-3. **Willpower** — не работает в момент тяги. В 15:00 при энергетическом спаде рациональное мышление отключается
-4. **Ни один инструмент не помогает в МОМЕНТ тяги** — всё ретроспективно
-
-### Триггер для скачивания
-
-Увидит TikTok-ролик "Day 15 without sugar — my skin is GLOWING" → зайдёт в App Store → поиск "quit sugar app" → найдёт Sugar Quit с AI-коучингом → "wait, it actually talks to you when you're craving?" → скачает
-
-**Альтернативный триггер:** Подруга скинет ссылку: "Я использую это уже 2 недели, SOS кнопка реально помогает"
-
-### Готовность платить
-
-**$9.99/мес без колебаний**, если работает. Уже платит за Headspace и фитнес. Для неё $10/мес на здоровье — нормально. Годовой план $79.99 рассмотрит после 1-2 месяцев.
-
-### Цитата
-
-> "I was dependent on sugar for boosting my energy and mood. I would snack throughout the day — on chips, cookies and candy. My energy levels would fluctuate enormously. I would have extreme highs and then I would have massive afternoon dips. When my energy levels were low, I'd have pretty negative thoughts. I would turn to sugar to try and improve my mood."
-
-— Sara Clarke, Newsweek ("I Gave Up Sugar for 60 Days")
-
-> "There is nothing about what you're going through in each and every stage. Not anything about withdrawals, mind fog, cravings, and what to do if you have any of those."
-
-— BillKill02, App Store review (Sugarless app) — о том, чего не хватает в существующих приложениях
+**Дата:** 13 апреля 2026  
+**Основа:** `CLAUDE.md`, [PRODUCT-BRIEF](./PRODUCT-BRIEF.md), [MARKET-RESEARCH](./MARKET-RESEARCH.md), [COMPETITORS](./COMPETITORS.md)  
+**Задача документа:** зафиксировать 3 приоритетные персоны для MVP, их боль, текущие обходные решения и точки, где Sugar Quit может выиграть.
 
 ---
 
-## Персона 2: "Pre-Diabetic Paul" — Напуганный Здоровьем
+## Персона 1: Stress Sarah
 
-### Профиль
+### 1. Кто
 
-| Поле | Данные |
-|------|--------|
-| **Имя** | Пол Хендерсон |
-| **Возраст** | 45 лет |
-| **Профессия** | Бухгалтер (CPA), средняя фирма |
-| **Доход** | $110K/год |
-| **Город** | Денвер, Колорадо |
-| **Семейное положение** | Женат, двое детей (8 и 11 лет) |
-| **Телефон** | iPhone 14, Apple Watch |
-| **Подписки** | Wall Street Journal, никаких health-приложений |
+- Имя: Sarah Collins
+- Возраст: 32
+- Профессия: Marketing Manager в tech-компании
+- Доход: ~$85K/год
+- Город: Austin, Texas
 
-### Контекст
+### 2. Контекст
 
-Пол выпивает 20oz содовой с обедом каждый день — "просто привычка, так делал всегда". Вечерний десерт после ужина — семейная традиция. Перекусывает конфетами и печеньем детей. На последнем ежегодном осмотре врач сказал: "Ваш A1C — 5.8. Это преддиабет. Если не измените питание, через 2-3 года — диабет 2 типа."
+- Жизненная ситуация: живет в большом городе, работает в hybrid/office-heavy режиме, уже тратит деньги на self-improvement.
+- Распорядок дня: утром кофе с сиропом, днем плотный блок встреч, к 3 PM резкий energy dip, вечером усталость и чувство вины после сладких перекусов.
+- Типичный sugar pattern: candy bowl, vending machine, сладкий кофе 2-3 раза в день, офисные донаты и pastries.
+- Устройства: iPhone 15, Apple Watch, рабочий MacBook.
 
-### Боль
+### 3. Боль
 
-**Конкретная проблема:** Пол напуган диагнозом. Его отец живёт с диабетом 2 типа и делает инъекции инсулина. Пол не хочет такой жизни. Но врач сказал "ешьте меньше сахара" — и всё. Ноль конкретных инструкций. Пол не знает, с чего начать. Он не может убрать десерт — это семейный ритуал, жена и дети расстроятся. Он не может отказаться от содовой — "это единственная радость в рабочем дне".
+**Главная проблема:** Sarah проигрывает не “диете”, а конкретному моменту тяги. Она знает, что ест слишком много сахара, но в момент стресса и усталости действует на автопилоте.
 
-### Текущее решение
+> “Yup! But mine is mostly work. I work from home and as soon as I get stressed, I run to the kitchen.”
 
-- Перешёл на диетическую газировку — ненавидит вкус, через 2 недели вернулся к обычной
-- Жена купила sugar-free печенье — "на вкус как картон"
-- Пытается "просто есть меньше" — без плана, без трекинга, без поддержки
-- Читает статьи в Google "how to lower A1C naturally" — информационный перегруз, противоречивые советы
+Источник: Reddit, r/sugarfree, тред “What’s the EXACT moment that flips your ‘Must-Have-Sugar-Now’ switch?”  
+https://www.reddit.com/r/sugarfree/comments/1l7oc68/whats_the_exact_moment_that_flips_your/
 
-### Почему текущее решение не работает
+### 4. Текущее решение
 
-1. **Замены невкусные** — диетическая газировка и sugar-free cookies не удовлетворяют
-2. **Нет структуры** — "ешь меньше сахара" — не план. Нет дня 1, дня 7, дня 30
-3. **Семейный контекст** — не может просто убрать сахар из дома, у него дети
-4. **Не знает ЧТО есть вместо** — нужны конкретные альтернативы, которые понравятся и ему, и семье
-5. **Нет accountability** — один на один с проблемой
+- Пробовала Whole30 и другие “чистые” челленджи.
+- Использует MyFitnessPal или похожие трекеры.
+- Держит “здоровую замену” на столе, но редко выбирает ее в момент тяги.
+- Читает Reddit/Instagram/TikTok-контент про sugar-free lifestyle.
 
-### Триггер для скачивания
+### 5. Почему не работает
 
-Поиск в Google: "how to reduce sugar prediabetes app" → найдёт Sugar Quit → увидит "90-дневная структурированная программа" и "постепенное снижение, не cold turkey" → "это именно то, что мне нужно" → скачает
+- Whole30 и похожие подходы слишком all-or-nothing: держатся до первого стрессового дня.
+- Трекеры показывают цифры задним числом, но не помогают в 3 PM, когда рука уже тянется к сладкому.
+- “Полезные снеки рядом” не решают проблему, если решение нужно принять в состоянии усталости и перегруза.
+- Ни один инструмент не умеет заранее подсказать: “через 15 минут у тебя типичный срыв, вот план”.
 
-**Альтернативный триггер:** Врач рекомендует (если появится в корпоративных wellness-программах)
+### 6. Триггер
 
-### Готовность платить
+- Несколько одинаковых недель подряд с 3 PM crash.
+- Плюс внешний триггер скачивания: TikTok/Instagram-контент в духе “AI talks you through cravings in the moment”.
+- Особенно хорошо конвертит обещание SOS-помощи здесь и сейчас, а не очередной food log.
 
-**$79.99/год — легко.** Его потенциальные расходы на лечение диабета — $10K+/год. $80 в год на профилактику — очевидная инвестиция. Может рассмотреть Premium+ с коучингом ($14.99/мес). Если работодатель субсидирует через wellness-программу — вообще без вопросов.
+### 7. Готовность платить
 
-### Цитата
+- Да.
+- Ожидаемый диапазон: `$9.99-14.99/мес`.
+- Платит за результат в момент тяги, predictive reminders и ощущение “меня не заставляют быть идеальной”.
 
-> "She ran some tests which showed I was on the cusp of prediabetes. My blood sugar levels were spiking, and that could harm my long-term health. I started feeling sluggish. My memory was off. My emotions? All over the place."
+### 8. Jobs-to-be-done
 
-— Libby, BlueCross BlueShield Tennessee (о моменте диагноза)
-
-> "I lost 10 pounds. This told me that I had no idea how much refined sugar I'd been eating. My blood sugar has returned to normal levels."
-
-— Та же Libby, после снижения сахара
-
----
-
-## Персона 3: "Challenge Chloe" — Social Media Wellness Enthusiast
-
-### Профиль
-
-| Поле | Данные |
-|------|--------|
-| **Имя** | Хлоя Ривера |
-| **Возраст** | 26 лет |
-| **Профессия** | Контент-криейтор / бариста на полставки |
-| **Доход** | $45K/год |
-| **Город** | Лос-Анджелес, Калифорния |
-| **Семейное положение** | Не замужем, живёт с соседкой |
-| **Телефон** | iPhone 16 |
-| **Подписки** | I Am Sober (бесплатная версия), различные wellness-приложения (скачивает и удаляет) |
-
-### Контекст
-
-Хлоя называет себя "sugar addict". Цикл binge-restrict: 5 дней чистого питания → пятничный вечер: целая пинта мороженого + пакет конфет → интенсивная вина и стыд → понедельник: "Day 1 again". Пьёт specialty lattes с 40g+ сахара ежедневно. Участвовала в трёх "30-day no sugar challenges" на TikTok — завершала, но на 31-й день срывалась.
-
-### Боль
-
-**Конкретная проблема:** Цикл binge-restrict разрушает её ментальное здоровье. Вина после срыва хуже, чем сам срыв. Она видит "clean eating" посты в Instagram, сравнивает себя, чувствует себя неудачницей, ест сахар чтобы справиться с чувствами. Замкнутый круг: ограничение → депривация → срыв → стыд → ещё ограничение.
-
-### Текущее решение
-
-- **I Am Sober** — использует для трекинга дней без сахара, но "it feels like it's for alcoholics, not sugar"
-- **TikTok challenges** — мотивируют на 30 дней, но нет поддержки после окончания
-- **r/sugarfree** — читает, иногда постит, но это unstructured
-- **Willpower + guilt** — основной "метод"
-
-### Почему текущее решение не работает
-
-1. **I Am Sober** — generic, не sugar-specific. Craving tools = только медитация. Нет food alternatives
-2. **Challenges** — краткосрочная мотивация без долгосрочной стратегии. Day 31 = cliff edge
-3. **All-or-nothing подход** — нет "reduce gradually", только "cold turkey → fail → shame"
-4. **Нет понимания binge-restrict цикла** — никто не объяснил, что restriction ВЫЗЫВАЕТ bingeing
-5. **Нет эмоциональной поддержки** — все приложения трекают поведение, но не работают с эмоциями
-
-### Триггер для скачивания
-
-Увидит TikTok от инфлюенсера: "This app has an AI that talks you through cravings WITHOUT judging you" → "WAIT, it doesn't judge the binge?!" → скачает мгновенно
-
-**Альтернативный триггер:** Подруга по I Am Sober переключится на Sugar Quit и поделится прогрессом
-
-### Готовность платить
-
-**$9.99/мес во время активного челленджа.** Вероятно отменит после 30-60 дней, потом вернётся. Циклический паттерн подписки. **Lifetime deal** ($79.99-$99.99) может конвертировать её в постоянного пользователя — "я заплатила, значит буду пользоваться."
-
-### Цитата
-
-> "I'd be sugar free for several months, and then have a piece of cake... One cookie would turn to two, then three; to candy the next day; brownies thereafter, then an entire can of raisins. Before I knew it, I was bingeing. When I eat sugar, it eventually leads to a binge, every single time. It eventually leads to obsession where all I can think about is my next sugar hit."
-
-— Growing Humankindness blog (personal account of binge-restrict cycle)
-
-> "I slowly but strongly began to crave sugar more and more, and my mind lost the strength to fight... Within a few days, I was eating sugar once or twice a week. I had given up. I found my resolve shakier than before."
-
-— Janani Suri, Medium ("I Tried One Month of Being Sugar-Free")
+- Когда я ловлю дневной стресс и хочу сладкое на автомате, я хочу открыть приложение и получить быстрый anti-craving plan, чтобы не сорваться в ближайшие 5 минут.
+- Когда у меня уже начался energy dip после встреч, я хочу получить персональную подсказку заранее, чтобы подготовить нормальную замену до срыва.
+- Когда я все же сорвалась, я хочу мягко вернуться в рутину без чувства провала, чтобы один плохой эпизод не превращался в плохую неделю.
 
 ---
 
-## Common Patterns — Что объединяет всех персон
+## Персона 2: Pre-Diabetic Paul
 
-### 1. Момент тяги — точка провала
+### 1. Кто
 
-Все три персоны проигрывают в **момент тяги**, не до и не после. Существующие инструменты работают ретроспективно (логирование после еды) или превентивно (общие советы). Никто не помогает в 3pm когда рука тянется к candy bowl.
+- Имя: Paul Henderson
+- Возраст: 45
+- Профессия: Accountant / CPA
+- Доход: ~$110K/год
+- Город: Denver, Colorado
 
-**→ SOS AI — ответ на главную проблему всех персон.**
+### 2. Контекст
 
-### 2. "Что есть вместо?" — #1 неотвеченный вопрос
+- Жизненная ситуация: женат, двое детей, семейные ритуалы вокруг еды важны.
+- Распорядок дня: офисная работа, сладкая газировка с обедом, стрессовые сезоны на работе, вечерний десерт после ужина.
+- Типичный sugar pattern: soda at lunch, kids’ snacks at home, привычка “заслужил сладкое после тяжелого дня”.
+- Устройства: iPhone 14, Apple Watch, рабочий Windows-ноутбук.
 
-Сара не знает альтернативу candy bowl. Пол не знает замену семейному десерту. Хлоя не знает что делать вместо binge в пятницу. Все хотят конкретный ответ: "Ты хочешь шоколад? Вот что съесть ПРЯМО СЕЙЧАС."
+### 3. Боль
 
-**→ "Eat This Instead" engine — вторая по важности фича.**
+**Главная проблема:** Paul не понимает, как practically снизить сахар после scary health signal. Врач сказал “меньше сахара”, но не дал пошагового плана, а ломать привычки семьи он не хочет и не умеет.
 
-### 3. Эмоциональный слой > рациональный
+> “Today I found out I’m (very) prediabetic. I’m mortified.”
 
-Стресс (Сара), страх (Пол), стыд (Хлоя) — эмоции, не рациональное мышление, управляют поведением. Apps, которые трекают граммы сахара, обращаются к ratio. А нужно обращаться к эмоциям.
+Источник: Reddit, r/prediabetes, пост “29f / just found out I’m incredibly prediabetic”  
+https://www.reddit.com/r/prediabetes/comments/1d4eazs/29f_just_found_out_im_incredibly_prediabetic/
 
-**→ AI должен быть эмпатичным коучем, не калькулятором.**
+### 4. Текущее решение
 
-### 4. Один размер не подходит всем
+- Гуглит `how to lower A1C naturally`.
+- Пробует diet soda или sugar-free alternatives.
+- Пытается “просто есть меньше сахара”.
+- Полагается на общие советы врача и статьи из интернета.
 
-- Сара нужен preemptive alert в 14:45
-- Полу нужен постепенный план, совместимый с семьёй
-- Хлое нужно community и работа с binge-restrict циклом
+### 5. Почему не работает
 
-**→ Персонализация через ML trigger prediction + адаптивный AI.**
+- Советы слишком абстрактные: “меньше сахара” не превращается в повседневный план.
+- Невкусные замены быстро отваливаются, потому что не дают того же reward.
+- Семейный контекст мешает cold turkey-подходу: дома все еще есть сладкое.
+- У него нет ощущения прогресса по пути: нет структуры на 30-90 дней, нет понятных milestones, нет поддержки в момент соблазна.
 
-### 5. Демографический паттерн
+### 6. Триггер
 
-| Параметр | Сара | Пол | Хлоя |
-|----------|------|-----|------|
-| Возраст | 32 | 45 | 26 |
-| Доход | $85K | $110K | $45K |
-| Платёжная готовность | $9.99/мес | $79.99/год | $9.99/мес cyclically |
-| Канал привлечения | Instagram/TikTok | Google Search/Doctor | TikTok/Influencer |
-| Мотивация | Энергия + вес | Здоровье/страх диабета | Эмоции + social |
-| Retention driver | AI prediction accuracy | Progress dashboard + A1C trend | Community + streaks |
+- Новый анализ с плохим A1C, разговор с врачом или страх повторить судьбу родственника с диабетом.
+- Поисковый запрос уровня `prediabetes diet` или `how to quit sugar before diabetes`.
+- Особенно сильный триггер: обещание structured program, а не просто трекера.
 
-**Вывод:** Все три персоны имеют willingness to pay ≥$9.99/мес. Каналы привлечения различаются — нужна multi-channel стратегия (TikTok для Sarah/Chloe, SEO/Google для Paul).
+### 7. Готовность платить
+
+- Да.
+- Ожидаемый диапазон: `$79.99-119.99/год`.
+- Платит за structured program, measurable progress, sugar reduction without family warfare и ощущение контроля над здоровьем.
+
+### 8. Jobs-to-be-done
+
+- Когда врач говорит, что мои показатели ухудшаются, я хочу получить понятный 30-90-дневный план, чтобы снизить сахар без хаоса и паники.
+- Когда дома все едят сладкое, я хочу видеть рабочие замены и маленькие шаги, чтобы улучшать питание, не ломая жизнь всей семьи.
+- Когда я стараюсь держаться курса, я хочу видеть измеримый прогресс, чтобы понимать, что усилия реально снижают риск диабета.
 
 ---
 
-*Данный документ следует читать совместно с [Market Research](./MARKET-RESEARCH.md) и [Product Brief](./PRODUCT-BRIEF.md) для полного контекста.*
+## Персона 3: Challenge Chloe
+
+### 1. Кто
+
+- Имя: Chloe Rivera
+- Возраст: 26
+- Профессия: Content Creator / part-time barista
+- Доход: ~$45K/год
+- Город: Los Angeles, California
+
+### 2. Контекст
+
+- Жизненная ситуация: живет в social-media-heavy среде, регулярно сравнивает себя с чужими “clean eating” результатами.
+- Распорядок дня: кофе с сиропом или sweet latte, днем неровная энергия, вечером эмоциональная уязвимость и высокий риск binge.
+- Типичный sugar pattern: 5 дней “идеального питания”, потом срыв, guilt spiral и новый Day 1.
+- Устройства: iPhone 16, AirPods, постоянно сидит в TikTok, Instagram и Reddit.
+
+### 3. Боль
+
+**Главная проблема:** Chloe застряла в цикле binge-restrict. Ее ломает не только сам сахар, но и эмоциональный откат после срыва: стыд, self-judgment и ощущение, что “я опять все испортила”.
+
+> “it was a never ending circle, I restricted, I binged, I restricted, then binged and so on.”
+
+Источник: Reddit, r/sugarfree, комментарий в треде “Day 1 Starts Tomorrow—Going Sugar-Free to Beat Binge Eating”  
+https://www.reddit.com/r/sugarfree/comments/1krqlph/day_1_starts_tomorrowgoing_sugarfree_to_beat/
+
+### 4. Текущее решение
+
+- Участвует в 30-day no sugar challenges.
+- Использует I Am Sober или другие generic streak apps.
+- Читает и иногда постит в r/sugarfree.
+- Пытается держаться на willpower, guilt и обещании “с понедельника начну нормально”.
+
+### 5. Почему не работает
+
+- Challenge-формат работает до первого relapsе, а дальше не дает recovery loop.
+- Generic sobriety apps не понимают food context и не помогают с конкретными sugar triggers.
+- All-or-nothing mindset делает один cookie началом недельного binge.
+- Ей нужен не только streak, а anti-shame support и объяснение, что делать после сбоя.
+
+### 6. Триггер
+
+- После очередного binge-цикла она снова ищет “что-то, что удержит меня после первого срыва”.
+- Хорошо срабатывает influencer recommendation или TikTok-demo без осуждения: “AI talks you through cravings without judging you”.
+- Важный триггер установки: обещание emotional support + community, а не только tracking.
+
+### 7. Готовность платить
+
+- Да, но с оговорками.
+- Ожидаемый диапазон: `$7.99-9.99/мес` в активный период мотивации.
+- Платит за non-judgmental support, community, shareable progress и помощь после relapse; чувствительна к churn, поэтому для нее также релевантны lifetime offer или challenge bundles.
+
+### 8. Jobs-to-be-done
+
+- Когда я уже начинаю срываться после одного сладкого, я хочу быстро получить поддержку и plan of action, чтобы не превратить один эпизод в binge на несколько дней.
+- Когда мне стыдно после relapse, я хочу, чтобы приложение помогло мне восстановиться без осуждения, чтобы не застревать в cycle of shame.
+- Когда я иду в новый челлендж, я хочу видеть community, streak и заметный прогресс, чтобы мотивация жила дольше первых 7-30 дней.
+
+---
+
+## Общие Паттерны
+
+### Топ-5 болей
+
+1. Пользователи проигрывают не на уровне знания, а в конкретный момент тяги.
+2. У большинства нет понятного ответа на вопрос “что делать прямо сейчас вместо сладкого?”.
+3. Стыд, стресс и эмоциональная перегрузка усиливают цикл и мешают вернуться в рутину после срыва.
+4. Существующие решения либо retrospective, либо generic: они не знают личные триггеры, food context и момент риска.
+5. Людям нужен не только трекинг, а персональный план, поддержка и ощущение измеримого прогресса.
+
+### Что общего
+
+- У всех трех персон есть повторяющийся sugar trigger, а не разовая слабость.
+- Все уже что-то пробовали: диеты, трекеры, челленджи, силу воли, статьи, generic sobriety apps.
+- Все хотят более конкретное и менее абстрактное решение.
+- Во всех случаях продукт выигрывает, если помогает в момент craving, а не только после него.
+- Для всех важен supportive tone: без shame, без moralizing, без “ты опять не справился”.
+
+### Primary Persona
+
+**Primary persona: Stress Sarah.**
+
+Почему она primary:
+
+- Ее боль лучше всего совпадает с core value proposition из `CLAUDE.md`: SOS в момент тяги + predictive trigger support.
+- У нее высокая частота проблемы: use case может происходить почти ежедневно.
+- Ее проще всего захватывать через self-serve каналы: TikTok, Instagram, App Store, friend referral.
+- У нее достаточно высокая willingness to pay и понятный path to conversion уже на MVP.
+
+Роль остальных:
+
+- **Pre-Diabetic Paul** — сильная secondary persona для annual plans, health outcomes и будущего B2B/clinical-adjacent GTM.
+- **Challenge Chloe** — сильный awareness и viral segment, но с более высоким churn и более хрупкой платящей мотивацией.
+
+---
+
+## Источники Цитат
+
+- Reddit, r/sugarfree: “What’s the EXACT moment that flips your ‘Must-Have-Sugar-Now’ switch?”  
+  https://www.reddit.com/r/sugarfree/comments/1l7oc68/whats_the_exact_moment_that_flips_your/
+- Reddit, r/prediabetes: “29f / just found out I’m incredibly prediabetic”  
+  https://www.reddit.com/r/prediabetes/comments/1d4eazs/29f_just_found_out_im_incredibly_prediabetic/
+- Reddit, r/sugarfree: “Day 1 Starts Tomorrow—Going Sugar-Free to Beat Binge Eating”  
+  https://www.reddit.com/r/sugarfree/comments/1krqlph/day_1_starts_tomorrowgoing_sugarfree_to_beat/

@@ -1,434 +1,405 @@
 # Исследование предметной области: Sugar Quit
 
-**Дата:** 13 апреля 2026
-**Категория:** Health / Behavior Change / Neuroscience
-**Companion Documents:** [Market Research](./MARKET-RESEARCH.md), [Competitors](./COMPETITORS.md), [User Personas](./USER-PERSONAS.md)
+**Дата:** 13 апреля 2026  
+**Статус:** обновлено по первичным источникам  
+**Companion Documents:** [PRODUCT-BRIEF](./PRODUCT-BRIEF.md), [USER-PERSONAS](./USER-PERSONAS.md), [COMPETITORS](./COMPETITORS.md)
 
 ---
 
-## 1. Ключевые концепции
+## 1. Предметная область
 
-### 1.1 Как сахар воздействует на мозг
+Sugar Quit находится на стыке `nutrition`, `behavior change`, `digital health` и `consumer health privacy`.
+Для MVP у проекта есть сильная база, если позиционировать его как **wellness-продукт для снижения added sugar и управления craving в моменте**, а не как лечение болезни.
 
-Сахар активирует те же нейронные reward pathways, что и наркотические вещества. Упрощённый цикл:
+### Что это за продукт на языке домена
 
-1. **Потребление сахара** → глюкоза поступает в кровоток
-2. **Дофаминовый всплеск** → nucleus accumbens (центр вознаграждения) высвобождает дофамин, создавая ощущение удовольствия
-3. **Инсулиновый спайк** → поджелудочная железа выбрасывает инсулин; инсулин также способствует прохождению триптофана через гематоэнцефалический барьер, повышая серотонин (настроение)
-4. **Толерантность** → при хроническом потреблении мозг снижает количество дофаминовых рецепторов; требуется БОЛЬШЕ сахара для того же "кайфа"
-5. **Crash** → уровень сахара в крови падает, дофамин падает, энергия падает, тяга растёт
-6. **Цикл повторяется** → мозг ассоциирует сахар с облегчением, создавая самоподдерживающуюся петлю
+- Не "лечение сахарной зависимости".
+- Не "приложение для обратного разворота преддиабета".
+- Не "AI-диетолог" и не "AI-терапевт".
+- Да: `general wellness app`, который помогает взрослым:
+  - отслеживать added sugar;
+  - замечать триггеры и паттерны;
+  - снижать потребление сладких напитков и снеков;
+  - проходить craving без срыва;
+  - возвращаться в рутину после lapse без shame.
 
-**Ключевые структуры мозга:**
+### Главный вывод по науке
 
-| Структура | Роль |
-|-----------|------|
-| Nucleus accumbens | Центр вознаграждения — высвобождение дофамина и эндорфинов |
-| Префронтальная кора | Принятие решений, контроль импульсов |
-| Амигдала | Эмоциональные реакции, связь "стресс → тяга" |
-| Гипоталамус | Регуляция аппетита |
+- Нет признанного клинического протокола уровня `CBT-I`, специально для "sugar addiction".
+- Есть сильная база по:
+  - снижению added/free sugars как public-health цели;
+  - сокращению sugar-sweetened beverages;
+  - digital behavior change через `goals/planning`, `feedback/monitoring`, `self-monitoring`, `social support`;
+  - работе с craving, триггерами и окружением.
+- Есть важное ограничение:
+  - термин `sugar addiction` полезен как исследовательский и пользовательский shorthand, но слишком рискованный для маркетинговых claims и regulatory positioning.
 
-**Источники:** [Lone Star Neurology](https://lonestarneurology.net/others/how-sugar-spikes-and-crashes-influence-brain-chemistry/), [Nutri.it](https://nutri.it.com/how-does-sugar-impact-your-brain-the-surprising-truth)
+### Глоссарий команды
 
-### 1.2 Цикл дофамин-инсулин-кортизол (порочный круг стресс-еды)
-
-Это не "проблема силы воли" — это нейрохимическая петля:
-
-```
-Стресс → Кортизол ↑ → Аппетит к сладкому ↑ → Сахар → Дофамин ↑ (удовольствие) +
-Инсулин ↑ → Crash сахара в крови → Усталость + Тяга → ЕЩЁ САХАР → ...
-
-При хроническом потреблении:
-Дисрегуляция HPA-оси → Базальный кортизол ↑ → Инсулинорезистентность →
-Больше тяги → Больше сахара → Петля затягивается
-```
-
-**Практический вывод для приложения:** Разрыв цикла требует работы одновременно со стрессом (кортизол), вознаграждением (дофамин) И стабильностью сахара в крови (инсулин). Только трекинг граммов не работает.
-
-**Источники:** [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0149763418308613), [Nourishing Meals](https://nourishingmeals.com/2025/05/blood-sugar-cortisol-and-brain-healing-sugar-addiction-cycle)
-
-### 1.3 Сахарная зависимость: что говорит наука
-
-#### Доказательства ЗА
-
-| Исследование | Год | Ключевой вывод |
-|-------------|-----|----------------|
-| Avena, Rada & Hoebel | 2007 | Прерывистый доступ к сахару вызывает bingeing, withdrawal, cravings — паттерны, идентичные наркозависимости. Одно из самых цитируемых исследований в области |
-| Hoebel et al. | 2008 | Ежедневные сахарные запои повторно высвобождают дофамин в nucleus accumbens shell — эффект, аналогичный классическим субстанциям зависимости |
-| Qin et al. | 2025 | Обзор в *Brain and Behavior*: сахарная зависимость — "реальное и измеримое состояние, отражающее паттерны мозга и поведения, наблюдаемые при наркозависимости" |
-| Gut-Brain Pathway | 2024 | Жир + сахар одновременно создают синергию — значительно больше дофамина, чем каждый по отдельности, что объясняет неодолимую привлекательность junk food |
-
-- Перекрёстная сенсибилизация: крысы с историей сахарных запоев показывают повышенную чувствительность к амфетамину и кокаину
-- Хроническое потребление сахара изменяет экспрессию дофаминовых и опиоидных рецепторов
-- Изменение Delta FosB в nucleus accumbens — молекулярный маркер зависимости
-
-**Источники:** [PubMed: Avena et al. 2007](https://pubmed.ncbi.nlm.nih.gov/17617461/), [Brain and Behavior: Qin 2025](https://onlinelibrary.wiley.com/doi/full/10.1002/brb3.70338), [ScienceDaily: Gut-Brain 2024](https://www.sciencedaily.com/releases/2024/01/240118122107.htm)
-
-#### Доказательства ПРОТИВ / Контроверсия
-
-- **Не признана в DSM-5 или ICD-11.** ICD-11 добавила "поведенческие зависимости" (гемблинг, гейминг), но НЕ пищевую/сахарную зависимость
-- Westwater, Fletcher & Ziauddeen (2016, *European Journal of Nutrition*): аддиктивноподобное поведение у грызунов появляется только при прерывистом доступе + голодании — при свободном доступе эффект исчезает
-- Дебат: зависимость от молекулы сахара vs. поведенческий паттерн вокруг гиперпалатабельной еды?
-- Некоторые исследователи предпочитают термин "food addiction" или "eating addiction" вместо "sugar addiction"
-
-**Источники:** [Springer: Westwater et al. 2016](https://link.springer.com/article/10.1007/s00394-016-1229-6)
-
-#### Практический вывод
-
-Наука поддерживает концепцию **даже при отсутствии формального диагноза.** Поведенческие паттерны (тяга, bingeing, withdrawal, relapse) реальны и задокументированы. Это именно то, на чём строится приложение — behaviour change, не "лечение зависимости."
-
-### 1.4 Таймлайн отмены сахара
-
-| Фаза | Сроки | Что происходит | Симптомы |
-|------|-------|----------------|----------|
-| **Острая** | Дни 1-3 | Пик интенсивности. Организм "требует" привычную дозу дофамина | Сильная тяга, головные боли, усталость, раздражительность, "sugar flu" |
-| **Адаптация** | Дни 4-7 | Организм начинает перестраиваться. Уровень сахара в крови стабилизируется | Часть симптомов стихает. Mood swings и тяга сохраняются |
-| **Улучшение** | Недели 2-4 | Худшие симптомы уходят. Вкусовые рецепторы начинают "перекалибровку" — натуральная еда кажется слаще | Энергия и фокус заметно улучшаются. Снижение вздутия, улучшение кожи |
-| **Стабилизация** | Месяцы 1-3 | Новый baseline. Тяга эпизодическая, не постоянная | Случайные тяги, эмоциональные колебания уменьшаются |
-
-**Задокументированные улучшения здоровья:**
-
-| Срок | Улучшение | Источник |
-|------|-----------|---------|
-| Дни 4-7 | Стабилизация уровня глюкозы в крови | Healthline |
-| 2 недели | Снижение калорийности рациона на ~25%; уменьшение вздутия; начало улучшения давления и холестерина | National Geographic |
-| 30 дней | Снижение риска гипертонии и болезней сердца; риск T2 диабета снижается до 35% | National Geographic |
-| 8 недель | Снижение печёночного de novo lipogenesis на 10.5% (исследование на подростках) | Clinical study |
-| 90 дней | Устойчивые улучшения: вес, энергия, кожа, воспалительные маркеры | Multiple sources |
-
-**Вывод для продукта:** 90-дневная программа идеально совпадает с клиническим таймлайном. Первые 7 дней — критический период, где поддержка важнее всего.
-
-**Источники:** [AddictionHelp](https://www.addictionhelp.com/sugar/withdrawal-symptoms/), [National Geographic](https://www.nationalgeographic.com/science/article/health-benefits-of-reducing-sugar), [Healthline](https://www.healthline.com/nutrition/30-days-no-sugar)
-
-### 1.5 Нормы потребления сахара
-
-| Организация | Рекомендация | Детали |
-|-------------|-------------|--------|
-| **AHA** | Мужчины: ≤36g/день (9 ч.л.). Женщины: ≤25g/день (6 ч.л.) | Дети и подростки: <6 ч.л./день + ≤8 oz сладких напитков/нед |
-| **WHO** | Сильная рекомендация: <10% калорий. Условная: <5% (~25g/день) | "Свободные сахара" = все добавленные + мёд, сиропы, фруктовые соки |
-| **US DGA 2025-2030** | ≤10g добавленного сахара на приём пищи | Дети до 10 лет: избегать добавленного сахара. До 4 лет: полностью исключить |
-
-**Реальность:** Средний американец потребляет 71g/день — почти **тройная** норма WHO.
-
-**Источники:** [AHA](https://www.heart.org/en/healthy-living/healthy-eating/eat-smart/sugar/how-much-sugar-is-too-much), [WHO Guideline](https://www.who.int/publications/i/item/9789241549028), [Harvard Nutrition Source](https://nutritionsource.hsph.harvard.edu/2026/01/09/dietary-guidelines-for-americans-2025-2030/)
-
-### 1.6 Шкала Yale Food Addiction Scale (YFAS 2.0)
-
-**YFAS 2.0** — 35-пунктный инструмент, маппящий симптомы пищевой зависимости на критерии DSM-5 для расстройств, связанных с употреблением веществ.
-
-- **Надёжность:** Pooled alpha = 0.85 (мета-анализ 65 исследований, медианный n=451)
-- **Распространённость пищевой зависимости по YFAS 2.0:**
-  - Общая популяция: 8.2%-22.2%
-  - Пре-бариатрические пациенты: 47.4%
-  - Тяжёлая форма (6+ симптомов): 6.6%
-
-Это не диагноз, но исследовательский инструмент, который можно использовать в образовательном контенте.
-
-**Источники:** [Wiley: YFAS Meta-analysis 2025](https://onlinelibrary.wiley.com/doi/10.1111/obr.13881), [PubMed: Prevalence](https://pubmed.ncbi.nlm.nih.gov/34953001/)
+| Термин | Что значит | Как использовать в проекте |
+|---|---|---|
+| **Sugar addiction** | Спорная исследовательская рамка про addictive-like паттерны вокруг сахара и highly palatable foods | Можно обсуждать в research и educational контенте с оговорками; не использовать как основной claim продукта |
+| **Added sugars** | Сахара, добавленные при производстве или приготовлении продукта; именно они вынесены в Nutrition Facts Label в США | Базовая метрика MVP и основной язык продукта |
+| **Free sugars** | Более широкая рамка WHO: added sugars плюс сахара в меде, сиропах, фруктовых соках и концентрированных соках | Нужна для scientific accuracy и международного контента |
+| **Total sugars** | Все сахара в продукте: и естественные, и добавленные | Не путать с added sugars; для UX важнее показывать именно added sugars, если они известны |
+| **SSB (sugar-sweetened beverages)** | Подслащенные напитки: soda, sweet tea, energy drinks, сладкий кофе, fruit drinks и т.д. | Самая сильная точка входа для MVP и контента, потому что по ним больше прямых исследований |
+| **Craving** | Острое желание съесть или выпить что-то сладкое прямо сейчас | Ключевая единица UX: SOS, intensity rating, coping plan |
+| **Trigger** | Ситуация, время, эмоция, место или рутина, которые запускают craving | Основа для prediction и personalized reminders |
+| **Cue reactivity** | Усиленная реакция на cues: вид еды, запах, офисные сладости, реклама, привычный автомат с шоколадом | Важно для дизайна анти-триггерных советов и контента про окружение |
+| **Habit loop** | Цикл `cue -> routine -> reward` | Нужен для curriculum и AI-коучинга, чтобы менять не только еду, но и рутину |
+| **Lapse / slip** | Единичный эпизод отклонения от плана | Используем язык "lapse", а не "провал" |
+| **Relapse** | Возврат к старому паттерну после периода изменений | Для продукта важнее recovery loop, чем наказание за relapse |
+| **Disordered eating red flags** | Признаки потенциально небезопасного отношения к еде: extreme restriction, purging, binge-restrict cycle, obsessive tracking | Основа safety rules и escalation |
+| **Self-monitoring** | Самонаблюдение: лог intake, cravings, триггеров, сна, настроения | Один из самых поддержанных цифровых механизмов изменения поведения |
+| **Implementation intentions** | If-then планы: "Если потянет на сладкое в 15:00, я..." | Хорошая структура для AI-ответов и push/reminder UX |
+| **CBT** | Cognitive Behavioral Therapy; работа с мыслями, интерпретациями и привычными реакциями | Подходит как inspiration для tone и exercises, но не надо называть продукт терапией |
+| **Urge surfing** | Техника наблюдения за craving без немедленного действия | Подходит для SOS flows и short exercises |
+| **Food environment** | Окружение, которое облегчает или затрудняет выбор: офисные снеки, домашние запасы, маршрут, доставка | Важнее силы воли; контент должен помогать менять среду |
+| **Nutrition Facts Label / %DV** | Американская этикетка с данными о питательной ценности, включая added sugars и % Daily Value | База для label literacy и food education |
+| **General wellness product** | Низкорисковый wellness-продукт, поддерживающий healthy lifestyle без claims про diagnosis/treatment | Это правильная regulatory рамка для MVP |
+| **PHI** | Protected Health Information по HIPAA | Возникает в основном, если продукт работает от имени covered entity / business associate |
+| **Special category health data** | "Sensitive" health data по GDPR | Если идем в EU/EEA, нужно проектировать продукт так, будто мы обрабатываем именно эту категорию данных |
 
 ---
 
 ## 2. Экспертные источники
 
-### 2.1 Ключевые исследователи
+### 5 ключевых источников
 
-| Эксперт | Аффилиация | Область | Значимость |
-|---------|-----------|---------|------------|
-| **Dr. Nicole Avena** | Icahn School of Medicine at Mount Sinai; Princeton University | Нейронаука пищевой зависимости | 100+ публикаций. Соавтор основополагающей работы 2007 года. Автор книги *Sugarless* (2023). Идеальный кандидат в advisory board |
-| **Dr. Robert Lustig** | UCSF, Professor Emeritus | Детская эндокринология, метаболизм фруктозы | "Sugar: The Bitter Truth" — 5M+ просмотров на YouTube. Тезис "фруктоза = токсин" спорный, но влиятельный. Президент Institute for Responsible Nutrition |
-| **Bart Hoebel** | Princeton (скончался) | Пионер гипотезы сахарной зависимости | Вместе с Avena и Rada доказал, что сахарные запои высвобождают дофамин по паттерну наркозависимости |
-| **Kay Tye** | MIT, Picower Institute | Компульсивное seeking поведение | Идентифицировала, как мозг кодирует компульсивный поиск сахара — отдельно от нормального питания |
-| **Jeff Grimm** | (USA) | Инкубация тяги | 5,000+ цитирований, ~$2M грантов NIH. Обнаружил, что тяга к сахару РАСТЁТ с абстиненцией — как у кокаина/героина |
+| Источник | Что подтверждает | Что это значит для Sugar Quit |
+|---|---|---|
+| **WHO. _Guideline: Sugars intake for adults and children_ (4 марта 2015)** | Сильная public-health рекомендация: снижать free sugars до `<10%` дневной энергии; `<5%` дает дополнительные преимущества | У продукта есть понятная внешняя норма и benchmark; контент можно строить вокруг снижения free/added sugar, а не вокруг "детокса" |
+| **Avena, Rada, Hoebel. _Evidence for sugar addiction_ (2008)** | В animal models intermittent excessive sugar intake показывает bingeing, withdrawal, craving, cross-sensitization и изменения в reward pathways | Полезно для объяснения, почему craving ощущается как "не просто слабая воля", но этого недостаточно для medical claims |
+| **Westwater, Fletcher, Ziauddeen. _Sugar addiction: the state of the science_ (2016)** | В людях доказательная база слабее; многие addiction-like эффекты у животных завязаны на intermittent access и high palatability | Продукту лучше говорить "sugar habits", "cravings", "behavior change", а не "лечим зависимость" |
+| **Villinger et al. _The effectiveness of app-based mobile interventions on nutrition behaviours..._ (2019)** | Meta-analysis: app-based interventions дают небольшие, но значимые улучшения в nutrition behaviors и health outcomes; самые частые BCT-кластеры: `goals/planning`, `feedback/monitoring`, `shaping knowledge`, `social support` | Это прямое обоснование для daily check-ins, tracking, reminders, micro-learning и community |
+| **Turner/Hedrick et al. _A digital behavioral intervention to reduce sugar-sweetened beverage consumption_ (2025)** | RCT: structured digital intervention + tracking + personalized action planning снизили SSB intake сильнее, чем static education, эффект сохранялся через 6 месяцев | Есть прямой evidence, что digital sugar-reduction intervention может работать, особенно если она не только educates, но и ведет через действия |
 
-### 2.2 Ключевые публикации для цитирования
+### Что подтверждено достаточно хорошо
 
-| # | Публикация | Зачем использовать |
-|---|-----------|-------------------|
-| 1 | Avena, Rada & Hoebel (2007) — "Evidence for sugar addiction" | Основополагающая работа. Самая цитируемая в области |
-| 2 | Qin et al. (2025) — "Sugar Addiction: Neural Mechanisms" | Самый свежий обзор. Подтверждает реальность феномена |
-| 3 | Westwater et al. (2016) — "Sugar addiction: state of the science" | Контраргумент. Цитировать для научной честности |
-| 4 | YFAS 2.0 Meta-analysis (2025) | Распространённость пищевой зависимости — конкретные цифры |
-| 5 | Johns Hopkins AI DPP RCT (2025) | AI-приложение ≈ человеческой программе — validation для Sugar Quit |
+- Снижение added/free sugars и особенно `SSB` полезно как общественная и клинически релевантная цель.
+- Digital interventions реально могут менять nutrition behavior, если в них есть:
+  - понятная цель;
+  - self-monitoring;
+  - action planning;
+  - reminders;
+  - feedback;
+  - social support.
+- SOS-механика логично опирается на craving-management и if-then planning.
 
-### 2.3 Организации-стандарты
+### Что подтверждено слабее или требует осторожности
 
-| Организация | Что использовать | Ссылка |
-|-------------|-----------------|--------|
-| American Heart Association (AHA) | Нормы добавленного сахара (25-36g/день) | [heart.org](https://www.heart.org/en/healthy-living/healthy-eating/eat-smart/sugar/added-sugars) |
-| WHO | Глобальная рекомендация <10% калорий | [who.int](https://www.who.int/publications/i/item/9789241549028) |
-| American Diabetes Association (ADA) | Standards of Care 2026. Рекомендует воду вместо сладких напитков, средиземноморский стиль питания | [diabetes.org](https://professional.diabetes.org/standards-of-care) |
-| CDC | Статистика потребления сахара, программа Diabetes Prevention | [cdc.gov](https://www.cdc.gov/nutrition/php/data-research/added-sugars.html) |
-| USDA/HHS | Dietary Guidelines 2025-2030 | [dietaryguidelines.gov](https://nutritionsource.hsph.harvard.edu/2026/01/09/dietary-guidelines-for-americans-2025-2030/) |
+- Что у человека существует отдельная диагностическая сущность "sugar addiction" в клиническом смысле.
+- Что one-size-fits-all "sugar detox" безопасен и эффективен для всех.
+- Что искусственные подсластители автоматически решают проблему в долгую.
 
----
+### Практический вывод для продукта
 
-## 3. Регуляторика
-
-### 3.1 FDA: Wellness App vs. Medical Device
-
-**Ключевое обновление — январь 2026:** FDA выпустила обновлённые руководства:
-
-1. **General Wellness Policy for Low-Risk Devices:** Статус продукта определяется тем, **как он рекламируется и продвигается**, а не тем, предоставляет ли он данные, "ассоциированные" с заболеваниями
-2. Неинвазивные wearables, измеряющие активность, сон, пульс, fitness-метрики — квалифицируются как low-risk wellness products **при условии, что claims избегают ссылок на болезни**
-
-**Sugar Quit безопасно попадает в wellness-категорию при соблюдении правил ниже.**
-
-**Источники:** [AHA News](https://www.aha.org/news/headline/2026-01-06-fda-issues-guidance-wellness-products-clinical-decision-support-software), [Ropes & Gray](https://www.ropesgray.com/en/insights/alerts/2026/01/fda-adapts-with-the-times-on-digital-health-updated-guidances-on-general-wellness-products), [FDA Guidance](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/general-wellness-policy-low-risk-devices)
-
-### 3.2 Что МОЖНО и НЕЛЬЗЯ заявлять
-
-| ✅ МОЖНО | ❌ НЕЛЬЗЯ |
-|----------|----------|
-| "Отслеживайте потребление сахара" | "Лечит сахарную зависимость" |
-| "Формируйте здоровые привычки питания" | "Излечивает диабет" |
-| "Управляйте тягой к сладкому" | "Клинически доказано снижает сахар в крови" |
-| "Поддерживает ваши wellness-цели" | "Диагностирует" любое состояние |
-| "AI-коуч для изменения пищевых привычек" | "Лечение зависимости" |
-| "Backed by neuroscience" | "Медицинское вмешательство" |
-| "Помогает снизить потребление добавленного сахара" | "Предотвращает болезни сердца" |
-
-**Правило:** Одна чрезмерная claim может переклассифицировать wellness-приложение в медицинское устройство.
-
-**Прецеденты:**
-- **Lumosity (2015):** $2M штраф FTC за необоснованные claims о brain training
-- **WHOOP (июль 2025):** FDA Warning Letter за маркетинг "Blood Pressure Insights" без clearance
-- **AcneApp / Acne Pwner:** FTC action за claims о "лечении" акне
-
-### 3.3 FTC: Требования к маркетингу health apps
-
-- Все health-related claims должны иметь "appropriate substantiation" — научное подтверждение
-- Claims о профилактике/лечении болезней требуют "significant scientific agreement" — обычно RCT
-- **FTC Health Breach Notification Rule (обновлено июль 2024):** Расширено на health apps и wellness-технологии
-  - "Breach" включает передачу health-данных без авторизации — НЕ только кибератаки
-  - Dark patterns не считаются "meaningful choice" для consent
-  - Передача health-данных рекламодателям вопреки privacy policy = breach
-  - Уведомление: **60 календарных дней** при breach 500+ пользователей
-- **Прецеденты:** FTC преследовала GoodRx и Premom за передачу health-данных рекламодателям
-
-**Источники:** [FTC Health Claims](https://www.ftc.gov/business-guidance/advertising-marketing/health-claims), [FTC HBNR](https://www.ftc.gov/business-guidance/blog/2024/04/updated-ftc-health-breach-notification-rule-puts-new-provisions-place-protect-users-health-apps)
-
-### 3.4 HIPAA
-
-- **Большинство wellness-приложений НЕ подпадают под HIPAA.** HIPAA применяется только когда приложение разработано для/предоставлено covered entity (healthcare provider, health plan) или обрабатывает PHI от их имени
-- Если Sugar Quit НЕ интегрируется с EHR-системами — HIPAA скорее всего не применяется
-- **Но:** Best practice — обращаться с health-данными на уровне HIPAA даже без юридического обязательства
-- SOC 2 compliance roadmap рекомендуется для B2B wellness продаж (корпоративные клиенты требуют)
-
-**Источники:** [HHS Resources for Mobile Health Apps](https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/index.html)
-
-### 3.5 GDPR / Европейские данные о здоровье
-
-- Health data = **"special category" данные по Статье 9 GDPR** — требуется **explicit consent** (не стандартное согласие)
-- Consent должен быть: свободно данным, специфичным, информированным, однозначным, задокументированным, отзываемым
-- **European Health Data Space (EHDS)** принят 11 февраля 2025, вступил в силу 26 марта 2025
-  - Общие положения: 26 марта 2027
-  - Primary use rules: 26 марта 2029
-  - Wellness app data включена в scope EHDS
-- Статья 32 GDPR: шифрование, псевдонимизация, сетевая безопасность, бэкапы
-
-**Для Sugar Quit на EU-рынке:** Explicit consent на обработку health-данных + encryption + data minimization. При launch — US only, EU позже.
-
-**Источники:** [Taylor Wessing](https://www.taylorwessing.com/en/global-data-hub/2025/eu-digital-laws-and-gdpr/gdh---european-health-data-space-and-the-gdpr)
-
-### 3.6 App Store Policies
-
-**Apple App Store:**
-- Health apps: **accurate information**, запрет misleading claims
-- Medical apps: **усиленная проверка**
-- Health-related data: **запрещено** использовать для рекламы
-- Health data: **запрещено** хранить в iCloud
-- 2025: Новые правила AI transparency и возрастных рейтингов
-
-**Google Play:**
-- Аналогичные требования к accuracy health claims
-- 2026: App Store Accountability Acts — safeguards для возрастной верификации, parental consent, data minimization (эффективно с 1 января 2026)
-
-**Источники:** [Dash Solutions](https://blog.dashsdk.com/app-store-requirements-for-health-apps/), [FKKS](https://technologylaw.fkks.com/post/102lxsp/countdown-to-jan-1-2026-mobile-developers-must-adopt-apple-google-apis-to-com)
-
-### 3.7 Sugar Taxes (глобальный контекст)
-
-- **118 налогов на SSB глобально:** 105 национальных, 13 субнациональных (World Bank)
-- **17 европейских стран** взимают налог на сладкие напитки
-- Tiered taxes (ставка зависит от содержания сахара): 53%. Единая ставка: 47%
-- WHO 2025: многие sugar taxes "слишком низки и не учитывают инфляцию"
-- **UK Sugar Tax (SDIL):** привёл к снижению содержания сахара в напитках на 46%
-- Тренд усиливается: Mexico, Latvia, France, UAE, Thailand обновили ставки; Jamaica вводит sugar tax в мае 2026
-
-**Источники:** [WHO Global SSB Tax Report 2025](https://www.who.int/publications/i/item/9789240118942), [World Bank SSB Tax Database](https://ssbtax.worldbank.org/)
+- Научная база у проекта есть.
+- Но strongest case не в том, что "сахар равен наркотикам".
+- Strongest case в том, что:
+  - люди реально хотят снизить сахар;
+  - WHO/CDC/NHS дают ясные ориентиры;
+  - цифровые behavior-change механики работают;
+  - самый сильный MVP-угол для нас: `craving management + trigger detection + SSB reduction + label literacy`.
 
 ---
 
-## 4. Контент-стратегия: построение доверия
+## 3. Регуляторика и safety-рамки
 
-### 4.1 Как лидеры строят научную кредибильность
+> Ниже продуктовые выводы, а не юридическое заключение. Перед launch нужен health-tech counsel review.
 
-| Приложение | Стратегия доверия | Результат |
-|-----------|-------------------|-----------|
-| **Noom** | 50+ peer-reviewed публикаций, 10+ academic collaborations. Первое мобильное приложение с CDC Diabetes Prevention Program certification (2017). CDC Full Plus Recognition (2024) — одна из 11 цифровых программ в США | Золотой стандарт кредибильности. RCT (N=202): 64% completers потеряли >5% веса |
-| **Reframe** | "Neuroscience-based." Партнёрство с Emory и Harvard University. Научный совет, программа с участием "сотен экспертов". 91% пользователей снизили алкоголь за 3 месяца | Self-reported данные (нет независимых RCT), но бренд-кредибильность высока |
-| **Headspace** | 25 peer-reviewed исследований. Цитирует Chief Strategy and Science Officer | Исследователи University of Washington нашли inconsistent results в 8 проверенных исследованиях — но это не остановило рост |
+### 3.1 Нужны ли лицензии
 
-**Источники:** [Noom Research](https://www.noom.com/research/), [Reframe About](https://www.joinreframeapp.com/about), [Advisory.com](https://www.advisory.com/daily-briefing/2020/08/14/mindfulness-app)
+**Для direct-to-consumer wellness MVP обычно не нужна отдельная "медицинская лицензия", если продукт:**
 
-### 4.2 Фреймворк Transparency for Trust (T4T)
+- не заявляет diagnosis, cure, mitigation, prevention или treatment болезни;
+- не интерпретирует медицинские данные как клиническое решение;
+- не дает patient-specific treatment suggestions;
+- не выдает AI за врача, терапевта или диетолога.
 
-Четыре принципа, повышающих доверие к health apps:
+**Но лицензирование становится релевантным, если:**
 
-1. **Privacy & Data Security** — прозрачная политика, шифрование, контроль пользователя
-2. **Development Practices** — кто создал, какие эксперты вовлечены, какой процесс
-3. **Feasibility** — реалистичность обещаний, honest messaging
-4. **Health Benefits** — evidence видим at the point of download (App Store описание, landing page)
+- вы добавляете живых dietitians и они дают `medical nutrition therapy`;
+- вы продаете сервис клиникам, страховщикам, employer health plans;
+- вы вводите human therapy/coaching с терапевтическими обещаниями;
+- вы делаете disease-specific workflows для diabetes/prediabetes/eating disorders.
 
-**Источники:** [JMIR: T4T Principles](https://www.jmir.org/2019/5/e12390/)
+**Отдельный нюанс по экспертам:**
 
-### 4.3 Конкретный план для Sugar Quit
+- Commission on Dietetic Registration прямо рекомендует nutrition professionals иметь нужную state licensure/certification в тех штатах, где находятся клиенты.
+- Иными словами: advisory review контента можно делать без live patient care, а вот live expert coaching уже требует отдельной юрпроверки.
 
-| Элемент | Действие | Приоритет |
-|---------|----------|-----------|
-| **/science page** | Страница на сайте с ссылками на исследования, профилями advisory board | До launch |
-| **Advisory board** | 3-5 экспертов (см. раздел 2.1). Их имена на /science page = 10x ROI от компенсации | До launch |
-| **Disclaimers** | "Не является медицинским советом. Не заменяет консультацию врача" — на всех экранах с AI-советами | До launch |
-| **In-app citations** | Каждый урок 90-day curriculum ссылается на конкретное исследование | До launch |
-| **Pilot study** | 500 beta-users, pre/post метрики (sugar intake, cravings/week, energy level). Даже без control group — publishable в JMIR формате | 6 мес после launch |
-| **App Store description** | "Backed by neuroscience. Built with experts." + конкретные цифры (75% Americans want to reduce sugar) | До launch |
+### 3.2 Нужен ли FDA clearance
 
-### 4.4 Язык и тон
+По состоянию на **6 января 2026 года** FDA обновила guidance по `General Wellness: Policy for Low Risk Devices`.
 
-| ✅ Использовать | ❌ Избегать |
-|----------------|------------|
-| "Sugar habits" | "Sugar addiction" (в claims) |
-| "Cravings" / "тяга" | "Dependence" / "зависимость" (в claims) |
-| "Behavior change" | "Treatment" / "лечение" |
-| "Backed by neuroscience" | "Clinically proven" (без RCT) |
-| "Healthier relationship with sugar" | "Cure" / "излечение" |
-| "AI coach" | "AI therapist" / "AI doctor" |
-| "Progress, not perfection" | Shaming language, guilt |
-| "Reduce" / "снизить" (также "quit" — допустимо) | "Eliminate forever" / абсолютные обещания |
+Для Sugar Quit MVP базовая рамка такая:
 
----
+- **Скорее нет**, если мы остаемся в `general wellness`.
+- **Риск растет**, если мы делаем claims вроде:
+  - "лечит сахарную зависимость";
+  - "предотвращает диабет";
+  - "снижает A1C";
+  - "дает персонализированное лечение";
+  - "клинически заменяет специалиста".
 
-## 5. Ограничения и риски
+### 3.3 Что можно и нельзя заявлять
 
-### 5.1 Eating Disorders — Главный клинический риск
+| Можно | Нельзя |
+|---|---|
+| "Помогает отслеживать added sugar" | "Лечит сахарную зависимость" |
+| "Помогает замечать триггеры и cravings" | "Предотвращает или лечит диабет" |
+| "Поддерживает healthier habits around sugar" | "Нормализует глюкозу" |
+| "Educational coaching backed by nutrition guidance and behavior science" | "Клинически доказано лечит" без соответствующей доказательной базы |
+| "Помогает сократить sugary drinks и сладкие перекусы" | "Обращает вспять prediabetes" |
+| "Not medical advice" + честное описание функций | Дисклеймер, который противоречит основному обещанию, например: "лечит acne" + "for entertainment only" |
 
-**Проблема:** Диетические и фитнес-приложения "триггерят и усугубляют симптомы расстройств пищевого поведения, фокусируясь на квантификации, стимулируя чрезмерное использование, и предоставляя определённые типы обратной связи" (PMC 2021).
+**Ключевой FTC-принцип:** health-related claims должны быть правдивыми, не misleading и заранее подкреплены `competent and reliable scientific evidence`. Дисклеймер сам по себе не чинит ложный claim.
 
-**Прецедент Tessa (NEDA):** Терапевтический чатбот NEDA (National Eating Disorders Association) имел генеративный AI-компонент, который erroneously начал давать советы по диете и поощрять похудение → был приостановлен. **Прямое предупреждение для Sugar Quit.**
+### 3.4 Disclaimers, которые нужны MVP
 
-**Конкретные риски для наших персон:**
-- **Chloe (binge-restrict):** Уже в цикле. AI НЕ ДОЛЖЕН поддерживать extreme restriction. "30-дневный sugar-free challenge" может усилить binge-restrict паттерн
-- Использование weight loss как proxy для здоровья увеличивает риск
-- Rigid food tracking / калорий-counting — триггер для susceptible populations
+Минимальный набор:
 
-**Митигация:**
+1. **General wellness disclaimer**
+   - "Sugar Quit is a general wellness tool for education, self-monitoring, and habit support."
 
-| Мера | Реализация |
-|------|-----------|
-| AI safety guardrails | Никогда не стыдить. Никогда не поддерживать extreme restriction. "Reduction, not perfection" |
-| Anti-pattern detection | Автоматическое выявление ED-индикаторов в тексте (extreme restriction language, purging, "I binged and feel awful") |
-| Professional referral | Автоматический redirect к профессиональной помощи при red flags |
-| Advisory board | Клинический психолог, специализирующийся на eating behaviors — обязателен |
-| Content review | Все AI system prompts и curriculum — review на ED risk перед launch |
-| Moderation option | Поддержка "gradual reduction", не только "cold turkey" |
+2. **No medical advice / no treatment disclaimer**
+   - "Sugar Quit is not intended to diagnose, treat, cure, or prevent any disease and is not a substitute for professional medical advice."
 
-**Источники:** [PMC: Effects of Diet Apps on ED](https://pmc.ncbi.nlm.nih.gov/articles/PMC8485346/), [Harvard: AI and Eating Disorders](https://hsph.harvard.edu/news/artificial-intelligence-tools-offer-harmful-advice-on-eating-disorders/), [Within Health: AI Bias](https://withinhealth.com/explore-articles/uncovering-the-bias-problem-ai-and-disordered-eating)
+3. **Emergency disclaimer**
+   - "Do not use this app in an emergency. If you are experiencing severe symptoms or a crisis, contact local emergency services."
 
-### 5.2 AI Nutritional Advice — Юридические и этические риски
+4. **High-risk user disclaimer**
+   - "If you have diabetes, prediabetes, an eating disorder, are pregnant, or have another medical condition, consult a qualified clinician before making major dietary changes."
 
-- AI-модели, обученные на интернет-тексте, отражают вредные социальные biases о весе, диете, body image
-- AI предлагал диеты с 700 калориями меньше, чем диетологи для подростков — потенциально опасно
-- AI nutrition advice может influence harmful behaviors (рвота после еды, слабительные)
+5. **AI limitation disclaimer**
+   - "AI responses are educational and supportive, may be incomplete, and should not be relied on for diagnosis or treatment decisions."
 
-**Митигация:**
-- AI system prompt с жёсткими guardrails
-- Никогда не давать конкретных медицинских рекомендаций
-- "Eat This Instead" предлагает альтернативы, не медицинские диеты
-- Escalation triggers: self-harm language, ED indicators, medical emergency signs
-- Disclaimer на каждом AI-экране
+6. **Community disclaimer**
+   - "Community content reflects user experiences and is not medical advice."
 
-**Источники:** [Nutrition Insight](https://www.nutritioninsight.com/news/ai-teen-nutrition-risk-eating-disorders.html)
+### 3.5 HIPAA, FTC, GDPR, COPPA
 
-### 5.3 Когда приложение ДОЛЖНО направить к врачу
+| Тема | Что это значит для Sugar Quit MVP |
+|---|---|
+| **HIPAA** | Direct-to-consumer app **обычно не подпадает под HIPAA**, если работает напрямую с пользователем, а не от имени covered entity. HHS OCR формулирует это еще точнее: если вы offering services directly to consumers, а не on behalf of provider/plan/clearinghouse, вы `not likely` subject to HIPAA. |
+| **FTC Health Breach Notification Rule** | Если HIPAA не применяется, это не значит "никаких правил". После изменений, объявленных FTC **26 апреля 2024 года** и вступивших в силу **29 июля 2024 года**, rule прямо подчеркивает применимость к большинству health apps и similar technologies. |
+| **GDPR / special category data** | Если идем в EU/EEA, health-related data становится special category data. Практически это значит: explicit consent, purpose limitation, minimization, deletion/export flows, прозрачная privacy notice и отдельная осторожность с profiling/prediction. |
+| **COPPA** | Если продукт направлен на детей до 13 лет или у вас есть actual knowledge, что ими пользуются дети до 13, нужны parental notice/consent и COPPA compliance. Проще и безопаснее для MVP: `18+` или как минимум строгий age gate и отсутствие child-directed marketing. |
+| **State consumer health privacy laws** | Даже вне HIPAA direct-to-consumer health data уже отдельно регулируется на уровне штатов. Самый важный watchlist-пример: Washington `My Health My Data Act`, который требует privacy policy, consent, deletion rights и ограничивает сбор/шаринг consumer health data. |
 
-| Ситуация | Действие |
-|----------|----------|
-| Упоминание extreme caloric restriction | Popup: ресурсы профессиональной помощи |
-| Signs of disordered eating | Предложить связаться со специалистом + ресурсы |
-| Blood sugar instability (для пре-диабетиков) | "Обратитесь к вашему эндокринологу для мониторинга" |
-| Mental health crisis indicators | Кризисная линия + предложение обратиться к психологу |
-| Persistent severe symptoms (>2 weeks withdrawal) | "Проконсультируйтесь с врачом — это может быть не связано с сахаром" |
+### 3.6 Минимальные product requirements по данным
 
-### 5.4 Культурная чувствительность
+Для MVP стоит считать обязательными:
 
-- Еда имеет глубокое культурное, социальное, эмоциональное значение
-- AI, обученный на Western dietary norms, может не отражать diverse food traditions
-- Нельзя подразумевать, что культурно значимые продукты "inherently unhealthy"
-- "Семейный десерт" Пола — не "проблема", а контекст, с которым нужно работать
-- Фреймить: "выбор альтернатив", а не "отказ от традиций"
+- явные opt-in для чувствительных интеграций:
+  - HealthKit / Google Fit;
+  - location;
+  - calendar;
+  - push reminders по health-related profiling;
+- раздельные цели обработки:
+  - account;
+  - analytics;
+  - personalization;
+  - marketing;
+- data minimization:
+  - не собирать GPS и биометрию "на всякий случай";
+- retention policy:
+  - хранить только пока данные реально нужны;
+- export/delete flows:
+  - сразу закладывать в архитектуру;
+- red-team на тему:
+  - sharing with ad platforms;
+  - training AI на user logs без явного согласия;
+  - hidden secondary use.
 
-### 5.5 Технические ограничения
+### 3.7 Главный safety-риск: disordered eating
 
-| Ограничение | Влияние | Решение |
-|-------------|---------|---------|
-| Food database accuracy | Sugarfree провалился именно здесь ("every item I scan has wrong information") | Open Food Facts + curated corrections + user reports. Не launch scanner до готовности quality pipeline |
-| Added vs. natural sugar distinction | MyFitnessPal не может — годами. Технически сложно | AI-based classification + curated database. Лучше честно показать "неизвестно", чем ошибиться |
-| On-device ML prediction | Требует 7+ дней данных для начала работы | Day 1-7: generic timing alerts. Day 7+: personalized predictions. Transparent communication |
-| AI hallucinations | AI может выдумать nutritional facts | Retrieval-augmented generation (RAG) + verified food database. Не генерировать nutrition facts "из головы" |
+Это не edge case, а core product risk.
 
----
+Исследования по diet/fitness tracking apps показывают связь с disordered eating behaviors у части пользователей, особенно в уязвимых группах.
 
-## 6. Доказательная база: что работает в digital health
+Что это значит для Sugar Quit:
 
-### 6.1 Эффективность цифровых вмешательств
-
-| Исследование | Дизайн | Результат |
-|-------------|--------|-----------|
-| **Meta-analysis 2026** (52 статьи, N=24,652) | Цифровые вмешательства для изменения пищевого поведения | Малый, но статистически значимый эффект: **d=0.33** (95% CI 0.25-0.42, P<.001). Сильнее у молодых взрослых (d=0.46) |
-| **Johns Hopkins AI DPP RCT (2025)** | Phase III RCT: AI-приложение vs. человеческие программы diabetes prevention | AI-приложение соответствует CDC benchmarks **на уровне, сравнимом с human-led программами** |
-| **SSB Reduction RCT** | Digital behavioral intervention для снижения сладких напитков | Эффективно снижает SSB consumption. Через 6 мес — значимое снижение веса vs control |
-| **Noom DPP RCT (N=202)** | Мобильный DPP vs. usual care | 56% начавших и 64% completers потеряли >5% веса за 24 недели |
-| **AI + CGM App (944 users)** | AI-рекомендации + continuous glucose monitoring | Здоровые: time in range 74.7% → 85.5%. T2 diabetes: 49.7% → 57.4% |
-
-**Вывод:** d=0.33 — реальный и publishable эффект. Johns Hopkins RCT — прямая validation для AI-powered behavior change apps.
-
-**Источники:** [JMIR 2026](https://www.jmir.org/2026/1/e80821), [Johns Hopkins](https://www.hopkinsmedicine.org/news/newsroom/news-releases/2025/10/ai-powered-diabetes-prevention-program-shows-similar-benefits-to-those-led-by-people), [Nature](https://www.nature.com/articles/s41746-025-01430-7)
-
-### 6.2 Evidence-Based техники для Sugar Quit
-
-| Техника | Уровень доказательности | Применение в Sugar Quit | Источник |
-|---------|------------------------|------------------------|---------|
-| **CBT** | Сильный — gold standard для behavior change. Средний значимый эффект для lifestyle changes | Core framework для curriculum и AI conversations. Идентификация мыслительных паттернов, challenge cognitive distortions | [Nature 2023](https://www.nature.com/articles/s41598-023-40141-5) |
-| **Mindfulness** | Сильный — meta-analysis: снижение сладкого g=-0.39 (p<.001). Craving intensity: g=0.28 | "Surf the urge" техника в SOS. Guided mindfulness при тяге. Daily mindfulness check-ins | [PMC 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC11791380/) |
-| **Habit Substitution** | Сильный — замена поведения эффективнее устранения | "Eat This Instead" engine. Новые рутины в триггерные моменты | Evidence-based framework |
-| **Implementation Intentions** | Сильный — "if-then" планирование значительно улучшает adherence | "Если тяга в 3pm → алминдаль + 5 мин прогулка". AI помогает строить if-then планы | Gollwitzer (1999) |
-| **Self-Monitoring** | Сильный — трекинг сам по себе снижает target behavior на 15-30% | Daily check-ins, craving logs, sugar intake tracking, progress dashboard | Meta-analytic evidence |
-| **Social Support** | Средне-Сильный — 40% успешно бросивших курить кредитуют peer support (CDC) | Community, accountability partners, shared challenges | CDC data |
-
-### 6.3 Behavior Change Frameworks
-
-**COM-B Model** (Capability, Opportunity, Motivation → Behavior):
-- Для общей архитектуры 90-day программы
-- Capability: знания (curriculum) + навыки (coping techniques)
-- Opportunity: "Eat This Instead" (physical), community (social)
-- Motivation: AI coaching (reflective), streaks/gamification (automatic)
-
-**Fogg Behavior Model** (Motivation × Ability × Prompt → Behavior):
-- Для дизайна отдельных фич
-- SOS button = Prompt в момент, когда Motivation высока (тяга), и Ability сделана лёгкой (одно нажатие)
-- Daily check-in = Prompt (push notification) + Ability (30 секунд) + Motivation (streak не потерять)
-
-**6 техник наиболее ассоциированных с engagement в mHealth:**
-1. Goal setting
-2. Self-monitoring of behavior
-3. Feedback on behavior
-4. Prompts/cues
-5. Rewards
-6. Social support
-
-**Все 6 присутствуют в дизайне Sugar Quit.**
-
-**Источники:** [The Decision Lab: COM-B](https://thedecisionlab.com/reference-guide/organizational-behavior/the-com-b-model-for-behavior-change), [PMC: BCTs and Engagement](https://pmc.ncbi.nlm.nih.gov/articles/PMC10545861/)
+- не делать weight-loss app "под капотом";
+- не делать shame-based streak language;
+- не вознаграждать extreme restriction;
+- не строить продукт вокруг calories-first UX;
+- вводить escalation rules для:
+  - binge-restrict language;
+  - purging;
+  - extreme fasting;
+  - self-harm / crisis;
+  - medical instability.
 
 ---
 
-*Данный документ следует читать совместно с [Market Research](./MARKET-RESEARCH.md) для рыночных данных, [Competitors](./COMPETITORS.md) для конкурентного ландшафта, и [User Personas](./USER-PERSONAS.md) для понимания целевой аудитории.*
+## 4. Контентная стратегия
+
+### 4.1 На каких данных строим контент
+
+Контент должен строиться по иерархии:
+
+1. **Официальные рекомендации**
+   - WHO
+   - CDC
+   - NHS
+   - FDA label guidance
+
+2. **Systematic reviews / meta-analyses / RCTs**
+   - app-based nutrition interventions
+   - sugar reduction
+   - SSB reduction
+   - disordered-eating safety
+
+3. **Экспертная редактура**
+   - RD/RDN
+   - clinical psychologist / eating-behavior specialist
+
+4. **User research**
+   - как люди формулируют craving;
+   - какие триггеры реально повторяются;
+   - какие swaps они действительно принимают.
+
+**Не строим контент на:**
+
+- TikTok detox claims;
+- "clean eating" moralization;
+- неподтвержденных обещаниях про inflammation/hormones/"brain reset";
+- blanket claims, что diet soda или sweeteners автоматически решают проблему.
+
+### 4.2 Контентные pillars для MVP
+
+| Pillar | На чем стоит | Что можно выпускать |
+|---|---|---|
+| **Added sugar literacy** | FDA label guidance, CDC, NHS | Как читать label, difference between total vs added sugars, hidden sugar patterns |
+| **SSB reduction** | WHO guidance, 2025 RCT | 7-дневные мини-программы по sweet coffee, soda, energy drinks |
+| **Cravings and triggers** | behavior science, craving-management, habit loop | SOS scripts, trigger maps, urge surfing, if-then plans |
+| **Environment design** | habit change + cue reduction | Офис, дом, доставка, grocery swaps, snack defaults |
+| **Recovery after lapse** | relapse-prevention lens, anti-shame framing | "Что делать после срыва", "как не превратить один cookie в плохую неделю" |
+| **Sleep / stress / routine links** | косвенно сильная behavior-change база | Контент про связь poor sleep, stress, energy dips и sweet cravings без disease claims |
+
+### 4.3 Нужны ли эксперты
+
+**Да. Для launch не нужен большой advisory board, но нужны минимум 2 реальные роли.**
+
+Минимум до публичного запуска:
+
+- **1 RD/RDN**
+  - проверяет sugar-related content, swaps, label literacy, safety формулировок;
+- **1 clinical psychologist / therapist с опытом eating behaviors**
+  - проверяет anti-shame tone, relapse handling, ED risk, AI safety prompts.
+
+Желательно до scale/B2B:
+
+- **1 endocrinologist или PCP**
+  - ревью claims и границ продукта для prediabetes audience;
+- **privacy/regulatory counsel**
+  - claims review, consent flows, privacy design, state-law watchlist.
+
+### 4.4 Редакционная система
+
+Контенту нужен простой workflow:
+
+1. Черновик от product/content team.
+2. Проверка фактов по primary sources.
+3. Safety review.
+4. Expert review.
+5. Tagging по evidence level:
+   - `Guideline-backed`
+   - `Systematic review / RCT-backed`
+   - `Expert consensus`
+   - `User insight`
+6. Дата последнего review.
+
+### 4.5 Tone of voice
+
+Правильный тон:
+
+- supportive;
+- non-judgmental;
+- concrete;
+- anti-shame;
+- progress-oriented.
+
+Неправильный тон:
+
+- moralizing;
+- "cheat day" / "bad food" language;
+- punishment for lapse;
+- all-or-nothing challenge framing as default;
+- aggressive biohacking promises.
+
+### 4.6 Чего не должно быть в MVP-контенте
+
+- "90-day sugar detox cures inflammation"
+- "Quit sugar and reverse prediabetes"
+- "AI meal plans for medical conditions"
+- "Fast for 24 hours after a binge"
+- автоматический совет всем перейти на artificial sweeteners как основную стратегию
+
+---
+
+## 5. Выводы для продукта и ограничения MVP
+
+### Главные инсайты
+
+- У Sugar Quit есть хорошая evidence base, если продукт продается как `general wellness + behavior change`.
+- Самая сильная исследовательская опора не в теме "addiction treatment", а в теме:
+  - `added sugar reduction`
+  - `SSB reduction`
+  - `self-monitoring`
+  - `planning`
+  - `trigger detection`
+  - `support in the moment`
+- Лучший язык продукта:
+  - "reduce sugar"
+  - "manage cravings"
+  - "spot triggers"
+  - "build healthier habits around sugar"
+
+### Ограничения для MVP
+
+- Не делать disease claims.
+- Не делать child-focused продукт.
+- Не добавлять live therapeutic or clinical coaching без отдельной legal review.
+- Не строить core UX вокруг calories, weight и restriction.
+- Не обещать персонализированные medical outcomes.
+
+### Что стоит делать в MVP
+
+- Фокус на взрослых.
+- Сильный SOS flow.
+- Daily check-ins и trigger logging.
+- Label literacy и SSB reduction как самые понятные и доказуемые контентные вертикали.
+- Жесткие AI safety rules вокруг eating disorders и medical advice.
+- Privacy-by-design с явными consent flows и delete/export support.
+
+### Одной фразой
+
+**Sugar Quit стоит строить как AI-supported wellness coach для снижения added sugar и прохождения cravings, а не как продукт, который "лечит зависимость" или дает клиническое питание/терапию.**
+
+---
+
+## Основные источники
+
+- [WHO: Guideline: sugars intake for adults and children (2015)](https://www.who.int/publications/i/item/9789241549028/)
+- [WHO: Healthy diet fact sheet](https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet)
+- [WHO: non-sugar sweeteners guideline update (15 May 2023)](https://www.who.int/news/item/15-05-2023-who-advises-not-to-use-non-sugar-sweeteners-for-weight-control-in-newly-released-guideline)
+- [CDC: Get the Facts - Added Sugars](https://www.cdc.gov/nutrition/php/data-research/added-sugars.html)
+- [NHS: Sugar - the facts](https://www.nhs.uk/live-well/eat-well/how-does-sugar-in-our-diet-affect-our-health/)
+- [FDA: General Wellness: Policy for Low Risk Devices (January 2026)](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/general-wellness-policy-low-risk-devices)
+- [FDA: Added Sugars on the Nutrition Facts Label](https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label)
+- [FTC: Health Products Compliance Guidance](https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance)
+- [FTC: Health Breach Notification Rule - The Basics for Business](https://www.ftc.gov/business-guidance/resources/health-breach-notification-rule-basics-business)
+- [FTC: Mobile Health App Interactive Tool](https://www.ftc.gov/business-guidance/resources/mobile-health-apps-interactive-tool)
+- [HHS OCR: Health App Use Scenarios & HIPAA (February 2016)](https://www.hhs.gov/sites/default/files/ocr-health-app-developer-scenarios-2-2016.pdf)
+- [EDPB: Process personal data lawfully](https://www.edpb.europa.eu/sme-data-protection-guide/process-personal-data-lawfully_en)
+- [EDPB: Guidelines 05/2020 on consent under Regulation 2016/679](https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-052020-consent-under-regulation-2016679_en)
+- [Washington AG: My Health My Data Act overview](https://www.atg.wa.gov/protecting-washingtonians-personal-health-data-and-privacy)
+- [Avena, Rada, Hoebel (2008): Evidence for sugar addiction](https://pubmed.ncbi.nlm.nih.gov/17617461/)
+- [Westwater, Fletcher, Ziauddeen (2016): Sugar addiction - the state of the science](https://pubmed.ncbi.nlm.nih.gov/27372453/)
+- [Villinger et al. (2019): app-based mobile nutrition interventions meta-analysis](https://pubmed.ncbi.nlm.nih.gov/31353783/)
+- [Turner/Hedrick et al. (2025): digital intervention to reduce sugar-sweetened beverage consumption](https://pubmed.ncbi.nlm.nih.gov/40513952/)
+- [Hahn et al. (2022): self-monitoring apps and disordered eating behaviors](https://pubmed.ncbi.nlm.nih.gov/35065981/)
+- [Commission on Dietetic Registration: State Licensure](https://www.cdrnet.org/LicensureMap)
