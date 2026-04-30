@@ -34,10 +34,10 @@ export default function TabsLayout() {
 }
 
 const TABS = [
-  { key: 'home',       glyph: '◉', label: 'Home',     href: '/(tabs)/home'       as const },
-  { key: 'curriculum', glyph: '≡', label: 'Path',     href: '/(tabs)/curriculum' as const },
-  { key: 'progress',   glyph: '≋', label: 'Progress', href: '/(tabs)/progress'   as const },
-  { key: 'profile',    glyph: '◯', label: 'Profile',  href: '/(tabs)/profile'    as const },
+  { key: 'home',       glyph: '⊞', label: 'DASHBOARD', href: '/(tabs)/home'       as const },
+  { key: 'curriculum', glyph: '◈', label: 'MISSIONS',  href: '/(tabs)/curriculum' as const },
+  { key: 'progress',   glyph: '≋', label: 'INTEL',     href: '/(tabs)/progress'   as const },
+  { key: 'profile',    glyph: '⊕', label: 'COMMAND',   href: '/(tabs)/profile'    as const },
 ];
 
 function CustomTabBar() {

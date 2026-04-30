@@ -19,25 +19,25 @@ export function AtmosphericGradient({ theme = 'dawn', children, style }: Props) 
   if (theme === 'dawn') {
     return (
       <View style={[styles.root, { backgroundColor: colors.surface }, style]}>
-        {/* Layer 1: peach-coral (upper-left) — warmth / morning */}
+        {/* Layer 1: primary-container pink — top-left neon orb */}
         <LinearGradient
-          colors={['#ffaca0', 'transparent']}
-          start={{ x: 0.1, y: 0.1 }}
+          colors={['rgba(255,112,158,0.22)', 'transparent']}
+          start={{ x: 0.05, y: 0.1 }}
           end={{ x: 0.65, y: 0.55 }}
           style={StyleSheet.absoluteFill}
         />
-        {/* Layer 2: lavender (upper-right) — day ambient */}
+        {/* Layer 2: tertiary purple — middle-right neon orb */}
         <LinearGradient
-          colors={['#efdbff', 'transparent']}
-          start={{ x: 0.9, y: 0.25 }}
-          end={{ x: 0.4, y: 0.7 }}
+          colors={['rgba(204,155,255,0.18)', 'transparent']}
+          start={{ x: 0.95, y: 0.4 }}
+          end={{ x: 0.35, y: 0.75 }}
           style={StyleSheet.absoluteFill}
         />
-        {/* Layer 3: mint (bottom-center) — evening exhale */}
+        {/* Layer 3: secondary cyan — bottom-right neon orb */}
         <LinearGradient
-          colors={['#cfe0df', 'transparent']}
-          start={{ x: 0.5, y: 1 }}
-          end={{ x: 0.5, y: 0.3 }}
+          colors={['rgba(0,251,251,0.12)', 'transparent']}
+          start={{ x: 0.9, y: 1 }}
+          end={{ x: 0.4, y: 0.4 }}
           style={StyleSheet.absoluteFill}
         />
         {children}

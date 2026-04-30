@@ -5,38 +5,38 @@
  */
 
 export const colors = {
-  // primary — rust / terracotta (brand core)
-  primary: '#a53c30',
-  primaryDim: '#953025',
-  primaryContainer: '#ffaca0',
-  primaryFixed: '#ffaca0',
-  primaryFixedDim: '#ff9788',
-  onPrimary: '#fff7f6',
-  onPrimaryContainer: '#761911',
-  onPrimaryFixed: '#570202',
-  onPrimaryFixedVariant: '#822219',
-  inversePrimary: '#fd7d6c',
+  // primary — magenta pink (from Stitch design-theme.json)
+  primary: '#b50058',
+  primaryDim: '#9f004d',
+  primaryContainer: '#ff709e',
+  primaryFixed: '#ff709e',
+  primaryFixedDim: '#ff5290',
+  onPrimary: '#ffeff1',
+  onPrimaryContainer: '#4c0021',
+  onPrimaryFixed: '#000000',
+  onPrimaryFixedVariant: '#5d002a',
+  inversePrimary: '#ff4a8d',
 
-  // surface — cream
-  surface: '#fbf9f5',
-  background: '#fbf9f5',
-  surfaceBright: '#fbf9f5',
-  surfaceDim: '#dadad4',
+  // surface — light blue-gray (from Stitch design-theme.json)
+  surface: '#f1f7fa',
+  background: '#f1f7fa',
+  surfaceBright: '#f1f7fa',
+  surfaceDim: '#ccd6db',
   surfaceContainerLowest: '#ffffff',
-  surfaceContainerLow: '#f5f3ef',
-  surfaceContainer: '#efeee9',
-  surfaceContainerHigh: '#e9e8e3',
-  surfaceContainerHighest: '#e3e3dd',
-  surfaceVariant: '#e3e3dd',
-  inverseSurface: '#0e0e0d',
-  inverseOnSurface: '#9e9d9a',
+  surfaceContainerLow: '#ebf2f5',
+  surfaceContainer: '#e2e9ed',
+  surfaceContainerHigh: '#dbe4e8',
+  surfaceContainerHighest: '#d5dee3',
+  surfaceVariant: '#d5dee3',
+  inverseSurface: '#090f11',
+  inverseOnSurface: '#979ea1',
 
-  // on-surface — warm near-black
-  onSurface: '#31332f',
-  onSurfaceVariant: '#5e605b',
-  onBackground: '#31332f',
-  outline: '#7a7b76',
-  outlineVariant: '#b2b2ad',
+  // on-surface
+  onSurface: '#293032',
+  onSurfaceVariant: '#565c5f',
+  onBackground: '#293032',
+  outline: '#71787b',
+  outlineVariant: '#a8aeb1',
 
   // secondary — muted lavender
   secondary: '#6a577f',
@@ -157,33 +157,33 @@ export const blur = {
  * Atmospheric background is achieved by stacking 3 LinearGradients absolutely.
  */
 export const gradients = {
-  // Primary CTA pill — horizontal 90deg
+  // Primary CTA pill — Stitch gradient: magenta → pink
   pillCta: {
-    colors: ['#a53c30', '#c75b48'] as const,
+    colors: ['#b50058', '#ff709e'] as const,
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
   },
-  // SOS FAB — diagonal
+  // SOS FAB — diagonal magenta
   fab: {
-    colors: ['#a53c30', '#ac3434'] as const,
+    colors: ['#b50058', '#9f004d'] as const,
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
   },
   // Hero number vertical fill
   heroVertical: {
-    colors: ['#a53c30', '#5e4b72'] as const,
+    colors: ['#b50058', '#811cd9'] as const,
     start: { x: 0, y: 0 },
     end: { x: 0, y: 1 },
   },
-  // Hero word horizontal fill ("Stress Eater")
+  // Hero word horizontal fill
   heroHorizontal: {
-    colors: ['#a53c30', '#d87158'] as const,
+    colors: ['#b50058', '#ff709e'] as const,
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
   },
-  // Insight card purple-to-rust (Sleep Insight pattern)
+  // Insight card purple-to-pink
   insightCard: {
-    colors: ['#6a577f', '#a53c30'] as const,
+    colors: ['#811cd9', '#b50058'] as const,
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
   },
