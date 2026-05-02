@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     // width is set inline at runtime from slotWidth (depends on screen width)
     height: '100%',
     borderRadius: radius.full,
-    backgroundColor: 'rgba(165,60,48,0.12)',
+    backgroundColor: 'rgba(181,0,88,0.12)',
   },
   inner: {
     flexDirection: 'row',
