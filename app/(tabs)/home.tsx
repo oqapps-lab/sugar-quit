@@ -364,15 +364,15 @@ const styles = StyleSheet.create({
   scroll: { paddingHorizontal: spacing.lg },
 
   // ── Hero ─────────────────────────────────────────────────────────────────────
-  heroSection: { alignItems: 'center', marginBottom: spacing.xl },
+  heroSection: { alignItems: 'center', marginBottom: spacing.lg },
   heroEyebrow: {
     fontFamily: fonts.label, fontSize: typeScale.bodyMedium,
     color: colors.primary, letterSpacing: tracking.labelWidest,
-    marginBottom: spacing.md,
+    marginBottom: spacing.sm,
   },
   heroNumRow: {
     alignItems: 'center', justifyContent: 'center',
-    marginBottom: spacing.md,
+    marginBottom: spacing.sm,
     // Primary pink glow around the number (Stitch: glow-aura)
     shadowColor: colors.primary,
     shadowOpacity: 0.35,
@@ -382,16 +382,16 @@ const styles = StyleSheet.create({
   // Soft pink blush circle behind the number
   heroGlow: {
     position: 'absolute',
-    width: 220, height: 220, borderRadius: 110,
+    width: 200, height: 200, borderRadius: 100,
     backgroundColor: colors.primaryContainer,
     opacity: 0.35,
   },
   heroNum: {
     fontFamily: fonts.headlineExtraBold,
-    fontSize: 128,
+    fontSize: 108,
     color: colors.inverseSurface,
     letterSpacing: -5,
-    lineHeight: 132,
+    lineHeight: 112,
   },
   heroSubLabel: {
     fontFamily: fonts.label, fontSize: typeScale.bodyMedium,
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
   },
 
   // ── Progress bar ─────────────────────────────────────────────────────────────
-  progressWrap: { marginBottom: spacing.xl, gap: spacing.xs },
+  progressWrap: { marginBottom: spacing.lg, gap: spacing.xs },
   progressTrack: {
     height: 4, borderRadius: 2,
     backgroundColor: colors.surfaceContainerHighest,
@@ -424,8 +424,8 @@ const styles = StyleSheet.create({
   // ── Strike text block ────────────────────────────────────────────────────────
   strikeBlock: {
     alignItems: 'flex-start',
-    marginBottom: spacing.xl,
-    marginTop: spacing.sm,
+    marginBottom: spacing.lg,
+    marginTop: spacing.xs,
   },
   strikeHeadline: {
     fontFamily: fonts.headlineExtraBold,
