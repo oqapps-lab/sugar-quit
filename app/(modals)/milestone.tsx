@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: typeScale.labelSmall,
     color: colors.primary,
     letterSpacing: tracking.labelWide,
-    marginTop: spacing.xxl,
+    marginTop: spacing.sm,
   },
 
   heroOrb: {

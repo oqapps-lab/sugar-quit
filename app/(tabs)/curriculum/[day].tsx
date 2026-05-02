@@ -170,8 +170,13 @@ export default function Lesson() {
         <Text style={styles.source}>Source: Wise et al., 2019, Nutrients</Text>
       </ScrollView>
 
-      {/* CTA — sits above the floating tab bar (bar takes ~114pt from bottom) */}
-      <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 110 }]}>
+      {/* CTA — gradient fade masks scroll content below, then button on top */}
+      <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 110 }]} pointerEvents="box-none">
+        <LinearGradient
+          colors={['rgba(253,237,237,0)', 'rgba(253,237,237,0.96)', 'rgba(253,237,237,1)'] as const}
+          style={styles.ctaFade}
+          pointerEvents="none"
+        />
         <PillCTA label="Mark lesson complete" onPress={() => router.back()} />
       </View>
     </AtmosphericGradient>
@@ -257,9 +262,11 @@ const styles = StyleSheet.create({
 
   illustration: {
     alignItems: 'center',
-    marginVertical: spacing.xl,
+    marginTop: 120,
+    marginBottom: spacing.xl,
     height: 180,
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   illoHalo: {
     position: 'absolute',
@@ -268,11 +275,6 @@ const styles = StyleSheet.create({
     width: 170, height: 170, borderRadius: 85,
     backgroundColor: colors.primaryContainer,
     opacity: 0.55,
-    shadowColor: colors.primary,
-    shadowOpacity: 0.25,
-    shadowRadius: 28,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
   },
 
   // Hero layout (title left, glyph right)
@@ -373,6 +375,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },
+  ctaFade: {
+    ...StyleSheet.absoluteFillObject,
+    top: -60, // extend the fade 60pt above the CTA wrap
+  },
 
   // Background aura layer
   auraLayer: {
@@ -386,7 +392,7 @@ const styles = StyleSheet.create({
   },
   auraBottomLeft: {
     position: 'absolute',
-    bottom: '18%',
+    bottom: '32%',
     left: -120,
   },
 });
