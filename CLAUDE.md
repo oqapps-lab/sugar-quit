@@ -16,7 +16,11 @@ AI-powered sugar addiction coach. "Reframe for sugar." SOS button for craving mo
 - Social media health enthusiasts doing challenges ("Challenge Chloe")
 
 ## Current Stage
-Research (Stage 3)
+Product Definition (Stage 2 complete → ready for UX Design)
+
+## Docs
+- /docs/01-research/ — market research, competitors, personas, domain research, research brief
+- /docs/02-product/ — target audience, problem-solution fit, features, monetization, product vision
 
 ## Rules
 - useWindowDimensions() for responsive

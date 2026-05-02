@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sugar Quit - Onboarding Step 3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Manrope:wght@300;400;600&amp;family=Public+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#64655b",
+                        "surface-tint": "#ad4127",
+                        "on-secondary-fixed": "#2c4528",
+                        "surface": "#fefcf4",
+                        "on-tertiary-container": "#61443b",
+                        "background": "#fefcf4",
+                        "on-error-container": "#6e0523",
+                        "on-tertiary-fixed-variant": "#6b4d44",
+                        "on-surface": "#373930",
+                        "surface-dim": "#e3e3d6",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#fe7d5e",
+                        "on-error": "#ffffff",
+                        "tertiary": "#7d5d53",
+                        "on-primary-fixed-variant": "#5f1000",
+                        "surface-variant": "#e9e9dc",
+                        "inverse-on-surface": "#9e9d96",
+                        "on-background": "#373930",
+                        "tertiary-container": "#f8cec2",
+                        "tertiary-fixed": "#f8cec2",
+                        "inverse-primary": "#fe7d5e",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#ccebc2",
+                        "outline": "#808176",
+                        "tertiary-dim": "#705148",
+                        "error-dim": "#6b0221",
+                        "outline-variant": "#b9baae",
+                        "surface-container-highest": "#e9e9dc",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#f97386",
+                        "surface-container-high": "#efeee3",
+                        "on-tertiary-fixed": "#4c3229",
+                        "primary-fixed-dim": "#ed7153",
+                        "tertiary-fixed-dim": "#e9c0b5",
+                        "inverse-surface": "#0e0f0a",
+                        "error": "#af3b50",
+                        "secondary-fixed": "#ccebc2",
+                        "primary-dim": "#9c351d",
+                        "on-secondary-container": "#3e5839",
+                        "on-primary-fixed": "#020000",
+                        "surface-container": "#f5f4e9",
+                        "surface-bright": "#fefcf4",
+                        "surface-container-low": "#fbfaf0",
+                        "secondary-fixed-dim": "#beddb5",
+                        "primary-container": "#fe7d5e",
+                        "on-secondary-fixed-variant": "#486242",
+                        "primary": "#ad4127",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#4e0b00",
+                        "secondary": "#506b4a",
+                        "secondary-dim": "#455f3f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background: linear-gradient(to bottom, #fefcf4 0%, #f8cec2 50%, #ccebc2 100%);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body text-on-surface antialiased flex flex-col min-h-screen">
+<!-- Top Navigation / Progress -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-transparent z-10 sticky top-0">
+<button aria-label="Go back" class="text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-2xl font-light" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">STEP 3 OF 15</span>
+<div class="flex gap-1">
+<!-- 15 ticks, 3 filled -->
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-surface-dim"></div>
+</div>
+</div>
+<div class="w-6"></div> <!-- Spacer for balance -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-6 pt-8 pb-32 flex flex-col items-center max-w-lg mx-auto w-full">
+<!-- Hero Section -->
+<div class="text-center mb-12 w-full">
+<h1 class="font-headline italic font-light text-5xl md:text-6xl text-on-surface mb-4 tracking-tight">Why now?</h1>
+<p class="font-body text-on-surface-variant text-lg leading-relaxed max-w-[280px] mx-auto">Pick what feels true. Multi-select is fine.</p>
+</div>
+<!-- Options Stack -->
+<div class="w-full flex flex-col gap-4">
+<!-- Card 1 (Selected State) -->
+<button class="w-full text-left bg-gradient-to-r from-[#FF7E5F]/20 to-[#FEB47B]/20 rounded-xl p-5 flex items-start gap-4 transition-all relative overflow-hidden group border border-primary-fixed/20 shadow-[0_0_24px_rgba(254,125,94,0.15)]">
+<div class="absolute inset-0 bg-surface-container-lowest/40 backdrop-blur-[10px] -z-10"></div>
+<div class="mt-1 shrink-0 text-primary-fixed">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="ecg_heart">ecg_heart</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline text-2xl text-on-surface mb-1">Health is asking me to</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">Blood work, doctor, a number that worried me</p>
+</div>
+</button>
+<!-- Card 2 (Rest State) -->
+<button class="w-full text-left bg-surface-container-lowest/60 backdrop-blur-[20px] rounded-xl p-5 flex items-start gap-4 transition-all hover:bg-surface-container-lowest/80 relative overflow-hidden group">
+<div class="mt-1 shrink-0 text-tertiary-dim">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="routine">routine</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline text-2xl text-on-surface mb-1">I want clearer energy</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">No more 3pm crashes</p>
+</div>
+</button>
+<!-- Card 3 (Rest State) -->
+<button class="w-full text-left bg-surface-container-lowest/60 backdrop-blur-[20px] rounded-xl p-5 flex items-start gap-4 transition-all hover:bg-surface-container-lowest/80 relative overflow-hidden group">
+<div class="mt-1 shrink-0 text-secondary-dim">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="spa">spa</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline text-2xl text-on-surface mb-1">My body feels different</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">Weight, bloat, skin, sleep</p>
+</div>
+</button>
+<!-- Card 4 (Rest State) -->
+<button class="w-full text-left bg-surface-container-lowest/60 backdrop-blur-[20px] rounded-xl p-5 flex items-start gap-4 transition-all hover:bg-surface-container-lowest/80 relative overflow-hidden group">
+<div class="mt-1 shrink-0 text-on-tertiary-container">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="monetization_on">monetization_on</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline text-2xl text-on-surface mb-1">It's costing too much</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">Money, time, focus</p>
+</div>
+</button>
+<!-- Card 5 (Rest State) -->
+<button class="w-full text-left bg-surface-container-lowest/60 backdrop-blur-[20px] rounded-xl p-5 flex items-start gap-4 transition-all hover:bg-surface-container-lowest/80 relative overflow-hidden group">
+<div class="mt-1 shrink-0 text-surface-tint">
+<span class="material-symbols-outlined text-3xl font-light" data-icon="explore">explore</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline text-2xl text-on-surface mb-1">I just want to feel in charge</h3>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">Of my choices, my cravings, my day</p>
+</div>
+</button>
+</div>
+</main>
+<!-- Bottom Action -->
+<div class="fixed bottom-0 left-0 w-full z-50 flex justify-center px-8 pb-10 pt-4 bg-gradient-to-t from-[#ccebc2] to-transparent">
+<button class="flex items-center justify-center bg-gradient-to-r from-[#FF7E5F] to-[#FEB47B] rounded-full h-16 w-full max-w-sm text-white shadow-[0_32px_64px_-12px_rgba(173,65,39,0.1)] hover:brightness-110 transition-all active:scale-[0.98] duration-500 ease-out">
+<span class="font-label uppercase tracking-[0.15em] text-[11px] font-semibold">CONTINUE</span>
+</button>
+</div>
+</body></html>

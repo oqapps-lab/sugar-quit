@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#9e9d9a",
+                        "surface-container": "#efeee9",
+                        "surface": "#fbf9f5",
+                        "on-tertiary-container": "#415151",
+                        "inverse-surface": "#0e0e0d",
+                        "secondary-dim": "#5e4b72",
+                        "background": "#fbf9f5",
+                        "secondary-fixed-dim": "#e3cbfa",
+                        "outline-variant": "#b2b2ad",
+                        "on-tertiary": "#eafdfc",
+                        "on-secondary-container": "#5c4a71",
+                        "on-secondary-fixed": "#49385d",
+                        "on-tertiary-fixed-variant": "#4b5b5b",
+                        "tertiary-container": "#cfe0df",
+                        "primary": "#a53c30",
+                        "on-primary": "#fff7f6",
+                        "error-container": "#f56965",
+                        "tertiary-fixed-dim": "#c1d2d1",
+                        "surface-container-highest": "#e3e3dd",
+                        "on-surface": "#31332f",
+                        "on-primary-fixed": "#570202",
+                        "tertiary": "#526262",
+                        "surface-variant": "#e3e3dd",
+                        "secondary": "#6a577f",
+                        "on-primary-fixed-variant": "#822219",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#66547b",
+                        "primary-container": "#ffaca0",
+                        "on-error-container": "#65000b",
+                        "primary-fixed": "#ffaca0",
+                        "surface-bright": "#fbf9f5",
+                        "tertiary-fixed": "#cfe0df",
+                        "on-background": "#31332f",
+                        "tertiary-dim": "#465656",
+                        "surface-container-low": "#f5f3ef",
+                        "error-dim": "#70030f",
+                        "surface-container-high": "#e9e8e3",
+                        "on-tertiary-fixed": "#2f3f3e",
+                        "secondary-fixed": "#efdbff",
+                        "on-secondary": "#fff6ff",
+                        "primary-dim": "#953025",
+                        "primary-fixed-dim": "#ff9788",
+                        "on-error": "#fff7f6",
+                        "outline": "#7a7b76",
+                        "surface-dim": "#dadad4",
+                        "surface-tint": "#a53c30",
+                        "on-primary-container": "#761911",
+                        "on-surface-variant": "#5e605b",
+                        "error": "#ac3434",
+                        "inverse-primary": "#fd7d6c",
+                        "secondary-container": "#efdbff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .atmospheric-gradient {
+            background: radial-gradient(circle at 10% 10%, #ffaca0 0%, transparent 40%),
+                        radial-gradient(circle at 90% 40%, #efdbff 0%, transparent 40%),
+                        radial-gradient(circle at 50% 90%, #cfe0df 0%, transparent 50%),
+                        #fbf9f5;
+        }
+        .glass-panel {
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 py-6 z-40 full-width top-0 absolute bg-transparent">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-rose-900 dark:text-rose-200" data-icon="bubble_chart">bubble_chart</span>
+<span class="text-lg font-bold tracking-tighter text-rose-900 dark:text-rose-100 font-headline">The Exhale</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-6">
+<span class="font-['Plus_Jakarta_Sans'] font-light tracking-widest uppercase text-[10px] text-slate-400 dark:text-slate-500 hover:opacity-70 transition-opacity cursor-pointer">Explore</span>
+<span class="font-['Plus_Jakarta_Sans'] font-light tracking-widest uppercase text-[10px] text-rose-900 dark:text-rose-100 hover:opacity-70 transition-opacity cursor-pointer">Insights</span>
+</nav>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/10">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a serene woman with soft natural lighting and a minimalist aesthetic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARRCmqIDqdEZ40i1QIykIytQ3k5kOjPHvsRATKy1ORxKeW8zYkYLadI1NDmb0xmOzQ2Yz8Z5b6TvFnV1avz9muQw6M08mVqsZIQGK8XAquHOA9BTzl5bMH2O266_vRInwunJ5eNaGZNwmtpKTQ3OyZvZpvTK61SYo-Nu9rqG3yPFqZHsI3V3p9pkZdJ0oHR99riZUCQIDuVHHJqhE2OD5tF9gdsV61bYSn4GQllO2w5sDsj2_3ionWywPolfDYR0ilKpEleMuowhU"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="atmospheric-gradient min-h-screen pt-32 pb-40 px-6 md:px-12 relative flex flex-col items-center">
+<!-- Hero Header -->
+<div class="w-full max-w-5xl text-center mb-24">
+<p class="font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant opacity-60 mb-4">Craving Forecast</p>
+<h1 class="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter text-on-surface leading-[0.9]">
+                Today is <span class="text-primary italic">Light</span>
+</h1>
+<p class="font-body text-lg font-light text-on-surface-variant mt-6 max-w-lg mx-auto">
+                The atmospheric pressure of temptation is low. A cool lavender evening awaits your focus.
+            </p>
+</div>
+<!-- Asymmetric Bento Grid (The Background is the Data) -->
+<div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Morning: Cool Lavender -->
+<div class="md:col-span-4 bg-surface-container-lowest/40 glass-panel rounded-xl p-8 flex flex-col justify-between min-h-[300px] hover:translate-y-[-4px] transition-transform duration-500">
+<div>
+<span class="font-label text-[10px] tracking-widest uppercase opacity-50">08:00 — 12:00</span>
+<h3 class="font-headline text-3xl font-light mt-2 text-secondary">Calm</h3>
+</div>
+<div class="flex items-end justify-between">
+<span class="material-symbols-outlined text-secondary/40 text-5xl" data-icon="water_drop">water_drop</span>
+<p class="text-sm font-light text-right max-w-[120px]">Low risk zone. Perfect for deep work.</p>
+</div>
+</div>
+<!-- Peak Intensity: Warm Amber (The Hero) -->
+<div class="md:col-span-8 bg-primary-fixed/20 glass-panel rounded-xl p-10 flex flex-col md:flex-row gap-10 min-h-[400px] relative overflow-hidden group">
+<div class="flex-1 flex flex-col justify-between z-10">
+<div>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-primary-fixed-variant">15:00 — 18:00</span>
+<h2 class="font-headline text-5xl md:text-7xl font-bold tracking-tighter mt-4 text-on-primary-fixed">High Surge</h2>
+<p class="font-body text-lg font-light text-on-primary-fixed-variant mt-4 opacity-80">
+                            Expect a spike in cortisol. Prepare your breathing anchors early.
+                        </p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 bg-primary text-on-primary rounded-full text-xs font-bold tracking-widest uppercase soft-press scale-95 transition-transform duration-500">SOS Plan</button>
+</div>
+</div>
+<div class="flex-1 relative flex items-center justify-center">
+<div class="absolute w-64 h-64 bg-primary-container rounded-full blur-[80px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
+<div class="text-[120px] font-headline font-extrabold text-primary/10 select-none">17:45</div>
+</div>
+</div>
+<!-- Late Evening: Mint Calm -->
+<div class="md:col-span-7 bg-tertiary-fixed/30 glass-panel rounded-xl p-8 flex items-center gap-8 min-h-[250px]">
+<div class="w-32 h-32 rounded-full border border-tertiary/20 flex items-center justify-center p-4">
+<div class="w-full h-full rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-4xl" data-icon="nights_stay">nights_stay</span>
+</div>
+</div>
+<div>
+<span class="font-label text-[10px] tracking-widest uppercase opacity-50">20:00 — 23:00</span>
+<h3 class="font-headline text-3xl font-light text-tertiary">The Exhale</h3>
+<p class="font-body text-sm font-light mt-2 opacity-70 max-w-sm">
+                        Ambient shift to cool mint. Risk levels drop to zero as the day concludes.
+                    </p>
+</div>
+</div>
+<!-- Floating Insight -->
+<div class="md:col-span-5 bg-white/10 glass-panel rounded-xl p-8 border border-white/20">
+<div class="flex items-start justify-between">
+<span class="material-symbols-outlined text-on-surface/40" data-icon="insights">insights</span>
+<span class="text-[10px] font-label text-secondary px-3 py-1 bg-secondary-fixed rounded-full">Weekly Trend</span>
+</div>
+<div class="mt-12">
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-headline font-bold">14</span>
+<span class="text-sm font-light opacity-60">Successive Days</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-4 overflow-hidden">
+<div class="w-[85%] h-full bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Data Clouds (Atmospheric) -->
+<div class="absolute top-1/4 left-[5%] w-32 h-32 bg-white/20 rounded-full blur-[60px] pointer-events-none"></div>
+<div class="absolute bottom-1/4 right-[5%] w-64 h-64 bg-primary-container/10 rounded-full blur-[100px] pointer-events-none"></div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex gap-4 px-4 py-2 bg-white/10 dark:bg-black/10 rounded-full backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
+<div class="flex items-center justify-center text-rose-900/40 dark:text-rose-100/30 w-12 h-12 hover:bg-white/30 dark:hover:bg-white/20 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="grain">grain</span>
+</div>
+<div class="flex items-center justify-center text-rose-900/40 dark:text-rose-100/30 w-12 h-12 hover:bg-white/30 dark:hover:bg-white/20 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="Map">map</span>
+</div>
+<div class="flex items-center justify-center bg-white/20 dark:bg-white/10 text-rose-900 dark:text-rose-100 rounded-full w-12 h-12 hover:bg-white/30 dark:hover:bg-white/20 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</div>
+<div class="flex items-center justify-center text-rose-900/40 dark:text-rose-100/30 w-12 h-12 hover:bg-white/30 dark:hover:bg-white/20 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</div>
+</nav>
+<!-- NavigationDrawer (Hidden by default, triggered by logo or menu) -->
+<aside class="fixed inset-y-0 left-0 z-[60] p-8 flex flex-col gap-6 h-screen w-80 rounded-r-[40px] backdrop-blur-3xl bg-white/80 dark:bg-slate-900/80 shadow-2xl shadow-rose-900/5 -translate-x-full transition-transform duration-500 hover:translate-x-0 group">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-2xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="bubble_chart">bubble_chart</span>
+</div>
+<div>
+<h4 class="text-rose-900 dark:text-rose-100 font-bold font-headline">Deep Breath</h4>
+<p class="text-[10px] font-light text-slate-500 uppercase tracking-widest">Day 14 of the exhale</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-4 p-4 text-slate-500 dark:text-slate-400 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="font-['Plus_Jakarta_Sans'] font-light">Roadmap</span>
+</div>
+<div class="flex items-center gap-4 p-4 text-slate-500 dark:text-slate-400 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Plus_Jakarta_Sans'] font-light">Community</span>
+</div>
+<div class="flex items-center gap-4 p-4 text-slate-500 dark:text-slate-400 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+<span class="font-['Plus_Jakarta_Sans'] font-light">Recipes</span>
+</div>
+<div class="flex items-center gap-4 p-4 text-rose-900 dark:text-rose-100 font-medium bg-rose-50/50 dark:bg-rose-900/20 rounded-xl hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Plus_Jakarta_Sans']">Insights</span>
+</div>
+</nav>
+<div class="mt-auto p-6 bg-surface-container rounded-3xl">
+<p class="text-xs font-light text-on-surface-variant italic">"The strongest storm is met with the quietest mind."</p>
+</div>
+</aside>
+</body></html>
