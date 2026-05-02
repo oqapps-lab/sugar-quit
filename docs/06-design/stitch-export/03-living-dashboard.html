@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Exhale - Living Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-container": "#702100",
+            "tertiary-fixed": "#b8e6e2",
+            "primary-container": "#ffad91",
+            "outline": "#7a7b76",
+            "surface": "#fbf9f5",
+            "secondary-fixed": "#ebdcff",
+            "secondary": "#6d4ea3",
+            "inverse-surface": "#0e0e0d",
+            "on-primary": "#fff7f5",
+            "on-primary-fixed-variant": "#7f2700",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#9e9d9a",
+            "secondary-container": "#ebdcff",
+            "primary-fixed-dim": "#ff9974",
+            "tertiary-container": "#b8e6e2",
+            "on-surface": "#31332f",
+            "outline-variant": "#b2b2ad",
+            "surface-dim": "#dadad4",
+            "tertiary-fixed-dim": "#abd7d3",
+            "primary": "#a53d12",
+            "surface-container-low": "#f5f3ef",
+            "on-surface-variant": "#5e605b",
+            "error-container": "#fa7150",
+            "inverse-primary": "#fe7e4f",
+            "on-secondary": "#fef7ff",
+            "error-dim": "#821a01",
+            "on-tertiary-fixed": "#154240",
+            "surface-container-highest": "#e3e3dd",
+            "secondary-fixed-dim": "#e0ccff",
+            "background": "#fbf9f5",
+            "on-error-container": "#671200",
+            "surface-variant": "#e3e3dd",
+            "on-tertiary-container": "#2a5553",
+            "error": "#aa371c",
+            "on-error": "#fff7f6",
+            "on-secondary-fixed": "#4c2d81",
+            "on-background": "#31332f",
+            "surface-container-high": "#e9e8e3",
+            "primary-dim": "#953205",
+            "on-tertiary": "#e1fffc",
+            "primary-fixed": "#ffad91",
+            "secondary-dim": "#614296",
+            "surface-bright": "#fbf9f5",
+            "on-secondary-container": "#604195",
+            "surface-container": "#efeee9",
+            "on-tertiary-fixed-variant": "#345f5c",
+            "on-primary-fixed": "#4d1400",
+            "tertiary-dim": "#2f5a57",
+            "on-secondary-fixed-variant": "#6a4b9f",
+            "tertiary": "#3c6663",
+            "surface-tint": "#a53d12"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background: radial-gradient(at 0% 0%, #ffad91 0%, transparent 40%),
+                  radial-gradient(at 100% 0%, #ebdcff 0%, transparent 40%),
+                  radial-gradient(at 50% 50%, #fbf9f5 0%, #fbf9f5 100%);
+      background-attachment: fixed;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glass-tile {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    .mask-fade-bottom {
+      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen text-on-surface selection:bg-primary-container">
+<!-- TopAppBar from JSON -->
+<header class="w-full top-0 px-8 pt-6 fixed z-50 flex justify-between items-center w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-orange-900 dark:text-orange-200 text-2xl">bubble_chart</span>
+<h1 class="text-2xl font-extralight text-orange-900/80 dark:text-orange-100/80 tracking-[0.2em] font-['Plus_Jakarta_Sans'] font-light tracking-widest uppercase">The Exhale</h1>
+</div>
+<div class="hidden md:flex gap-8 text-orange-900/40 dark:text-white/40">
+<a class="text-orange-800 dark:text-orange-300 font-medium tracking-widest uppercase text-xs hover:opacity-70 transition-opacity duration-500" href="#">Living</a>
+<a class="hover:opacity-70 transition-opacity duration-500 font-medium tracking-widest uppercase text-xs" href="#">Journey</a>
+<a class="hover:opacity-70 transition-opacity duration-500 font-medium tracking-widest uppercase text-xs" href="#">Insights</a>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-8 pt-32 pb-40">
+<!-- Masonry Layout Container -->
+<div class="grid grid-cols-12 gap-y-24 md:gap-y-32">
+<!-- 1. Sugar Label Scanner (Wide Portal) -->
+<section class="col-span-12 flex flex-col items-center">
+<div class="w-full max-w-3xl glass-tile rounded-xl p-8 relative overflow-hidden group border border-white/20">
+<div class="absolute inset-0 opacity-10 mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="close-up of colorful fruit in a soft focus supermarket aisle with ethereal lighting and morning sunbeams" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjFt8NGRZbba0Ax9yFRoZP_enBC8LTH22WgbIalcetfaVhdWdH0aF5X2wbK885jyv2TzIJ6u2tGhLLY1X4MXrPrgQ5HDovsS7r-AQjybJTfaM0U2qRQDxKBlvQYS_CmNWiv0JGjUIby7zIi_0pGjcO9vI0W1N7RlZ2TOSXr3LgL5RUjCLfQoXYFmlisiqyAcehzMWlRr4NqoaTd6Y8XsAInhPB4rM3l_tvPtFVXTpIUINjYmn7_02Y6ur47Bg-8HpDdw2FLeJYND8"/>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="relative w-48 h-48 rounded-full border-2 border-primary/30 flex items-center justify-center p-4">
+<div class="absolute inset-0 animate-pulse border-2 border-primary/10 rounded-full scale-110"></div>
+<img class="w-32 h-32 object-contain grayscale opacity-60" data-alt="minimalist silhouette of a generic packaged food container against a clean white background with soft shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4Dp6aJFCHccDyhiZmtJ6kicJMUZDGMJlu_ppPXgmaf29CLtpGYJjhqz3zFK-GLsElShzYmG19hFA_0-PuVXELpBQcirRcSeP2KvZP898-48a5xut7AD0N0l2XgegniUaiUtg6d2Dqtg93aSmFs9Dr2pFkBv93UpgPzvF_w0kYWljPTa2aqGZ7xBDs9Hl8_2OmQaERCCjjdnEeL6SxhZvFgF9UAdXJWqYOI8ivuesI11nO-uz5Jy9V0AIEvQet9WFcsD0S3X4l3Ak"/>
+<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-0.5 bg-primary/20 w-full"></div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<span class="label-sm text-[0.6875rem] font-medium tracking-[0.05em] uppercase text-primary mb-2 block">Scan any label</span>
+<h2 class="headline-md text-[1.75rem] font-bold text-on-surface leading-tight mb-2">Hidden sugar: 34g</h2>
+<p class="body-md text-[0.875rem] text-on-surface-variant font-light">(8.5 tsp equivalent)</p>
+</div>
+<button class="bg-error text-white font-bold text-[0.6875rem] uppercase tracking-wider px-6 py-3 rounded-none hover:bg-error-dim transition-colors duration-300">
+              View Risk
+            </button>
+</div>
+</div>
+</section>
+<!-- 2. Craving Heatmap (Middle-Left) -->
+<section class="col-span-12 md:col-span-5 flex flex-col items-start px-4">
+<span class="label-sm text-[0.6875rem] font-medium tracking-[0.05em] uppercase text-on-surface-variant/60 mb-6">Your April</span>
+<div class="grid grid-cols-7 gap-3">
+<!-- Generating a 7x4 grid of intensity squares -->
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/20"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/40"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/10"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/60"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/20"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/10"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/20"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/30"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/80 shadow-[0_0_15px_rgba(165,61,18,0.3)]"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/90 shadow-[0_0_20px_rgba(165,61,18,0.4)]"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/40"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/10"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/20"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/20"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/10"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/20"></div>
+<div class="w-8 h-8 rounded-md bg-primary-container/10"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/40"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/60"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/30"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/10"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/10"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/20"></div>
+<div class="w-8 h-8 rounded-md bg-secondary-fixed-dim/10"></div>
+<div class="w-8 h-8 rounded-md bg-surface-container-highest"></div>
+<div class="w-8 h-8 rounded-md bg-surface-container-highest"></div>
+<div class="w-8 h-8 rounded-md bg-surface-container-highest"></div>
+<div class="w-8 h-8 rounded-md bg-surface-container-highest"></div>
+</div>
+<p class="mt-8 text-on-surface-variant max-w-[240px] text-sm leading-relaxed font-light">The intensity reveals your afternoon peaks. Most urges hit at 3 PM.</p>
+</section>
+<!-- 4. Community Pulse (Center Drift) -->
+<div class="hidden md:flex col-span-2 flex-col items-center justify-center relative">
+<div class="w-32 h-32 rounded-full glass-tile flex flex-col items-center justify-center text-center p-4 border border-white/30 animate-pulse">
+<span class="headline-md text-lg font-bold text-primary mb-0">847</span>
+<span class="label-sm text-[10px] leading-tight">resisting right now</span>
+</div>
+<!-- Drift fragments -->
+<div class="absolute -top-12 -right-12 glass-tile px-4 py-2 rounded-full text-[10px] opacity-60 tracking-wider">Survived a party</div>
+<div class="absolute top-20 -left-16 glass-tile px-4 py-2 rounded-full text-[10px] opacity-40 tracking-wider">Morning coffee: black</div>
+</div>
+<!-- 3. Withdrawal Tracker (Middle-Right) -->
+<section class="col-span-12 md:col-span-5 flex flex-col items-end text-right px-4">
+<div class="max-w-xs">
+<h2 class="headline-md text-[1.75rem] font-bold text-on-surface mb-8">Day 5 — worst is behind you</h2>
+<ul class="space-y-6">
+<li class="flex flex-col items-end">
+<span class="body-md text-on-surface font-medium">Headache</span>
+<span class="label-sm text-primary uppercase tracking-[0.1em] text-[10px]">· fading</span>
+</li>
+<li class="flex flex-col items-end">
+<span class="body-md text-on-surface font-medium">Fatigue</span>
+<span class="label-sm text-primary uppercase tracking-[0.1em] text-[10px]">· peaked</span>
+</li>
+<li class="flex flex-col items-end">
+<span class="body-md text-on-surface font-medium">Mood</span>
+<span class="label-sm text-primary uppercase tracking-[0.1em] text-[10px]">· almost gone</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- 5. Sleep & Sugar Insight (Bottom) -->
+<section class="col-span-12 flex flex-col items-center mt-12">
+<div class="w-full max-w-2xl relative h-64 flex flex-col items-center justify-center">
+<div class="absolute inset-0 mask-fade-bottom flex items-end justify-center">
+<!-- Custom SVG Curve Visualization -->
+<svg class="w-full h-full opacity-60" viewbox="0 0 400 200">
+<!-- Sleep Curve -->
+<path d="M0,180 Q100,50 200,100 T400,120" fill="none" stroke="#6d4ea3" stroke-width="2"></path>
+<!-- Cravings Curve -->
+<path d="M0,40 Q100,150 200,100 T400,20" fill="none" stroke="#a53d12" stroke-width="2"></path>
+<!-- Glow Point -->
+<circle class="animate-ping" cx="200" cy="100" fill="#fe7e4f" r="6"></circle>
+<circle cx="200" cy="100" fill="#fe7e4f" r="4"></circle>
+</svg>
+</div>
+<div class="relative z-10 text-center glass-tile p-8 rounded-xl border border-white/10 max-w-sm">
+<p class="display-lg text-lg italic font-light text-on-surface leading-tight">
+              "Less sleep = more cravings. Tuesday proved it."
+            </p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar from JSON -->
+<nav class="fixed bottom-10 left-0 right-0 z-50 flex justify-center gap-12">
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-auto rounded-full backdrop-blur-3xl px-6 py-3 bg-white/10 dark:bg-black/5 shadow-[0_40px_40px_-10px_rgba(0,0,0,0.06)] flex gap-12 items-center">
+<a class="flex items-center justify-center text-orange-900 dark:text-orange-100 scale-110 hover:scale-105 transition-all duration-700 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="home_max">home_max</span>
+</a>
+<a class="flex items-center justify-center text-orange-900/30 dark:text-white/30 hover:scale-105 transition-all duration-700 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</a>
+<a class="flex items-center justify-center text-orange-900/30 dark:text-white/30 hover:scale-105 transition-all duration-700 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+</a>
+<a class="flex items-center justify-center text-orange-900/30 dark:text-white/30 hover:scale-105 transition-all duration-700 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_ethereal">settings</span>
+</a>
+</div>
+</nav>
+<!-- SOS Button (FAB-like but system specific) -->
+<button class="fixed bottom-12 right-12 bg-error text-white font-bold text-[0.6875rem] uppercase tracking-widest p-4 rounded-none shadow-[0_40px_40px_-10px_rgba(170,55,28,0.2)] hover:scale-105 active:scale-95 transition-all duration-300 z-[60]">
+    SOS
+  </button>
+</body></html>

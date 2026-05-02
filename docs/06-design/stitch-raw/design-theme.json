@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "project": "Sugar Quit AI Coach",
+    "stitchProjectId": "8598705901532157919",
+    "extractedFrom": [
+      "AI Coach: Transmission Open",
+      "Progress: Liftoff Confirmed",
+      "Home: Mission Day 02"
+    ]
+  },
+  "colors": {
+    "primary": "#b50058",
+    "primaryDim": "#9f004d",
+    "primaryFixed": "#ff709e",
+    "primaryFixedDim": "#ff5290",
+    "primaryContainer": "#ff709e",
+    "onPrimary": "#ffeff1",
+    "onPrimaryContainer": "#4c0021",
+    "onPrimaryFixed": "#000000",
+    "onPrimaryFixedVariant": "#5d002a",
+    "inversePrimary": "#ff4a8d",
+
+    "secondary": "#006666",
+    "secondaryDim": "#005959",
+    "secondaryFixed": "#00fbfb",
+    "secondaryFixedDim": "#00ecec",
+    "secondaryContainer": "#00fbfb",
+    "onSecondary": "#bbfffe",
+    "onSecondaryContainer": "#005c5c",
+    "onSecondaryFixed": "#004747",
+    "onSecondaryFixedVariant": "#006666",
+
+    "tertiary": "#811cd9",
+    "tertiaryDim": "#7400c9",
+    "tertiaryFixed": "#cc9bff",
+    "tertiaryFixedDim": "#c389ff",
+    "tertiaryContainer": "#cc9bff",
+    "onTertiary": "#fbefff",
+    "onTertiaryContainer": "#490082",
+    "onTertiaryFixed": "#260049",
+    "onTertiaryFixedVariant": "#550096",
+
+    "error": "#b41340",
+    "errorDim": "#a70138",
+    "errorContainer": "#f74b6d",
+    "onError": "#ffefef",
+    "onErrorContainer": "#510017",
+
+    "background": "#f1f7fa",
+    "onBackground": "#293032",
+    "surface": "#f1f7fa",
+    "surfaceDim": "#ccd6db",
+    "surfaceBright": "#f1f7fa",
+    "surfaceVariant": "#d5dee3",
+    "surfaceTint": "#b50058",
+    "surfaceContainerLowest": "#ffffff",
+    "surfaceContainerLow": "#ebf2f5",
+    "surfaceContainer": "#e2e9ed",
+    "surfaceContainerHigh": "#dbe4e8",
+    "surfaceContainerHighest": "#d5dee3",
+    "onSurface": "#293032",
+    "onSurfaceVariant": "#565c5f",
+    "inverseSurface": "#090f11",
+    "inverseOnSurface": "#979ea1",
+
+    "outline": "#71787b",
+    "outlineVariant": "#a8aeb1"
+  },
+  "typography": {
+    "fonts": {
+      "headline": { "family": "Space Grotesk", "fallback": "sans-serif" },
+      "body": { "family": "Space Grotesk", "fallback": "sans-serif" },
+      "label": { "family": "JetBrains Mono", "fallback": "monospace" },
+      "telemetry": { "family": "JetBrains Mono", "fallback": "monospace" },
+      "numeral": { "family": "Fraunces", "fallback": "serif", "weight": 900 }
+    },
+    "weights": {
+      "regular": 400,
+      "bold": 700,
+      "black": 900
+    }
+  },
+  "borderRadius": {
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.75rem",
+    "card": "1.25rem",
+    "full": "9999px"
+  },
+  "effects": {
+    "glowPrimary": "0 0 15px rgba(181, 0, 88, 0.3)",
+    "glowError": "0 0 20px rgba(180, 19, 64, 0.6)",
+    "shadowDirectional": "0 12px 24px rgba(129, 28, 217, 0.06)",
+    "shadowNav": "0 0 15px rgba(181, 0, 88, 0.1)",
+    "glassBlur": "blur(15px)",
+    "glassBackground": "rgba(255, 255, 255, 0.6)"
+  },
+  "gradients": {
+    "primary": "linear-gradient(135deg, #b50058, #ff709e)",
+    "progress": "linear-gradient(90deg, #b50058, #811cd9, #00fbfb)",
+    "orbTop": "radial-gradient(circle, rgba(204,155,255,0.15) 0%, transparent 70%)",
+    "orbBottom": "radial-gradient(circle, rgba(255,112,158,0.1) 0%, transparent 70%)"
+  },
+  "navigation": {
+    "tabs": [
+      { "key": "dashboard", "icon": "grid_view", "label": "DASHBOARD" },
+      { "key": "missions", "icon": "target", "label": "MISSIONS" },
+      { "key": "intel", "icon": "analytics", "label": "INTEL" },
+      { "key": "command", "icon": "settings_input_component", "label": "COMMAND" }
+    ]
+  }
+}
