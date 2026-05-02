@@ -294,11 +294,6 @@ function Orbit({ size }: { size: number }) {
           height: s * 0.16,
           borderRadius: s * 0.08,
           backgroundColor: colors.primary,
-          shadowColor: colors.primary,
-          shadowOpacity: 0.6,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 0 },
-          elevation: 6,
         }}
       />
     </>

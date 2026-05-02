@@ -92,7 +92,7 @@ export default function Settings() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
         {SECTIONS.map((section) => (
