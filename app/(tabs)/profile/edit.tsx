@@ -87,6 +87,8 @@ export default function EditProfile() {
               onChangeText={setNameDraft}
               placeholder="Your first name"
               placeholderTextColor={colors.outline}
+              selectionColor={colors.primary}
+              cursorColor={colors.primary}
               style={styles.input}
               autoCapitalize="words"
               returnKeyType="done"

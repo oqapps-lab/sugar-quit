@@ -153,6 +153,8 @@ export default function SignUp() {
                 onChangeText={setEmail}
                 placeholder="you@quietmail.com"
                 placeholderTextColor="rgba(49,51,47,0.35)"
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 autoCorrect={false}
@@ -171,6 +173,8 @@ export default function SignUp() {
                 onChangeText={setPassword}
                 placeholder="At least 6 characters"
                 placeholderTextColor="rgba(49,51,47,0.35)"
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 secureTextEntry
                 autoCapitalize="none"
                 autoComplete="new-password"
@@ -188,6 +192,8 @@ export default function SignUp() {
                 onChangeText={setConfirm}
                 placeholder="Type it again"
                 placeholderTextColor="rgba(49,51,47,0.35)"
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 secureTextEntry
                 autoCapitalize="none"
                 autoComplete="new-password"

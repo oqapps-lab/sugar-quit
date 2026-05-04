@@ -95,7 +95,12 @@ export default function Paywall() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: 260 }]}
+        // 320 (was 260) reserves clearance for the absolutely-positioned CTA
+        // footer (PillCTA + 3-step timeline + "Maybe later" + safe-area inset)
+        // on small / tall-bezel Android devices where the footer height +
+        // insets.bottom can reach ~280dp and clip the price cards
+        // (kakoccc #19 paywall CTA overlap 2026-04-29).
+        contentContainerStyle={[styles.scroll, { paddingBottom: 320 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}

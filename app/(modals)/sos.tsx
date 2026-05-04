@@ -262,6 +262,8 @@ export default function ChatScreen() {
               onChangeText={setInput}
               placeholder="tell me what you're feeling…"
               placeholderTextColor={colors.outline}
+              selectionColor={colors.primary}
+              cursorColor={colors.primary}
               style={styles.input}
               onSubmitEditing={send}
               returnKeyType="send"

@@ -1,6 +1,6 @@
 import { BlurView } from 'expo-blur';
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { colors, radius, shadows } from '../../constants/tokens';
+import { radius, shadows } from '../../constants/tokens';
 
 type Tint = 'default' | 'peach' | 'mint' | 'lavender' | 'cream' | 'dark';
 
@@ -71,7 +71,12 @@ export function GlassCard({
     );
   }
 
-  // Android fallback — solid-ish tint without blur
+  // Android fallback — solid-ish tint without blur.
+  // No elevation: Android renders elevation as an opaque rectangular drop
+  // shadow that does not honor the parent's transparent background, producing
+  // a visible "inner rectangle" artifact behind the rounded card on
+  // light-tinted screens (kakoccc 2026-04-29 reports #5, #25, #27).
+  // The borderColor + soft tint already give enough surface separation.
   const androidBg = TINT_BG[tint].replace(/[\d.]+\)$/, (m) => {
     const alpha = parseFloat(m);
     return `${Math.min(1, alpha + 0.3)})`;
@@ -86,7 +91,6 @@ export function GlassCard({
           borderColor: TINT_BORDER[tint],
           backgroundColor: androidBg,
         },
-        isDark ? shadows.cardWhisper : shadows.cardWarm,
         style,
       ]}
     >

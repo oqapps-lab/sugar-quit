@@ -60,11 +60,37 @@ submit. Will tackle in Etap Б after the first ui-qa pass on Etap A fixes.
   same `TIME_BY_KEY[selected]` lookup as the displayed value. No behavior
   change in saved data, only the visible label was wrong before.
 
+## Etap Б — fixes applied this pass (cross-platform layout)
+
+| ID | Source | Severity | Reality | Status | Files touched |
+|----|--------|----------|---------|--------|---------------|
+| **#1** | kakoccc | Medium | Real — `lineHeight: 40` for `fontSize: 36` extra-bold clips `g`/`p`/`y` descenders on Android | ✅ FIXED | `app/(onboarding)/welcome.tsx` (lineHeight 40 → 46, ~1.25× fontSize) |
+| **#4** | kakoccc | Medium | Real — same lineHeight pattern across 9 quiz screens + auth + push-permission | ✅ FIXED | 9 quiz files (lineHeight 34 → 38), `app/(onboarding)/auth.tsx` + `push-permission.tsx` (lineHeight 32 → 36) |
+| **#5** | kakoccc | High | Real — Android elevation in `shadows.cardWarm` casts a hard rectangular drop shadow that against light tint reads as "rectangle behind card" | ✅ FIXED | `components/ui/GlassCard.tsx` (Android branch: stripped `shadows.cardWarm` / `shadows.cardWhisper`; iOS branch unchanged) |
+| **#14** | kakoccc | Medium | Real — `name.tsx` Skip slot has no fixed width, so back button (40dp) and Skip (~30dp text) leave the centered progressLabel off-axis | ✅ FIXED | `app/(onboarding)/quiz/name.tsx` (added `skipBtn` 40×40 right-aligned) |
+| **#15** | kakoccc | High (cross-platform theme leak) | Real — zero `selectionColor` set anywhere; cursor + selection default to system tint (teal/green Android, blue iOS) | ✅ FIXED | All 11 TextInput call sites: `auth.tsx` (×2), `quiz/name.tsx`, `auth/sign-up.tsx` (×3), `auth/sign-in.tsx` (×2), `modals/sos.tsx`, `modals/craving-log.tsx`, `tabs/profile/edit.tsx` — added `selectionColor={colors.primary}` + `cursorColor={colors.primary}` |
+| **#19** | kakoccc | High | Real — paywall ScrollView `paddingBottom: 260` insufficient on tall-bezel Android where footer height + safe-area inset can reach ~280dp, clipping price cards | ✅ FIXED | `app/(onboarding)/paywall.tsx` (260 → 320) |
+| **#25** | kakoccc | Low | Real — `legendBadgeText` lacked `includeFontPadding: false`/`textAlignVertical: center`, pushing the digit visually below center in 24×24 circle on Android | ✅ FIXED | `app/(tabs)/home.tsx` (added Android-friendly text centering props on legendBadgeText) |
+| **#27** | kakoccc | Same as #5 | Real — same Android elevation issue (curriculum cards use GlassCard) | ✅ FIXED | Resolved automatically by GlassCard fix |
+| **#39** | kakoccc | Low | Real — `togglePillOn` had no border, `togglePillOff` had `borderWidth: 1` → 2dp layout shift on every toggle press | ✅ FIXED | `app/(tabs)/profile/settings.tsx` (always-1dp border with `borderColor: transparent` baseline) |
+
+## Etap Б — deferred to live verification
+
+| ID | Source | Why defer | Plan |
+|----|--------|-----------|------|
+| **#29** | kakoccc | Code already has `KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}` + `keyboardVerticalOffset={iOS ? insets.top : 0}` in SOS modal. May be working — needs live Android verification before re-engineering. | Test in Etap Б ui-qa pass on Android emulator (if available) or note "iOS works, Android NOT tested" per playbook. |
+| **#46** | kakoccc | "Back button always sends to Home" — no code uses `router.replace('/(tabs)/home')` from back handlers. All use `router.back()`, which falls back to initial route when stack is empty (e.g. after deep-link). Fix would touch every leaf screen. Need Android repro to scope. | Live test on Android: navigate via tab bar → leaf screen → press back. If it lands on Home, replace with `router.canGoBack() ? router.back() : router.push('/(tabs)/<parent>')` per leaf. |
+
+## Etap Б — deferred to Etap В (UX refactor scope)
+
+| ID | Source | Why deferred | Plan |
+|----|--------|--------------|------|
+| **#35** | kakoccc | Field-level validation is a bigger UX refactor (track which field is invalid, conditional border highlight, message-near-field). Wider than a layout fix. | Etap В polish pass — refactor sign-in / sign-up forms to support field-bound errors. |
+
 ## Next
 
 1. Run `node node_modules/typescript/lib/tsc.js --noEmit` to confirm clean.
-2. Live verification via `/ui-qa` skill on simulator — exercise Etap A
-   touchpoints AND probe #31 SOS back/End.
-3. Commit + push.
-4. Etap Б — start on the ~12 cross-platform layout items from kakoccc.
-5. Etap В — cosmetic polish.
+2. Live verification via `/ui-qa` skill on simulator — exercise Etap A + Б
+   touchpoints AND probe #31, #29, #46.
+3. Commit + push Etap Б.
+4. Etap В — cosmetic polish (~26 items).

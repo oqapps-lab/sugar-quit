@@ -98,6 +98,8 @@ export default function Auth() {
                 onChangeText={setEmail}
                 placeholder="email@example.com"
                 placeholderTextColor={colors.outline}
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 style={styles.input}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -112,6 +114,8 @@ export default function Auth() {
                 onChangeText={setPassword}
                 placeholder="password"
                 placeholderTextColor={colors.outline}
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 style={styles.input}
                 secureTextEntry
                 autoCapitalize="none"
@@ -268,7 +272,7 @@ const styles = StyleSheet.create({
   hero: { alignItems: 'center', gap: spacing.sm, marginTop: spacing.xxl },
   mark: { width: 12, height: 12, borderRadius: radius.full, backgroundColor: colors.primary, marginBottom: spacing.xs },
   brand: { fontFamily: fonts.headlineSemibold, fontSize: typeScale.titleSmall, color: colors.onSurface, marginBottom: spacing.md },
-  title: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium, color: colors.onSurface, textAlign: 'center', letterSpacing: -0.8, lineHeight: 32, maxWidth: 320 },
+  title: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium, color: colors.onSurface, textAlign: 'center', letterSpacing: -0.8, lineHeight: 36, maxWidth: 320 },
   sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, textAlign: 'center', lineHeight: 22, maxWidth: 320, marginTop: spacing.xs },
 
   buttonsCol: { gap: spacing.sm },

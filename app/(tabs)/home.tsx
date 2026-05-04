@@ -1141,6 +1141,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.headlineBold,
     fontSize: typeScale.labelSmall,
     color: colors.onPrimary,
+    // includeFontPadding default (true) on Android adds top padding inside
+    // the line box that pushes the digit visually below center in a tight
+    // 24×24 circle. iOS no-ops on this prop (kakoccc #25 2026-04-29).
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+    lineHeight: typeScale.labelSmall + 2,
   },
   legendCardTitle: {
     fontFamily: fonts.headlineSemibold,

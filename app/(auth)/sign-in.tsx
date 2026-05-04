@@ -157,6 +157,8 @@ export default function SignIn() {
                 onChangeText={setEmail}
                 placeholder="you@quietmail.com"
                 placeholderTextColor="rgba(49,51,47,0.35)"
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 autoCorrect={false}
@@ -175,6 +177,8 @@ export default function SignIn() {
                 onChangeText={setPassword}
                 placeholder="At least 6 characters"
                 placeholderTextColor="rgba(49,51,47,0.35)"
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 secureTextEntry
                 autoCapitalize="none"
                 autoComplete="current-password"

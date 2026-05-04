@@ -158,6 +158,8 @@ export default function CravingLog() {
               onChangeText={setNotes}
               placeholder="what was happening…"
               placeholderTextColor={colors.outline}
+              selectionColor={colors.primary}
+              cursorColor={colors.primary}
               multiline
               style={styles.notesInput}
               accessibilityLabel="Optional note about the craving"

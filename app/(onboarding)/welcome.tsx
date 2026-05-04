@@ -145,7 +145,9 @@ const styles = StyleSheet.create({
     color: colors.onSurface,
     letterSpacing: -1.2,
     textAlign: 'center',
-    lineHeight: 40,
+    // 1.25× fontSize to give descenders (g, p, y, q) room — Android clips when
+    // lineHeight is too tight on the headline font (kakoccc #1 2026-04-29).
+    lineHeight: 46,
     maxWidth: 320,
   },
   heroSub: {

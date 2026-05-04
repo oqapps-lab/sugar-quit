@@ -407,11 +407,14 @@ const styles = StyleSheet.create({
     borderRadius: radius.full,
     alignItems: 'center',
     justifyContent: 'center',
+    // Always reserve 1dp border slot so ON↔OFF doesn't reflow the row by 2dp
+    // on toggle press (kakoccc #39 layout shift 2026-04-29).
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
-  togglePillOn: { backgroundColor: colors.primary },
+  togglePillOn: { backgroundColor: colors.primary, borderColor: colors.primary },
   togglePillOff: {
     backgroundColor: 'transparent',
-    borderWidth: 1,
     borderColor: colors.outlineVariant,
   },
   toggleText: {

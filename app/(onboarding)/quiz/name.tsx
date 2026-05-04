@@ -50,7 +50,7 @@ export default function QuizName() {
                 <Text style={styles.back}>←</Text>
               </Pressable>
               <Text style={styles.progressLabel}>STEP 12 OF 15</Text>
-              <Pressable onPress={goNext} accessibilityRole="button" accessibilityLabel="Skip name">
+              <Pressable onPress={goNext} style={styles.skipBtn} accessibilityRole="button" accessibilityLabel="Skip name">
                 <Text style={styles.skipLabel}>Skip</Text>
               </Pressable>
             </View>
@@ -66,6 +66,8 @@ export default function QuizName() {
                   onChangeText={setName}
                   placeholder="Your first name"
                   placeholderTextColor={colors.outline}
+                  selectionColor={colors.primary}
+                  cursorColor={colors.primary}
                   style={styles.input}
                   autoCapitalize="words"
                   autoCorrect={false}
@@ -93,10 +95,14 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
   back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
   progressLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.labelWide },
+  // skipBtn matches backBtn's 40dp slot so the centered progressLabel doesn't
+  // drift left or right depending on Skip's intrinsic text width
+  // (kakoccc #14 onboarding header alignment 2026-04-29).
+  skipBtn: { width: 40, height: 40, alignItems: 'flex-end', justifyContent: 'center' },
   skipLabel: { fontFamily: fonts.bodyMedium, fontSize: typeScale.bodyMedium, color: colors.onSurfaceVariant },
   body: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: spacing.sm },
   eyebrow: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.primary, letterSpacing: tracking.labelWide },
-  hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 34, marginTop: spacing.sm },
+  hero: { fontFamily: fonts.headlineExtraBold, fontSize: typeScale.displayMedium + 2, color: colors.onSurface, letterSpacing: -0.8, lineHeight: 38, marginTop: spacing.sm },
   sub: { fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurfaceVariant, lineHeight: 22, marginBottom: spacing.lg },
   inputWrap: {
     backgroundColor: 'rgba(255,255,255,0.5)',
