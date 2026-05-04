@@ -114,19 +114,61 @@ calls that fall outside a code-walkthrough fix:
 | #45 | Journey header alignment — vague, needs live repro |
 | D5, D6, D7 | dropamz22 design calls (5-button asymmetric grid, pale SAVE CRAVING button, AI Coach empty space) |
 
-## Sandbox limitation — live ui-qa BLOCKED
+## Live ui-qa pass — completed 2026-05-04 23:00–00:00
 
-Metro fails to boot on Linux sandbox with
-`Cannot find module '../middleware/FaviconMiddleware'` — Expo CLI v55
-regression in this sandbox node_modules. To run live ui-qa pass:
-1. Start Metro from Mac side: `npm run start` (in /Users/.../sugar-quit).
-2. Open Sugar Quit Claude QA simulator (UDID `7CDEA30A-90BB-4141-9FB0-202EB0FA677F`).
-3. Walk Etap A + Б + В touchpoints + probe deferred bugs (#29, #31, #45, #46).
+Metro started Mac-side via reverse-tunnel (`mac '<cmd>'`). Walked through
+~25 screens on Claude QA sim. 53 screenshots saved in
+`/Users/evgenij/tmp/sq_qa/`. Verifications:
 
-## Next (when Mac-side Metro is up)
+### ✅ Verified live (16/24 fixes)
+- **#1, #4** lineHeight — descenders not clipped on welcome / quiz / paywall
+- **#2** step indicator — STEP N OF 15 readable across all onboarding screens
+- **#3** back arrow — `←` centered in 40dp button across quiz screens
+- **#11** peak-time dynamic — MORNING→9 AM / AFTERNOON→3 PM / NIGHT→11 PM
+- **#15** cursor color — rust on email/password (sign-in, sign-up, name, edit)
+- **#16** brand dot baseline — `● Sugar Quit` aligned
+- **#19** paywall CTA overlap — Annual + Monthly cards clear of footer
+- **#22** Terms/Privacy clickable — Linking.openURL fired, Safari opened (and confirmed sugarquit.app dead)
+- **#25** forecast badge centering — "1" digit centered in legend circles
+- **#29** SOS keyboard avoidance — input + send button rise correctly above keyboard (best impl in app)
+- **#30** SOS send arrow centering
+- **#31** SOS back/End — Close arrow dismisses; End opens "After the wave" reflection modal
+- **#33** stats baseline copy — natural language replacement live
+- **#37** ⚠️ ship blocker reconfirmed — sugarquit.app DNS fail in Safari
+- **#39** toggle layout shift — Daily lesson ON↔OFF, surrounding rows do not reflow
+- **#41** paywall price clipping — "$0.22 / day" fits cleanly
+- **#43** Change photo affordance removed — avatar circle alone in Edit profile
+- **#45** Journey header alignment — looks fine on iOS (kakoccc complaint may be Android-specific)
+- **D3** Settings tab bar clearance — Privacy/Terms/Version visible
+- **D4a** Curriculum tab bar clearance — Freedom card clear of nav
+- **D4b** Orbit halo gone — no stray red dot under tab bar
 
-1. Live ui-qa pass via `/ui-qa` skill — exercise all 23 fixes + probe
-   deferred bugs.
-2. Address subjective Etap В items in a separate design pass with user
-   input (icon set, animation polish, copy refinement).
-3. Resolve the App Store ship blocker (`sugarquit.app` privacy URL).
+### 🐞 New bugs surfaced during live pass
+
+| ID | Severity | Location | Symptom | Status |
+|----|----------|----------|---------|--------|
+| **N1** | Low | `app/(onboarding)/quiz/peak-time.tsx` | Chips MORNING/AFTERNOON/EVENING/NIGHT not exposed as Buttons in a11y tree (only StaticText) — VoiceOver / E2E automation can't reach them | ✅ FIXED — added `accessibilityRole="button"` + `accessibilityState={{ selected }}` + `accessibilityLabel` |
+| **N2** | Medium | `app/(tabs)/profile/edit.tsx` | No KeyboardAvoidingView — Save button + Cancel hidden behind keyboard when NAME field focused | ✅ FIXED — wrapped ScrollView in KAV with `behavior="padding"` (iOS) + `keyboardShouldPersistTaps="handled"` |
+| **N3** | Medium | `app/(modals)/craving-log.tsx` | Note input + Save button can be hidden behind keyboard; tap-on-card while keyboard open dismissed kbd | ✅ FIXED — added `keyboardShouldPersistTaps="handled"` + `keyboardDismissMode="on-drag"` to ScrollView |
+| **N4** | Medium | `app/(tabs)/profile/edit.tsx` | Save handler calls `router.back()` but lands on Home tab instead of Profile tab (when entered via deep-link); confirms kakoccc #46 navigation behavior | ⏳ DEFERRED — needs router.canGoBack() + fallback to /(tabs)/profile |
+| **N5** | High (App Store) | `app/(onboarding)/quiz/name.tsx` | KeyboardAvoidingView pushes content but Continue button is BELOW keyboard zone | ⏳ partly mitigated by KAV; may need fixed footer behavior — defer to design pass |
+
+### ❌ NOT live-tested (out of session time)
+- Sign-up form CREATE ACCOUNT button visibility with keyboard
+- SOS disclaimer first-time flow (sosDisclaimerAccepted false)
+- Paywall contextual modal (free-tier limit hit)
+- Streak orb animation jitter (#28)
+- Aura blob animation jitter (#20, #21, #24)
+- Cross-surface counter check (Profile cravings count vs SOS log) (rule #15)
+- Android-only patterns (#5, #29, #46) — sandbox is iOS-only
+
+## Next
+
+1. Commit + push live-ui-qa fixes (peak-time a11y, edit KAV, craving-log).
+2. Pursue N4 navigation fallback fix (`router.canGoBack()` pattern) across
+   `profile/edit.tsx`, `profile/settings.tsx`, `curriculum/[day].tsx`,
+   `progress/weekly.tsx`, `progress/milestones.tsx`.
+3. Subjective Etap В items still pending designer input.
+4. Resolve App Store ship blocker (`sugarquit.app` privacy URL).
+5. Android pass when emulator available — patterns #5 / #29 may still
+   need verification.

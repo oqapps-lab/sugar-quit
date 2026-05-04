@@ -79,7 +79,12 @@ export default function CravingLog() {
           </Pressable>
         </Animated.View>
 
-        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+        >
           <Animated.View entering={FadeInUp.delay(80).duration(400)} style={styles.heroGlyphWrap}>
             <DecorGlyph variant="lightning" size={80} />
           </Animated.View>

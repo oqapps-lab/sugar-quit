@@ -55,7 +55,14 @@ export default function QuizPeakTime() {
           {chips.map((c) => {
             const isOn = selected === c.key;
             return (
-              <Pressable key={c.key} onPress={() => pick(c.key)} style={[styles.chip, isOn && styles.chipOn]}>
+              <Pressable
+                key={c.key}
+                onPress={() => pick(c.key)}
+                style={[styles.chip, isOn && styles.chipOn]}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isOn }}
+                accessibilityLabel={c.label}
+              >
                 <Text style={[styles.chipLabel, isOn && styles.chipLabelOn]}>{c.label}</Text>
               </Pressable>
             );
