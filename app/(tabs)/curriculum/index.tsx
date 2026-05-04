@@ -55,7 +55,7 @@ export default function Curriculum() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 200 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Hero — title on the left, orbit glyph on the right */}

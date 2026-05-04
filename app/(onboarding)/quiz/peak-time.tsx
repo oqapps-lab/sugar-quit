@@ -64,8 +64,8 @@ export default function QuizPeakTime() {
 
         <GlassCard tint="peach" style={styles.timeCard}>
           <Text style={styles.timeEyebrow}>TYPICAL TIME</Text>
-          <Text style={styles.timeBig}>3:00 PM</Text>
-          <Text style={styles.timeHint}>Tap to adjust</Text>
+          <Text style={styles.timeBig}>{TIME_BY_KEY[selected] ?? '3:00 PM'}</Text>
+          <Text style={styles.timeHint}>We'll watch the hour around this</Text>
         </GlassCard>
       </View>
 

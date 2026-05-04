@@ -6,6 +6,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { LINKS } from '../../../lib/links';
 import { signOut as supabaseSignOut } from '../../../lib/supabase';
 import { useUserStore } from '../../../stores/useUserStore';
 
@@ -156,12 +157,12 @@ export default function Profile() {
                 label: isPremium ? 'Manage subscription' : 'Subscription',
                 icon: '◆',
                 onPress: isPremium
-                  ? () => Linking.openURL('https://apps.apple.com/account/subscriptions')
+                  ? () => Linking.openURL(LINKS.manageSubscription)
                   : () => router.push('/(modals)/paywall-contextual'),
               },
               { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Support',        icon: '◐', onPress: () => Linking.openURL('mailto:support@sugarquit.app?subject=Sugar%20Quit%20Support') },
-              { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL('https://sugarquit.app/privacy') },
+              { label: 'Support',        icon: '◐', onPress: () => Linking.openURL(LINKS.support) },
+              { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL(LINKS.privacyPolicy) },
               {
                 label: 'Sign out',
                 icon: '↗',

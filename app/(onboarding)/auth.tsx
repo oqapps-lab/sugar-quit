@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
@@ -9,6 +9,7 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, typeScale } from '../../constants/tokens';
 import { isSupabaseConfigured } from '../../lib/env';
+import { LINKS } from '../../lib/links';
 import { signInWithEmail, signUpWithEmail } from '../../lib/supabase';
 
 /**
@@ -154,7 +155,25 @@ export default function Auth() {
           </Animated.View>
 
           <Text style={styles.terms}>
-            By continuing, you agree to our <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Privacy</Text>.
+            By continuing, you agree to our{' '}
+            <Text
+              style={styles.termsLink}
+              onPress={() => Linking.openURL(LINKS.termsOfService)}
+              accessibilityRole="link"
+              accessibilityLabel="Read Terms of Service"
+            >
+              Terms
+            </Text>
+            {' '}and{' '}
+            <Text
+              style={styles.termsLink}
+              onPress={() => Linking.openURL(LINKS.privacyPolicy)}
+              accessibilityRole="link"
+              accessibilityLabel="Read Privacy Policy"
+            >
+              Privacy
+            </Text>
+            .
           </Text>
         </View>
       </AtmosphericGradient>
@@ -205,7 +224,25 @@ export default function Auth() {
         </Animated.View>
 
         <Text style={styles.terms}>
-          By continuing, you agree to our <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Privacy</Text>.
+          By continuing, you agree to our{' '}
+          <Text
+            style={styles.termsLink}
+            onPress={() => Linking.openURL(LINKS.termsOfService)}
+            accessibilityRole="link"
+            accessibilityLabel="Read Terms of Service"
+          >
+            Terms
+          </Text>
+          {' '}and{' '}
+          <Text
+            style={styles.termsLink}
+            onPress={() => Linking.openURL(LINKS.privacyPolicy)}
+            accessibilityRole="link"
+            accessibilityLabel="Read Privacy Policy"
+          >
+            Privacy
+          </Text>
+          .
         </Text>
       </View>
     </AtmosphericGradient>

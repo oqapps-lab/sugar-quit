@@ -294,11 +294,11 @@ function Orbit({ size }: { size: number }) {
           height: s * 0.16,
           borderRadius: s * 0.08,
           backgroundColor: colors.primary,
-          shadowColor: colors.primary,
-          shadowOpacity: 0.6,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 0 },
-          elevation: 6,
+          // Halo removed (was 8px-radius primary glow). When the Orbit glyph
+          // sat low in a scroll area (Integration phase header on Curriculum
+          // tab) the glow bled past the parent bounds and appeared as a
+          // stray red dot under the floating tab bar (dropamz22 visual pass
+          // 2026-05-02). The dot stays visually distinct without the halo.
         }}
       />
     </>

@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { restorePurchases } from '../../../lib/adapty';
+import { LINKS } from '../../../lib/links';
 import { getSupabase, signOut as supabaseSignOut } from '../../../lib/supabase';
 import { useUserStore, type UserState } from '../../../stores/useUserStore';
 
@@ -184,8 +185,8 @@ export default function Settings() {
     {
       label: 'ABOUT',
       rows: [
-        { kind: 'link',   label: 'Privacy Policy',   onPress: () => Linking.openURL('https://sugarquit.app/privacy') },
-        { kind: 'link',   label: 'Terms of Service', onPress: () => Linking.openURL('https://sugarquit.app/terms') },
+        { kind: 'link',   label: 'Privacy Policy',   onPress: () => Linking.openURL(LINKS.privacyPolicy) },
+        { kind: 'link',   label: 'Terms of Service', onPress: () => Linking.openURL(LINKS.termsOfService) },
         { kind: 'static', label: 'Version',          value: '0.1.0' },
       ],
     },
@@ -208,7 +209,7 @@ export default function Settings() {
       </View>
 
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]}
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 160 }]}
         showsVerticalScrollIndicator={false}
       >
         {SECTIONS.map((section) => (

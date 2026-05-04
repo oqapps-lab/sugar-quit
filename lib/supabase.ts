@@ -36,9 +36,14 @@ export type AuthResult =
   | { ok: true; userId: string; email: string | null }
   | { ok: false; error: string };
 
+// User-facing message when the Supabase client can't be initialised. Earlier
+// this leaked the env var names directly into the sign-in/sign-up form
+// ("Set EXPO_PUBLIC_SUPABASE_URL + EXPO_PUBLIC_SUPABASE_ANON_KEY") which is
+// developer-debug content showing up to real users (kakoccc bug-report
+// 2026-04-29 #36). Plain language for the form; logs still tell devs.
 const NOT_CONFIGURED: AuthResult = {
   ok: false,
-  error: 'Supabase not configured. Set EXPO_PUBLIC_SUPABASE_URL + EXPO_PUBLIC_SUPABASE_ANON_KEY.',
+  error: 'Sign-in is temporarily unavailable. Please try again in a moment.',
 };
 
 export async function signInWithEmail(email: string, password: string): Promise<AuthResult> {

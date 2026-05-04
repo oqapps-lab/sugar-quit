@@ -69,19 +69,13 @@ export default function EditProfile() {
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 140 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Avatar */}
+        {/* Avatar — shows initial letter of name. Custom avatar upload is not
+            yet implemented, so we render only the circle (no misleading
+            "Change photo" link that previously did nothing but a haptic). */}
         <View style={styles.avatarBlock}>
           <View style={styles.avatar}>
             <Text style={styles.avatarInitial}>{initial}</Text>
           </View>
-          <Pressable
-            onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-            hitSlop={8}
-            accessibilityRole="button"
-            accessibilityLabel="Change profile photo"
-          >
-            <Text style={styles.avatarLink}>Change photo</Text>
-          </Pressable>
         </View>
 
         {/* Name */}
