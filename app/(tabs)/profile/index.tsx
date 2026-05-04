@@ -113,8 +113,8 @@ export default function Profile() {
               </View>
             </View>
             <Text style={styles.statsHint}>
-              Approx {kgSugarAvoided}kg of added sugar avoided.
-              {' '}<Text style={styles.statsHintMuted}>(~25g/day baseline)</Text>
+              About {kgSugarAvoided}kg of added sugar avoided.
+              {' '}<Text style={styles.statsHintMuted}>Based on the average 25g a day people add to coffee, snacks, and drinks.</Text>
             </Text>
           </GlassCard>
         </Animated.View>

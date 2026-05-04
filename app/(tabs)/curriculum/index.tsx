@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.headlineSemibold,
     fontSize: typeScale.titleSmall,
     color: colors.onSurface,
+    includeFontPadding: false,
   },
   avatar: {
     width: 36, height: 36, borderRadius: radius.full,

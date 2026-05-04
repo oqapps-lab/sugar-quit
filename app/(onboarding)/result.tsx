@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     fontSize: typeScale.titleSmall,
     color: colors.onSurface,
     letterSpacing: -0.2,
+    includeFontPadding: false,
   },
   skipLabel: {
     fontFamily: fonts.bodyMedium,

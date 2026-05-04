@@ -98,10 +98,13 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   progressLabel: {
+    // Bumped from labelSmall(10)/onSurfaceVariant/labelWide(3.5) to
+    // label(12)/onSurface/label(2.5) so the STEP indicator is legible
+    // and not over-spaced (kakoccc #2 step indicator readability 2026-04-29).
     fontFamily: fonts.label,
-    fontSize: typeScale.labelSmall,
-    color: colors.onSurfaceVariant,
-    letterSpacing: tracking.labelWide,
+    fontSize: typeScale.label,
+    color: colors.onSurface,
+    letterSpacing: tracking.label,
     marginTop: spacing.xs,
   },
   body: {

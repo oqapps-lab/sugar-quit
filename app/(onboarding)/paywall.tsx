@@ -109,7 +109,12 @@ export default function Paywall() {
             <DecorGlyph variant="orbit" size={36} />
             <Text style={styles.eyebrow}>{eyebrow}</Text>
           </View>
-          <Text style={styles.heroTitle}>
+          <Text
+            style={styles.heroTitle}
+            numberOfLines={2}
+            adjustsFontSizeToFit
+            minimumFontScale={0.85}
+          >
             A <Text style={styles.heroAccent}>$0.22</Text> / day decision
           </Text>
           <Text style={styles.heroSub}>
@@ -233,13 +238,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.headlineSemibold,
     fontSize: typeScale.titleSmall,
     color: colors.onSurface,
+    includeFontPadding: false,
   },
   closeBtn: {
     width: 36, height: 36, borderRadius: radius.full,
     backgroundColor: 'rgba(49,51,47,0.06)',
     alignItems: 'center', justifyContent: 'center',
   },
-  closeX: { fontSize: 22, color: colors.onSurfaceVariant, lineHeight: 22, fontFamily: fonts.headlineLight },
+  closeX: { fontSize: 22, color: colors.onSurfaceVariant, fontFamily: fonts.headlineLight, includeFontPadding: false, textAlignVertical: 'center' },
 
   scroll: { paddingHorizontal: spacing.lg, paddingTop: spacing.md },
 

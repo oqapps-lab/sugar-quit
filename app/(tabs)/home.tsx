@@ -658,6 +658,10 @@ const styles = StyleSheet.create({
     fontSize: typeScale.titleSmall,
     color: colors.onSurface,
     letterSpacing: -0.2,
+    // Drop Android font padding so the red brand dot in brandRow
+    // (alignItems: center) lines up with the visual center of the text
+    // (kakoccc #16 brand dot baseline alignment 2026-04-29).
+    includeFontPadding: false,
   },
   avatar: {
     width: 36,

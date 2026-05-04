@@ -93,8 +93,8 @@ export default function QuizName() {
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
   backBtn: { width: 40, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(49,51,47,0.06)', alignItems: 'center', justifyContent: 'center' },
-  back: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
-  progressLabel: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, letterSpacing: tracking.labelWide },
+  back: { fontSize: 22, color: colors.onSurface, includeFontPadding: false, textAlignVertical: 'center' },
+  progressLabel: { fontFamily: fonts.label, fontSize: typeScale.label, color: colors.onSurface, letterSpacing: tracking.label },
   // skipBtn matches backBtn's 40dp slot so the centered progressLabel doesn't
   // drift left or right depending on Skip's intrinsic text width
   // (kakoccc #14 onboarding header alignment 2026-04-29).

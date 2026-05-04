@@ -87,10 +87,46 @@ submit. Will tackle in Etap Б after the first ui-qa pass on Etap A fixes.
 |----|--------|--------------|------|
 | **#35** | kakoccc | Field-level validation is a bigger UX refactor (track which field is invalid, conditional border highlight, message-near-field). Wider than a layout fix. | Etap В polish pass — refactor sign-in / sign-up forms to support field-bound errors. |
 
-## Next
+## Etap В — fixes applied this pass (cosmetic polish, code-actionable)
 
-1. Run `node node_modules/typescript/lib/tsc.js --noEmit` to confirm clean.
-2. Live verification via `/ui-qa` skill on simulator — exercise Etap A + Б
-   touchpoints AND probe #31, #29, #46.
-3. Commit + push Etap Б.
-4. Etap В — cosmetic polish (~26 items).
+| ID | Source | Severity | Status | Files touched |
+|----|--------|----------|--------|---------------|
+| **#2** | kakoccc | Low | ✅ FIXED | progressLabel style across 12 onboarding screens (welcome + motivational-1/-2 + 9 quiz): typeScale.labelSmall(10) → label(12), color onSurfaceVariant → onSurface, tracking labelWide(3.5) → label(2.5) |
+| **#3** | kakoccc | Low | ✅ FIXED | Back-arrow `back:` style across 9 quiz screens: dropped `lineHeight: 22`, added `includeFontPadding: false` + `textAlignVertical: 'center'` for true center on Android |
+| **#16** | kakoccc | Low | ✅ FIXED | brandWord text style on 5 files (home, progress, curriculum, result, paywall): added `includeFontPadding: false` so the red brand dot in brandRow lines up with text visual center |
+| **#17** | kakoccc | Low | ✅ FIXED (close X centering) | `app/(onboarding)/paywall.tsx`: closeX text style — same Android centering treatment |
+| **#30** | kakoccc | Low | ✅ FIXED | `app/(modals)/sos.tsx`: sendArrow + backArrow text styles — Android centering |
+| **#33** | kakoccc | Low | ✅ FIXED | `app/(tabs)/profile/index.tsx`: rewrote "(~25g/day baseline)" → "Based on the average 25g a day people add to coffee, snacks, and drinks." (natural language) |
+| **#41** | kakoccc | Medium | ✅ FIXED | `app/(onboarding)/paywall.tsx`: heroTitle now `numberOfLines={2}` + `adjustsFontSizeToFit` + `minimumFontScale={0.85}` so `$0.22 / day decision` doesn't clip on narrow Android |
+
+## Etap В — deferred (subjective design / animation work)
+
+These items are real but require design assets, perf tuning, or design
+calls that fall outside a code-walkthrough fix:
+
+| IDs | Why deferred |
+|-----|--------------|
+| #6, #7, #9, #12, #40 | Selection/border state design calls — softer fill, clearer indicators |
+| #8, #10, #13, #18, #26, #34, #42, #47 | Need replacement vector icons (or new DecorGlyph variants) — designer input |
+| #20, #21, #24, #28 | Animation jitter / clipping — needs live perf profiling on Android device |
+| #23 | Bottom nav contrast / icon sizing — design + safe-area tweak; live verify |
+| #32 | "End" looks like decoration — design call (button style or remove) |
+| #45 | Journey header alignment — vague, needs live repro |
+| D5, D6, D7 | dropamz22 design calls (5-button asymmetric grid, pale SAVE CRAVING button, AI Coach empty space) |
+
+## Sandbox limitation — live ui-qa BLOCKED
+
+Metro fails to boot on Linux sandbox with
+`Cannot find module '../middleware/FaviconMiddleware'` — Expo CLI v55
+regression in this sandbox node_modules. To run live ui-qa pass:
+1. Start Metro from Mac side: `npm run start` (in /Users/.../sugar-quit).
+2. Open Sugar Quit Claude QA simulator (UDID `7CDEA30A-90BB-4141-9FB0-202EB0FA677F`).
+3. Walk Etap A + Б + В touchpoints + probe deferred bugs (#29, #31, #45, #46).
+
+## Next (when Mac-side Metro is up)
+
+1. Live ui-qa pass via `/ui-qa` skill — exercise all 23 fixes + probe
+   deferred bugs.
+2. Address subjective Etap В items in a separate design pass with user
+   input (icon set, animation polish, copy refinement).
+3. Resolve the App Store ship blocker (`sugarquit.app` privacy URL).

@@ -352,6 +352,7 @@ const styles = StyleSheet.create({
     fontSize: typeScale.titleSmall,
     color: DARK_TEXT,
     letterSpacing: -0.2,
+    includeFontPadding: false,
   },
   roadmapLabel: {
     fontFamily: fonts.headlineMedium,

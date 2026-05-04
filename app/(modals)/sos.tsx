@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(49,51,47,0.06)',
     alignItems: 'center', justifyContent: 'center',
   },
-  backArrow: { fontSize: 22, color: colors.onSurface, lineHeight: 22 },
+  backArrow: { fontSize: 22, color: colors.onSurface, includeFontPadding: false, textAlignVertical: 'center' },
   headerCenter: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   headerDot: {
     width: 8, height: 8, borderRadius: radius.full,
@@ -424,7 +424,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.onPrimary,
     fontFamily: fonts.headlineBold,
-    lineHeight: 18,
+    // Android centering — `lineHeight === fontSize` + default font padding
+    // pushes the ↑ glyph below center in a 36×36 button. iOS no-ops these
+    // (kakoccc #30 send button arrow centering 2026-04-29).
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
 
   offlineBlock: {
