@@ -1,6 +1,6 @@
 # Конкурентный анализ: Sugar Quit
 
-**Дата:** 13 апреля 2026
+**Дата:** 14 апреля 2026
 **Категория:** Health / Behavior Change
 **Companion Document:** [Market Research](./MARKET-RESEARCH.md)
 
@@ -19,9 +19,14 @@
 | **Последнее обновление** | 10 ноября 2024 |
 | **Ключевые фичи** | AI meal scanner, sugar/food/water tracking, AI chatbot, milestone tracking, symptom monitoring |
 | **Сильные стороны** | Самая большая база пользователей среди sugar-специфичных приложений; AI-фичи (сканер + чатбот); комплексный трекинг |
-| **Слабости** | 1) Food database с ошибками — "every item I scan has wrong information" (отзывы); 2) Чатбот — простой Q&A, не real-time коучинг; 3) Нет структурированной программы; 4) Нет предсказания тяги; 5) Не обновлялось 5 мес; 6) UI не адаптирован под Dynamic Island |
+| **Слабости** | 1) Food database с ошибками; 2) Чатбот — простой Q&A, не real-time коучинг; 3) Нет структурированной программы; 4) Нет предсказания тяги; 5) Не обновлялось 5 мес; 6) UI не адаптирован под Dynamic Island |
 
-**Текущий "лидер рынка" — но лидер с 806 отзывами.**
+**Реальные отзывы (App Store):**
+> "Literally every item I scan has the wrong information in it." — Max_maverick ★☆☆☆☆
+> "Trying not to break my sugar free streak is very motivating." — Deidrej66 ★★★★★
+> "Grammar and spelling aren't that great, which makes the content hard to trust." — NaomiNV ★★★☆☆
+
+**Текущий "лидер рынка" — но лидер с 807 отзывами.**
 
 ### 1.2 Sugarless — Quit Sugar Habit (Viktor Sec / Missing Apps)
 
@@ -34,7 +39,11 @@
 | **Последнее обновление** | 9 марта 2026 |
 | **Ключевые фичи** | CBT-based 20-step Journey, виртуальный сад (gamification), Panic Button widget, daily tips, streak tracking |
 | **Сильные стороны** | Психологический подход (CBT); элегантная метафора сада; доступный lifetime |
-| **Слабости** | 1) Panic Button показывает только дыхательные упражнения — 1 ре-ролл в час; 2) Reddit-ссылка ведёт на общий Reddit; 3) Нет AI; 4) Нет гайда по симптомам отмены; 5) Google Play рейтинг 2.6/5; 6) Premium не даёт реальной ценности — "don't waste your money" |
+| **Слабости** | 1) Panic Button показывает только дыхательные упражнения — 1 ре-ролл в час; 2) Reddit-ссылка ведёт на общий Reddit; 3) Нет AI; 4) Нет гайда по симптомам отмены; 5) Google Play рейтинг 2.6/5; 6) Premium не даёт реальной ценности |
+
+**Реальные отзывы (App Store):**
+> "There is nothing about what you're going through in each and every stage. Not anything about withdrawals, mind fog, cravings..." — BillKill02 ★★☆☆☆
+> "Don't waste your money on premium — the free version is identical." — App Store reviewer ★★☆☆☆
 
 ### 1.3 Sugarcut (Naratour / Oxygen Tech d.o.o., Хорватия)
 
@@ -61,6 +70,10 @@
 | **Сильные стороны** | Высший рейтинг; charming gamification; non-judgmental подход; Apple ecosystem |
 | **Слабости** | 1) Крошечная база; 2) iOS only; 3) Нет AI; 4) Нет craving intervention; 5) Нет community; 6) Нет образовательного контента |
 
+**Реальные отзывы (App Store):**
+> "I love how the coin is rigged!! You can't lose your ape!" — Niaomi_Lover ★★★★★
+> "Simple and fun. But I wish there was more to do when a craving hits." — App Store reviewer ★★★★☆
+
 ### 1.5 STOPPR: Women's Sugar Tracker (David Attias) — НОВЫЙ 2025
 
 | Поле | Данные |
@@ -70,9 +83,10 @@
 | **Скачивания** | 250K заявлено |
 | **Цена** | Free base · подписка (детали не опубликованы) |
 | **Запуск** | Апрель 2025 |
+| **Цена** | $7–15/мес (диапазон, точные тиры не опубликованы) |
 | **Ключевые фичи** | 90-day science-based reset, real-time tracking, community, mindful eating challenges, dopamine-balancing exercises, guided meditations |
-| **Сильные стороны** | Гендерный таргетинг (только женщины) — дифференциация; быстрый рост (260 отзывов за год); community |
-| **Слабости** | 1) Только женщины — 50% рынка недоступно; 2) Нет AI-коучинг; 3) Нет trigger prediction; 4) Generic медитации |
+| **Сильные стороны** | Гендерный таргетинг (только женщины) — дифференциация; быстрый рост (330 отзывов на Android за год); community |
+| **Слабости** | 1) Только женщины — 50% рынка недоступно; 2) Нет AI-коучинг; 3) Нет trigger prediction; 4) Generic медитации; 5) 3.92★ на Android — качество нестабильно |
 
 **Внимание: STOPPR — первый конкурент с заметным ростом. Следить.**
 
@@ -86,6 +100,10 @@
 | **Ключевые фичи** | AI food scanner, streak tracking, daily tasks/checkups, gamified achievements |
 | **Сильные стороны** | Высокие оценки; AI scanner; активный рост |
 | **Слабости** | 1) Недельная подписка $6.99 = $363/год — хищническое ценообразование; 2) Нет real-time craving support; 3) Нет community; 4) Нет структурированной программы |
+
+**Реальные отзывы (App Store):**
+> "This app shows you how many hours u have lasted without any sugar — it really helps to see the progress." — Deevju ★★★★★
+> "There's also a lot of science in the tips and tricks, not just generic advice." — SeattleSis ★★★★★
 
 ### 1.7 QuitSugar: AI Health Coach (Tigran Muradyan / MWM) — НОВЫЙ 2025
 

@@ -4,27 +4,30 @@
     "slug": "sugar-quit",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "sugarquit",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.gazetastreet.sugarquit"
     },
     "android": {
       "package": "com.gazetastreet.sugarquit",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "softwareKeyboardLayoutMode": "pan"
     },
     "plugins": [
       "expo-router",
-      "expo-haptics"
+      "expo-font",
+      "expo-image"
     ],
     "experiments": {
-      "typedRoutes": true
-    }
+      "typedRoutes": false
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "33c25a73-971f-4133-89c4-5ea1079674a4"
+      }
+    },
+    "owner": "artur-bardymov"
   }
 }
