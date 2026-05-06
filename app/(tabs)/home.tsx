@@ -14,7 +14,6 @@ import { Eyebrow } from '../../components/primitives/Eyebrow';
 import { Stat } from '../../components/primitives/Stat';
 import { Txt } from '../../components/primitives/Txt';
 import { colors, radius, spacing } from '../../constants/tokens';
-import { MOCK_USER } from '../../mock/user';
 import { getLessonForDay } from '../../constants/curriculum';
 import {
   getMilestoneDueIfAny,
@@ -35,6 +34,12 @@ export default function Home() {
   const sosFreeLimit        = useUserStore((s) => s.sosFreeLimit);
   const sosDisclaimerAccepted = useUserStore((s) => s.sosDisclaimerAccepted);
   const markMilestoneCelebrated = useUserStore((s) => s.markMilestoneCelebrated);
+  const cravings   = useUserStore((s) => s.cravings);
+  const sosLog     = useUserStore((s) => s.sosLog);
+  const sosWalked      = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
+  const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
+  const cravingsMet    = sosWalked + cravingsWalked;
+  const dollarsSaved   = (totalDaysClean * 1.5).toFixed(0);
 
   useEffect(() => {
     const today     = getTodayISODate();
@@ -70,7 +75,7 @@ export default function Home() {
   const prevMile    = segment ? segment[0] : 90;
   const nextMile    = segment ? segment[1] : 90;
   const filledDots  = segment
-    ? Math.round(((streakDays - prevMile) / (nextMile - prevMile)) * 14)
+    ? Math.max(1, Math.round(((streakDays - prevMile) / (nextMile - prevMile)) * 14))
     : 14;
   const daysToNext  = segment ? nextMile - streakDays : 0;
 
@@ -140,14 +145,14 @@ export default function Home() {
           <Animated.View entering={FadeInUp.delay(160).duration(400)} style={styles.statsRow}>
             <Stat
               icon={<MaterialCommunityIcons name="shield-check-outline" size={16} color={colors.success} />}
-              value={String(MOCK_USER.cravingsDefeated)}
+              value={String(cravingsMet)}
               label="Cravings"
               accent={colors.success}
               style={styles.statFlex}
             />
             <Stat
               icon={<MaterialCommunityIcons name="cash" size={16} color={colors.success} />}
-              value={`$${MOCK_USER.moneySavedDollars}`}
+              value={`$${dollarsSaved}`}
               label="Saved"
               accent={colors.success}
               style={styles.statFlex}
