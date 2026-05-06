@@ -1,14 +1,13 @@
-# QA Report — первый проход
-**Дата:** 2026-05-07
-**Тестировщик:** Artur Bardymov
-**Устройство:** Android (Expo Go)
-**Окружение:** Expo Dev Server на ПК, ветка `feature/artubard`
+# Bug Report — первый проход — 7 мая 2026
+Автор: Artur Bardymov
+Проект: Sugar Quit
+Ветка: feature/artubard (commit 59e3ef8)
+Экранов проверено: 35
+Всего багов: 4 (1 HIGH, 2 MEDIUM, 1 LOW)
 
 ---
 
 ## Охват
-
-Пройдены все экраны приложения:
 
 - Онбординг: Welcome, Quiz (name / goal / triggers / consumption / work-environment / peak-time / motivation / past-attempts / sugar-goal), Result, Paywall, Push Permission
 - Главный экран (Home)
@@ -60,19 +59,3 @@ B04: Поле ввода зависает посередине экрана по
 Скриншот: screenshots/bug-04-sos-android-input.jpg
 Приоритет: LOW
 Статус: ❌ Открыт — передать куратору
-
----
-
-## Итог
-
-| # | Баг | Статус |
-|---|-----|--------|
-| BUG-01 | SOS: поле ввода обрезало 7-ю строку | ✅ Исправлено |
-| BUG-02 | Home: 0 точек при сбитом стрике | ✅ Исправлено |
-| BUG-03 | Home и Progress показывают разные цифры | ✅ Исправлено |
-| BUG-04 | SOS: поле ввода не прижато к низу на Android | ❌ Открыт |
-
-**Скриншоты:** 1 (BUG-04)
-**Найдено багов:** 4
-**Исправлено:** 3
-**Передать куратору:** 1 (BUG-04 — Android KeyboardAvoidingView)

@@ -1,15 +1,14 @@
-# QA Report — Claude code audit
-**Дата:** 2026-05-07
-**Тестировщик:** Claude (code audit) + Artur Bardymov (ручная проверка)
-**Устройство:** Android (Expo Go)
-**Метод:** Статический анализ кода, 35 экранов
-**Ветка:** `feature/artubard`
+# Bug Report — Claude code audit — 7 мая 2026
+Автор: Claude (code audit) + Artur Bardymov
+Проект: Sugar Quit
+Ветка: feature/artubard (commit 59e3ef8)
+Экранов проверено: 35
+Всего багов: 1 (0 HIGH, 0 MEDIUM, 1 LOW)
 
 ---
 
 ## Охват
 
-Проверено 35 экранов:
 - Онбординг: Welcome, Quiz ×9, Result, Paywall, Push Permission, Motivational ×2, Auth
 - Вкладки: Home, Curriculum (список + урок), Progress (список + milestones), Profile (просмотр + редактирование + настройки)
 - Модалки: SOS, Post-SOS, Check-in, Streak Freeze, Milestone, Share Card, Rate App, Forecast Window, Craving Log, Disclaimer, Paywall Contextual
@@ -37,16 +36,4 @@ B01: Поле ввода зависает посередине экрана по
 Как должно быть: После скрытия клавиатуры поле ввода должно возвращаться к нижнему краю экрана — в исходное положение.
 Скриншот: screenshots/01-craving-log-keyboard.jpg
 Приоритет: LOW
-
----
-
-## Итог
-
-| # | Баг | Приоритет | Статус |
-|---|-----|-----------|--------|
-| B01 | Craving Log: клавиатура перекрывает поле на Android | MEDIUM | ❌ Открыт |
-
-**Проверено экранов:** 35
-**Найдено багов:** 1 (MEDIUM: 1)
-
-> Приложение визуально в хорошем состоянии. Основная проблема — поведение клавиатуры на Android, которое уже отмечено также в отчёте от 2026-04-23 (BUG-04 в SOS-чате).
+Статус: ❌ Открыт — передать куратору
