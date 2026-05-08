@@ -44,7 +44,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "./plugins/with-modular-headers-fix.js"
     ],
     "experiments": {
       "typedRoutes": false
