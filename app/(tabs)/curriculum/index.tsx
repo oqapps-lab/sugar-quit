@@ -128,7 +128,15 @@ export default function Curriculum() {
                   >
                     <GlassCard tint="default" style={styles.lockedCard}>
                       <View style={styles.lockedRow}>
-                        <View style={styles.lockIcon}><Text style={styles.lockIconGlyph}>🔒</Text></View>
+                        {/* DRAFT (kakoccc #26 2026-04-29): replaced 🔒 emoji
+                            (which read as a UI glitch / out-of-system icon)
+                            with a lightweight inline lock shape — square
+                            shackle on a body — built from two Views. Designer
+                            can swap for proper DecorGlyph variant later. */}
+                        <View style={styles.lockIcon}>
+                          <View style={styles.lockShackle} />
+                          <View style={styles.lockBody} />
+                        </View>
                         <Text style={styles.lockedText}>Unlocks as you walk</Text>
                       </View>
                     </GlassCard>
@@ -377,6 +385,20 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   lockIconGlyph: { fontSize: 14 },
+  // DRAFT inline lock shape (kakoccc #26): shackle ▄ + body █ in onSurface
+  // tone, ~14×16 px, no emoji fallback risk.
+  lockShackle: {
+    width: 9, height: 6,
+    borderTopLeftRadius: 5, borderTopRightRadius: 5,
+    borderWidth: 2, borderBottomWidth: 0,
+    borderColor: colors.onSurfaceVariant,
+    marginBottom: -1,
+  },
+  lockBody: {
+    width: 13, height: 9,
+    borderRadius: 2,
+    backgroundColor: colors.onSurfaceVariant,
+  },
   lockedText: {
     fontFamily: fonts.bodyLight,
     fontSize: typeScale.bodyMedium,

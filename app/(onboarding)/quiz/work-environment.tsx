@@ -18,11 +18,17 @@ export default function QuizWorkEnvironment() {
   const setWorkEnvironment = useUserStore((s) => s.setWorkEnvironment);
   const [selected, setSelected] = useState<WorkEnvironment | null>(stored);
 
+  // DRAFT (kakoccc #13 2026-04-29): replaced primitive geometric symbols
+  // ▢ △ ◇ ◯ — which read as "draft placeholders" — with system emoji that
+  // carry the actual meaning (office building, house, walking person,
+  // backpack for mobile/on-the-go). Apple + Google emoji render
+  // consistently. Designer can swap these for proper DecorGlyph SVG
+  // variants later.
   const options: { key: WorkEnvironment; title: string; glyph: string; tint: 'default' | 'mint' | 'peach' }[] = [
-    { key: 'office', title: 'Office',      glyph: '▢', tint: 'default' },
-    { key: 'home',   title: 'Home',        glyph: '△', tint: 'mint' },
-    { key: 'feet',   title: 'On my feet',  glyph: '◇', tint: 'peach' },
-    { key: 'mobile', title: 'Mobile',      glyph: '◯', tint: 'default' },
+    { key: 'office', title: 'Office',      glyph: '🏢', tint: 'default' },
+    { key: 'home',   title: 'Home',        glyph: '🏠', tint: 'mint' },
+    { key: 'feet',   title: 'On my feet',  glyph: '🚶', tint: 'peach' },
+    { key: 'mobile', title: 'Mobile',      glyph: '🎒', tint: 'default' },
   ];
 
   const pick = (key: WorkEnvironment) => {

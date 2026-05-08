@@ -134,8 +134,11 @@ const styles = StyleSheet.create({
     right: spacing.lg,
     borderRadius: radius.full,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255,255,255,0.6)',
+    // Bumped from 0.2 → 0.55 so content scrolling under the nav doesn't
+    // bleed through and obscure the icons (kakoccc #23 bottom nav too
+    // transparent 2026-04-29).
+    backgroundColor: 'rgba(255,255,255,0.55)',
     overflow: 'hidden',
   },
   indicatorTrack: {
@@ -167,16 +170,20 @@ const styles = StyleSheet.create({
     borderRadius: radius.full,
   },
   glyph: {
-    fontSize: 18,
-    color: colors.outline,
+    // Bumped from 18 → 22, color outline → onSurfaceVariant for clearer
+    // contrast (kakoccc #23 bottom nav icons too small/unclear 2026-04-29).
+    fontSize: 22,
+    color: colors.onSurfaceVariant,
     fontFamily: fonts.headlineMedium,
-    lineHeight: 20,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   glyphActive: { color: colors.primary },
   label: {
-    fontSize: 9,
+    // Bumped from 9 → 10, color outline → onSurfaceVariant.
+    fontSize: 10,
     fontFamily: fonts.label,
-    color: colors.outline,
+    color: colors.onSurfaceVariant,
     letterSpacing: 0.5,
   },
   labelActive: {

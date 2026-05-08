@@ -20,8 +20,8 @@ export default function Welcome() {
     <AtmosphericGradient theme="sunriseGreens">
       {/* Background aura blobs — dawn feel */}
       <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.55} drift={22} />
-        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.55} drift={12} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={10} />
       </View>
 
       <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>

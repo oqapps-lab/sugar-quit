@@ -171,7 +171,10 @@ export default function Lesson() {
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) router.back();
+            else router.replace('/(tabs)/curriculum');
+          }}
           style={styles.backBtn}
           accessibilityRole="button"
           accessibilityLabel="Back to curriculum"
@@ -292,7 +295,10 @@ export default function Lesson() {
 
       {/* CTA — sits above the floating tab bar (bar takes ~114pt from bottom) */}
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 110 }]}>
-        <PillCTA label="Mark lesson complete" onPress={() => router.back()} />
+        <PillCTA label="Mark lesson complete" onPress={() => {
+          if (router.canGoBack()) router.back();
+          else router.replace('/(tabs)/curriculum');
+        }} />
       </View>
     </AtmosphericGradient>
   );

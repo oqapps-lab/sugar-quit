@@ -38,13 +38,19 @@ export default function QuizName() {
 
   return (
     <AtmosphericGradient theme="sunriseGreens">
+      {/* N5 fix (live ui-qa 2026-05-04): the prior wrapper used
+          StyleSheet.absoluteFill on both KAV and the inner View. AbsoluteFill
+          pins to all four edges, so KAV's `behavior: padding` could not
+          shrink the visible area when the keyboard rose — Continue stayed
+          underneath. Flex layout (`flex: 1`) lets the bottom edge actually
+          rise. */}
       <KeyboardAvoidingView
-        style={StyleSheet.absoluteFill}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={0}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={StyleSheet.absoluteFill}>
+          <View style={{ flex: 1 }}>
             <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
               <Pressable onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back">
                 <Text style={styles.back}>←</Text>

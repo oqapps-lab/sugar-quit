@@ -59,9 +59,15 @@ export default function Settings() {
   const setPremium = useUserStore((s) => s.setPremium);
   const clearSession = useUserStore((s) => s.clearSession);
 
+  // N4 / kakoccc #46: router.back() falls through to Home when stack is
+  // empty (deep-link / fresh tab). Land on Profile explicitly.
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.back();
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/(tabs)/profile');
+    }
   };
 
   // Account flows

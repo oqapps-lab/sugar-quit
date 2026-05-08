@@ -311,14 +311,23 @@ const styles = StyleSheet.create({
     color: colors.primary,
     letterSpacing: tracking.labelWide,
   },
+  // End button now reads as a real button — capsule with subtle outline +
+  // light fill — instead of bare text floating top-right (kakoccc #32
+  // 2026-04-29: "End looks like plain text inside a decorative shape").
   endBtn: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: radius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(165,60,48,0.25)',
+    backgroundColor: 'rgba(255,172,160,0.18)',
   },
   endLabel: {
-    fontFamily: fonts.bodyMedium,
+    fontFamily: fonts.headlineSemibold,
     fontSize: typeScale.bodyMedium,
-    color: colors.onSurfaceVariant,
+    color: colors.primary,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
 
   disclaimer: {
@@ -331,7 +340,12 @@ const styles = StyleSheet.create({
   },
 
   messages: { flex: 1 },
-  messagesContent: { padding: spacing.lg, gap: spacing.sm },
+  // dropamz22 D7 (2026-05-02): SOS chat had a large empty middle on first
+  // open — coach greetings sat at top, input at bottom, ~50% blank in
+  // between. justifyContent: flex-end pushes the existing messages down to
+  // sit just above the input bar, so the greeting reads as "the coach is
+  // already here with you" instead of "scroll up to find content".
+  messagesContent: { padding: spacing.lg, gap: spacing.sm, flexGrow: 1, justifyContent: 'flex-end' },
 
   aiRow: { alignItems: 'flex-start', maxWidth: '80%' },
   userRow: { alignItems: 'flex-end', maxWidth: '80%', alignSelf: 'flex-end' },

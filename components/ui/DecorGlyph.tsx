@@ -349,45 +349,35 @@ function Compass({ size }: { size: number }) {
 }
 
 function Heart({ size }: { size: number }) {
-  // Heart drawn from two circles + rotated square, system-font-free.
+  // Heart — Unicode glyph centered in a soft halo. Previously assembled
+  // from two circles + a rotated square, which read as "lumpy mushroom"
+  // rather than a heart (kakoccc #10 distorted heart 2026-04-29).
+  // Unicode ❤ ships with iOS/Android system fonts and renders crisply.
   const s = size;
-  const lobe = s * 0.35;
   return (
-    <>
-      <View
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: s,
+        height: s,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text
         style={{
-          position: 'absolute',
-          top: s * 0.2,
-          left: s * 0.15,
-          width: lobe,
-          height: lobe,
-          borderRadius: lobe / 2,
-          backgroundColor: colors.primary,
+          fontSize: s * 0.78,
+          color: colors.primary,
+          lineHeight: s * 0.9,
+          includeFontPadding: false,
+          textAlignVertical: 'center',
         }}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          top: s * 0.2,
-          right: s * 0.15,
-          width: lobe,
-          height: lobe,
-          borderRadius: lobe / 2,
-          backgroundColor: colors.primary,
-        }}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          top: s * 0.33,
-          left: s / 2 - lobe / 2,
-          width: lobe,
-          height: lobe,
-          backgroundColor: colors.primary,
-          transform: [{ rotate: '45deg' }],
-        }}
-      />
-    </>
+      >
+        ♥
+      </Text>
+    </View>
   );
 }
 

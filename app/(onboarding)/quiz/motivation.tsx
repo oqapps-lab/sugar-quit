@@ -106,6 +106,9 @@ const styles = StyleSheet.create({
   optionTitleOn: { color: colors.primary },
   checkDot: { width: 22, height: 22, borderRadius: radius.full, borderWidth: 1.5, borderColor: 'rgba(49,51,47,0.25)', alignItems: 'center', justifyContent: 'center' },
   checkDotOn: { backgroundColor: colors.primary, borderColor: colors.primary },
-  checkGlyph: { color: colors.onPrimary, fontSize: 12, fontFamily: fonts.headlineBold },
+  // Android centering — without these props the ✓ glyph drifts down inside
+  // the 22dp circle and looks like it's sitting on a square outline
+  // (kakoccc #8 checkmark not centered 2026-04-29). iOS no-ops these.
+  checkGlyph: { color: colors.onPrimary, fontSize: 13, fontFamily: fonts.headlineBold, includeFontPadding: false, textAlignVertical: 'center', lineHeight: 14 },
   footer: { paddingHorizontal: spacing.lg, alignItems: 'center' },
 });

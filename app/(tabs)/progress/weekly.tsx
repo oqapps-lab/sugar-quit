@@ -18,7 +18,8 @@ export default function Weekly() {
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.back();
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/progress');
   };
 
   return (

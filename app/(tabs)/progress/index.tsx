@@ -139,13 +139,18 @@ export default function ProgressScreen() {
         <AuraBlob tint="golden" size={260} style={styles.auraBottomRight} intensity={0.3} drift={16} />
       </View>
 
-      {/* Header */}
+      {/* Header — Journey label is absolutely centered between brandRow
+          and avatar so it stays on the screen-axis regardless of the
+          brand-text width vs. avatar width (kakoccc #45 header alignment
+          2026-04-29). */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.brandRow}>
           <View style={styles.logoMark} />
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
-        <Text style={styles.roadmapLabel}>Journey</Text>
+        <View pointerEvents="none" style={[styles.headerCenter, { top: insets.top + spacing.sm }]}>
+          <Text style={styles.roadmapLabel}>Journey</Text>
+        </View>
         <View style={styles.avatar}>
           <Text style={styles.avatarInitial}>{avatarInitial}</Text>
         </View>
@@ -341,6 +346,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.sm,
     zIndex: 10,
+  },
+  headerCenter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    paddingBottom: spacing.sm,
   },
   brandRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   logoMark: {

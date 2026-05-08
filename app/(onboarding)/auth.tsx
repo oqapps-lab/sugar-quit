@@ -79,8 +79,8 @@ export default function Auth() {
       <AtmosphericGradient theme="dawn">
         {/* Background aura blobs */}
         <View style={styles.auraLayer} pointerEvents="none">
-          <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
-          <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+          <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={12} />
+          <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={10} />
         </View>
 
         <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
@@ -188,8 +188,8 @@ export default function Auth() {
     <AtmosphericGradient theme="dawn">
       {/* Background aura blobs */}
       <View style={styles.auraLayer} pointerEvents="none">
-        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={22} />
-        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={18} />
+        <AuraBlob tint="coral" size={320} style={styles.auraTopRight} intensity={0.5} drift={12} />
+        <AuraBlob tint="lavender" size={260} style={styles.auraBottomLeft} intensity={0.4} drift={10} />
       </View>
 
       <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>

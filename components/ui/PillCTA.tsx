@@ -38,7 +38,7 @@ export function PillCTA({
           styles.pill,
           styles.darkText,
           shadows.pillLg,
-          { opacity: disabled ? 0.4 : pressed ? 0.9 : 1 },
+          { opacity: disabled ? 0.55 : pressed ? 0.9 : 1 },
           style,
         ]}
       >
@@ -58,7 +58,7 @@ export function PillCTA({
         style={({ pressed }) => [
           styles.pill,
           styles.lightOnDark,
-          { opacity: disabled ? 0.4 : pressed ? 0.9 : 1 },
+          { opacity: disabled ? 0.55 : pressed ? 0.9 : 1 },
           style,
         ]}
       >
@@ -81,7 +81,7 @@ export function PillCTA({
       accessibilityLabel={label}
       accessibilityState={{ disabled }}
       style={({ pressed }) => [
-        { opacity: disabled ? 0.4 : pressed ? 0.92 : 1 },
+        { opacity: disabled ? 0.55 : pressed ? 0.92 : 1 },
         style,
       ]}
     >

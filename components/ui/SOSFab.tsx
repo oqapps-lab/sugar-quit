@@ -64,12 +64,17 @@ export function SOSFab({ onPress, style, bottom = 96, position = 'center' }: Pro
     };
   }, [rm, pulse1, pulse2]);
 
+  // Pulse rings — opacity uses a sine half-curve (0 → max → 0) so both
+  // endpoints are fully transparent. This eliminates the visual "snap"
+  // when withRepeat reset the shared value back to 0 (kakoccc #24
+  // SOS pulse looks rough 2026-04-29). Scale still grows monotonically
+  // so the ring expands outward while fading in then out.
   const pulseStyle1 = useAnimatedStyle(() => ({
-    opacity: 0.55 * (1 - pulse1.value),
+    opacity: 0.55 * Math.sin(pulse1.value * Math.PI),
     transform: [{ scale: 0.8 + pulse1.value * 0.9 }],
   }));
   const pulseStyle2 = useAnimatedStyle(() => ({
-    opacity: 0.4 * (1 - pulse2.value),
+    opacity: 0.4 * Math.sin(pulse2.value * Math.PI),
     transform: [{ scale: 0.8 + pulse2.value * 1.1 }],
   }));
 

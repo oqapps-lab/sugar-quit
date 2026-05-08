@@ -233,7 +233,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
 
-  stonesRow: { flexDirection: 'row', gap: spacing.sm, justifyContent: 'space-between' },
+  // dropamz22 D5 (2026-05-02): combining `justifyContent: space-between` with
+  // `gap` and `flex: 1` children produced inconsistent visual spacing — the
+  // outer gap looked larger than the inner ones. Drop space-between; the
+  // gap alone keeps the 5 stones evenly spaced.
+  stonesRow: { flexDirection: 'row', gap: spacing.sm },
   stone: {
     flex: 1,
     aspectRatio: 1,

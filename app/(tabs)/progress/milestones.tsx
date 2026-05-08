@@ -56,7 +56,8 @@ export default function Milestones() {
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.back();
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/progress');
   };
 
   return (
@@ -126,7 +127,20 @@ function MilestoneCard({ milestone }: { milestone: Milestone }) {
       accessibilityRole="button"
       accessibilityLabel={`Day ${day}: ${title}, ${status}`}
     >
-      <View style={glyphStyle} />
+      {/* DRAFT (kakoccc #47 2026-04-29): replaced flat-colored circle with
+          a status-specific glyph so each milestone reads as something
+          beyond "yet another pink dot". */}
+      <View style={glyphStyle}>
+        {status === 'earned' && (
+          <Text style={styles.glyphEarnedMark}>✓</Text>
+        )}
+        {status === 'current' && (
+          <View style={styles.glyphCurrentInner} />
+        )}
+        {status === 'goal' && (
+          <Text style={styles.glyphGoalMark}>★</Text>
+        )}
+      </View>
       <Text style={[styles.cardDayLabel, { color: textColor, opacity: status === 'upcoming' ? 0.6 : 1 }]}>
         DAY {day}
       </Text>
@@ -220,11 +234,16 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: radius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   glyphEarned:   { backgroundColor: '#ffaca0' },
   glyphCurrent:  { backgroundColor: '#fd7d6c' },
   glyphUpcoming: { backgroundColor: 'rgba(255,255,255,0.12)' },
-  glyphGoal:     { backgroundColor: 'transparent', borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)' },
+  glyphGoal:     { backgroundColor: 'transparent', borderWidth: 1, borderColor: 'rgba(255,255,255,0.55)' },
+  glyphEarnedMark: { color: '#7a1c10', fontSize: 16, fontFamily: fonts.headlineBold, includeFontPadding: false, textAlignVertical: 'center', lineHeight: 18 },
+  glyphCurrentInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#ffffff' },
+  glyphGoalMark: { color: 'rgba(255,255,255,0.85)', fontSize: 14, includeFontPadding: false, textAlignVertical: 'center', lineHeight: 16 },
 
   cardDayLabel: {
     fontFamily: fonts.label,

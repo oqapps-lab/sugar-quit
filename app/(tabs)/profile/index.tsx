@@ -251,9 +251,15 @@ const styles = StyleSheet.create({
 
   menu: { backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: radius.sm, borderWidth: 1, borderColor: 'rgba(255,255,255,0.7)' },
   menuRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.md, paddingHorizontal: spacing.md, borderBottomWidth: 1, borderBottomColor: 'rgba(49,51,47,0.05)' },
-  menuIcon: { width: 22, fontSize: 14, color: colors.onSurfaceVariant, textAlign: 'center' },
+  // Bumped from 14→18 fontSize + width 22→28 + onSurface (was variant) so
+  // the menu icons read clearly instead of "tiny grey dots" (kakoccc #34
+  // 2026-04-29). Same fix is needed for the chevron in styles.menuChevron
+  // below (was opacity 0.3, bumped to 0.55 for visibility).
+  menuIcon: { width: 28, fontSize: 18, color: colors.onSurface, textAlign: 'center', includeFontPadding: false, textAlignVertical: 'center' },
   menuLabel: { flex: 1, fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurface },
-  menuArrow: { color: colors.onSurfaceVariant, fontSize: 16, opacity: 0.5 },
+  // Bumped opacity 0.5 → 0.7 + fontSize 16 → 18 so the right-side chevron
+  // reads as a clear affordance, not a faint shadow (kakoccc #34).
+  menuArrow: { color: colors.onSurfaceVariant, fontSize: 18, opacity: 0.7, includeFontPadding: false, textAlignVertical: 'center' },
 
   version: { fontFamily: fonts.label, fontSize: typeScale.labelSmall, color: colors.onSurfaceVariant, textAlign: 'center', opacity: 0.4, marginTop: spacing.md },
 });
