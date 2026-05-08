@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -145,27 +145,23 @@ export default function Profile() {
         <Animated.View entering={FadeInDown.delay(350).duration(400)}>
           <View style={styles.menu}>
             {[
-              { label: 'Edit profile',   icon: '✎', onPress: () => router.push('/(tabs)/profile/edit') },
-              // Removed standalone "Notifications" row — it routed to the same
-              // Settings page where NOTIFICATIONS is already the first
-              // section (Bug 19: deduplicated). Tap "Settings" to manage.
+              { label: 'Edit profile',   iconKind: 'edit' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/edit') },
               {
                 // Subscription row is premium-aware:
                 //  - free → upgrade paywall
                 //  - premium → iOS native "Manage subscription" sheet
-                //    (universal link, opens App Store → Account → Subscriptions)
                 label: isPremium ? 'Manage subscription' : 'Subscription',
-                icon: '◆',
+                iconKind: 'subscription' as MenuIconKind,
                 onPress: isPremium
                   ? () => Linking.openURL(LINKS.manageSubscription)
                   : () => router.push('/(modals)/paywall-contextual'),
               },
-              { label: 'Settings',       icon: '⚙', onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Support',        icon: '◐', onPress: () => Linking.openURL(LINKS.support) },
-              { label: 'Privacy Policy', icon: '◉', onPress: () => Linking.openURL(LINKS.privacyPolicy) },
+              { label: 'Settings',       iconKind: 'settings' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/settings') },
+              { label: 'Support',        iconKind: 'support' as MenuIconKind, onPress: () => router.push('/(modals)/support-form') },
+              { label: 'Privacy Policy', iconKind: 'privacy' as MenuIconKind, onPress: () => Linking.openURL(LINKS.privacyPolicy) },
               {
                 label: 'Sign out',
-                icon: '↗',
+                iconKind: 'signout' as MenuIconKind,
                 onPress: async () => {
                   await supabaseSignOut();
                   clearSession();
@@ -180,9 +176,11 @@ export default function Profile() {
                 accessibilityRole="button"
                 accessibilityLabel={m.label}
               >
-                <Text style={styles.menuIcon}>{m.icon}</Text>
+                <View style={styles.menuIconSlot}>
+                  <MenuIcon kind={m.iconKind} />
+                </View>
                 <Text style={styles.menuLabel}>{m.label}</Text>
-                <Text style={styles.menuArrow}>→</Text>
+                <Text style={styles.menuArrow}>›</Text>
               </Pressable>
             ))}
           </View>
@@ -193,6 +191,93 @@ export default function Profile() {
     </AtmosphericGradient>
   );
 }
+
+/**
+ * Inline vector menu icons. Built from plain Views/borders so they don't
+ * depend on Plus Jakarta Sans (which doesn't ship ✎ ⚙ etc — they fell
+ * through to [?] boxes). 6 kinds: edit/subscription/settings/support/
+ * privacy/signout. Each ~22×22, primary tone.
+ */
+type MenuIconKind = 'edit' | 'subscription' | 'settings' | 'support' | 'privacy' | 'signout';
+
+function MenuIcon({ kind }: { kind: MenuIconKind }) {
+  const tint = colors.onSurface;
+  if (kind === 'edit') {
+    // Pencil: angled rectangle with tip.
+    return (
+      <View style={menuGlyph.canvas}>
+        <View style={[menuGlyph.editBody, { backgroundColor: tint, transform: [{ rotate: '-45deg' }] }]} />
+        <View style={[menuGlyph.editTip, { borderTopColor: tint, transform: [{ rotate: '-45deg' }] }]} />
+      </View>
+    );
+  }
+  if (kind === 'subscription') {
+    // Diamond/gem.
+    return (
+      <View style={menuGlyph.canvas}>
+        <View style={[menuGlyph.diamond, { backgroundColor: tint, transform: [{ rotate: '45deg' }] }]} />
+      </View>
+    );
+  }
+  if (kind === 'settings') {
+    // 3 horizontal lines (sliders / settings).
+    return (
+      <View style={menuGlyph.canvas}>
+        <View style={[menuGlyph.line, { backgroundColor: tint, top: 5 }]} />
+        <View style={[menuGlyph.line, { backgroundColor: tint, top: 10 }]} />
+        <View style={[menuGlyph.line, { backgroundColor: tint, top: 15 }]} />
+      </View>
+    );
+  }
+  if (kind === 'support') {
+    // Speech bubble: rounded rect + small triangle tail.
+    return (
+      <View style={menuGlyph.canvas}>
+        <View style={[menuGlyph.bubble, { borderColor: tint }]} />
+      </View>
+    );
+  }
+  if (kind === 'privacy') {
+    // Shield: square with rounded top.
+    return (
+      <View style={menuGlyph.canvas}>
+        <View style={[menuGlyph.shield, { borderColor: tint }]} />
+      </View>
+    );
+  }
+  // signout — arrow-out-of-box: small box + arrow leaving right.
+  return (
+    <View style={menuGlyph.canvas}>
+      <View style={[menuGlyph.signoutBox, { borderColor: tint }]} />
+      <View style={[menuGlyph.signoutArrow, { backgroundColor: tint }]} />
+    </View>
+  );
+}
+
+const menuGlyph = StyleSheet.create({
+  canvas: { width: 22, height: 22, alignItems: 'center', justifyContent: 'center' },
+  // edit (pencil)
+  editBody: { width: 16, height: 4, position: 'absolute' },
+  editTip: {
+    width: 0, height: 0,
+    position: 'absolute',
+    borderLeftWidth: 3, borderRightWidth: 3,
+    borderTopWidth: 4,
+    borderLeftColor: 'transparent', borderRightColor: 'transparent',
+    transform: [{ translateX: 9 }, { translateY: 0 }],
+  },
+  // subscription (diamond)
+  diamond: { width: 12, height: 12 },
+  // settings (3 lines)
+  line: { position: 'absolute', left: 4, right: 4, height: 2, borderRadius: 1 },
+  // support (chat bubble)
+  bubble: { width: 18, height: 14, borderRadius: 4, borderWidth: 1.5 },
+  // privacy (shield)
+  shield: { width: 14, height: 16, borderTopLeftRadius: 7, borderTopRightRadius: 7, borderBottomLeftRadius: 2, borderBottomRightRadius: 2, borderWidth: 1.5 },
+  // signout
+  signoutBox: { width: 13, height: 14, borderWidth: 1.5, borderRadius: 1, borderRightWidth: 0, position: 'absolute', left: 2 },
+  signoutArrow: { width: 10, height: 2, position: 'absolute', right: 1, top: 10 },
+});
 
 const styles = StyleSheet.create({
   header: { paddingHorizontal: spacing.lg, paddingBottom: spacing.sm, alignItems: 'center' },
@@ -251,12 +336,9 @@ const styles = StyleSheet.create({
 
   menu: { backgroundColor: 'rgba(255,255,255,0.5)', borderRadius: radius.sm, borderWidth: 1, borderColor: 'rgba(255,255,255,0.7)' },
   menuRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.md, paddingHorizontal: spacing.md, borderBottomWidth: 1, borderBottomColor: 'rgba(49,51,47,0.05)' },
-  // Bumped from 14→18 fontSize + width 22→28 + onSurface (was variant) so
-  // the menu icons read clearly instead of "tiny grey dots" (kakoccc #34
-  // 2026-04-29). Explicit System font so BMP unicode (✎ ⚙ etc) falls
-  // back to OS fonts that have them, instead of Plus Jakarta Sans which
-  // does not ship those glyphs and renders them as [?] boxes.
-  menuIcon: { width: 28, fontSize: 18, color: colors.onSurface, textAlign: 'center', includeFontPadding: false, textAlignVertical: 'center', fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }) },
+  // Slot for inline MenuIcon vector glyph (replaces text-based unicode that
+  // rendered as [?] inside Plus Jakarta Sans — kakoccc #34 2026-04-29).
+  menuIconSlot: { width: 28, alignItems: 'center', justifyContent: 'center' },
   menuLabel: { flex: 1, fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurface },
   // Bumped opacity 0.5 → 0.7 + fontSize 16 → 18 so the right-side chevron
   // reads as a clear affordance, not a faint shadow (kakoccc #34).

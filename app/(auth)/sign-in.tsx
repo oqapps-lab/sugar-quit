@@ -39,6 +39,11 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  // DRAFT (kakoccc #35 2026-04-29): track which field is the source of the
+  // current error so we can highlight just that field's border + show the
+  // message inline near it, instead of a global toast disconnected from
+  // the offending input.
+  const [invalidField, setInvalidField] = useState<'email' | 'password' | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   // Reset on focus — same reasoning as sign-up: redepending on autofill /
@@ -55,13 +60,16 @@ export default function SignIn() {
   const onSubmit = async (): Promise<void> => {
     if (submitting) return;
     setError(null);
+    setInvalidField(null);
     const trimmed = email.trim();
     if (trimmed.length === 0) {
       setError('Enter your email.');
+      setInvalidField('email');
       return;
     }
     if (password.length < 6) {
       setError('Password must be at least 6 characters.');
+      setInvalidField('password');
       return;
     }
     setSubmitting(true);
@@ -69,6 +77,7 @@ export default function SignIn() {
     if (!result.ok) {
       setSubmitting(false);
       setError(result.error);
+      setInvalidField('password');
       return;
     }
     // Eagerly mirror session into the store + pull canonical state so we can
@@ -154,7 +163,7 @@ export default function SignIn() {
               <Text style={styles.fieldLabel}>EMAIL</Text>
               <TextInput
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(t) => { setEmail(t); if (invalidField === 'email') { setInvalidField(null); setError(null); } }}
                 placeholder="you@quietmail.com"
                 placeholderTextColor="rgba(49,51,47,0.35)"
                 selectionColor={colors.primary}
@@ -165,16 +174,19 @@ export default function SignIn() {
                 autoComplete="email"
                 textContentType="emailAddress"
                 editable={!submitting}
-                style={styles.input}
+                style={[styles.input, invalidField === 'email' && styles.inputInvalid]}
                 accessibilityLabel="Email address"
               />
+              {invalidField === 'email' && error !== null ? (
+                <Text style={styles.fieldError} accessibilityLiveRegion="polite">{error}</Text>
+              ) : null}
             </View>
 
             <View style={styles.fieldGroup}>
               <Text style={styles.fieldLabel}>PASSWORD</Text>
               <TextInput
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(t) => { setPassword(t); if (invalidField === 'password') { setInvalidField(null); setError(null); } }}
                 placeholder="At least 6 characters"
                 placeholderTextColor="rgba(49,51,47,0.35)"
                 selectionColor={colors.primary}
@@ -184,12 +196,15 @@ export default function SignIn() {
                 autoComplete="current-password"
                 textContentType="password"
                 editable={!submitting}
-                style={styles.input}
+                style={[styles.input, invalidField === 'password' && styles.inputInvalid]}
                 accessibilityLabel="Password"
               />
+              {invalidField === 'password' && error !== null ? (
+                <Text style={styles.fieldError} accessibilityLiveRegion="polite">{error}</Text>
+              ) : null}
             </View>
 
-            {error !== null ? (
+            {error !== null && invalidField === null ? (
               <Text
                 style={styles.errorText}
                 accessibilityLiveRegion="polite"
@@ -294,6 +309,21 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: typeScale.bodyLarge,
     color: colors.onSurface,
+  },
+  // DRAFT (kakoccc #35): when validation fails for a specific field,
+  // outline that field in the error palette so the user knows where to
+  // look. Inline message renders right below.
+  inputInvalid: {
+    borderColor: colors.error,
+    borderWidth: 1.5,
+    backgroundColor: 'rgba(186,52,52,0.06)',
+  },
+  fieldError: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: typeScale.bodySmall,
+    color: colors.error,
+    marginTop: 6,
+    paddingHorizontal: 4,
   },
   errorText: {
     fontFamily: fonts.bodyMedium,

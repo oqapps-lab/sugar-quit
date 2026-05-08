@@ -117,13 +117,25 @@ export default function EditProfile() {
         </View>
 
         {/* Goal */}
-        <FieldRow label="GOAL" value={goalLabel} />
+        <FieldRow
+          label="GOAL"
+          value={goalLabel}
+          onPress={() => router.push('/(onboarding)/quiz/sugar-goal')}
+        />
 
         {/* Peak hour */}
-        <FieldRow label="PEAK HOUR" value={peakLabel} />
+        <FieldRow
+          label="PEAK HOUR"
+          value={peakLabel}
+          onPress={() => router.push('/(onboarding)/quiz/peak-time')}
+        />
 
         {/* Main trigger */}
-        <FieldRow label="MAIN TRIGGER" value={mainTriggerLabel} />
+        <FieldRow
+          label="MAIN TRIGGER"
+          value={mainTriggerLabel}
+          onPress={() => router.push('/(onboarding)/quiz/triggers')}
+        />
 
         {/* Bottom actions */}
         <View style={styles.footer}>
@@ -143,26 +155,37 @@ export default function EditProfile() {
   );
 }
 
-function FieldRow({ label, value }: { label: string; value: string }) {
-  // Read-only display row. The earlier Pressable claimed "Tap to change" in
-  // its a11y label but only fired Haptics — no picker existed. That's a
-  // misleading affordance: the row LOOKS interactive (chevron arrow,
-  // pressable styling) and is announced as a button to VoiceOver, but tap
-  // changes nothing. Until proper picker modals exist for goal / peak hour
-  // / trigger, render the field as a non-interactive label so the user
-  // doesn't expect editability that's not there. Re-onboarding via sign-out
-  // remains the workaround for editing these fields.
-  return (
-    <View style={styles.fieldBlock}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <View
-        style={styles.pickerRow}
-        accessible
-        accessibilityLabel={`${label}: ${value}`}
-      >
-        <Text style={styles.pickerValue}>{value}</Text>
+function FieldRow({ label, value, onPress }: { label: string; value: string; onPress?: () => void }) {
+  // DRAFT (kakoccc #44 2026-04-29): row used to be non-interactive (display
+  // only) which left users with no way to change Goal / Peak Hour / Main
+  // Trigger from Edit Profile. Now tap routes back to the original
+  // onboarding step so the user can re-pick. Designer can replace with
+  // an inline picker modal later — the routed screen IS the source of
+  // truth for these values, so it's the lowest-risk DRAFT.
+  if (!onPress) {
+    return (
+      <View style={styles.fieldBlock}>
+        <Text style={styles.fieldLabel}>{label}</Text>
+        <View style={styles.pickerRow}>
+          <Text style={styles.pickerValue}>{value}</Text>
+        </View>
       </View>
-    </View>
+    );
+  }
+  return (
+    <Pressable
+      style={styles.fieldBlock}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${label}: ${value}. Tap to change.`}
+      hitSlop={4}
+    >
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <View style={styles.pickerRow}>
+        <Text style={styles.pickerValue}>{value}</Text>
+        <Text style={styles.pickerChevron}>›</Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -263,6 +286,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: typeScale.bodyLarge,
     color: colors.onSurface,
+  },
+  pickerChevron: {
+    fontFamily: fonts.body,
+    fontSize: typeScale.titleLarge,
+    color: colors.onSurfaceVariant,
+    opacity: 0.7,
+    marginLeft: spacing.sm,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   pickerArrow: {
     fontFamily: fonts.bodyMedium,
