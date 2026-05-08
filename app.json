@@ -15,7 +15,11 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.gazetastreet.sugarquit"
+      "bundleIdentifier": "com.gazetastreet.sugarquit",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.gazetastreet.sugarquit",
@@ -30,7 +34,17 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-image"
+      "expo-image",
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false
@@ -40,6 +54,12 @@
       "eas": {
         "projectId": "796339df-6b17-49ad-8f05-960c3a243f22"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/796339df-6b17-49ad-8f05-960c3a243f22"
     }
   }
 }

@@ -19,6 +19,8 @@ import {
 } from '@expo-google-fonts/manrope';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
+import analytics from '@react-native-firebase/analytics';
 import { getSupabase } from '../lib/supabase';
 import { useUserStore } from '../stores/useUserStore';
 
@@ -45,6 +47,16 @@ export default function RootLayout() {
     Manrope_500Medium,
     Manrope_600SemiBold,
   });
+
+  // Firebase bootstrap — Crashlytics auto-collects crashes from native
+  // exceptions; Analytics fires app_open + screen_view when the SDK
+  // initializes. Both auto-init from GoogleService-Info.plist; the
+  // explicit log_event below is a sanity check that the SDK loaded
+  // (visible in Firebase DebugView during dev, regular Analytics in prod).
+  useEffect(() => {
+    crashlytics().log('app_started');
+    analytics().logEvent('app_opened').catch(() => {/* offline ok */});
+  }, []);
 
   // Auth bootstrap — mirror Supabase session into the Zustand store. Runs
   // once at root mount; supabase-js with persistSession=true emits
