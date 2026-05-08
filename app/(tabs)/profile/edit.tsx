@@ -30,16 +30,13 @@ export default function EditProfile() {
   const peakLabel = peakHour ?? '—';
   const mainTriggerLabel = triggers[0] ? (TRIGGER_LABELS[triggers[0]] ?? triggers[0]) : '—';
 
-  // N4 fix (kakoccc #46 + 2026-05-04 live finding): expo-router's
-  // `router.back()` falls back to the initial route (Home tab) when the
-  // stack is empty — e.g. after a deep-link or fresh tab activation. Save
-  // and Cancel must always land on Profile, not Home.
+  // N4 fix (kakoccc #46 + 2026-05-04+05-08 live findings): expo-router's
+  // `router.back()` even when canGoBack()==true sometimes pops back to
+  // the Home tab via the tab-level stack rather than the parent Profile
+  // screen. To make Save / Cancel land deterministically on Profile,
+  // use an explicit router.replace, regardless of stack state.
   const goBackToProfile = () => {
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.replace('/(tabs)/profile');
-    }
+    router.replace('/(tabs)/profile');
   };
 
   const handleBack = () => {
