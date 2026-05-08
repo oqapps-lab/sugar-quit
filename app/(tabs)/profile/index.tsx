@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -253,9 +253,10 @@ const styles = StyleSheet.create({
   menuRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.md, paddingHorizontal: spacing.md, borderBottomWidth: 1, borderBottomColor: 'rgba(49,51,47,0.05)' },
   // Bumped from 14→18 fontSize + width 22→28 + onSurface (was variant) so
   // the menu icons read clearly instead of "tiny grey dots" (kakoccc #34
-  // 2026-04-29). Same fix is needed for the chevron in styles.menuChevron
-  // below (was opacity 0.3, bumped to 0.55 for visibility).
-  menuIcon: { width: 28, fontSize: 18, color: colors.onSurface, textAlign: 'center', includeFontPadding: false, textAlignVertical: 'center' },
+  // 2026-04-29). Explicit System font so BMP unicode (✎ ⚙ etc) falls
+  // back to OS fonts that have them, instead of Plus Jakarta Sans which
+  // does not ship those glyphs and renders them as [?] boxes.
+  menuIcon: { width: 28, fontSize: 18, color: colors.onSurface, textAlign: 'center', includeFontPadding: false, textAlignVertical: 'center', fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }) },
   menuLabel: { flex: 1, fontFamily: fonts.body, fontSize: typeScale.bodyLarge, color: colors.onSurface },
   // Bumped opacity 0.5 → 0.7 + fontSize 16 → 18 so the right-side chevron
   // reads as a clear affordance, not a faint shadow (kakoccc #34).
