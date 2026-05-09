@@ -22,6 +22,7 @@
     "production": {
       "channel": "production",
       "autoIncrement": true,
+      "credentialsSource": "local",
       "ios": {
         "resourceClass": "m-medium"
       }
