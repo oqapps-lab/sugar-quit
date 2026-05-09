@@ -17,8 +17,12 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.gazetastreet.sugarquit",
       "googleServicesFile": "./GoogleService-Info.plist",
+      "entitlements": {
+        "aps-environment": "production"
+      },
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": ["remote-notification", "fetch"]
       }
     },
     "android": {
@@ -37,12 +41,32 @@
       "expo-image",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
+      "@react-native-firebase/messaging",
       [
         "expo-build-properties",
         {
           "ios": {
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#FBF9F5"
+        }
+      ],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "Sugar Quit uses this to attribute installs to ad campaigns. We do NOT track you across other apps or websites."
+        }
+      ],
+      [
+        "react-native-appsflyer",
+        {
+          "shouldUseStrictMode": false
         }
       ],
       "./plugins/with-modular-headers-fix.js"
