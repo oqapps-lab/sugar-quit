@@ -18,14 +18,23 @@ const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
-const MARKER = '# RNFB-non-modular-headers-fix-marker';
+const MARKER = '# RNFB-static-framework-fix-v3-marker';
 
-const INJECTION = `    # ${MARKER.replace('# ', '')}
+const POST_INSTALL_INJECTION = `    # ${MARKER.replace('# ', '')}
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |bc|
         bc.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
       end
     end`;
+
+// Top-of-file globals: $RNFirebaseAsStaticFramework=true forces RNFB pods
+// to be linked as static libs even when use_frameworks! is dynamic. Required
+// when combining Firebase Crashlytics / Auth / etc. with use_frameworks.
+// See https://rnfirebase.io/#allow-ios-static-frameworks
+const HEADER_GLOBALS = `# ${MARKER.replace('# ', '')}
+$RNFirebaseAsStaticFramework = true
+
+`;
 
 module.exports = function withModularHeadersFix(config) {
   return withDangerousMod(config, [
@@ -35,12 +44,16 @@ module.exports = function withModularHeadersFix(config) {
       if (!fs.existsSync(podfilePath)) return cfg;
       let podfile = fs.readFileSync(podfilePath, 'utf8');
       if (podfile.includes(MARKER.replace('# ', ''))) return cfg;
+
+      podfile = HEADER_GLOBALS + podfile;
+
       const re = /(post_install\s+do\s+\|installer\|\s*\n)/m;
       if (re.test(podfile)) {
-        podfile = podfile.replace(re, `$1${INJECTION}\n\n`);
+        podfile = podfile.replace(re, `$1${POST_INSTALL_INJECTION}\n\n`);
       } else {
-        podfile += `\npost_install do |installer|\n${INJECTION}\nend\n`;
+        podfile += `\npost_install do |installer|\n${POST_INSTALL_INJECTION}\nend\n`;
       }
+
       fs.writeFileSync(podfilePath, podfile);
       return cfg;
     },
