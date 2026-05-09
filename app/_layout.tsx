@@ -21,7 +21,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
-import appsFlyer from 'react-native-appsflyer';
 import { getSupabase } from '../lib/supabase';
 import { useUserStore } from '../stores/useUserStore';
 
@@ -56,22 +55,6 @@ export default function RootLayout() {
   useEffect(() => {
     crashlytics().log('app_started');
     analytics().logEvent('app_opened').catch(() => {/* offline ok */});
-
-    // AppsFlyer bootstrap — init SDK so installs are attributed to ad
-    // campaigns. Wait up to 10s for ATT permission prompt before sending
-    // the first event (gives the user time to grant tracking).
-    appsFlyer.initSdk(
-      {
-        devKey: process.env.EXPO_PUBLIC_APPSFLYER_DEV_KEY ?? '',
-        appId: '6764313527', // ASC numeric App ID
-        isDebug: __DEV__,
-        onInstallConversionDataListener: true,
-        onDeepLinkListener: true,
-        timeToWaitForATTUserAuthorization: 10,
-      },
-      () => crashlytics().log('appsflyer_initialized'),
-      (err) => crashlytics().log(`appsflyer_init_failed: ${err}`),
-    );
   }, []);
 
   // Auth bootstrap — mirror Supabase session into the Zustand store. Runs

@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint"
   },
@@ -32,12 +32,10 @@
     "expo-linking": "~55.0.13",
     "expo-router": "~55.0.12",
     "expo-status-bar": "~55.0.5",
-    "expo-tracking-transparency": "55.0.13",
     "expo-updates": "~55.0.21",
     "react": "19.2.0",
     "react-native": "0.83.4",
     "react-native-adapty": "^3.0.0",
-    "react-native-appsflyer": "6.17.9",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-reanimated": "4.2.1",
     "react-native-safe-area-context": "~5.6.2",
