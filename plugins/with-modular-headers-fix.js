@@ -18,6 +18,33 @@ const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
+function patchRNFBHeaders(projectRoot) {
+  const rnfbDir = path.join(projectRoot, 'node_modules', '@react-native-firebase');
+  if (!fs.existsSync(rnfbDir)) return 0;
+  let patched = 0;
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        if (e.name === 'node_modules') continue;
+        walk(p);
+      } else if (e.name.endsWith('.h') || e.name.endsWith('.m')) {
+        let src = fs.readFileSync(p, 'utf8');
+        const before = src;
+        src = src.replace(/^#import\s+<React\/[^>]+\.h>\s*$/gm, '@import React;');
+        src = src.replace(/^#import\s+<RCTRequired\/[^>]+\.h>\s*$/gm, '@import RCTRequired;');
+        src = src.replace(/^#import\s+<RCTTypeSafety\/[^>]+\.h>\s*$/gm, '@import RCTTypeSafety;');
+        if (src !== before) {
+          fs.writeFileSync(p, src);
+          patched++;
+        }
+      }
+    }
+  };
+  walk(rnfbDir);
+  return patched;
+}
+
 const MARKER = '# RNFB-static-framework-fix-v3-marker';
 
 const POST_INSTALL_INJECTION = `    # ${MARKER.replace('# ', '')}
@@ -40,6 +67,10 @@ module.exports = function withModularHeadersFix(config) {
   return withDangerousMod(config, [
     'ios',
     async (cfg) => {
+      const projectRoot = cfg.modRequest.projectRoot;
+      const n = patchRNFBHeaders(projectRoot);
+      console.log(`[with-modular-headers-fix] patched ${n} RNFB headers`);
+
       const podfilePath = path.join(cfg.modRequest.platformProjectRoot, 'Podfile');
       if (!fs.existsSync(podfilePath)) return cfg;
       let podfile = fs.readFileSync(podfilePath, 'utf8');
