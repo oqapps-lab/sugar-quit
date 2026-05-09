@@ -45,6 +45,13 @@
           }
         }
       ],
+      ["react-native-appsflyer", { "shouldUseStrictMode": true }],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "Sugar Quit uses this to attribute installs to ad campaigns. We do NOT track you across other apps or websites."
+        }
+      ],
       "./plugins/with-modular-headers-fix.js"
     ],
     "experiments": {
