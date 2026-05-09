@@ -45,7 +45,7 @@
           }
         }
       ],
-      ["react-native-appsflyer", { "shouldUseStrictMode": true }],
+      ["react-native-appsflyer", { "shouldUseStrictMode": false }],
       [
         "expo-tracking-transparency",
         {
