@@ -3,17 +3,14 @@ workflows:
     name: iOS Production
     instance_type: mac_mini_m2
     max_build_duration: 60
-    integrations:
-      app_store_connect: gazetastreet_admin
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.gazetastreet.sugarquit
       vars:
         XCODE_WORKSPACE: "ios/Unsweet.xcworkspace"
         XCODE_SCHEME: "Unsweet"
         BUNDLE_ID: "com.gazetastreet.sugarquit"
         APP_STORE_APPLE_ID: 6764313527
+        APP_STORE_CONNECT_KEY_IDENTIFIER: 787835NFD8
+        APP_STORE_CONNECT_ISSUER_ID: 2f01e90d-40ee-4f1d-9a37-651713378b40
       node: 22.x
       cocoapods: default
       xcode: latest
@@ -25,16 +22,26 @@ workflows:
           include: true
       cancel_previous_builds: true
     scripts:
+      - name: Decode signing assets from env
+        script: |
+          mkdir -p ~/.cert
+          echo "$CM_CERTIFICATE" | base64 --decode > ~/.cert/dist.p12
+          echo "$CM_PROVISIONING_PROFILE" | base64 --decode > ~/.cert/profile.mobileprovision
+          ls -la ~/.cert/
       - name: Install npm dependencies
         script: npm install
       - name: Expo prebuild
         script: npx expo prebuild --platform ios --clean --no-install
       - name: Pod install
         script: cd ios && pod install
-      - name: Set up code signing
+      - name: Set up signing keychain
         script: |
-          # Codemagic auto-installs uploaded cert (Settings → Code signing identities)
-          # and fetches matching provisioning profile via the app_store_connect integration
+          keychain initialize
+          keychain add-certificates --certificate ~/.cert/dist.p12 --certificate-password "$CM_CERTIFICATE_PASSWORD"
+          # Install provisioning profile manually (no fetch-signing-files because --create is broken; see CLAUDE.md)
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles/"
+          UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< "$(security cms -D -i ~/.cert/profile.mobileprovision)")
+          cp ~/.cert/profile.mobileprovision "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
           xcode-project use-profiles
       - name: Increment build number
         script: |
@@ -55,7 +62,7 @@ workflows:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
       app_store_connect:
-        auth: integration
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-        beta_groups:
-          - Internal Testers
