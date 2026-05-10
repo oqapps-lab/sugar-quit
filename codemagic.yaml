@@ -117,17 +117,20 @@ workflows:
           xcodebuild build \
             -workspace "$XCODE_SCHEME.xcworkspace" \
             -scheme "$XCODE_SCHEME" \
-            -configuration Debug \
+            -configuration Release \
             -sdk iphonesimulator \
             -destination "generic/platform=iOS Simulator" \
             -derivedDataPath ./build \
             CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            ARCHS=arm64 \
-            ONLY_ACTIVE_ARCH=NO
+            CODE_SIGNING_REQUIRED=NO 2>&1 | tee /tmp/xcodebuild.log
+          # Extract .app even if some warnings spew
+          test ${PIPESTATUS[0]} -eq 0
       - name: Package .app as zip artifact
         script: |
-          cd ios/build/Build/Products/Debug-iphonesimulator
+          APP_PATH=$(find ios/build/Build/Products -name "$XCODE_SCHEME.app" -type d | head -1)
+          echo "Found app at: $APP_PATH"
+          test -d "$APP_PATH"
+          cd "$(dirname "$APP_PATH")"
           zip -ry "$CM_BUILD_DIR/Unsweet-sim.zip" "$XCODE_SCHEME.app"
           ls -la "$CM_BUILD_DIR/Unsweet-sim.zip"
     artifacts:
