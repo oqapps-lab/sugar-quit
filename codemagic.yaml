@@ -1,0 +1,65 @@
+workflows:
+  ios-production:
+    name: iOS Production
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: gazetastreet_admin
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.gazetastreet.sugarquit
+      vars:
+        XCODE_WORKSPACE: "ios/Unsweet.xcworkspace"
+        XCODE_SCHEME: "Unsweet"
+        BUNDLE_ID: "com.gazetastreet.sugarquit"
+        APP_STORE_APPLE_ID: 6764313527
+      node: 22.x
+      cocoapods: default
+      xcode: latest
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+      cancel_previous_builds: true
+    scripts:
+      - name: Install npm dependencies
+        script: npm install
+      - name: Expo prebuild
+        script: npx expo prebuild --platform ios --clean --no-install
+      - name: Pod install
+        script: cd ios && pod install
+      - name: Set up code signing
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files \
+            "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Increment build number
+        script: |
+          cd $CM_BUILD_DIR/ios
+          BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo "0")
+          NEW_NUMBER=$((BUILD_NUMBER + 1))
+          echo "Setting CFBundleVersion to $NEW_NUMBER"
+          agvtool new-version -all $NEW_NUMBER
+      - name: Build IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
