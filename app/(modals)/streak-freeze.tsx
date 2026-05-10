@@ -86,9 +86,11 @@ export default function StreakFreeze() {
         </Animated.Text>
 
         <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.remainingRow}>
-          <View style={remaining > 0 ? styles.freezeDotActive : styles.freezeDot} />
-          <View style={styles.freezeDot} />
-          <View style={styles.freezeDot} />
+          {/* Render `remaining` active dots + `(total-remaining)` faded dots
+              so visual matches "{remaining} left this week" label. */}
+          {[0, 1, 2].map((i) => (
+            <View key={i} style={i < remaining ? styles.freezeDotActive : styles.freezeDot} />
+          ))}
           <Text style={styles.remainingLabel}>{`${remaining} left this week`}</Text>
         </Animated.View>
       </View>

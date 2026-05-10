@@ -143,7 +143,12 @@ export default function Milestone() {
 
       {/* Actions */}
       <View style={[styles.actions, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <Pressable style={styles.shareBtn} accessibilityRole="button" accessibilityLabel="Share this chapter">
+        <Pressable
+          onPress={() => router.push('/(modals)/share-card')}
+          style={styles.shareBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Share this chapter"
+        >
           <Text style={styles.shareLabel}>Share this chapter</Text>
         </Pressable>
         <PillCTA label="Back to today" onPress={onClose} />

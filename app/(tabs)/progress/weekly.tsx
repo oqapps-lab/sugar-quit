@@ -7,6 +7,23 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { useUserStore } from '../../../stores/useUserStore';
+
+const MONTHS_SHORT = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+function weekLabel(streakDays: number): string {
+  // Compute current week of streak + Mon-Sun date range covering today.
+  const weekNum = Math.max(1, Math.ceil(streakDays / 7));
+  const today = new Date();
+  const dow = today.getDay(); // 0=Sun
+  const daysSinceMon = (dow + 6) % 7;
+  const mon = new Date(today);
+  mon.setDate(today.getDate() - daysSinceMon);
+  const sun = new Date(mon);
+  sun.setDate(mon.getDate() + 6);
+  const month = MONTHS_SHORT[sun.getMonth()];
+  return `Week ${weekNum} · ${mon.getDate()}–${sun.getDate()} ${month}`;
+}
 
 /**
  * 2.3.2 Weekly Summary — "The Chapter".
@@ -15,6 +32,7 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../co
  */
 export default function Weekly() {
   const insets = useSafeAreaInsets();
+  const streakDays = useUserStore((s) => s.streakDays);
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -33,7 +51,7 @@ export default function Weekly() {
           accessibilityLabel="Back to Progress tab"
         >
           <Text style={styles.backArrow}>←</Text>
-          <Text style={styles.headerCrumb}>Week 2 · 13–19 APR</Text>
+          <Text style={styles.headerCrumb}>{weekLabel(streakDays)}</Text>
         </Pressable>
         <View style={styles.headerSpacer} />
       </View>

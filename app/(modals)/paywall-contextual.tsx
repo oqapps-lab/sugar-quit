@@ -27,6 +27,8 @@ export default function PaywallContextual() {
   const [purchasing, setPurchasing] = useState(false);
   const setPremium = useUserStore((s) => s.setPremium);
   const peakHour = useUserStore((s) => s.peakHour);
+  const sosUsedThisMonth = useUserStore((s) => s.sosUsedThisMonth);
+  const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
   // Personalize the trigger-prediction benefit so it matches the
   // onboarding paywall (Bug 25 cross-surface drift fix). Free-user
   // never set peakHour → shortPeak() falls back to "3pm".
@@ -87,7 +89,7 @@ export default function PaywallContextual() {
 
         <Animated.View entering={FadeInUp.delay(100).duration(400)} style={styles.limitCard}>
           <Text style={styles.limitLabel}>FREE LIMIT REACHED</Text>
-          <Text style={styles.limitHeadline}>3 of 3 SOS used this month</Text>
+          <Text style={styles.limitHeadline}>{`${sosUsedThisMonth} of ${sosFreeLimit} SOS used this month`}</Text>
         </Animated.View>
 
         <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.eyebrow}>

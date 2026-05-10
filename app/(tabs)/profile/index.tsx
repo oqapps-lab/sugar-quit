@@ -57,7 +57,11 @@ export default function Profile() {
   const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
   const cravingsMet = sosWalked + cravingsWalked;
   const dollarsSaved = (streakDays * 1.5).toFixed(0);
-  const kgSugarAvoided = (streakDays * 0.025).toFixed(2);
+  // 25g/day → kg. Use 1 decimal (toFixed(1)) so Day 1 reads "0.0kg" not
+  // "0.03kg" (false-precision feel). Switch to 1 kg precision after Day 40.
+  const kgSugarAvoided = streakDays * 0.025 < 1
+    ? (streakDays * 0.025).toFixed(1)
+    : (streakDays * 0.025).toFixed(0);
 
   return (
     <AtmosphericGradient theme="dawn">
