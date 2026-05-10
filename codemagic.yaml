@@ -11,7 +11,7 @@ workflows:
         APP_STORE_APPLE_ID: 6764313527
         APP_STORE_CONNECT_KEY_IDENTIFIER: 787835NFD8
         APP_STORE_CONNECT_ISSUER_ID: 2f01e90d-40ee-4f1d-9a37-651713378b40
-      node: 22.x
+      node: v22.11.0
       cocoapods: default
       xcode: latest
     triggering:
