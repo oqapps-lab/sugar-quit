@@ -29,46 +29,59 @@ export async function bootstrapAttribution() {
     } else {
       attStatus = current.status;
     }
-    crashlytics().log(`att_status:${attStatus}`);
+    try { crashlytics().log(`att_status:${attStatus}`); } catch {}
   } catch (err) {
-    crashlytics().log(`att_error:${String(err).slice(0, 100)}`);
+    try { crashlytics().log(`att_error:${String(err).slice(0, 100)}`); } catch {}
   }
 
-  appsFlyer.initSdk(
-    {
-      devKey: process.env.EXPO_PUBLIC_APPSFLYER_DEV_KEY ?? '',
-      appId: ASC_APP_ID,
-      isDebug: __DEV__,
-      onInstallConversionDataListener: true,
-      onDeepLinkListener: true,
-      timeToWaitForATTUserAuthorization: 10,
-    },
-    () => crashlytics().log('appsflyer_initialized'),
-    (err) => crashlytics().log(`appsflyer_init_failed:${String(err).slice(0, 100)}`),
-  );
+  // appsFlyer.initSdk is a sync native call that throws on Expo Go (no native
+  // module bound). Wrap entire call in try/catch so dev-time crashes don't
+  // brick the app.
+  try {
+    appsFlyer.initSdk(
+      {
+        devKey: process.env.EXPO_PUBLIC_APPSFLYER_DEV_KEY ?? '',
+        appId: ASC_APP_ID,
+        isDebug: __DEV__,
+        onInstallConversionDataListener: true,
+        onDeepLinkListener: true,
+        timeToWaitForATTUserAuthorization: 10,
+      },
+      () => { try { crashlytics().log('appsflyer_initialized'); } catch {} },
+      (err) => { try { crashlytics().log(`appsflyer_init_failed:${String(err).slice(0, 100)}`); } catch {} },
+    );
+  } catch (err) {
+    try { crashlytics().log(`appsflyer_initSdk_threw:${String(err).slice(0, 100)}`); } catch {}
+  }
 }
 
 export async function bootstrapPushPermission(): Promise<{ granted: boolean; fcmToken: string | null }> {
   if (!Device.isDevice) return { granted: false, fcmToken: null };
 
-  const current = await Notifications.getPermissionsAsync();
-  let granted = current.granted;
-  if (!granted && current.canAskAgain) {
-    const req = await Notifications.requestPermissionsAsync({
-      ios: { allowAlert: true, allowBadge: false, allowSound: true },
-    });
-    granted = req.granted;
+  let granted = false;
+  try {
+    const current = await Notifications.getPermissionsAsync();
+    granted = current.granted;
+    if (!granted && current.canAskAgain) {
+      const req = await Notifications.requestPermissionsAsync({
+        ios: { allowAlert: true, allowBadge: false, allowSound: true },
+      });
+      granted = req.granted;
+    }
+    try { crashlytics().log(`push_permission:${granted ? 'granted' : 'denied'}`); } catch {}
+  } catch (err) {
+    try { crashlytics().log(`push_permission_check_failed:${String(err).slice(0, 100)}`); } catch {}
+    return { granted: false, fcmToken: null };
   }
-  crashlytics().log(`push_permission:${granted ? 'granted' : 'denied'}`);
 
   let fcmToken: string | null = null;
   if (granted) {
     try {
       await messaging().registerDeviceForRemoteMessages();
       fcmToken = await messaging().getToken();
-      crashlytics().log(`fcm_token_acquired:len=${fcmToken?.length ?? 0}`);
+      try { crashlytics().log(`fcm_token_acquired:len=${fcmToken?.length ?? 0}`); } catch {}
     } catch (err) {
-      crashlytics().log(`fcm_token_failed:${String(err).slice(0, 100)}`);
+      try { crashlytics().log(`fcm_token_failed:${String(err).slice(0, 100)}`); } catch {}
     }
   }
   return { granted, fcmToken };

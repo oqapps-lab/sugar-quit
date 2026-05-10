@@ -60,7 +60,12 @@ export default function Welcome() {
           onPress={() => router.push('/(onboarding)/quiz/goal')}
           style={styles.cta}
         />
-        <Pressable onPress={() => router.push('/(onboarding)/auth')} style={styles.signInRow}>
+        <Pressable
+          onPress={() => router.push('/(onboarding)/auth')}
+          style={styles.signInRow}
+          accessibilityRole="button"
+          accessibilityLabel="Sign in to existing account"
+        >
           <Text style={styles.signInText}>
             Already walking? <Text style={styles.signInLink}>Sign in</Text>
           </Text>
