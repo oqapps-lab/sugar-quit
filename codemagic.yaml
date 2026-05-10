@@ -33,12 +33,8 @@ workflows:
         script: cd ios && pod install
       - name: Set up code signing
         script: |
-          keychain initialize
-          app-store-connect fetch-signing-files \
-            "$BUNDLE_ID" \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
+          # Codemagic auto-installs uploaded cert (Settings → Code signing identities)
+          # and fetches matching provisioning profile via the app_store_connect integration
           xcode-project use-profiles
       - name: Increment build number
         script: |
