@@ -6,6 +6,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { bootstrapPushPermission, scheduleCravingReminder } from '../../lib/notifications-bootstrap';
 import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
@@ -16,7 +17,16 @@ import { useUserStore } from '../../stores/useUserStore';
 export default function PushPermission() {
   const insets = useSafeAreaInsets();
   const peakHour = useUserStore((s) => s.peakHour);
-  const finish = () => router.replace('/(tabs)/home');
+
+  const turnOn = async () => {
+    const { granted } = await bootstrapPushPermission();
+    if (granted && peakHour != null) {
+      void scheduleCravingReminder(peakHour);
+    }
+    router.replace('/(tabs)/home');
+  };
+
+  const skip = () => router.replace('/(tabs)/home');
 
   return (
     <AtmosphericGradient theme="dawn">
@@ -46,9 +56,9 @@ export default function PushPermission() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(400).duration(450)} style={styles.footer}>
-          <PillCTA label="Turn on predictions" onPress={finish} />
+          <PillCTA label="Turn on predictions" onPress={turnOn} />
           <Pressable
-            onPress={finish}
+            onPress={skip}
             style={styles.laterBtn}
             accessibilityRole="button"
             accessibilityLabel="Maybe later, skip notifications"

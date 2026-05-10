@@ -37,7 +37,7 @@ export default function Motivational2() {
           <DecorGlyph variant="flame" size={56} />
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-          YOU'RE NOT ALONE
+          THE SCIENCE
         </Animated.Text>
         <Animated.View entering={FadeInUp.delay(150).duration(400)}>
           <GradientText style={styles.bigNumber} gradient="heroHorizontal">

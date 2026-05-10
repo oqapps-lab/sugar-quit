@@ -22,7 +22,6 @@ import { View } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
 import { getSupabase } from '../lib/supabase';
-import { bootstrapAttribution, bootstrapPushPermission } from '../lib/notifications-bootstrap';
 import { useUserStore } from '../stores/useUserStore';
 
 /**
@@ -53,11 +52,13 @@ export default function RootLayout() {
   // exceptions; Analytics fires app_open + screen_view when the SDK
   // initializes. Both auto-init from GoogleService-Info.plist; the
   // explicit log_event below is a sanity check that the SDK loaded.
+  //
+  // ATT + push permission are NOT requested here — moved to contextual
+  // surfaces per Apple HIG (ATT before paywall, push on /push-permission
+  // screen after onboarding). Firing on cold start tanks acceptance ~3x.
   useEffect(() => {
-    crashlytics().log('app_started');
-    analytics().logEvent('app_opened').catch(() => {/* offline ok */});
-    void bootstrapAttribution();
-    void bootstrapPushPermission();
+    try { crashlytics().log('app_started'); } catch {/* not in expo go */}
+    analytics().logEvent('app_opened').catch(() => {/* offline / expo go */});
   }, []);
 
   // Auth bootstrap — mirror Supabase session into the Zustand store. Runs

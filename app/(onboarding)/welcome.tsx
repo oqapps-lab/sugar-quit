@@ -6,7 +6,6 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
-import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 
 /**
@@ -25,11 +24,9 @@ export default function Welcome() {
       </View>
 
       <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
-        <View style={styles.progressRail}>
-          {[...Array(15)].map((_, i) => (
-            <TokenDot key={i} filled={i === 0} size={5} />
-          ))}
-        </View>
+        {/* Match style of all other quiz steps — text-only indicator.
+            Time estimate "~3 MIN" lives ONLY here (first screen) as a
+            promise to users that onboarding is short. */}
         <Text style={styles.progressLabel}>STEP 1 OF 15 · ~3 MIN</Text>
       </View>
 

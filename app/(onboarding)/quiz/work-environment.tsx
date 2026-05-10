@@ -24,11 +24,13 @@ export default function QuizWorkEnvironment() {
   // plain Views. Emoji rendered as [?] boxes inside Plus Jakarta Sans
   // (no fallback), so we ship vector-style shapes instead. Designer can
   // swap for proper DecorGlyph SVGs later.
-  const options: { key: WorkEnvironment; title: string; tint: 'default' | 'mint' | 'peach' }[] = [
+  // Unselected tint MUST NOT be 'peach' — that's our selected-state color
+  // and creates visual confusion (option looks pre-selected).
+  const options: { key: WorkEnvironment; title: string; tint: 'default' | 'mint' }[] = [
     { key: 'office', title: 'Office',     tint: 'default' },
     { key: 'home',   title: 'Home',       tint: 'mint' },
-    { key: 'feet',   title: 'On my feet', tint: 'peach' },
-    { key: 'mobile', title: 'Mobile',     tint: 'default' },
+    { key: 'feet',   title: 'On my feet', tint: 'default' },
+    { key: 'mobile', title: 'Mobile',     tint: 'mint' },
   ];
 
   const pick = (key: WorkEnvironment) => {

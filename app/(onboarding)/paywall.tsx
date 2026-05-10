@@ -10,6 +10,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { getTiers, purchase, type Tier as AdaptyTier } from '../../lib/adapty';
+import { bootstrapAttribution } from '../../lib/notifications-bootstrap';
 import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
 
@@ -37,11 +38,15 @@ export default function Paywall() {
     : 'YOUR PLAN IS READY';
 
   // Fetch real Adapty tiers (mock-fallback in Expo Go).
+  // Also fire ATT prompt here — user has just completed quiz and seen
+  // their personalized plan, this is the contextual moment Apple HIG
+  // recommends. AppsFlyer initSdk waits up to 10s for ATT decision.
   useEffect(() => {
     let cancelled = false;
     getTiers().then((t) => {
       if (!cancelled) setTiers(t);
     });
+    void bootstrapAttribution();
     return () => { cancelled = true; };
   }, []);
 

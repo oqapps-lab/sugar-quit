@@ -18,12 +18,13 @@ export default function QuizMotivation() {
   const setMotivations = useUserStore((s) => s.setMotivations);
   const [selected, setSelected] = useState<string[]>(stored);
 
+  // Tint must NOT be 'peach' for unselected — that's our selected-state color.
   const options = [
-    { key: 'health',   title: 'Health is asking me to',   tint: 'peach' as const },
-    { key: 'energy',   title: 'I want clearer energy',    tint: 'default' as const },
-    { key: 'body',     title: 'My body feels different',  tint: 'mint' as const },
-    { key: 'cost',     title: "It's costing too much",    tint: 'default' as const },
-    { key: 'charge',   title: 'I just want to feel in charge', tint: 'peach' as const },
+    { key: 'health',   title: 'Health is asking me to',   tint: 'default' as const },
+    { key: 'energy',   title: 'I want clearer energy',    tint: 'mint' as const },
+    { key: 'body',     title: 'My body feels different',  tint: 'default' as const },
+    { key: 'cost',     title: "It's costing too much",    tint: 'mint' as const },
+    { key: 'charge',   title: 'I just want to feel in charge', tint: 'default' as const },
   ];
 
   const toggle = (key: string) => {

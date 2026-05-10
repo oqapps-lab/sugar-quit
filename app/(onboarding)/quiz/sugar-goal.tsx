@@ -18,9 +18,10 @@ export default function QuizSugarGoal() {
   const storedGoal = useUserStore((s) => s.goal);
   const [selected, setSelected] = useState<Goal | null>(storedGoal);
 
-  const options: { key: Goal; title: string; body: string; tint: 'peach' | 'mint' }[] = [
-    { key: 'quit',   title: 'Quit cold',     body: 'No added sugar from day one. I want the reset.' , tint: 'peach' },
-    { key: 'reduce', title: 'Reduce slowly', body: 'Step it down week by week. Build the habit.' , tint: 'mint' },
+  // Tint must NOT be 'peach' for unselected — that's our selected-state color.
+  const options: { key: Goal; title: string; body: string; tint: 'default' | 'mint' }[] = [
+    { key: 'quit',   title: 'Quit cold turkey', body: 'No added sugar from day one. I want the reset.' , tint: 'default' },
+    { key: 'reduce', title: 'Reduce slowly',    body: 'Step it down week by week. Build the habit.'    , tint: 'mint' },
   ];
 
   const pick = (key: Goal) => {
