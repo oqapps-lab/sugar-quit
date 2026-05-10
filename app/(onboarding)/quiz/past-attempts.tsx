@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -17,6 +17,7 @@ export default function QuizPastAttempts() {
   const stored = useUserStore((s) => s.pastAttempts);
   const setPastAttempts = useUserStore((s) => s.setPastAttempts);
   const [selected, setSelected] = useState<PastAttempts | null>(stored);
+  useFocusEffect(useCallback(() => { setSelected(stored); }, [stored]));
 
   const options: { key: PastAttempts; title: string; body: string }[] = [
     { key: 'first',  title: 'This is my first real try',  body: 'Starting fresh.' },

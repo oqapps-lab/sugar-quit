@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -17,6 +17,7 @@ export default function QuizSugarGoal() {
   const setGoal = useUserStore((s) => s.setGoal);
   const storedGoal = useUserStore((s) => s.goal);
   const [selected, setSelected] = useState<Goal | null>(storedGoal);
+  useFocusEffect(useCallback(() => { setSelected(storedGoal); }, [storedGoal]));
 
   // Tint must NOT be 'peach' for unselected — that's our selected-state color.
   const options: { key: Goal; title: string; body: string; tint: 'default' | 'mint' }[] = [

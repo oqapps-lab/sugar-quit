@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -17,6 +17,7 @@ export default function QuizMotivation() {
   const stored = useUserStore((s) => s.motivations);
   const setMotivations = useUserStore((s) => s.setMotivations);
   const [selected, setSelected] = useState<string[]>(stored);
+  useFocusEffect(useCallback(() => { setSelected(stored); }, [stored]));
 
   // Tint must NOT be 'peach' for unselected — that's our selected-state color.
   const options = [

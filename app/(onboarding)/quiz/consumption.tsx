@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient';
@@ -17,6 +17,9 @@ export default function QuizConsumption() {
   const stored = useUserStore((s) => s.consumption);
   const setConsumption = useUserStore((s) => s.setConsumption);
   const [selected, setSelected] = useState<Consumption | null>(stored);
+  // Re-sync local selection when screen regains focus (back-nav from later
+  // quiz step shouldn't show stale state).
+  useFocusEffect(useCallback(() => { setSelected(stored); }, [stored]));
 
   const levels: { key: Consumption; title: string; hint: string }[] = [
     { key: 'little',   title: 'A little',        hint: 'Barely registers most days' },

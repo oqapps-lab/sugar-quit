@@ -8,6 +8,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GradientText } from '../../components/ui/GradientText';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { SOCIAL_PROOF } from '../../constants/copy';
 
 /**
  * 1.5 Motivational — "127,000 people have walked this path with us"
@@ -41,7 +42,7 @@ export default function Motivational1() {
         </Animated.Text>
         <Animated.View entering={FadeInUp.delay(150).duration(400)}>
           <GradientText style={styles.bigNumber} gradient="heroHorizontal">
-            127,000
+            {SOCIAL_PROOF.peopleWalkedCountLabel}
           </GradientText>
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.headline}>

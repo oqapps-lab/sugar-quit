@@ -6,6 +6,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { STATS } from '../../../constants/copy';
 import { LINKS } from '../../../lib/links';
 import { signOut as supabaseSignOut } from '../../../lib/supabase';
 import { useUserStore } from '../../../stores/useUserStore';
@@ -56,12 +57,11 @@ export default function Profile() {
   const sosWalked = sosLog.filter((s) => s.outcome === 'walked' || s.outcome === 'softer').length;
   const cravingsWalked = cravings.filter((c) => c.outcome === 'walked').length;
   const cravingsMet = sosWalked + cravingsWalked;
-  const dollarsSaved = (streakDays * 1.5).toFixed(0);
-  // 25g/day → kg. Use 1 decimal (toFixed(1)) so Day 1 reads "0.0kg" not
-  // "0.03kg" (false-precision feel). Switch to 1 kg precision after Day 40.
-  const kgSugarAvoided = streakDays * 0.025 < 1
-    ? (streakDays * 0.025).toFixed(1)
-    : (streakDays * 0.025).toFixed(0);
+  const dollarsSaved = (streakDays * STATS.dollarsPerDaySaved).toFixed(0);
+  // 25g/day → kg. Use 1 decimal under 1kg so Day 1 reads "0.0kg" not
+  // "0.03kg" (false-precision feel). Switch to integer precision over 1kg.
+  const kgRaw = streakDays * STATS.kgPerDayAvoided;
+  const kgSugarAvoided = kgRaw < 1 ? kgRaw.toFixed(1) : kgRaw.toFixed(0);
 
   return (
     <AtmosphericGradient theme="dawn">

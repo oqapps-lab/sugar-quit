@@ -8,6 +8,7 @@ import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { GradientText } from '../../components/ui/GradientText';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { SOCIAL_PROOF } from '../../constants/copy';
 
 /**
  * 1.9 Motivational — "75% of adults in the US want to reduce sugar."
@@ -41,7 +42,7 @@ export default function Motivational2() {
         </Animated.Text>
         <Animated.View entering={FadeInUp.delay(150).duration(400)}>
           <GradientText style={styles.bigNumber} gradient="heroHorizontal">
-            75%
+            {SOCIAL_PROOF.usReducingSugarPercentLabel}
           </GradientText>
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.headline}>
