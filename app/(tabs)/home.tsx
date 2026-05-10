@@ -123,8 +123,10 @@ export default function Home() {
     ? Math.max(0, sosFreeLimit - sosUsedThisMonth)
     : null;
 
-  // Today's forecast — computed, not hardcoded "Light"
-  const sosUsedToday = 0; // TODO: derive from sosLog when we add per-day filtering
+  // Today's forecast — count SOS sessions opened today (any outcome).
+  const sosLog = useUserStore((s) => s.sosLog);
+  const todayISO = getTodayISODate();
+  const sosUsedToday = sosLog.filter((s) => s.timestamp.slice(0, 10) === todayISO).length;
   const peakHour = useUserStore.getState().peakHour;
   const forecast = computeForecast(streakDays, sosUsedToday, isCheckedInToday, peakHour);
 
