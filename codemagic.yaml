@@ -32,6 +32,30 @@ workflows:
         script: npm install
       - name: Expo prebuild
         script: npx expo prebuild --platform ios --clean --no-install
+      - name: Patch pbxproj — DEVELOPMENT_TEAM + Manual signing on Unsweet target
+        script: |
+          # expo prebuild generates fresh pbxproj without DEVELOPMENT_TEAM. xcode-project use-profiles
+          # does not inject it on Expo-style projects. Set it explicitly before signing.
+          /usr/bin/python3 - <<'PY'
+          import re, sys
+          p = '/Users/builder/clone/ios/Unsweet.xcodeproj/project.pbxproj'
+          src = open(p).read()
+          # Inject for both Debug + Release configs of main app target
+          for setting, value in [
+              ('DEVELOPMENT_TEAM', '6Y6BFVDS4L'),
+              ('CODE_SIGN_STYLE', 'Manual'),
+          ]:
+              # If already set anywhere, replace; if missing, add to first PRODUCT_BUNDLE_IDENTIFIER block
+              if setting in src:
+                  src = re.sub(rf'{setting} = [^;]+;', f'{setting} = {value};', src)
+              else:
+                  src = src.replace(
+                      'PRODUCT_BUNDLE_IDENTIFIER = "com.gazetastreet.sugarquit";',
+                      f'PRODUCT_BUNDLE_IDENTIFIER = "com.gazetastreet.sugarquit"; {setting} = {value};',
+                  )
+          open(p, 'w').write(src)
+          print("pbxproj patched")
+          PY
       - name: Pod install
         script: cd ios && pod install
       - name: Set up signing keychain
@@ -42,7 +66,7 @@ workflows:
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles/"
           UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< "$(security cms -D -i ~/.cert/profile.mobileprovision)")
           cp ~/.cert/profile.mobileprovision "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
-          xcode-project use-profiles
+          xcode-project use-profiles --verbose
       - name: Increment build number
         script: |
           cd $CM_BUILD_DIR/ios
@@ -56,6 +80,8 @@ workflows:
             --workspace "$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
     artifacts:
+      # Both globs: xcode-project build-ipa output may land in either path (Pitfall #9 from skill_flutter)
+      - ios/build/ios/ipa/*.ipa
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
