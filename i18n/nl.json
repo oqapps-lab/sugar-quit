@@ -92,12 +92,29 @@
     "phase_freedom_days": "Dag 60–90",
     "lesson_day_1": "Waarom suiker het brein vasthoudt",
     "lesson_day_2": "De 72-uursstorm",
-    "lesson_day_5": "Eerste stille ochtend",
+    "lesson_day_5": "Waarom fruit fletser smaakt",
     "lesson_day_4": "Je 15-uurpatroon, in kaart",
-    "lesson_day_6": "Waarom fruit fletser smaakt",
-    "lesson_day_11": "Een hele week",
+    "lesson_day_6": "De slaap-suiker-lus",
+    "lesson_day_11": "Alternatieven die echt werken",
     "locked_coming_soon": "Binnenkort — blijf lopen",
-    "locked_unlocks": "Opent zich onderweg"
+    "locked_unlocks": "Opent zich onderweg",
+    "phase_arrival_hero_title": "De eerste beslissing",
+    "phase_arrival_hero_body": "Je bent er. Dag een of drie — het enige wat telt is dat je begon.",
+    "phase_detox_hero_title": "De 72-uursstorm",
+    "phase_detox_hero_body": "Trek piekt nu. De moeilijkste week — en hij eindigt.",
+    "phase_clarity_hero_title": "De mist trekt op",
+    "phase_clarity_hero_body": "Smaakpapillen resetten. Energie stabiliseert. De rust voelt normaal.",
+    "phase_integration_hero_title": "Nieuwe reflexen vormen zich",
+    "phase_integration_hero_body": "Je reflexen worden opnieuw bedraad. Suiker glipt uit het automatisme.",
+    "phase_identity_hero_title": "Identiteit, geen inspanning",
+    "phase_identity_hero_body": "Je beslist niet meer elke keer. Dit is wie je bent geworden.",
+    "phase_freedom_hero_title": "Vrij lopen",
+    "phase_freedom_hero_body": "De gewoonte is automatisch. Je loopt langs het snoepvak zonder het te merken.",
+    "lesson_day_3": "Eerste stille ochtend",
+    "lesson_day_7": "Een hele week",
+    "lesson_day_8": "Je smaakpapillen ontwaken",
+    "lesson_day_9": "Triggers zonder reactie",
+    "lesson_day_10": "De stress-suiker-reflex"
   },
   "progress": {
     "journey": "Reis",
@@ -129,7 +146,8 @@
     "health_timeline": "LICHAAMS-TIJDLIJN",
     "health_hint": "Wat er in je lichaam gebeurt, niet alleen in je hoofd.",
     "now_short": "NU",
-    "day_short": "DAG {{n}}"
+    "day_short": "DAG {{n}}",
+    "begin_session": "Sessie starten"
   },
   "profile": {
     "title": "Profiel",
@@ -152,7 +170,8 @@
     "settings": "Instellingen",
     "privacy_policy": "Privacybeleid",
     "stats_hint": "Ongeveer {{kg}} kg toegevoegde suiker vermeden.",
-    "stats_hint_muted": "Gebaseerd op gemiddeld 25 g per dag in koffie, snacks en drankjes."
+    "stats_hint_muted": "Gebaseerd op gemiddeld 25 g per dag in koffie, snacks en drankjes.",
+    "support": "Support"
   },
   "milestone": {
     "title": "EEN MIJLPAAL",

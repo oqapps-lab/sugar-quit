@@ -92,12 +92,29 @@
     "phase_freedom_days": "Giorni 60–90",
     "lesson_day_1": "Perché lo zucchero cattura il cervello",
     "lesson_day_2": "La tempesta di 72 ore",
-    "lesson_day_5": "Prima mattina tranquilla",
-    "lesson_day_4": "Il tuo pattern delle 15, mappato",
-    "lesson_day_6": "Perché la frutta sembra insipida",
-    "lesson_day_11": "Una settimana intera",
+    "lesson_day_5": "Perché la frutta sa di poco",
+    "lesson_day_4": "Il tuo schema delle 15:00, mappato",
+    "lesson_day_6": "Il loop sonno-zucchero",
+    "lesson_day_11": "Alternative che funzionano davvero",
     "locked_coming_soon": "Presto — continua a camminare",
-    "locked_unlocks": "Si apre camminando"
+    "locked_unlocks": "Si apre camminando",
+    "phase_arrival_hero_title": "La prima decisione",
+    "phase_arrival_hero_body": "Sei arrivato. Giorno uno o tre, conta solo che hai iniziato.",
+    "phase_detox_hero_title": "La tempesta di 72 ore",
+    "phase_detox_hero_body": "Le voglie raggiungono il picco. La settimana più dura — e finisce.",
+    "phase_clarity_hero_title": "La nebbia si dirada",
+    "phase_clarity_hero_body": "Le papille si resettano. Energia stabile. Il silenzio inizia a sembrare normale.",
+    "phase_integration_hero_title": "Nuove abitudini si formano",
+    "phase_integration_hero_body": "I tuoi riflessi si ricablano. Lo zucchero esce dal gesto automatico.",
+    "phase_identity_hero_title": "Identità, non sforzo",
+    "phase_identity_hero_body": "Non decidi più ogni volta. È chi sei diventato.",
+    "phase_freedom_hero_title": "Cammini libero",
+    "phase_freedom_hero_body": "L'abitudine è automatica. Passi davanti agli scaffali dei dolci senza accorgertene.",
+    "lesson_day_3": "Prima mattina tranquilla",
+    "lesson_day_7": "Una settimana intera",
+    "lesson_day_8": "Le papille si risvegliano",
+    "lesson_day_9": "Trigger senza reazioni",
+    "lesson_day_10": "Il riflesso stress-zucchero"
   },
   "progress": {
     "journey": "Viaggio",
@@ -129,7 +146,8 @@
     "health_timeline": "CORPO — CRONOLOGIA",
     "health_hint": "Cosa accade nel tuo corpo, non solo nella mente.",
     "now_short": "ORA",
-    "day_short": "GIORNO {{n}}"
+    "day_short": "GIORNO {{n}}",
+    "begin_session": "Inizia sessione"
   },
   "profile": {
     "title": "Profilo",
@@ -152,7 +170,8 @@
     "settings": "Impostazioni",
     "privacy_policy": "Privacy Policy",
     "stats_hint": "Circa {{kg}} kg di zucchero aggiunto evitati.",
-    "stats_hint_muted": "Basato sulla media di 25 g al giorno aggiunti in caffè, snack e bevande."
+    "stats_hint_muted": "Basato sulla media di 25 g al giorno aggiunti in caffè, snack e bevande.",
+    "support": "Supporto"
   },
   "milestone": {
     "title": "UNA PIETRA MILIARE",

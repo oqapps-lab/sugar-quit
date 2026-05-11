@@ -92,12 +92,29 @@
     "phase_freedom_days": "60〜90日目",
     "lesson_day_1": "なぜ砂糖は脳をつかむのか",
     "lesson_day_2": "72時間の嵐",
-    "lesson_day_5": "最初の静かな朝",
+    "lesson_day_5": "なぜ果物が薄味に感じるのか",
     "lesson_day_4": "あなたの15時パターン、見える化",
-    "lesson_day_6": "なぜ果物が薄味に感じるのか",
-    "lesson_day_11": "まる一週間",
+    "lesson_day_6": "睡眠と砂糖のループ",
+    "lesson_day_11": "本当に効く代替案",
     "locked_coming_soon": "まもなく — 歩み続けて",
-    "locked_unlocks": "歩むうちに開きます"
+    "locked_unlocks": "歩むうちに開きます",
+    "phase_arrival_hero_title": "最初の決断",
+    "phase_arrival_hero_body": "あなたは現れた。1日目でも3日目でも、大事なのは始めたこと。",
+    "phase_detox_hero_title": "72時間の嵐",
+    "phase_detox_hero_body": "渇望が今ピークに。一番きつい週 — そして終わる。",
+    "phase_clarity_hero_title": "霧が晴れる",
+    "phase_clarity_hero_body": "味覚がリセット。エネルギーが安定。静けさが普通になり始める。",
+    "phase_integration_hero_title": "新しいデフォルトができる",
+    "phase_integration_hero_body": "反射が再配線される。砂糖が自動的な反応から外れていく。",
+    "phase_identity_hero_title": "努力ではなく、アイデンティティ",
+    "phase_identity_hero_body": "もう毎回決めない。それが、あなたになった。",
+    "phase_freedom_hero_title": "自由に歩く",
+    "phase_freedom_hero_body": "習慣は自動。気づかずにお菓子売場を通り過ぎる。",
+    "lesson_day_3": "最初の静かな朝",
+    "lesson_day_7": "まる一週間",
+    "lesson_day_8": "味覚が目覚めていく",
+    "lesson_day_9": "反応のないトリガー",
+    "lesson_day_10": "ストレスと砂糖の反射"
   },
   "progress": {
     "journey": "ジャーニー",
@@ -129,7 +146,8 @@
     "health_timeline": "身体のタイムライン",
     "health_hint": "頭の中だけでなく、体の中で起きていること。",
     "now_short": "いま",
-    "day_short": "{{n}}日目"
+    "day_short": "{{n}}日目",
+    "begin_session": "セッション開始"
   },
   "profile": {
     "title": "プロフィール",
@@ -152,7 +170,8 @@
     "settings": "設定",
     "privacy_policy": "プライバシーポリシー",
     "stats_hint": "約{{kg}}kgの添加糖を回避。",
-    "stats_hint_muted": "コーヒー・スナック・飲み物に加えられる1日平均25gが基準。"
+    "stats_hint_muted": "コーヒー・スナック・飲み物に加えられる1日平均25gが基準。",
+    "support": "サポート"
   },
   "milestone": {
     "title": "マイルストーン",

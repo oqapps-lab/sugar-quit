@@ -195,11 +195,10 @@ export default function Curriculum() {
                                 state === 'current' && styles.lessonTitleCurrent,
                                 state === 'upcoming' && styles.lessonTitleUpcoming,
                               ]}>
-                                {lesson.title}
+                                {t(`curriculum.lesson_day_${lesson.day}`)}
                               </Text>
                               <Text style={styles.lessonMeta}>
-                                {lesson.minutes} min · Day {lesson.day}
-                                {state === 'current' && ' · today'}
+                                {lesson.minutes} min · {t('progress.day_short', { n: lesson.day })}
                               </Text>
                             </View>
                             {state === 'current' && (

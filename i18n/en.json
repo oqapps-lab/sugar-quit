@@ -92,12 +92,29 @@
     "phase_freedom_days": "Days 60–90",
     "lesson_day_1": "Why sugar catches the brain",
     "lesson_day_2": "The 72-hour storm",
-    "lesson_day_5": "First quiet morning",
+    "lesson_day_5": "Why fruit tastes bland",
     "lesson_day_4": "Your 3pm pattern, mapped",
-    "lesson_day_6": "Why fruit tastes bland",
-    "lesson_day_11": "One whole week",
+    "lesson_day_6": "The sleep-sugar loop",
+    "lesson_day_11": "Alternatives that actually work",
     "locked_coming_soon": "Coming soon — keep walking",
-    "locked_unlocks": "Unlocks as you walk"
+    "locked_unlocks": "Unlocks as you walk",
+    "phase_arrival_hero_title": "The first decision",
+    "phase_arrival_hero_body": "You showed up. Day one or three, the only act that matters is that you started.",
+    "phase_detox_hero_title": "The 72-hour storm",
+    "phase_detox_hero_body": "Cravings peak now. This is the hardest week — and it ends.",
+    "phase_clarity_hero_title": "The fog lifts",
+    "phase_clarity_hero_body": "Taste buds reset. Energy steadies. The quiet is starting to feel normal.",
+    "phase_integration_hero_title": "New defaults forming",
+    "phase_integration_hero_body": "Your reflexes are rewiring. Sugar slips out of the auto-reach.",
+    "phase_identity_hero_title": "Identity, not effort",
+    "phase_identity_hero_body": "You don't decide each time anymore. The choice has become who you are.",
+    "phase_freedom_hero_title": "Walking free",
+    "phase_freedom_hero_body": "The habit is automatic. You walk past the candy aisle without noticing.",
+    "lesson_day_3": "First quiet morning",
+    "lesson_day_7": "One whole week",
+    "lesson_day_8": "Your taste buds are waking up",
+    "lesson_day_9": "Triggers without reactions",
+    "lesson_day_10": "The stress-sugar reflex"
   },
   "progress": {
     "journey": "Journey",
@@ -129,7 +146,8 @@
     "health_timeline": "HEALTH TIMELINE",
     "health_hint": "What's happening in your body, not just your mind.",
     "now_short": "NOW",
-    "day_short": "DAY {{n}}"
+    "day_short": "DAY {{n}}",
+    "begin_session": "Begin session"
   },
   "profile": {
     "title": "Profile",
@@ -152,7 +170,8 @@
     "settings": "Settings",
     "privacy_policy": "Privacy Policy",
     "stats_hint": "About {{kg}}kg of added sugar avoided.",
-    "stats_hint_muted": "Based on the average 25g a day people add to coffee, snacks, and drinks."
+    "stats_hint_muted": "Based on the average 25g a day people add to coffee, snacks, and drinks.",
+    "support": "Support"
   },
   "milestone": {
     "title": "A MILESTONE",

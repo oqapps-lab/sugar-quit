@@ -92,12 +92,29 @@
     "phase_freedom_days": "Tag 60–90",
     "lesson_day_1": "Warum Zucker das Gehirn packt",
     "lesson_day_2": "Der 72-Stunden-Sturm",
-    "lesson_day_5": "Erster ruhiger Morgen",
+    "lesson_day_5": "Warum Obst fade schmeckt",
     "lesson_day_4": "Dein 15-Uhr-Muster, sichtbar",
-    "lesson_day_6": "Warum Obst fade schmeckt",
-    "lesson_day_11": "Eine ganze Woche",
+    "lesson_day_6": "Die Schlaf-Zucker-Schleife",
+    "lesson_day_11": "Alternativen, die wirklich funktionieren",
     "locked_coming_soon": "Bald verfügbar — geh weiter",
-    "locked_unlocks": "Öffnet sich mit der Zeit"
+    "locked_unlocks": "Öffnet sich mit der Zeit",
+    "phase_arrival_hero_title": "Die erste Entscheidung",
+    "phase_arrival_hero_body": "Du bist da. Tag eins oder drei — wichtig ist nur, dass du angefangen hast.",
+    "phase_detox_hero_title": "Der 72-Stunden-Sturm",
+    "phase_detox_hero_body": "Heißhunger erreicht jetzt den Höhepunkt. Es ist die härteste Woche — und sie endet.",
+    "phase_clarity_hero_title": "Der Nebel lichtet sich",
+    "phase_clarity_hero_body": "Geschmacksknospen setzen zurück. Energie stabilisiert. Die Ruhe fühlt sich normal an.",
+    "phase_integration_hero_title": "Neue Routinen bilden sich",
+    "phase_integration_hero_body": "Deine Reflexe verdrahten sich neu. Zucker fällt aus dem Automatismus.",
+    "phase_identity_hero_title": "Identität, nicht Anstrengung",
+    "phase_identity_hero_body": "Du entscheidest nicht mehr jedes Mal. Es ist, wer du geworden bist.",
+    "phase_freedom_hero_title": "Frei laufen",
+    "phase_freedom_hero_body": "Die Gewohnheit läuft automatisch. Du gehst am Süßwarenregal vorbei, ohne es zu merken.",
+    "lesson_day_3": "Erster ruhiger Morgen",
+    "lesson_day_7": "Eine ganze Woche",
+    "lesson_day_8": "Deine Geschmacksknospen erwachen",
+    "lesson_day_9": "Auslöser ohne Reaktion",
+    "lesson_day_10": "Der Stress-Zucker-Reflex"
   },
   "progress": {
     "journey": "Reise",
@@ -129,7 +146,8 @@
     "health_timeline": "KÖRPER-TIMELINE",
     "health_hint": "Was in deinem Körper passiert, nicht nur im Kopf.",
     "now_short": "JETZT",
-    "day_short": "TAG {{n}}"
+    "day_short": "TAG {{n}}",
+    "begin_session": "Sitzung starten"
   },
   "profile": {
     "title": "Profil",
@@ -152,7 +170,8 @@
     "settings": "Einstellungen",
     "privacy_policy": "Datenschutz",
     "stats_hint": "Etwa {{kg}} kg zugesetzter Zucker vermieden.",
-    "stats_hint_muted": "Basierend auf durchschnittlich 25 g pro Tag in Kaffee, Snacks und Getränken."
+    "stats_hint_muted": "Basierend auf durchschnittlich 25 g pro Tag in Kaffee, Snacks und Getränken.",
+    "support": "Support"
   },
   "milestone": {
     "title": "EIN MEILENSTEIN",

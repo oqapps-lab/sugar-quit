@@ -92,12 +92,29 @@
     "phase_freedom_days": "第 60–90 天",
     "lesson_day_1": "為什麼糖會抓住大腦",
     "lesson_day_2": "72 小時的風暴",
-    "lesson_day_5": "第一個平靜的早晨",
+    "lesson_day_5": "為什麼水果嚐起來淡了",
     "lesson_day_4": "你下午 3 點的模式,可視化",
-    "lesson_day_6": "為什麼水果嚐起來淡了",
-    "lesson_day_11": "完整的一週",
+    "lesson_day_6": "睡眠與糖的循環",
+    "lesson_day_11": "真正有效的替代",
     "locked_coming_soon": "即將開放 — 繼續走下去",
-    "locked_unlocks": "走著走著就開了"
+    "locked_unlocks": "走著走著就開了",
+    "phase_arrival_hero_title": "第一個決定",
+    "phase_arrival_hero_body": "你來了。第一天還是第三天,唯一重要的是你開始了。",
+    "phase_detox_hero_title": "72 小時的風暴",
+    "phase_detox_hero_body": "渴望此刻達到頂峰。最艱難的一週 — 它會結束。",
+    "phase_clarity_hero_title": "霧氣散去",
+    "phase_clarity_hero_body": "味蕾重設。能量穩定。安靜開始變得平常。",
+    "phase_integration_hero_title": "新的習慣正在形成",
+    "phase_integration_hero_body": "你的反射在重新接線。糖從自動伸手中滑出。",
+    "phase_identity_hero_title": "認同,不是努力",
+    "phase_identity_hero_body": "你不再每次決定。這已成為你。",
+    "phase_freedom_hero_title": "自在前行",
+    "phase_freedom_hero_body": "習慣已自動。你經過糖果走道時毫無察覺。",
+    "lesson_day_3": "第一個平靜的早晨",
+    "lesson_day_7": "完整的一週",
+    "lesson_day_8": "你的味蕾在甦醒",
+    "lesson_day_9": "沒有反應的觸發",
+    "lesson_day_10": "壓力與糖的反射"
   },
   "progress": {
     "journey": "旅程",
@@ -129,7 +146,8 @@
     "health_timeline": "身體時間軸",
     "health_hint": "發生在你身體裡的事,不只是腦中。",
     "now_short": "此刻",
-    "day_short": "第 {{n}} 天"
+    "day_short": "第 {{n}} 天",
+    "begin_session": "開始會話"
   },
   "profile": {
     "title": "個人資料",
@@ -152,7 +170,8 @@
     "settings": "設定",
     "privacy_policy": "隱私政策",
     "stats_hint": "約 {{kg}} 公斤添加糖避免。",
-    "stats_hint_muted": "根據咖啡、零食、飲料中每天平均加入 25 公克。"
+    "stats_hint_muted": "根據咖啡、零食、飲料中每天平均加入 25 公克。",
+    "support": "支援"
   },
   "milestone": {
     "title": "里程碑",

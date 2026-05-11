@@ -92,12 +92,29 @@
     "phase_freedom_days": "Dias 60–90",
     "lesson_day_1": "Por que o açúcar prende o cérebro",
     "lesson_day_2": "A tempestade de 72 horas",
-    "lesson_day_5": "Primeira manhã tranquila",
+    "lesson_day_5": "Por que a fruta parece sem graça",
     "lesson_day_4": "Seu padrão das 15h, mapeado",
-    "lesson_day_6": "Por que a fruta parece sem graça",
-    "lesson_day_11": "Uma semana inteira",
+    "lesson_day_6": "O loop sono-açúcar",
+    "lesson_day_11": "Alternativas que realmente funcionam",
     "locked_coming_soon": "Em breve — continue caminhando",
-    "locked_unlocks": "Abre-se ao caminhar"
+    "locked_unlocks": "Abre-se ao caminhar",
+    "phase_arrival_hero_title": "A primeira decisão",
+    "phase_arrival_hero_body": "Você apareceu. Dia um ou três, o que importa é que começou.",
+    "phase_detox_hero_title": "A tempestade de 72 horas",
+    "phase_detox_hero_body": "Os desejos atingem o pico. A semana mais dura — e termina.",
+    "phase_clarity_hero_title": "A neblina se dissipa",
+    "phase_clarity_hero_body": "Papilas resetam. Energia se estabiliza. A calma começa a parecer normal.",
+    "phase_integration_hero_title": "Novos padrões se formam",
+    "phase_integration_hero_body": "Seus reflexos são reconectados. O açúcar escapa do automático.",
+    "phase_identity_hero_title": "Identidade, não esforço",
+    "phase_identity_hero_body": "Você não decide mais a cada vez. É quem você se tornou.",
+    "phase_freedom_hero_title": "Caminhando livre",
+    "phase_freedom_hero_body": "O hábito é automático. Você passa pelo corredor dos doces sem notar.",
+    "lesson_day_3": "Primeira manhã tranquila",
+    "lesson_day_7": "Uma semana inteira",
+    "lesson_day_8": "Suas papilas despertam",
+    "lesson_day_9": "Gatilhos sem reações",
+    "lesson_day_10": "O reflexo estresse-açúcar"
   },
   "progress": {
     "journey": "Jornada",
@@ -129,7 +146,8 @@
     "health_timeline": "CORPO — LINHA DO TEMPO",
     "health_hint": "O que acontece no corpo, não só na cabeça.",
     "now_short": "AGORA",
-    "day_short": "DIA {{n}}"
+    "day_short": "DIA {{n}}",
+    "begin_session": "Iniciar sessão"
   },
   "profile": {
     "title": "Perfil",
@@ -152,7 +170,8 @@
     "settings": "Ajustes",
     "privacy_policy": "Política de Privacidade",
     "stats_hint": "Cerca de {{kg}} kg de açúcar adicionado evitados.",
-    "stats_hint_muted": "Baseado nos 25 g/dia médios adicionados a café, lanches e bebidas."
+    "stats_hint_muted": "Baseado nos 25 g/dia médios adicionados a café, lanches e bebidas.",
+    "support": "Suporte"
   },
   "milestone": {
     "title": "UM MARCO",

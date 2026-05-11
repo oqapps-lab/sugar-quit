@@ -166,7 +166,7 @@ export default function Profile() {
                   : () => router.push('/(modals)/paywall-contextual'),
               },
               { label: t('profile.settings'),       iconKind: 'settings' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/settings') },
-              { label: 'Support',        iconKind: 'support' as MenuIconKind, onPress: () => router.push('/(modals)/support-form') },
+              { label: t('profile.support'),        iconKind: 'support' as MenuIconKind, onPress: () => router.push('/(modals)/support-form') },
               { label: t('profile.privacy_policy'), iconKind: 'privacy' as MenuIconKind, onPress: () => Linking.openURL(LINKS.privacyPolicy) },
               {
                 label: 'Sign out',

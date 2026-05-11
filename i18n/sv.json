@@ -92,12 +92,29 @@
     "phase_freedom_days": "Dag 60–90",
     "lesson_day_1": "Varför socker fångar hjärnan",
     "lesson_day_2": "72-timmarsstormen",
-    "lesson_day_5": "Första lugna morgonen",
+    "lesson_day_5": "Varför frukt smakar fadd",
     "lesson_day_4": "Ditt 15-mönster, kartlagt",
-    "lesson_day_6": "Varför frukt smakar fadd",
-    "lesson_day_11": "En hel vecka",
+    "lesson_day_6": "Sömn-socker-loopen",
+    "lesson_day_11": "Alternativ som faktiskt funkar",
     "locked_coming_soon": "Snart — fortsätt gå",
-    "locked_unlocks": "Öppnas under vägen"
+    "locked_unlocks": "Öppnas under vägen",
+    "phase_arrival_hero_title": "Det första beslutet",
+    "phase_arrival_hero_body": "Du dök upp. Dag ett eller tre, det enda som räknas är att du började.",
+    "phase_detox_hero_title": "72-timmarsstormen",
+    "phase_detox_hero_body": "Suget når toppen nu. Den hårdaste veckan — och den tar slut.",
+    "phase_clarity_hero_title": "Dimman lättar",
+    "phase_clarity_hero_body": "Smaklökarna återställs. Energin stabiliseras. Lugnet börjar kännas normalt.",
+    "phase_integration_hero_title": "Nya standardval formas",
+    "phase_integration_hero_body": "Dina reflexer kopplas om. Socker glider ut ur autopiloten.",
+    "phase_identity_hero_title": "Identitet, inte ansträngning",
+    "phase_identity_hero_body": "Du beslutar inte varje gång längre. Det är den du har blivit.",
+    "phase_freedom_hero_title": "Går fritt",
+    "phase_freedom_hero_body": "Vanan är automatisk. Du går förbi godishyllan utan att märka det.",
+    "lesson_day_3": "Första lugna morgonen",
+    "lesson_day_7": "En hel vecka",
+    "lesson_day_8": "Dina smaklökar vaknar",
+    "lesson_day_9": "Triggers utan reaktion",
+    "lesson_day_10": "Stress-socker-reflexen"
   },
   "progress": {
     "journey": "Resa",
@@ -129,7 +146,8 @@
     "health_timeline": "KROPPENS TIDSLINJE",
     "health_hint": "Vad som händer i kroppen, inte bara i huvudet.",
     "now_short": "NU",
-    "day_short": "DAG {{n}}"
+    "day_short": "DAG {{n}}",
+    "begin_session": "Starta session"
   },
   "profile": {
     "title": "Profil",
@@ -152,7 +170,8 @@
     "settings": "Inställningar",
     "privacy_policy": "Integritetspolicy",
     "stats_hint": "Ungefär {{kg}} kg tillsatt socker undvikit.",
-    "stats_hint_muted": "Baserat på 25 g/dag i snitt som tillsätts i kaffe, snacks och drycker."
+    "stats_hint_muted": "Baserat på 25 g/dag i snitt som tillsätts i kaffe, snacks och drycker.",
+    "support": "Support"
   },
   "milestone": {
     "title": "EN MILSTOLPE",

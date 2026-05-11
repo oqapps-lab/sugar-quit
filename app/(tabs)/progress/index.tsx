@@ -26,12 +26,13 @@ export default function ProgressScreen() {
   const currentDay = Math.max(1, streakDays);
   const avatarInitial = (firstName?.[0] ?? 'S').toUpperCase();
 
-  // Hero copy is sourced from the canonical PHASES taxonomy — same phase used
-  // on Curriculum + Home so the user never sees conflicting labels.
   const currentPhase = phaseForDay(currentDay);
+  const phaseSlug = (
+    {Arrival:'arrival',Detox:'detox',Clarity:'clarity',Integration:'integration',Identity:'identity',Freedom:'freedom'} as any
+  )[currentPhase.name] ?? 'arrival';
   const phase: { title: string; body: string } = {
-    title: currentPhase.heroTitle,
-    body: currentPhase.heroBody,
+    title: t(`curriculum.phase_${phaseSlug}_hero_title`),
+    body: t(`curriculum.phase_${phaseSlug}_hero_body`),
   };
 
   // Stats — same honest formulas as Profile / Milestone
@@ -59,7 +60,7 @@ export default function ProgressScreen() {
       Integration:'phase_integration',Identity:'phase_identity',Freedom:'phase_freedom'} as any)[name];
   const nodes = PHASES.map((p, i) => ({
     label: t(`curriculum.${phaseKey(p.name)}`),
-    phase: i === phaseIndex ? t('progress.now_short') : p.shortLabel,
+    phase: i === phaseIndex ? t('progress.now_short') : t(`curriculum.${phaseKey(p.name)}_days`),
     glyph: p.glyph,
     state:
       i < phaseIndex                                    ? 'done'     as const
@@ -265,7 +266,7 @@ export default function ProgressScreen() {
           </View>
 
           <PillCTA
-            label="Begin session"
+            label={t('progress.begin_session')}
             variant="lightOnDark"
             onPress={() => router.push('/(modals)/sos')}
             style={styles.sessionCTA}

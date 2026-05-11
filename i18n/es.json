@@ -92,12 +92,29 @@
     "phase_freedom_days": "Días 60–90",
     "lesson_day_1": "Por qué el azúcar atrapa al cerebro",
     "lesson_day_2": "La tormenta de 72 horas",
-    "lesson_day_5": "Primera mañana tranquila",
+    "lesson_day_5": "Por qué la fruta sabe a poco",
     "lesson_day_4": "Tu patrón de las 3pm, en mapa",
-    "lesson_day_6": "Por qué la fruta sabe a poco",
-    "lesson_day_11": "Una semana entera",
+    "lesson_day_6": "El bucle sueño-azúcar",
+    "lesson_day_11": "Alternativas que sí funcionan",
     "locked_coming_soon": "Próximamente — sigue caminando",
-    "locked_unlocks": "Se abre al caminar"
+    "locked_unlocks": "Se abre al caminar",
+    "phase_arrival_hero_title": "La primera decisión",
+    "phase_arrival_hero_body": "Apareciste. Día uno o tres, lo único que importa es que empezaste.",
+    "phase_detox_hero_title": "La tormenta de 72 horas",
+    "phase_detox_hero_body": "Los antojos llegan al pico. La semana más dura — y termina.",
+    "phase_clarity_hero_title": "La niebla se disipa",
+    "phase_clarity_hero_body": "Papilas se reinician. La energía se estabiliza. La calma se siente normal.",
+    "phase_integration_hero_title": "Nuevos hábitos se forman",
+    "phase_integration_hero_body": "Tus reflejos se rediseñan. El azúcar sale del impulso automático.",
+    "phase_identity_hero_title": "Identidad, no esfuerzo",
+    "phase_identity_hero_body": "Ya no decides cada vez. Es quien te has convertido.",
+    "phase_freedom_hero_title": "Caminando libre",
+    "phase_freedom_hero_body": "El hábito es automático. Pasas el pasillo de dulces sin notarlo.",
+    "lesson_day_3": "Primera mañana tranquila",
+    "lesson_day_7": "Una semana entera",
+    "lesson_day_8": "Tus papilas despiertan",
+    "lesson_day_9": "Disparadores sin reacción",
+    "lesson_day_10": "El reflejo estrés-azúcar"
   },
   "progress": {
     "journey": "Camino",
@@ -129,7 +146,8 @@
     "health_timeline": "CUERPO — CRONOLOGÍA",
     "health_hint": "Lo que pasa en tu cuerpo, no solo en tu mente.",
     "now_short": "AHORA",
-    "day_short": "DÍA {{n}}"
+    "day_short": "DÍA {{n}}",
+    "begin_session": "Iniciar sesión"
   },
   "profile": {
     "title": "Perfil",
@@ -152,7 +170,8 @@
     "settings": "Ajustes",
     "privacy_policy": "Política de privacidad",
     "stats_hint": "Unos {{kg}} kg de azúcar añadido evitados.",
-    "stats_hint_muted": "Basado en los 25 g/día medios que la gente añade al café, snacks y bebidas."
+    "stats_hint_muted": "Basado en los 25 g/día medios que la gente añade al café, snacks y bebidas.",
+    "support": "Soporte"
   },
   "milestone": {
     "title": "UN HITO",

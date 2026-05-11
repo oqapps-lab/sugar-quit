@@ -92,12 +92,29 @@
     "phase_freedom_days": "60–90일",
     "lesson_day_1": "왜 설탕은 뇌를 사로잡는가",
     "lesson_day_2": "72시간의 폭풍",
-    "lesson_day_5": "첫 고요한 아침",
+    "lesson_day_5": "왜 과일이 밋밋하게 느껴질까",
     "lesson_day_4": "당신의 오후 3시 패턴, 그려보기",
-    "lesson_day_6": "왜 과일이 밋밋하게 느껴질까",
-    "lesson_day_11": "한 주를 통째로",
+    "lesson_day_6": "수면-설탕 루프",
+    "lesson_day_11": "진짜 효과 있는 대안",
     "locked_coming_soon": "곧 — 계속 걸어가요",
-    "locked_unlocks": "걸어가면서 열려요"
+    "locked_unlocks": "걸어가면서 열려요",
+    "phase_arrival_hero_title": "첫 결정",
+    "phase_arrival_hero_body": "당신은 나타났어요. 1일이든 3일이든, 시작했다는 것만이 중요해요.",
+    "phase_detox_hero_title": "72시간의 폭풍",
+    "phase_detox_hero_body": "욕구가 지금 정점. 가장 힘든 주 — 그리고 끝나요.",
+    "phase_clarity_hero_title": "안개가 걷혀요",
+    "phase_clarity_hero_body": "미각이 재설정. 에너지가 안정. 고요함이 평범하게 느껴지기 시작.",
+    "phase_integration_hero_title": "새 기본이 자리잡아요",
+    "phase_integration_hero_body": "반사가 재배선돼요. 설탕이 자동 반응에서 빠져나가요.",
+    "phase_identity_hero_title": "노력이 아닌, 정체성",
+    "phase_identity_hero_body": "더는 매번 결정하지 않아요. 그게 지금의 당신이에요.",
+    "phase_freedom_hero_title": "자유롭게 걷기",
+    "phase_freedom_hero_body": "습관은 자동. 과자 코너를 모르게 지나가요.",
+    "lesson_day_3": "첫 고요한 아침",
+    "lesson_day_7": "한 주를 통째로",
+    "lesson_day_8": "미각이 깨어나요",
+    "lesson_day_9": "반응 없는 트리거",
+    "lesson_day_10": "스트레스-설탕 반사"
   },
   "progress": {
     "journey": "여정",
@@ -129,7 +146,8 @@
     "health_timeline": "몸의 타임라인",
     "health_hint": "머릿속이 아니라, 몸속에서 일어나는 일.",
     "now_short": "지금",
-    "day_short": "{{n}}일차"
+    "day_short": "{{n}}일차",
+    "begin_session": "세션 시작"
   },
   "profile": {
     "title": "프로필",
@@ -152,7 +170,8 @@
     "settings": "설정",
     "privacy_policy": "개인정보 처리방침",
     "stats_hint": "약 {{kg}}kg의 첨가당을 피했어요.",
-    "stats_hint_muted": "커피·간식·음료에 더해지는 하루 평균 25g 기준."
+    "stats_hint_muted": "커피·간식·음료에 더해지는 하루 평균 25g 기준.",
+    "support": "지원"
   },
   "milestone": {
     "title": "마일스톤",

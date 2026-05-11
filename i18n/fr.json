@@ -92,12 +92,29 @@
     "phase_freedom_days": "Jours 60–90",
     "lesson_day_1": "Pourquoi le sucre accroche le cerveau",
     "lesson_day_2": "La tempête de 72 heures",
-    "lesson_day_5": "Premier matin tranquille",
+    "lesson_day_5": "Pourquoi les fruits semblent fades",
     "lesson_day_4": "Ton pattern de 15h, cartographié",
-    "lesson_day_6": "Pourquoi les fruits semblent fades",
-    "lesson_day_11": "Une semaine entière",
+    "lesson_day_6": "La boucle sommeil-sucre",
+    "lesson_day_11": "Alternatives qui marchent vraiment",
     "locked_coming_soon": "Bientôt — continue à marcher",
-    "locked_unlocks": "S'ouvre en marchant"
+    "locked_unlocks": "S'ouvre en marchant",
+    "phase_arrival_hero_title": "La première décision",
+    "phase_arrival_hero_body": "Tu es venu. Jour un ou trois, ce qui compte c'est d'avoir commencé.",
+    "phase_detox_hero_title": "La tempête de 72 heures",
+    "phase_detox_hero_body": "Les envies culminent. Semaine la plus dure — et elle finit.",
+    "phase_clarity_hero_title": "Le brouillard se lève",
+    "phase_clarity_hero_body": "Les papilles se réinitialisent. Énergie stable. Le calme devient normal.",
+    "phase_integration_hero_title": "Nouveaux réflexes se forment",
+    "phase_integration_hero_body": "Tes automatismes se recâblent. Le sucre quitte le geste réflexe.",
+    "phase_identity_hero_title": "Identité, pas effort",
+    "phase_identity_hero_body": "Tu ne décides plus à chaque fois. C'est devenu qui tu es.",
+    "phase_freedom_hero_title": "Marcher libre",
+    "phase_freedom_hero_body": "L'habitude est automatique. Tu passes devant le rayon bonbons sans le voir.",
+    "lesson_day_3": "Premier matin tranquille",
+    "lesson_day_7": "Une semaine entière",
+    "lesson_day_8": "Tes papilles se réveillent",
+    "lesson_day_9": "Déclencheurs sans réaction",
+    "lesson_day_10": "Le réflexe stress-sucre"
   },
   "progress": {
     "journey": "Voyage",
@@ -129,7 +146,8 @@
     "health_timeline": "CORPS — CHRONOLOGIE",
     "health_hint": "Ce qui se passe dans ton corps, pas seulement dans ta tête.",
     "now_short": "ICI",
-    "day_short": "JOUR {{n}}"
+    "day_short": "JOUR {{n}}",
+    "begin_session": "Démarrer la séance"
   },
   "profile": {
     "title": "Profil",
@@ -152,7 +170,8 @@
     "settings": "Paramètres",
     "privacy_policy": "Politique de confidentialité",
     "stats_hint": "Environ {{kg}} kg de sucre ajouté évités.",
-    "stats_hint_muted": "Basé sur 25 g par jour ajoutés dans le café, les snacks et les boissons."
+    "stats_hint_muted": "Basé sur 25 g par jour ajoutés dans le café, les snacks et les boissons.",
+    "support": "Support"
   },
   "milestone": {
     "title": "UN JALON",
