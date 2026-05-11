@@ -9,6 +9,7 @@ import { AuraBlob } from '../../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, shadows, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { t } from '../../../lib/i18n';
 import { useUserStore } from '../../../stores/useUserStore';
 import { PHASES, phaseForDay, phaseIndexForDay } from '../../../lib/phases';
 
@@ -53,9 +54,12 @@ export default function ProgressScreen() {
   // sits on the user's actual phase and labels match Curriculum/Home.
   const phaseIndex = phaseIndexForDay(currentDay);
   const lastIdx = PHASES.length - 1;
+  const phaseKey = (name: string) =>
+    ({Arrival:'phase_arrival',Detox:'phase_detox',Clarity:'phase_clarity',
+      Integration:'phase_integration',Identity:'phase_identity',Freedom:'phase_freedom'} as any)[name];
   const nodes = PHASES.map((p, i) => ({
-    label: p.name,
-    phase: i === phaseIndex ? 'Now' : p.shortLabel,
+    label: t(`curriculum.${phaseKey(p.name)}`),
+    phase: i === phaseIndex ? t('progress.now_short') : p.shortLabel,
     glyph: p.glyph,
     state:
       i < phaseIndex                                    ? 'done'     as const
@@ -100,11 +104,11 @@ export default function ProgressScreen() {
       ],
     },
     Identity: {
-      title: 'Identity over effort',
-      sub: 'Choices stop costing willpower — they cost nothing.',
+      title: t('progress.identity_over_effort'),
+      sub: t('progress.identity_over_effort_sub'),
       practices: [
-        { title: 'Notice the non-reach', body: 'Catch yourself NOT reaching' },
-        { title: 'Share the protocol',   body: 'Teach one person what works' },
+        { title: t('progress.notice_non_reach'), body: t('progress.notice_non_reach_sub') },
+        { title: t('progress.share_protocol'),   body: t('progress.share_protocol_sub') },
       ],
     },
     Freedom: {
@@ -122,13 +126,13 @@ export default function ProgressScreen() {
   // Each entry has a `unlocksAt` day. Items with day <= currentDay show as
   // "happening" (active state); the rest read as quiet upcoming text.
   const healthMarkers = [
-    { day: 1,  label: 'Insulin spikes soften',          detail: 'Within hours of cutting refined sugar.' },
-    { day: 3,  label: 'Cravings peak, then ease',       detail: 'Dopamine receptors recalibrating.' },
-    { day: 7,  label: 'Sleep depth increases',          detail: 'Cortisol rhythm normalizing.' },
-    { day: 14, label: 'Taste buds regenerate',          detail: 'Fruit registers ~40% sweeter.' },
-    { day: 30, label: 'Liver fat measurably reduces',   detail: 'Average ~10% drop in NAFLD markers.' },
-    { day: 60, label: 'Inflammation markers drop',      detail: 'CRP and HbA1c trending down.' },
-    { day: 90, label: 'Insulin sensitivity peaks',      detail: 'Metabolic flexibility restored.' },
+    { day: 1,  label: t('progress.body_day_4'),       detail: t('progress.body_day_4_sub') },
+    { day: 3,  label: t('progress.body_day_4'),       detail: t('progress.body_day_4_sub') },
+    { day: 7,  label: t('progress.body_day_7'),       detail: t('progress.body_day_7_sub') },
+    { day: 14, label: t('progress.body_day_11'),      detail: t('progress.body_day_11_sub') },
+    { day: 30, label: t('progress.body_day_30'),      detail: t('progress.body_day_30_sub') },
+    { day: 60, label: t('progress.body_day_14'),      detail: t('progress.body_day_14_sub') },
+    { day: 90, label: t('progress.body_day_90'),      detail: t('progress.body_day_90_sub') },
   ];
 
   return (
@@ -149,7 +153,7 @@ export default function ProgressScreen() {
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
         <View pointerEvents="none" style={[styles.headerCenter, { top: insets.top + spacing.sm }]}>
-          <Text style={styles.roadmapLabel}>Journey</Text>
+          <Text style={styles.roadmapLabel}>{t('progress.journey')}</Text>
         </View>
         <View style={styles.avatar}>
           <Text style={styles.avatarInitial}>{avatarInitial}</Text>
@@ -164,7 +168,7 @@ export default function ProgressScreen() {
         <Animated.View entering={FadeInUp.duration(500)} style={styles.heroSection}>
           <View style={styles.heroRow}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.heroEyebrow}>{`DAY ${currentDay} OF 90`}</Text>
+              <Text style={styles.heroEyebrow}>{`${t('progress.day_short', { n: currentDay })} / 90`}</Text>
               <Text style={styles.heroTitle}>{phase.title}</Text>
             </View>
             {/* Sun-like on early days, moon-like later — mood shift */}
@@ -242,7 +246,7 @@ export default function ProgressScreen() {
           />
           <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
-            <Text style={styles.detailsLabel}>TODAY'S FOCUS</Text>
+            <Text style={styles.detailsLabel}>{t('progress.todays_focus')}</Text>
           </View>
 
           <Text style={styles.detailsTitle}>{focus.title}</Text>
@@ -271,8 +275,8 @@ export default function ProgressScreen() {
 
         {/* Health Timeline — physiological markers per FEATURES.md G4 */}
         <Animated.View entering={FadeInDown.delay(300).duration(400)} style={styles.healthSection}>
-          <Text style={styles.sectionLabel}>HEALTH TIMELINE</Text>
-          <Text style={styles.sectionHint}>What's happening in your body, not just your mind.</Text>
+          <Text style={styles.sectionLabel}>{t('progress.health_timeline')}</Text>
+          <Text style={styles.sectionHint}>{t('progress.health_hint')}</Text>
           <View style={styles.healthList}>
             {healthMarkers.map((m, i) => {
               const reached = currentDay >= m.day;
@@ -287,9 +291,9 @@ export default function ProgressScreen() {
                   <View style={styles.healthText}>
                     <View style={styles.healthHeadRow}>
                       <Text style={[styles.healthDay, reached && styles.healthDayActive]}>
-                        {`DAY ${m.day}`}
+                        {t('progress.day_short', { n: m.day })}
                       </Text>
-                      {reached && <Text style={styles.healthBadge}>HAPPENING</Text>}
+                      {reached && <Text style={styles.healthBadge}>{t('progress.happening')}</Text>}
                     </View>
                     <Text style={[styles.healthLabel, reached && styles.healthLabelActive]}>
                       {m.label}
@@ -314,17 +318,17 @@ export default function ProgressScreen() {
         >
           <View style={styles.stat}>
             <Text style={styles.statNumber}>{cravingsMet}</Text>
-            <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
+            <Text style={styles.statLabel}>{t('progress.cravings_met')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
             <Text style={styles.statNumber}>${dollarsSaved}</Text>
-            <Text style={styles.statLabel}>saved</Text>
+            <Text style={styles.statLabel}>{t('progress.saved')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
             <Text style={styles.statNumber}>{kgSugar}kg</Text>
-            <Text style={styles.statLabel}>sugar avoided</Text>
+            <Text style={styles.statLabel}>{t('progress.sugar_avoided')}</Text>
           </View>
         </Pressable>
         </Animated.View>

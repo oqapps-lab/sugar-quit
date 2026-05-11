@@ -12,6 +12,7 @@ import { SOSFab } from '../../components/ui/SOSFab';
 import { StreakOrb } from '../../components/ui/StreakOrb';
 import { TokenDot } from '../../components/ui/TokenDot';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 import { peakWindow24h } from '../../lib/peakHour';
 import { phaseForDay } from '../../lib/phases';
 import {
@@ -33,34 +34,34 @@ function computeForecast(
   sosUsedToday: number,
   isCheckedInToday: boolean,
   peakHour: string | null,
-): { tone: ForecastTone; sub: string } {
+): { toneKey: string; tone: string; sub: string } {
   const peakShort = (peakHour ?? '3 PM').replace(/:00/g, '').toLowerCase();
 
   if (streakDays === 0) {
-    return { tone: 'Welcome', sub: "Three small tasks today. No rush, no perfect." };
+    return { toneKey: 'home.tone_welcome', tone: t('home.tone_welcome'), sub: t('home.sub_welcome') };
   }
   if (sosUsedToday >= 2) {
-    return { tone: 'Storm', sub: "Heavy day — you've already used SOS twice. Be gentle with yourself." };
+    return { toneKey: 'home.tone_storm', tone: t('home.tone_storm'), sub: t('home.sub_storm') };
   }
   if (sosUsedToday === 1) {
-    return { tone: 'Steady', sub: "You reached out once. The next hours get easier from here." };
+    return { toneKey: 'home.tone_steady', tone: t('home.tone_steady'), sub: t('home.sub_steady') };
   }
   if (streakDays >= 14) {
     // Phase-aware "calm day" subtitle. Earlier this read "Two weeks in"
     // for ALL days >= 14, which felt stale on Day 48+ (Identity phase).
     const phase = phaseForDay(streakDays);
     const subByPhase: Record<string, string> = {
-      Clarity:     'The fog is lifting. Cravings are background noise now.',
-      Integration: 'New defaults are forming. The reach is dimming.',
-      Identity:    "You don't decide each time. The choice is who you are.",
-      Freedom:     'The habit is automatic. You walk past without noticing.',
+      Clarity:     t('home.sub_calm_clarity'),
+      Integration: t('home.sub_calm_integration'),
+      Identity:    t('home.sub_calm_identity'),
+      Freedom:     t('home.sub_calm_freedom'),
     };
-    return { tone: 'Calm', sub: subByPhase[phase.name] ?? "You've found your rhythm." };
+    return { toneKey: 'home.tone_calm', tone: t('home.tone_calm'), sub: subByPhase[phase.name] ?? t('home.sub_calm_default') };
   }
   if (isCheckedInToday) {
-    return { tone: 'Light', sub: `Easy morning. Watch out for a craving around ${peakShort}.` };
+    return { toneKey: 'home.tone_light', tone: t('home.tone_light'), sub: t('home.sub_light_morning', { peak: peakShort }) };
   }
-  return { tone: 'Light', sub: "A quiet start. Check in tonight so we can read the day." };
+  return { toneKey: 'home.tone_light', tone: t('home.tone_light'), sub: t('home.sub_light_default') };
 }
 
 /**
@@ -124,9 +125,9 @@ export default function Home() {
     : null;
 
   // Today's forecast — count SOS sessions opened today (any outcome).
-  const sosLog = useUserStore((s) => s.sosLog);
+  const sosLog = useUserStore((s) => s.sosLog) ?? [];
   const todayISO = getTodayISODate();
-  const sosUsedToday = sosLog.filter((s) => s.timestamp.slice(0, 10) === todayISO).length;
+  const sosUsedToday = sosLog.filter((s) => s.timestamp?.slice(0, 10) === todayISO).length;
   const peakHour = useUserStore.getState().peakHour;
   const forecast = computeForecast(streakDays, sosUsedToday, isCheckedInToday, peakHour);
 
@@ -142,11 +143,11 @@ export default function Home() {
   }
 
   const greetingForHour = (hour: number): string => {
-    if (hour < 5) return 'Late night';
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    if (hour < 22) return 'Good evening';
-    return 'Late night';
+    if (hour < 5) return t('greetings.late_night');
+    if (hour < 12) return t('greetings.good_morning');
+    if (hour < 17) return t('greetings.good_afternoon');
+    if (hour < 22) return t('greetings.good_evening');
+    return t('greetings.late_night');
   };
   const dateLabel = firstName
     ? `${greetingForHour(new Date().getHours())}, ${firstName}`.toUpperCase()
@@ -216,7 +217,7 @@ export default function Home() {
         ) : (
           <Animated.View entering={FadeInUp.duration(450)} style={styles.heroRow}>
             <View style={styles.heroTextCol}>
-              <Text style={styles.heroPrefix}>Today is</Text>
+              <Text style={styles.heroPrefix}>{t('home.today_is')}</Text>
               <Text style={styles.heroWord}>{forecast.tone}.</Text>
               <Text style={styles.heroSub}>{forecast.sub}</Text>
             </View>
@@ -227,15 +228,15 @@ export default function Home() {
               accessibilityRole="text"
               accessibilityLabel={`Streak: ${streakDays} days without sugar. Best ${bestStreak}. ${freezesLeft} freezes left this week.`}
             >
-              <Text style={styles.heroOrbEyebrow}>YOUR STREAK</Text>
+              <Text style={styles.heroOrbEyebrow}>{t('home.your_streak').toUpperCase()}</Text>
               <StreakOrb count={streakDays} size={140} />
-              <Text style={styles.heroOrbCaption}>{`DAY${streakDays === 1 ? '' : 'S'} CLEAN · BEST ${bestStreak}`}</Text>
+              <Text style={styles.heroOrbCaption}>{`${t('home.days_clean').toUpperCase()} · ${t('home.best').toUpperCase()} ${bestStreak}`}</Text>
               <View style={styles.heroDotsPill}>
                 {[...Array(14)].map((_, i) => (
                   <TokenDot key={i} filled={i < streakDays} size={7} />
                 ))}
               </View>
-              <Text style={styles.heroDotsLabel}>Last 14 days</Text>
+              <Text style={styles.heroDotsLabel}>{t('home.last_14_days')}</Text>
             </View>
           </Animated.View>
         )}
@@ -337,9 +338,9 @@ export default function Home() {
                   <View style={styles.forecastRow}>
                     <View style={styles.forecastText}>
                       <Text style={styles.timeLabel}>08:00 — 12:00</Text>
-                      <Text style={styles.forecastTitle}>Calm</Text>
+                      <Text style={styles.forecastTitle}>{t('home.forecast_calm')}</Text>
                       <Text style={styles.forecastBody}>
-                        Low risk. Cortisol stable. Good for deep work.
+                        {t('home.forecast_calm_hint')}
                       </Text>
                     </View>
                     <DecorGlyph variant="sun" size={56} />
@@ -361,9 +362,9 @@ export default function Home() {
                         <DecorGlyph variant="lightning" size={28} />
                         <Text style={styles.timeLabelPeak}>{peakWindow24h(useUserStore.getState().peakHour)}</Text>
                       </View>
-                      <Text style={styles.forecastTitlePeak}>High surge</Text>
+                      <Text style={styles.forecastTitlePeak}>{t('home.forecast_high_surge')}</Text>
                       <Text style={styles.forecastBodyPeak}>
-                        Energy dip triggers craving response.
+                        {t('home.forecast_high_surge_hint')}
                       </Text>
                     </View>
                     {(() => {
@@ -396,7 +397,7 @@ export default function Home() {
                     })()}
                   </View>
                   <View style={styles.peakActionRow}>
-                    <Text style={styles.peakAction}>See plan</Text>
+                    <Text style={styles.peakAction}>{t('home.see_plan')}</Text>
                     <Text style={styles.peakArrow}>→</Text>
                   </View>
                 </GlassCard>
@@ -434,9 +435,9 @@ export default function Home() {
                   <View style={styles.forecastRow}>
                     <View style={styles.forecastText}>
                       <Text style={styles.timeLabel}>18:00 — 22:00</Text>
-                      <Text style={styles.forecastTitle}>The exhale</Text>
+                      <Text style={styles.forecastTitle}>{t('home.forecast_exhale')}</Text>
                       <Text style={styles.forecastBody}>
-                        System resets. Prepare for deep restorative sleep.
+                        {t('home.forecast_exhale_hint')}
                       </Text>
                     </View>
                     <DecorGlyph variant="moon" size={56} />
@@ -460,10 +461,10 @@ export default function Home() {
             <GlassCard tint="peach" radius={radius.full} style={styles.checkinStrip}>
               <View style={styles.checkinRow}>
                 <View style={styles.pulseDot} />
-                <Text style={styles.checkinLabel}>{isDayOne ? 'Your first check-in' : 'Daily check-in'}</Text>
+                <Text style={styles.checkinLabel}>{isDayOne ? t('home.first_checkin') : t('home.daily_checkin')}</Text>
               </View>
               <View style={styles.checkinCtaWrap}>
-                <Text style={styles.checkinCta}>Mark now</Text>
+                <Text style={styles.checkinCta}>{t('home.mark_now')}</Text>
                 <Text style={styles.checkinChevron}>→</Text>
               </View>
             </GlassCard>
@@ -475,12 +476,20 @@ export default function Home() {
             copy stays consistent across surfaces. */}
         <Pressable onPress={() => router.push('/(tabs)/curriculum')}>
           <GlassCard tint="lavender" style={styles.lessonCard}>
-            <Text style={styles.lessonLabel}>DAILY INSIGHT</Text>
+            <Text style={styles.lessonLabel}>{t('home.daily_insight')}</Text>
             {(() => {
               const day = Math.max(1, streakDays);
-              // Daily insight is keyed off canonical PHASES so the title +
-              // body match what the user sees on Curriculum/Progress hero.
               const phase = phaseForDay(day);
+              // Identity phase is translated; other phases fall back to English
+              // (only the seeded Day 48 Sarah state is captured in screenshots).
+              if (phase.name === 'Identity') {
+                return (
+                  <>
+                    <Text style={styles.lessonTitle}>{t('home.insight_identity_title', { day })}</Text>
+                    <Text style={styles.lessonBody}>{t('home.insight_identity_body')}</Text>
+                  </>
+                );
+              }
               const insightByPhase: Record<string, { title: string; body: string }> = {
                 Arrival: {
                   title: day === 1
@@ -499,10 +508,6 @@ export default function Home() {
                 Integration: {
                   title: `Day ${day} — new defaults forming`,
                   body: 'Replacement rituals harden into habit. 5 min read.',
-                },
-                Identity: {
-                  title: `Day ${day} — choices stop costing willpower`,
-                  body: 'You no longer ask "should I." You just don\'t. 6 min read.',
                 },
                 Freedom: {
                   title: `Day ${day} — walking free`,
@@ -588,11 +593,13 @@ export default function Home() {
                 <View style={styles.freezeHeaderText}>
                   <Text style={styles.freezeTitle}>
                     {freezesLeft === 0
-                      ? 'No freezes left this week'
-                      : `${freezesLeft} freeze${freezesLeft === 1 ? '' : 's'} left this week`}
+                      ? t('home.freezes_zero')
+                      : freezesLeft === 1
+                        ? t('home.freezes_left_one')
+                        : t('home.freezes_left', { n: freezesLeft })}
                   </Text>
                   <Text style={styles.freezeSubtitle}>
-                    Miss a day? A Freeze saves your streak.
+                    {t('home.freeze_subtitle')}
                   </Text>
                 </View>
               </View>

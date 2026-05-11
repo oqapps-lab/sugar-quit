@@ -7,18 +7,20 @@ import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { STATS } from '../../../constants/copy';
+import { t } from '../../../lib/i18n';
 import { LINKS } from '../../../lib/links';
 import { signOut as supabaseSignOut } from '../../../lib/supabase';
 import { useUserStore } from '../../../stores/useUserStore';
 
-const TRIGGER_LABELS: Record<string, string> = {
-  stress: 'stress',
-  boredom: 'boredom',
-  meals: 'after meals',
-  social: 'social pressure',
-  emotions: 'emotions',
-  night: 'late-night',
-};
+const triggerKey = (k: string) =>
+  ({
+    stress: 'triggers.stress',
+    boredom: 'triggers.boredom',
+    meals: 'triggers.meals',
+    social: 'triggers.social',
+    emotions: 'triggers.emotion',
+    night: 'triggers.night',
+  }[k]);
 
 /**
  * 2.4.1 Profile tab — real profile, distinct from onboarding Result screen.
@@ -39,13 +41,16 @@ export default function Profile() {
 
   const displayName = firstName ?? 'You';
   const initial = displayName[0]?.toUpperCase() ?? 'Y';
-  const planLabel = isPremium ? 'PREMIUM' : 'FREE PLAN';
+  const planLabel = isPremium ? t('profile.premium') : t('profile.free_plan');
   const goalLabel =
-    goal === 'quit' ? 'Quit completely' : goal === 'reduce' ? 'Reduce gradually' : '—';
+    goal === 'quit' ? t('profile.goal_quit') : goal === 'reduce' ? t('profile.goal_reduce') : '—';
   const peakLabel = peakHour ?? '—';
   const triggerLabel =
     triggers.length > 0
-      ? triggers.map((t) => TRIGGER_LABELS[t] ?? t).slice(0, 2).join(', ')
+      ? triggers.map((k) => {
+          const key = triggerKey(k);
+          return key ? t(key) : k;
+        }).slice(0, 2).join(', ')
       : '—';
 
   // Stats — computed from real activity, not hardcoded multipliers.
@@ -66,7 +71,7 @@ export default function Profile() {
   return (
     <AtmosphericGradient theme="dawn">
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-        <Text style={styles.title}>Profile</Text>
+        <Text style={styles.title}>{t('profile.title')}</Text>
       </View>
 
       <ScrollView
@@ -101,24 +106,24 @@ export default function Profile() {
               <View style={styles.stat}>
                 <DecorGlyph variant="flame" size={24} />
                 <Text style={styles.statNumber}>{streakDays}</Text>
-                <Text style={styles.statLabel}>{streakDays === 1 ? 'day clean' : 'days clean'}</Text>
+                <Text style={styles.statLabel}>{t('home.days_clean')}</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.stat}>
                 <DecorGlyph variant="heart" size={24} />
                 <Text style={styles.statNumber}>{cravingsMet}</Text>
-                <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
+                <Text style={styles.statLabel}>{t('progress.cravings_met')}</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.stat}>
                 <DecorGlyph variant="compass" size={24} />
                 <Text style={styles.statNumber}>${dollarsSaved}</Text>
-                <Text style={styles.statLabel}>saved</Text>
+                <Text style={styles.statLabel}>{t('progress.saved')}</Text>
               </View>
             </View>
             <Text style={styles.statsHint}>
-              About {kgSugarAvoided}kg of added sugar avoided.
-              {' '}<Text style={styles.statsHintMuted}>Based on the average 25g a day people add to coffee, snacks, and drinks.</Text>
+              {t('profile.stats_hint', { kg: kgSugarAvoided })}
+              {' '}<Text style={styles.statsHintMuted}>{t('profile.stats_hint_muted')}</Text>
             </Text>
           </GlassCard>
         </Animated.View>
@@ -127,18 +132,18 @@ export default function Profile() {
             inside Plus Jakarta Sans) with DecorGlyph composition icons. */}
         <Animated.View entering={FadeInDown.delay(250).duration(400)}>
           <GlassCard tint="default" style={styles.infoCard}>
-            <Text style={styles.infoLabel}>YOUR CRAVING PROFILE</Text>
+            <Text style={styles.infoLabel}>{t('profile.your_craving_profile')}</Text>
             <View style={styles.infoRow}>
               <DecorGlyph variant="compass" size={22} />
-              <Text style={styles.infoText}>Goal — {goalLabel}</Text>
+              <Text style={styles.infoText}>{t('profile.goal_line', { goal: goalLabel })}</Text>
             </View>
             <View style={styles.infoRow}>
               <DecorGlyph variant="sun" size={22} />
-              <Text style={styles.infoText}>Peak hour — {peakLabel}</Text>
+              <Text style={styles.infoText}>{t('profile.peak_line', { peak: peakLabel })}</Text>
             </View>
             <View style={styles.infoRow}>
               <DecorGlyph variant="lightning" size={22} />
-              <Text style={styles.infoText}>Main trigger — {triggerLabel}</Text>
+              <Text style={styles.infoText}>{t('profile.trigger_line', { triggers: triggerLabel })}</Text>
             </View>
           </GlassCard>
         </Animated.View>
@@ -149,20 +154,20 @@ export default function Profile() {
         <Animated.View entering={FadeInDown.delay(350).duration(400)}>
           <View style={styles.menu}>
             {[
-              { label: 'Edit profile',   iconKind: 'edit' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/edit') },
+              { label: t('profile.edit_profile'),   iconKind: 'edit' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/edit') },
               {
                 // Subscription row is premium-aware:
                 //  - free → upgrade paywall
                 //  - premium → iOS native "Manage subscription" sheet
-                label: isPremium ? 'Manage subscription' : 'Subscription',
+                label: isPremium ? t('profile.manage_subscription') : t('profile.subscription'),
                 iconKind: 'subscription' as MenuIconKind,
                 onPress: isPremium
                   ? () => Linking.openURL(LINKS.manageSubscription)
                   : () => router.push('/(modals)/paywall-contextual'),
               },
-              { label: 'Settings',       iconKind: 'settings' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/settings') },
+              { label: t('profile.settings'),       iconKind: 'settings' as MenuIconKind, onPress: () => router.push('/(tabs)/profile/settings') },
               { label: 'Support',        iconKind: 'support' as MenuIconKind, onPress: () => router.push('/(modals)/support-form') },
-              { label: 'Privacy Policy', iconKind: 'privacy' as MenuIconKind, onPress: () => Linking.openURL(LINKS.privacyPolicy) },
+              { label: t('profile.privacy_policy'), iconKind: 'privacy' as MenuIconKind, onPress: () => Linking.openURL(LINKS.privacyPolicy) },
               {
                 label: 'Sign out',
                 iconKind: 'signout' as MenuIconKind,

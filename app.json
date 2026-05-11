@@ -22,7 +22,10 @@
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "UIBackgroundModes": ["remote-notification", "fetch"]
+        "UIBackgroundModes": [
+          "remote-notification",
+          "fetch"
+        ]
       }
     },
     "android": {
@@ -69,7 +72,8 @@
           "shouldUseStrictMode": false
         }
       ],
-      "./plugins/with-modular-headers-fix.js"
+      "./plugins/with-modular-headers-fix.js",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": false
@@ -79,12 +83,6 @@
       "eas": {
         "projectId": "796339df-6b17-49ad-8f05-960c3a243f22"
       }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/796339df-6b17-49ad-8f05-960c3a243f22"
     }
   }
 }

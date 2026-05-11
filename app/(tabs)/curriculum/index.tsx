@@ -6,6 +6,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { DecorGlyph } from '../../../components/ui/DecorGlyph';
 import { GlassCard } from '../../../components/ui/GlassCard';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
+import { t } from '../../../lib/i18n';
 import { useUserStore } from '../../../stores/useUserStore';
 import { PHASES, phaseForDay } from '../../../lib/phases';
 
@@ -61,16 +62,26 @@ export default function Curriculum() {
         {/* Hero — title on the left, orbit glyph on the right */}
         <Animated.View entering={FadeInUp.duration(400)} style={styles.heroRow}>
           <View style={styles.heroTextCol}>
-            <Text style={styles.eyebrow}>YOUR 90-DAY PATH</Text>
+            <Text style={styles.eyebrow}>{t('curriculum.your_90_path')}</Text>
             <Text style={styles.heroTitle}>
-              Day <Text style={styles.heroAccent}>{currentDay}</Text> of 90
+              {(() => {
+                const tpl = t('curriculum.day_of', { day: '__DAY__', total: 90 });
+                const parts = tpl.split('__DAY__');
+                return (
+                  <>
+                    {parts[0]}
+                    <Text style={styles.heroAccent}>{currentDay}</Text>
+                    {parts[1] ?? ''}
+                  </>
+                );
+              })()}
             </Text>
           </View>
           <DecorGlyph variant="orbit" size={64} />
         </Animated.View>
 
         <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.heroBody}>
-          {`${phaseForDay(currentDay).name} phase. ${phaseForDay(currentDay).heroBody}`}
+          {t('curriculum.identity_phase')}
         </Animated.Text>
 
         {/* Progress bar with bigger label and percentage */}
@@ -79,9 +90,9 @@ export default function Curriculum() {
             <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
           </View>
           <View style={styles.progressLabels}>
-            <Text style={styles.progressLabel}>Day 1</Text>
-            <Text style={styles.progressLabelMid}>{Math.round(progressPct)}% of the way</Text>
-            <Text style={styles.progressLabelEnd}>Day 90</Text>
+            <Text style={styles.progressLabel}>1</Text>
+            <Text style={styles.progressLabelMid}>{Math.round(progressPct)}%</Text>
+            <Text style={styles.progressLabelEnd}>90</Text>
           </View>
         </Animated.View>
 
@@ -100,8 +111,8 @@ export default function Curriculum() {
               <View style={styles.phaseHeader}>
                 <DecorGlyph variant={phase.glyph} size={28} />
                 <View style={styles.phaseHeaderText}>
-                  <Text style={styles.phaseName}>{phase.name}</Text>
-                  <Text style={styles.phaseDays}>{phase.daysLabel}</Text>
+                  <Text style={styles.phaseName}>{t(`curriculum.${({Arrival:'phase_arrival',Detox:'phase_detox',Clarity:'phase_clarity',Integration:'phase_integration',Identity:'phase_identity',Freedom:'phase_freedom'} as any)[phase.name] ?? 'phase_arrival'}`)}</Text>
+                  <Text style={styles.phaseDays}>{t(`curriculum.${({Arrival:'phase_arrival_days',Detox:'phase_detox_days',Clarity:'phase_clarity_days',Integration:'phase_integration_days',Identity:'phase_identity_days',Freedom:'phase_freedom_days'} as any)[phase.name] ?? 'phase_arrival_days'}`)}</Text>
                 </View>
               </View>
 
@@ -116,7 +127,7 @@ export default function Curriculum() {
                         style={styles.lockedText}
                         accessibilityLabel={`${phase.name} phase content coming soon`}
                       >
-                        Coming soon — keep walking
+                        {t('curriculum.locked_coming_soon')}
                       </Text>
                     </View>
                   </GlassCard>
@@ -137,7 +148,7 @@ export default function Curriculum() {
                           <View style={styles.lockShackle} />
                           <View style={styles.lockBody} />
                         </View>
-                        <Text style={styles.lockedText}>Unlocks as you walk</Text>
+                        <Text style={styles.lockedText}>{t('curriculum.locked_unlocks')}</Text>
                       </View>
                     </GlassCard>
                   </Pressable>

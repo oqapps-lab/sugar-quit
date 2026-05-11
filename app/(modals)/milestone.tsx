@@ -8,6 +8,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 import { getMilestoneDueIfAny, useUserStore } from '../../stores/useUserStore';
 
 /**
@@ -96,7 +97,7 @@ export default function Milestone() {
         </Pressable>
 
         <Animated.Text entering={FadeInUp.duration(400)} style={styles.eyebrow}>
-          A MILESTONE
+          {t('milestone.title')}
         </Animated.Text>
 
         {/* Hero number — sits inside a soft coral orb with outer glow + a small
@@ -110,7 +111,7 @@ export default function Milestone() {
         </Animated.View>
 
         <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.milestoneTitle}>
-          {dayShown === 1 ? 'day sugar-free' : 'days sugar-free'}
+          {t('milestone.days_sugar_free')}
         </Animated.Text>
 
         <View style={styles.divider} />
@@ -120,24 +121,24 @@ export default function Milestone() {
           <View style={styles.stat}>
             <DecorGlyph variant="heart" size={22} />
             <Text style={styles.statNumber}>{cravingsMet}</Text>
-            <Text style={styles.statLabel}>{cravingsMet === 1 ? 'craving met' : 'cravings met'}</Text>
+            <Text style={styles.statLabel}>{t('progress.cravings_met')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
             <DecorGlyph variant="compass" size={22} />
             <Text style={styles.statNumber}>${dollarsSaved}</Text>
-            <Text style={styles.statLabel}>saved</Text>
+            <Text style={styles.statLabel}>{t('progress.saved')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.stat}>
             <DecorGlyph variant="snowflake" size={22} />
             <Text style={styles.statNumber}>{kgSugarAvoided}kg</Text>
-            <Text style={styles.statLabel}>sugar avoided</Text>
+            <Text style={styles.statLabel}>{t('progress.sugar_avoided')}</Text>
           </View>
         </Animated.View>
 
         <Animated.Text entering={FadeInDown.delay(450).duration(400)} style={styles.quote}>
-          You placed a large stone today. Each day adds another to the path.
+          {t('milestone.stones_path')}
         </Animated.Text>
       </View>
 
@@ -149,9 +150,9 @@ export default function Milestone() {
           accessibilityRole="button"
           accessibilityLabel="Share this chapter"
         >
-          <Text style={styles.shareLabel}>Share this chapter</Text>
+          <Text style={styles.shareLabel}>{t('common.share_chapter')}</Text>
         </Pressable>
-        <PillCTA label="Back to today" onPress={onClose} />
+        <PillCTA label={t('common.back_to_today')} onPress={onClose} />
       </View>
     </AtmosphericGradient>
   );

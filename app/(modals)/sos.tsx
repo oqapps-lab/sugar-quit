@@ -10,14 +10,15 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 import { requestSosCoachReply, type ChatTurn } from '../../lib/sosChat';
 import { useUserStore } from '../../stores/useUserStore';
 
 type Msg = { role: 'ai' | 'user'; text: string };
 
-const INITIAL_MESSAGES: Msg[] = [
-  { role: 'ai', text: "I feel you reached out. That matters already." },
-  { role: 'ai', text: "What's in your hand right now — or in your mind?" },
+const buildInitialMessages = (): Msg[] => [
+  { role: 'ai', text: t('sos.greeting_1') },
+  { role: 'ai', text: t('sos.greeting_2') },
 ];
 
 const AI_FOLLOWUP: Msg[] = [
@@ -45,7 +46,7 @@ export default function ChatScreen() {
   const logSosOpen = useUserStore((s) => s.logSosOpen);
   const sosFreeLimit = useUserStore((s) => s.sosFreeLimit);
   const isPremium = useUserStore((s) => s.isPremium);
-  const [messages, setMessages] = useState<Msg[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<Msg[]>(buildInitialMessages);
   const [input, setInput] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [blocked, setBlocked] = useState(false);
@@ -150,26 +151,26 @@ export default function ChatScreen() {
             <DecorGlyph variant="flame" size={108} />
           </Animated.View>
           <Animated.Text entering={FadeInUp.delay(120).duration(400)} style={styles.blockedEyebrow}>
-            FREE LIMIT REACHED
+            {t('sos.free_limit_reached')}
           </Animated.Text>
           <Animated.Text entering={FadeInUp.delay(180).duration(400)} style={styles.blockedTitle}>
-            You've used all {sosFreeLimit} SOS sessions this month.
+            {t('sos.free_limit_headline', { limit: sosFreeLimit })}
           </Animated.Text>
           <Animated.Text entering={FadeInUp.delay(240).duration(400)} style={styles.blockedBody}>
-            Sugar Quit Premium gives you unlimited conversations — for the moments that matter most.
+            {t('sos.free_limit_body')}
           </Animated.Text>
           <Animated.View entering={FadeInDown.delay(320).duration(400)} style={styles.blockedActions}>
-            <PillCTA label="Try Premium free" onPress={() => router.replace('/(modals)/paywall-contextual')} />
+            <PillCTA label={t('sos.try_premium')} onPress={() => router.replace('/(modals)/paywall-contextual')} />
             <Pressable
               onPress={() => safeDismiss()}
               style={styles.blockedSkip}
               accessibilityRole="button"
               accessibilityLabel="Not now, close SOS limit screen"
             >
-              <Text style={styles.blockedSkipText}>Not now</Text>
+              <Text style={styles.blockedSkipText}>{t('sos.not_now')}</Text>
             </Pressable>
           </Animated.View>
-          <Text style={styles.blockedTier}>Current plan: {tier}</Text>
+          <Text style={styles.blockedTier}>{t('sos.current_plan', { tier })}</Text>
         </View>
       </AtmosphericGradient>
     );
@@ -198,15 +199,15 @@ export default function ChatScreen() {
           </Pressable>
           <View style={styles.headerCenter}>
             <View style={styles.headerDot} />
-            <Text style={styles.headerLabel}>COACH IS HERE</Text>
+            <Text style={styles.headerLabel}>{t('sos.coach_here')}</Text>
           </View>
           <Pressable onPress={onEnd} style={styles.endBtn} accessibilityRole="button" accessibilityLabel="End SOS — go to reflection">
-            <Text style={styles.endLabel}>End</Text>
+            <Text style={styles.endLabel}>{t('sos.end')}</Text>
           </Pressable>
         </Animated.View>
 
         {/* Disclaimer */}
-        <Text style={styles.disclaimer}>A companion, not a medical advisor.</Text>
+        <Text style={styles.disclaimer}>{t('sos.coach_disclaimer')}</Text>
 
         {/* Messages */}
         <ScrollView
@@ -260,7 +261,7 @@ export default function ChatScreen() {
             <TextInput
               value={input}
               onChangeText={setInput}
-              placeholder="tell me what you're feeling…"
+              placeholder={t('sos.placeholder')}
               placeholderTextColor={colors.outline}
               selectionColor={colors.primary}
               cursorColor={colors.primary}

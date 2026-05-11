@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { colors, fonts, radius, shadows, spacing } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 
 /**
  * Main bottom-tabs layout. 4 tabs: home / curriculum / progress / profile.
@@ -34,10 +35,10 @@ export default function TabsLayout() {
 }
 
 const TABS = [
-  { key: 'home',       glyph: '◉', label: 'Home',     href: '/(tabs)/home'       as const },
-  { key: 'curriculum', glyph: '≡', label: 'Path',     href: '/(tabs)/curriculum' as const },
-  { key: 'progress',   glyph: '≋', label: 'Progress', href: '/(tabs)/progress'   as const },
-  { key: 'profile',    glyph: '◯', label: 'Profile',  href: '/(tabs)/profile'    as const },
+  { key: 'home',       glyph: '◉', labelKey: 'tabs.home',     href: '/(tabs)/home'       as const },
+  { key: 'curriculum', glyph: '≡', labelKey: 'tabs.path',     href: '/(tabs)/curriculum' as const },
+  { key: 'progress',   glyph: '≋', labelKey: 'tabs.progress', href: '/(tabs)/progress'   as const },
+  { key: 'profile',    glyph: '◯', labelKey: 'tabs.profile',  href: '/(tabs)/profile'    as const },
 ];
 
 function CustomTabBar() {
@@ -102,23 +103,24 @@ function CustomTabBar() {
       </View>
 
       <View style={styles.inner}>
-        {TABS.map((t) => {
-          const active = t.key === activeKey;
+        {TABS.map((tab) => {
+          const active = tab.key === activeKey;
+          const label = t(tab.labelKey);
           return (
             <Pressable
-              key={t.key}
-              onPress={() => go(t.href)}
+              key={tab.key}
+              onPress={() => go(tab.href)}
               hitSlop={8}
               accessibilityRole="tab"
               accessibilityState={{ selected: active }}
-              accessibilityLabel={t.label}
+              accessibilityLabel={label}
               style={({ pressed }) => [
                 styles.tab,
                 { transform: [{ scale: pressed ? 0.94 : 1 }] },
               ]}
             >
-              <Text style={[styles.glyph, active && styles.glyphActive]}>{t.glyph}</Text>
-              <Text style={[styles.label, active && styles.labelActive]}>{t.label}</Text>
+              <Text style={[styles.glyph, active && styles.glyphActive]}>{tab.glyph}</Text>
+              <Text style={[styles.label, active && styles.labelActive]}>{label}</Text>
             </Pressable>
           );
         })}
