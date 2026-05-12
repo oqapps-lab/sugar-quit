@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit 進階版提供無限對話 — 在最關鍵的時刻。",
     "try_premium": "免費試用進階版",
     "not_now": "現在不要",
-    "current_plan": "目前方案:{{tier}}"
+    "current_plan": "目前方案:{{tier}}",
+    "followup_1": "典型的皮質醇下滑加上會後鬆懈。不是弱。",
+    "followup_2": "在糖之前 — 試試其中一個兩分鐘?",
+    "suggestion_almonds": "杏仁 + 一塊 85% 黑巧克力",
+    "suggestion_walk": "站起來走三分鐘",
+    "suggestion_water": "一杯加檸檬的水",
+    "user_msg_stress_at_work": "工作壓力。現在想吃甜的。"
   },
   "curriculum": {
     "your_90_path": "你的 90 天之路",

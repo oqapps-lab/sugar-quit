@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quitプレミアムなら、大切な瞬間に無制限の会話。",
     "try_premium": "プレミアム無料で試す",
     "not_now": "今はやめておく",
-    "current_plan": "現在のプラン:{{tier}}"
+    "current_plan": "現在のプラン:{{tier}}",
+    "followup_1": "これは典型的なコルチゾール低下とミーティング後の解放。弱さじゃない。",
+    "followup_2": "砂糖の前に — どれか2分だけ試してみる?",
+    "suggestion_almonds": "アーモンド + 85%ダークチョコ一片",
+    "suggestion_walk": "立ち上がって3分歩く",
+    "suggestion_water": "レモンを浮かべた水",
+    "user_msg_stress_at_work": "仕事のストレス。今すぐ甘いものが欲しい。"
   },
   "curriculum": {
     "your_90_path": "あなたの90日の道",

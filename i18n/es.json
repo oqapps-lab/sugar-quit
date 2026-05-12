@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium te da conversaciones ilimitadas — para los momentos clave.",
     "try_premium": "Probar Premium gratis",
     "not_now": "Ahora no",
-    "current_plan": "Plan actual: {{tier}}"
+    "current_plan": "Plan actual: {{tier}}",
+    "followup_1": "Caída clásica de cortisol más liberación tras la reunión. No es debilidad.",
+    "followup_2": "Antes del azúcar — ¿probarías uno de estos por dos minutos?",
+    "suggestion_almonds": "Almendras + un cuadrado de chocolate 85 %",
+    "suggestion_walk": "Levantarte y caminar tres minutos",
+    "suggestion_water": "Un vaso de agua con limón",
+    "user_msg_stress_at_work": "Estrés en el trabajo. Quiero algo dulce ya."
   },
   "curriculum": {
     "your_90_path": "TU CAMINO DE 90 DÍAS",

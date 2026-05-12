@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium ti dà conversazioni illimitate — per i momenti che contano.",
     "try_premium": "Prova Premium gratis",
     "not_now": "Non ora",
-    "current_plan": "Piano attuale: {{tier}}"
+    "current_plan": "Piano attuale: {{tier}}",
+    "followup_1": "Calo classico del cortisolo più rilascio post-riunione. Non è debolezza.",
+    "followup_2": "Prima dello zucchero — proveresti uno di questi per due minuti?",
+    "suggestion_almonds": "Mandorle + un quadretto di cioccolato 85 %",
+    "suggestion_walk": "Alzati e cammina tre minuti",
+    "suggestion_water": "Un bicchiere d'acqua con limone",
+    "user_msg_stress_at_work": "Stress al lavoro. Voglio dolce, adesso."
   },
   "curriculum": {
     "your_90_path": "IL TUO CAMMINO DI 90 GIORNI",

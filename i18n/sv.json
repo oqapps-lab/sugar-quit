@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium ger dig obegränsade samtal — för stunderna som spelar roll.",
     "try_premium": "Prova Premium gratis",
     "not_now": "Inte nu",
-    "current_plan": "Nuvarande plan: {{tier}}"
+    "current_plan": "Nuvarande plan: {{tier}}",
+    "followup_1": "Klassisk kortisol-dipp plus avslappning efter möte. Inte svaghet.",
+    "followup_2": "Innan sockret — testar du nåt av dessa i två minuter?",
+    "suggestion_almonds": "Mandel + en bit 85 % mörk choklad",
+    "suggestion_walk": "Res dig och gå i tre minuter",
+    "suggestion_water": "Ett glas vatten med citron",
+    "user_msg_stress_at_work": "Stress på jobbet. Vill ha nåt sött nu."
   },
   "curriculum": {
     "your_90_path": "DIN 90-DAGARS RESA",

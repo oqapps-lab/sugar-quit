@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium gives you unlimited conversations — for the moments that matter most.",
     "try_premium": "Try Premium free",
     "not_now": "Not now",
-    "current_plan": "Current plan: {{tier}}"
+    "current_plan": "Current plan: {{tier}}",
+    "followup_1": "This is textbook cortisol dip plus post-meeting release. Not weakness.",
+    "followup_2": "Before the sugar — would you try one of these for two minutes?",
+    "suggestion_almonds": "Almonds + one square of 85% dark",
+    "suggestion_walk": "Stand up and walk for three minutes",
+    "suggestion_water": "A glass of water with lemon",
+    "user_msg_stress_at_work": "Stress at work. Want sweet now."
   },
   "curriculum": {
     "your_90_path": "YOUR 90-DAY PATH",

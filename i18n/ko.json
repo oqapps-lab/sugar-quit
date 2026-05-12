@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit 프리미엄은 중요한 순간을 위한 무제한 대화를 제공해요.",
     "try_premium": "프리미엄 무료 체험",
     "not_now": "지금은 안 해요",
-    "current_plan": "현재 플랜: {{tier}}"
+    "current_plan": "현재 플랜: {{tier}}",
+    "followup_1": "전형적인 코르티솔 저하 + 회의 후 이완. 약한 게 아니에요.",
+    "followup_2": "설탕 전에 — 2분 동안 이 중 하나 해볼래요?",
+    "suggestion_almonds": "아몬드 + 85% 다크 초콜릿 한 조각",
+    "suggestion_walk": "일어나서 3분 걷기",
+    "suggestion_water": "레몬을 띄운 물 한 잔",
+    "user_msg_stress_at_work": "회사에서 스트레스. 지금 단 거 먹고 싶어요."
   },
   "curriculum": {
     "your_90_path": "당신의 90일 여정",

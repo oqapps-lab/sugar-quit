@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium gibt dir unbegrenzte Gespräche — für die Momente, die zählen.",
     "try_premium": "Premium gratis testen",
     "not_now": "Nicht jetzt",
-    "current_plan": "Aktueller Tarif: {{tier}}"
+    "current_plan": "Aktueller Tarif: {{tier}}",
+    "followup_1": "Klassischer Cortisol-Abfall plus Meeting-Entspannung. Keine Schwäche.",
+    "followup_2": "Vor dem Zucker — würdest du zwei Minuten eins davon probieren?",
+    "suggestion_almonds": "Mandeln + ein Stück 85 % Schokolade",
+    "suggestion_walk": "Drei Minuten aufstehen und gehen",
+    "suggestion_water": "Ein Glas Wasser mit Zitrone",
+    "user_msg_stress_at_work": "Stress bei der Arbeit. Will jetzt Süßes."
   },
   "curriculum": {
     "your_90_path": "DEIN 90-TAGE-WEG",

@@ -71,7 +71,13 @@
     "free_limit_body": "Sugar Quit Premium geeft onbeperkte gesprekken — voor de momenten die ertoe doen.",
     "try_premium": "Premium gratis proberen",
     "not_now": "Niet nu",
-    "current_plan": "Huidig abonnement: {{tier}}"
+    "current_plan": "Huidig abonnement: {{tier}}",
+    "followup_1": "Klassieke cortisol-dip plus post-meeting ontspanning. Geen zwakte.",
+    "followup_2": "Vóór de suiker — probeer je twee minuten een hiervan?",
+    "suggestion_almonds": "Amandelen + één blokje 85 % pure choco",
+    "suggestion_walk": "Sta op en loop drie minuten",
+    "suggestion_water": "Een glas water met citroen",
+    "user_msg_stress_at_work": "Stress op werk. Nu zin in zoet."
   },
   "curriculum": {
     "your_90_path": "JOUW 90-DAGENPAD",

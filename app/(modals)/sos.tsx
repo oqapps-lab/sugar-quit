@@ -16,20 +16,31 @@ import { useUserStore } from '../../stores/useUserStore';
 
 type Msg = { role: 'ai' | 'user'; text: string };
 
-const buildInitialMessages = (): Msg[] => [
+// Set true to pre-seed the SOS conversation for App Store screenshots
+// (greetings + user msg + AI followup, with suggestions visible).
+// Skips network calls and the SOS-credit-counter side effects.
+const SCREENSHOT_MODE = true;
+
+const buildInitialMessages = (): Msg[] => SCREENSHOT_MODE ? [
+  { role: 'ai', text: t('sos.greeting_1') },
+  { role: 'ai', text: t('sos.greeting_2') },
+  { role: 'user', text: t('sos.user_msg_stress_at_work') },
+  { role: 'ai', text: t('sos.followup_1') },
+  { role: 'ai', text: t('sos.followup_2') },
+] : [
   { role: 'ai', text: t('sos.greeting_1') },
   { role: 'ai', text: t('sos.greeting_2') },
 ];
 
-const AI_FOLLOWUP: Msg[] = [
-  { role: 'ai', text: "This is textbook cortisol dip plus post-meeting release. Not weakness." },
-  { role: 'ai', text: "Before the sugar — would you try one of these for two minutes?" },
+const buildAiFollowup = (): Msg[] => [
+  { role: 'ai', text: t('sos.followup_1') },
+  { role: 'ai', text: t('sos.followup_2') },
 ];
 
-const SUGGESTIONS = [
-  'Almonds + one square of 85% dark',
-  'Stand up and walk for three minutes',
-  'A glass of water with lemon',
+const buildSuggestions = (): string[] => [
+  t('sos.suggestion_almonds'),
+  t('sos.suggestion_walk'),
+  t('sos.suggestion_water'),
 ];
 
 // Offline-fallback: shown when the user has no connectivity. Pure-content tips
@@ -48,7 +59,7 @@ export default function ChatScreen() {
   const isPremium = useUserStore((s) => s.isPremium);
   const [messages, setMessages] = useState<Msg[]>(buildInitialMessages);
   const [input, setInput] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(SCREENSHOT_MODE);
   const [blocked, setBlocked] = useState(false);
   const [showOffline, setShowOffline] = useState(false);
   const [aiTyping, setAiTyping] = useState(false);
@@ -58,6 +69,7 @@ export default function ChatScreen() {
   // On mount: spend one SOS credit (or surface limit-reached UI). Heavy haptic
   // per UX-SPEC §4.2 C1 — SOS is the most urgent surface in the app.
   useEffect(() => {
+    if (SCREENSHOT_MODE) return; // skip side effects when capturing screenshots
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     const result = logSosOpen();
     if (!result.allowed) {
@@ -115,7 +127,7 @@ export default function ChatScreen() {
     // Fallback: edge function unavailable (no key set, offline, etc.) —
     // serve the canned coaching turn so the user still gets *something*
     // useful while the urge passes.
-    setMessages((m) => [...m, ...AI_FOLLOWUP]);
+    setMessages((m) => [...m, ...buildAiFollowup()]);
     setShowSuggestions(true);
   };
 
@@ -233,7 +245,7 @@ export default function ChatScreen() {
 
           {showSuggestions && (
             <View style={styles.suggestionsBlock}>
-              {SUGGESTIONS.map((s, i) => (
+              {buildSuggestions().map((s, i) => (
                 <View key={i} style={styles.suggestionRow}>
                   <View style={styles.suggestionDot} />
                   <Text style={styles.suggestionText}>{s}</Text>
