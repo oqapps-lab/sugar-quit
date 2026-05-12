@@ -34,6 +34,11 @@ type Props = {
   size?: number;
 };
 
+// Freeze animations and deterministic petal layout for App Store screenshots.
+// With animation running, one of the orbiting petals could land beside the
+// streak number at capture time, looking like a stray notification dot.
+const SCREENSHOT_MODE = true;
+
 // Memoized — re-renders only when `count` or `size` actually change.
 // Without this, parent Home.tsx re-renders on any Zustand selector
 // change (cravings, sosUsedThisMonth, freezesAvail, etc.) caused the
@@ -50,7 +55,7 @@ function StreakOrbInner({ count, size = 240 }: Props) {
   const petalRot = useSharedValue(0);
 
   useEffect(() => {
-    if (rm) return;
+    if (rm || SCREENSHOT_MODE) return;
     rotation.value = withRepeat(
       withTiming(360, { duration: 22000, easing: Easing.linear }),
       -1,
@@ -103,10 +108,12 @@ function StreakOrbInner({ count, size = 240 }: Props) {
   const discSize = S * 0.56;
   const glowSize = S * 0.75;
 
-  // Petal positions (3 small circles evenly spaced around the orb)
+  // Petal positions (3 small circles evenly spaced around the orb).
+  // Anchor shifted to 12/4/8 o'clock so the right-axis (3 o'clock) is clear
+  // of the streak digits — avoids the "stray dot beside 48" look in screenshots.
   const petalTrack = S * 0.49; // orbit radius
   const petalSize = S * 0.055;
-  const petalAngles = [0, 120, 240];
+  const petalAngles = [90, 210, 330];
 
   return (
     <View style={[styles.wrap, { width: S, height: S }]}>
