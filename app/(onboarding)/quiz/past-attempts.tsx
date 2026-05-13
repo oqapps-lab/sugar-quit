@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore, type PastAttempts } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.10 Quiz: Past Attempts — 4 options, single-select.
@@ -20,10 +21,10 @@ export default function QuizPastAttempts() {
   useFocusEffect(useCallback(() => { setSelected(stored); }, [stored]));
 
   const options: { key: PastAttempts; title: string; body: string }[] = [
-    { key: 'first',  title: 'This is my first real try',  body: 'Starting fresh.' },
-    { key: 'short',  title: 'A few times, short',         body: 'Days, not weeks.' },
-    { key: 'longer', title: 'Once or twice, longer',      body: 'Weeks, even months.' },
-    { key: 'many',   title: 'Many times',                 body: 'Cycled in and out.' },
+    { key: 'first',  title: t('onboarding.quiz_past.opt_first_title'),  body: t('onboarding.quiz_past.opt_first_body') },
+    { key: 'short',  title: t('onboarding.quiz_past.opt_short_title'),         body: t('onboarding.quiz_past.opt_short_body') },
+    { key: 'longer', title: t('onboarding.quiz_past.opt_longer_title'),      body: t('onboarding.quiz_past.opt_longer_body') },
+    { key: 'many',   title: t('onboarding.quiz_past.opt_many_title'),                 body: t('onboarding.quiz_past.opt_many_body') },
   ];
 
   const pick = (key: PastAttempts) => {
@@ -43,14 +44,14 @@ export default function QuizPastAttempts() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 10 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '10' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR HISTORY</Text>
-        <Text style={styles.hero}>Have you tried to quit before?</Text>
-        <Text style={styles.sub}>Everything you've tried is information.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_past.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_past.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_past.sub')}</Text>
 
         <View style={styles.optionsCol}>
           {options.map((o) => {
@@ -78,7 +79,7 @@ export default function QuizPastAttempts() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={handleContinue}
           disabled={!selected}

@@ -7,6 +7,7 @@ import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 
 /**
  * Welcome — first screen of onboarding flow (screen 1.1 from SCREEN-MAP).
@@ -27,7 +28,7 @@ export default function Welcome() {
         {/* Match style of all other quiz steps — text-only indicator.
             Time estimate "~3 MIN" lives ONLY here (first screen) as a
             promise to users that onboarding is short. */}
-        <Text style={styles.progressLabel}>STEP 1 OF 15 · ~3 MIN</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.welcome.step_label')}</Text>
       </View>
 
       <View style={styles.body}>
@@ -41,21 +42,14 @@ export default function Welcome() {
           </View>
         </Animated.View>
 
-        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-          SUGAR QUIT
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.heroTitle} numberOfLines={4}>
-          Meet the quiet coach for your cravings
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.heroSub}>
-          Three minutes, and you'll have a 90-day plan for your body, your triggers,
-          and the moment your hand reaches for sugar.
-        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>{t('onboarding.welcome.eyebrow')}</Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.heroTitle} numberOfLines={4}>{t('onboarding.welcome.title')}</Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.heroSub}>{t('onboarding.welcome.sub')}</Animated.Text>
       </View>
 
       <Animated.View entering={FadeInDown.delay(300).duration(400)} style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Begin"
+          label={t('onboarding.welcome.cta')}
           variant="onboarding"
           onPress={() => router.push('/(onboarding)/quiz/goal')}
           style={styles.cta}
@@ -64,10 +58,10 @@ export default function Welcome() {
           onPress={() => router.push('/(onboarding)/auth')}
           style={styles.signInRow}
           accessibilityRole="button"
-          accessibilityLabel="Sign in to existing account"
+          accessibilityLabel={t('onboarding.welcome.a11y_sign_in')}
         >
           <Text style={styles.signInText}>
-            Already walking? <Text style={styles.signInLink}>Sign in</Text>
+            {t('onboarding.welcome.sign_in_prompt')} <Text style={styles.signInLink}>{t('onboarding.welcome.sign_in_link')}</Text>
           </Text>
         </Pressable>
       </Animated.View>

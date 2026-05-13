@@ -197,5 +197,111 @@
     "path": "Stig",
     "progress": "Framsteg",
     "profile": "Profil"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "STEG 1 AV 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Möt den tysta coachen för ditt sug",
+      "sub": "Tre minuter, så har du en 90-dagarsplan för din kropp, dina triggers och stunden då handen söker sockret.",
+      "cta": "Börja",
+      "sign_in_prompt": "Redan på vägen?",
+      "sign_in_link": "Logga in",
+      "a11y_sign_in": "Logga in på befintligt konto"
+    },
+    "quiz": {
+      "step_of_15": "STEG {{n}} AV 15",
+      "a11y_back": "Tillbaka",
+      "a11y_skip_name": "Hoppa över namn"
+    },
+    "quiz_goal": {
+      "eyebrow": "DITT MÅL",
+      "hero": "Vilken form har ditt mål?",
+      "sub": "Välj det som passar. Du kan ändra senare.",
+      "opt_quit_title": "Sluta helt",
+      "opt_quit_body": "Noll tillsatt socker, av mina skäl.",
+      "opt_reduce_title": "Minska gradvis",
+      "opt_reduce_body": "Mindre socker, oftare, bättre humör."
+    },
+    "quiz_motivation": {
+      "eyebrow": "DIN MOTIVATION",
+      "hero": "Vad drar dig hit?",
+      "sub": "Välj allt som känns sant. Flera möjligt.",
+      "opt_health": "Hälsan ber mig",
+      "opt_energy": "Jag vill ha klarare energi",
+      "opt_body": "Min kropp känns annorlunda",
+      "opt_cost": "Det kostar för mycket",
+      "opt_charge": "Jag vill bara känna mig i kontroll"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "DITT TILLVÄGAGÅNGSSÄTT",
+      "hero": "Hur vill du röra dig?",
+      "sub": "Båda funkar. Inget fel svar.",
+      "opt_quit_title": "Sluta tvärt",
+      "opt_quit_body": "Inget tillsatt socker från dag ett. Jag vill ha reseten.",
+      "opt_reduce_title": "Minska sakta",
+      "opt_reduce_body": "Trappa ner vecka för vecka. Bygg vanan."
+    },
+    "quiz_peak": {
+      "eyebrow": "TOPPFÖNSTER",
+      "hero": "När slår det hårdast?",
+      "sub": "Fönstret vi bevakar åt dig.",
+      "chip_morning": "MORGON",
+      "chip_afternoon": "EFTERMIDDAG",
+      "chip_evening": "KVÄLL",
+      "chip_night": "NATT",
+      "time_eyebrow": "TYPISK TID",
+      "time_hint": "Vi bevakar timmen kring detta"
+    },
+    "quiz_triggers": {
+      "eyebrow": "DINA TRIGGERS",
+      "hero": "Vad brukar utlösa det?",
+      "sub": "Välj det som känns rätt."
+    },
+    "quiz_consumption": {
+      "eyebrow": "DITT INTAG",
+      "hero": "Hur mycket socker rinner genom din vecka?",
+      "sub": "Var ärlig. Bara du ser detta.",
+      "level_little": "Lite",
+      "level_little_hint": "Märks knappt de flesta dagar",
+      "level_moderate": "Måttligt",
+      "level_moderate_hint": "Dyker upp, inte överväldigande",
+      "level_alot": "Mycket",
+      "level_alot_hint": "Regelbundna högljudda besök",
+      "level_great": "Mycket mycket",
+      "level_great_hint": "De flesta eftermiddagar, de flesta dagar",
+      "level_runs": "Det styr min dag",
+      "level_runs_hint": "Sockret planerar timmarna"
+    },
+    "quiz_past": {
+      "eyebrow": "DIN HISTORIA",
+      "hero": "Har du försökt sluta tidigare?",
+      "sub": "Allt du provat är information.",
+      "opt_first_title": "Det här är mitt första riktiga försök",
+      "opt_first_body": "Börjar om.",
+      "opt_short_title": "Några gånger, kort",
+      "opt_short_body": "Dagar, inte veckor.",
+      "opt_longer_title": "En eller två gånger, längre",
+      "opt_longer_body": "Veckor, till och med månader.",
+      "opt_many_title": "Många gånger",
+      "opt_many_body": "In och ut igen."
+    },
+    "quiz_work": {
+      "eyebrow": "DINA DAGAR",
+      "hero": "Var spenderar du dina dagar?",
+      "sub": "Kontexten formar suget vi bevakar.",
+      "opt_office": "Kontor",
+      "opt_home": "Hemma",
+      "opt_feet": "På fötter",
+      "opt_mobile": "På språng"
+    },
+    "quiz_name": {
+      "eyebrow": "EN SISTA SAK",
+      "hero": "Vad ska vi kalla dig?",
+      "sub": "Valfritt. Vi håller det mjukt och personligt.",
+      "placeholder": "Ditt förnamn",
+      "a11y_first_name": "Ditt förnamn",
+      "a11y_hint": "Valfritt. Tryck Klar eller Fortsätt."
+    }
   }
 }

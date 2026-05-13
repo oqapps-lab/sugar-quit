@@ -197,5 +197,111 @@
     "path": "Pfad",
     "progress": "Fortschritt",
     "profile": "Profil"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "SCHRITT 1 VON 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Lerne den stillen Coach für deinen Heißhunger kennen",
+      "sub": "Drei Minuten, und du hast einen 90-Tage-Plan für deinen Körper, deine Auslöser und den Moment, in dem deine Hand nach Zucker greift.",
+      "cta": "Beginnen",
+      "sign_in_prompt": "Schon dabei?",
+      "sign_in_link": "Anmelden",
+      "a11y_sign_in": "In bestehendes Konto einloggen"
+    },
+    "quiz": {
+      "step_of_15": "SCHRITT {{n}} VON 15",
+      "a11y_back": "Zurück",
+      "a11y_skip_name": "Name überspringen"
+    },
+    "quiz_goal": {
+      "eyebrow": "DEIN ZIEL",
+      "hero": "Wie sieht dein Ziel aus?",
+      "sub": "Wähle, was passt. Du kannst es später ändern.",
+      "opt_quit_title": "Ganz aufhören",
+      "opt_quit_body": "Null zugesetzter Zucker, aus meinen Gründen.",
+      "opt_reduce_title": "Schrittweise reduzieren",
+      "opt_reduce_body": "Weniger Zucker, öfter, bessere Stimmung."
+    },
+    "quiz_motivation": {
+      "eyebrow": "DEINE MOTIVATION",
+      "hero": "Was zieht dich hierher?",
+      "sub": "Wähle alles, was sich wahr anfühlt. Mehrere möglich.",
+      "opt_health": "Meine Gesundheit verlangt es",
+      "opt_energy": "Ich will klarere Energie",
+      "opt_body": "Mein Körper fühlt sich anders an",
+      "opt_cost": "Es kostet zu viel",
+      "opt_charge": "Ich will einfach das Steuer haben"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "DEIN ANSATZ",
+      "hero": "Wie willst du dich bewegen?",
+      "sub": "Beides funktioniert. Es gibt keine falsche Antwort.",
+      "opt_quit_title": "Sofort und ganz aufhören",
+      "opt_quit_body": "Ab Tag eins kein zugesetzter Zucker. Ich will den Reset.",
+      "opt_reduce_title": "Langsam reduzieren",
+      "opt_reduce_body": "Woche für Woche runter. Gewohnheit aufbauen."
+    },
+    "quiz_peak": {
+      "eyebrow": "SPITZEN-FENSTER",
+      "hero": "Wann trifft es am stärksten?",
+      "sub": "Das Fenster, das wir für dich beobachten.",
+      "chip_morning": "MORGEN",
+      "chip_afternoon": "NACHMITTAG",
+      "chip_evening": "ABEND",
+      "chip_night": "NACHT",
+      "time_eyebrow": "TYPISCHE ZEIT",
+      "time_hint": "Wir achten auf die Stunde rund um diese Zeit"
+    },
+    "quiz_triggers": {
+      "eyebrow": "DEINE AUSLÖSER",
+      "hero": "Was löst es meistens aus?",
+      "sub": "Wähle, was sich wahr anfühlt."
+    },
+    "quiz_consumption": {
+      "eyebrow": "DEIN KONSUM",
+      "hero": "Wie viel Zucker zieht durch deine Woche?",
+      "sub": "Sei ehrlich. Nur du siehst das.",
+      "level_little": "Ein wenig",
+      "level_little_hint": "Fällt an den meisten Tagen kaum auf",
+      "level_moderate": "Mäßig",
+      "level_moderate_hint": "Zeigt sich, aber nicht überwältigend",
+      "level_alot": "Viel",
+      "level_alot_hint": "Regelmäßige laute Besuche",
+      "level_great": "Sehr viel",
+      "level_great_hint": "Die meisten Nachmittage, die meisten Tage",
+      "level_runs": "Es bestimmt meinen Tag",
+      "level_runs_hint": "Der Zucker plant die Stunden"
+    },
+    "quiz_past": {
+      "eyebrow": "DEINE GESCHICHTE",
+      "hero": "Hast du schon versucht aufzuhören?",
+      "sub": "Alles, was du versucht hast, ist Information.",
+      "opt_first_title": "Das ist mein erster echter Versuch",
+      "opt_first_body": "Von vorne anfangen.",
+      "opt_short_title": "Paar Mal, kurz",
+      "opt_short_body": "Tage, keine Wochen.",
+      "opt_longer_title": "Ein- oder zweimal, länger",
+      "opt_longer_body": "Wochen, sogar Monate.",
+      "opt_many_title": "Viele Male",
+      "opt_many_body": "Immer wieder rein und raus."
+    },
+    "quiz_work": {
+      "eyebrow": "DEINE TAGE",
+      "hero": "Wo verbringst du deine Tage?",
+      "sub": "Der Kontext formt den Heißhunger, auf den wir achten.",
+      "opt_office": "Büro",
+      "opt_home": "Zu Hause",
+      "opt_feet": "Auf den Beinen",
+      "opt_mobile": "Unterwegs"
+    },
+    "quiz_name": {
+      "eyebrow": "NOCH EINE SACHE",
+      "hero": "Wie sollen wir dich nennen?",
+      "sub": "Optional. Wir bleiben sanft und persönlich.",
+      "placeholder": "Dein Vorname",
+      "a11y_first_name": "Dein Vorname",
+      "a11y_hint": "Optional. Drücke Fertig oder Weiter zum Fortfahren."
+    }
   }
 }

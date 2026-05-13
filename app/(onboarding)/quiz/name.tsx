@@ -16,6 +16,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.12 Quiz: Name — optional text input + Skip + Continue.
@@ -52,25 +53,25 @@ export default function QuizName() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
             <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
-              <Pressable onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back">
+              <Pressable onPress={() => router.back()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel={t('onboarding.quiz.a11y_back')}>
                 <Text style={styles.back}>←</Text>
               </Pressable>
-              <Text style={styles.progressLabel}>STEP 12 OF 15</Text>
-              <Pressable onPress={goNext} style={styles.skipBtn} accessibilityRole="button" accessibilityLabel="Skip name">
-                <Text style={styles.skipLabel}>Skip</Text>
+              <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '12' })}</Text>
+              <Pressable onPress={goNext} style={styles.skipBtn} accessibilityRole="button" accessibilityLabel={t('onboarding.quiz.a11y_skip_name')}>
+                <Text style={styles.skipLabel}>{t('common.skip')}</Text>
               </Pressable>
             </View>
 
             <View style={styles.body}>
-              <Text style={styles.eyebrow}>ONE LAST THING</Text>
-              <Text style={styles.hero}>What should we call you?</Text>
-              <Text style={styles.sub}>Optional. We'll keep it soft and personal.</Text>
+              <Text style={styles.eyebrow}>{t('onboarding.quiz_name.eyebrow')}</Text>
+              <Text style={styles.hero}>{t('onboarding.quiz_name.hero')}</Text>
+              <Text style={styles.sub}>{t('onboarding.quiz_name.sub')}</Text>
 
               <View style={styles.inputWrap}>
                 <TextInput
                   value={name}
                   onChangeText={setName}
-                  placeholder="Your first name"
+                  placeholder={t('onboarding.quiz_name.placeholder')}
                   placeholderTextColor={colors.outline}
                   selectionColor={colors.primary}
                   cursorColor={colors.primary}
@@ -80,14 +81,14 @@ export default function QuizName() {
                   returnKeyType="done"
                   onSubmitEditing={goNext}
                   textContentType="givenName"
-                  accessibilityLabel="Your first name"
-                  accessibilityHint="Optional. Press Done or Continue to proceed."
+                  accessibilityLabel={t('onboarding.quiz_name.a11y_first_name')}
+                  accessibilityHint={t('onboarding.quiz_name.a11y_hint')}
                 />
               </View>
             </View>
 
             <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-              <PillCTA label="Continue" variant="onboarding" onPress={goNext} />
+              <PillCTA label={t('common.continue')} variant="onboarding" onPress={goNext} />
             </View>
           </View>
         </TouchableWithoutFeedback>

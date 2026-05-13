@@ -197,5 +197,111 @@
     "path": "경로",
     "progress": "진행",
     "profile": "프로필"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "15단계 중 1 · 약 3분",
+      "eyebrow": "SUGAR QUIT",
+      "title": "욕구를 위한 조용한 코치를 만나요",
+      "sub": "3분이면 당신의 몸, 트리거, 손이 설탕으로 가는 그 순간을 위한 90일 플랜이 완성돼요.",
+      "cta": "시작하기",
+      "sign_in_prompt": "이미 걷고 있나요?",
+      "sign_in_link": "로그인",
+      "a11y_sign_in": "기존 계정으로 로그인"
+    },
+    "quiz": {
+      "step_of_15": "15단계 중 {{n}}",
+      "a11y_back": "뒤로",
+      "a11y_skip_name": "이름 건너뛰기"
+    },
+    "quiz_goal": {
+      "eyebrow": "당신의 목표",
+      "hero": "당신의 목표는 어떤 모습인가요?",
+      "sub": "맞는 것을 선택하세요. 나중에 바꿀 수 있어요.",
+      "opt_quit_title": "완전히 끊기",
+      "opt_quit_body": "제로 첨가당, 내 이유를 위해.",
+      "opt_reduce_title": "점진적으로 줄이기",
+      "opt_reduce_body": "덜 자주, 더 자주, 더 좋은 기분."
+    },
+    "quiz_motivation": {
+      "eyebrow": "당신의 동기",
+      "hero": "무엇이 당신을 여기로 이끌었나요?",
+      "sub": "공감되는 것을 모두. 여러 개 선택.",
+      "opt_health": "건강이 요구해요",
+      "opt_energy": "더 맑은 에너지를 원해요",
+      "opt_body": "몸이 달라요",
+      "opt_cost": "대가가 너무 커요",
+      "opt_charge": "주도권을 갖고 싶어요"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "당신의 접근",
+      "hero": "어떻게 나아가고 싶어요?",
+      "sub": "둘 다 됩니다. 틀린 답 없어요.",
+      "opt_quit_title": "단번에 끊기",
+      "opt_quit_body": "첫날부터 첨가당 없음. 리셋을 원해요.",
+      "opt_reduce_title": "천천히 줄이기",
+      "opt_reduce_body": "주마다 한 단계씩. 습관을 만들어요."
+    },
+    "quiz_peak": {
+      "eyebrow": "피크 시간대",
+      "hero": "언제 가장 강하게 와요?",
+      "sub": "우리가 당신을 위해 지켜볼 시간대.",
+      "chip_morning": "아침",
+      "chip_afternoon": "오후",
+      "chip_evening": "저녁",
+      "chip_night": "밤",
+      "time_eyebrow": "보통 시간",
+      "time_hint": "이 시간 전후를 지켜봐요"
+    },
+    "quiz_triggers": {
+      "eyebrow": "당신의 트리거",
+      "hero": "보통 무엇이 그걸 일으켜요?",
+      "sub": "공감되는 것을 모두."
+    },
+    "quiz_consumption": {
+      "eyebrow": "당신의 섭취",
+      "hero": "한 주에 설탕이 얼마나 흐르나요?",
+      "sub": "솔직하게. 당신만 봅니다.",
+      "level_little": "조금",
+      "level_little_hint": "대부분 눈에 띄지 않아요",
+      "level_moderate": "보통",
+      "level_moderate_hint": "나타나지만 압도적이지 않아요",
+      "level_alot": "많이",
+      "level_alot_hint": "자주 크게 찾아와요",
+      "level_great": "엄청 많이",
+      "level_great_hint": "거의 매일 오후마다",
+      "level_runs": "하루를 좌우해요",
+      "level_runs_hint": "설탕이 시간을 정해요"
+    },
+    "quiz_past": {
+      "eyebrow": "당신의 이력",
+      "hero": "이전에 끊어본 적 있어요?",
+      "sub": "시도한 모든 것이 정보예요.",
+      "opt_first_title": "이번이 진짜 첫 시도",
+      "opt_first_body": "새로 시작.",
+      "opt_short_title": "몇 번, 짧게",
+      "opt_short_body": "며칠, 몇 주는 아니에요.",
+      "opt_longer_title": "한두 번, 더 길게",
+      "opt_longer_body": "몇 주, 심지어 몇 달.",
+      "opt_many_title": "여러 번",
+      "opt_many_body": "들락날락했어요."
+    },
+    "quiz_work": {
+      "eyebrow": "당신의 하루",
+      "hero": "하루를 어디서 보내요?",
+      "sub": "맥락이 우리가 살필 욕구의 모양을 만들어요.",
+      "opt_office": "사무실",
+      "opt_home": "집",
+      "opt_feet": "서서 일해요",
+      "opt_mobile": "이동 중"
+    },
+    "quiz_name": {
+      "eyebrow": "마지막 하나",
+      "hero": "뭐라고 부를까요?",
+      "sub": "선택. 부드럽고 개인적으로 유지할게요.",
+      "placeholder": "이름",
+      "a11y_first_name": "이름",
+      "a11y_hint": "선택. 완료 또는 계속 누르세요."
+    }
   }
 }

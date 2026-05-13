@@ -197,5 +197,111 @@
     "path": "Pad",
     "progress": "Voortgang",
     "profile": "Profiel"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "STAP 1 VAN 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Ontmoet de stille coach voor je trek",
+      "sub": "Drie minuten, en je hebt een 90-dagenplan voor je lichaam, je triggers en het moment dat je hand naar suiker reikt.",
+      "cta": "Beginnen",
+      "sign_in_prompt": "Al onderweg?",
+      "sign_in_link": "Inloggen",
+      "a11y_sign_in": "Inloggen op bestaand account"
+    },
+    "quiz": {
+      "step_of_15": "STAP {{n}} VAN 15",
+      "a11y_back": "Terug",
+      "a11y_skip_name": "Naam overslaan"
+    },
+    "quiz_goal": {
+      "eyebrow": "JOUW DOEL",
+      "hero": "Wat is de vorm van je doel?",
+      "sub": "Kies wat past. Je kunt het later wijzigen.",
+      "opt_quit_title": "Helemaal stoppen",
+      "opt_quit_body": "Nul toegevoegde suiker, om mijn redenen.",
+      "opt_reduce_title": "Geleidelijk minderen",
+      "opt_reduce_body": "Minder suiker, vaker, beter humeur."
+    },
+    "quiz_motivation": {
+      "eyebrow": "JOUW MOTIVATIE",
+      "hero": "Wat brengt je hier?",
+      "sub": "Kies alles wat klopt. Meerdere mogelijk.",
+      "opt_health": "Mijn gezondheid vraagt erom",
+      "opt_energy": "Ik wil heldere energie",
+      "opt_body": "Mijn lichaam voelt anders",
+      "opt_cost": "Het kost me te veel",
+      "opt_charge": "Ik wil de regie"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "JOUW AANPAK",
+      "hero": "Hoe wil je vooruit?",
+      "sub": "Beide werken. Geen fout antwoord.",
+      "opt_quit_title": "Cold turkey stoppen",
+      "opt_quit_body": "Geen toegevoegde suiker vanaf dag één. Ik wil de reset.",
+      "opt_reduce_title": "Langzaam minderen",
+      "opt_reduce_body": "Stap voor stap per week. Bouw de gewoonte."
+    },
+    "quiz_peak": {
+      "eyebrow": "PIEKVENSTER",
+      "hero": "Wanneer komt het 't hardst?",
+      "sub": "Het venster dat we voor je in de gaten houden.",
+      "chip_morning": "OCHTEND",
+      "chip_afternoon": "MIDDAG",
+      "chip_evening": "AVOND",
+      "chip_night": "NACHT",
+      "time_eyebrow": "TYPISCHE TIJD",
+      "time_hint": "We letten op het uur hieromheen"
+    },
+    "quiz_triggers": {
+      "eyebrow": "JOUW TRIGGERS",
+      "hero": "Wat zet het meestal aan?",
+      "sub": "Kies alles wat klopt."
+    },
+    "quiz_consumption": {
+      "eyebrow": "JOUW INNAME",
+      "hero": "Hoeveel suiker stroomt door je week?",
+      "sub": "Wees eerlijk. Alleen jij ziet dit.",
+      "level_little": "Een beetje",
+      "level_little_hint": "Valt meestal niet op",
+      "level_moderate": "Matig",
+      "level_moderate_hint": "Komt langs, niet overweldigend",
+      "level_alot": "Veel",
+      "level_alot_hint": "Regelmatige luide bezoeken",
+      "level_great": "Heel veel",
+      "level_great_hint": "De meeste middagen, de meeste dagen",
+      "level_runs": "Het bepaalt mijn dag",
+      "level_runs_hint": "De suiker plant de uren"
+    },
+    "quiz_past": {
+      "eyebrow": "JOUW GESCHIEDENIS",
+      "hero": "Heb je het al eens geprobeerd?",
+      "sub": "Alles wat je geprobeerd hebt is informatie.",
+      "opt_first_title": "Dit is mijn eerste echte poging",
+      "opt_first_body": "Helemaal opnieuw.",
+      "opt_short_title": "Een paar keer, kort",
+      "opt_short_body": "Dagen, geen weken.",
+      "opt_longer_title": "Een of twee keer, langer",
+      "opt_longer_body": "Weken, zelfs maanden.",
+      "opt_many_title": "Vaak",
+      "opt_many_body": "Heen en weer gegaan."
+    },
+    "quiz_work": {
+      "eyebrow": "JOUW DAGEN",
+      "hero": "Waar breng je je dagen door?",
+      "sub": "De context vormt de trek waarop we letten.",
+      "opt_office": "Kantoor",
+      "opt_home": "Thuis",
+      "opt_feet": "Op de been",
+      "opt_mobile": "Onderweg"
+    },
+    "quiz_name": {
+      "eyebrow": "NOG ÉÉN DING",
+      "hero": "Hoe noemen we je?",
+      "sub": "Optioneel. We houden het zacht en persoonlijk.",
+      "placeholder": "Je voornaam",
+      "a11y_first_name": "Je voornaam",
+      "a11y_hint": "Optioneel. Druk op Klaar of Doorgaan."
+    }
   }
 }

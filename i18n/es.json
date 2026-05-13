@@ -197,5 +197,111 @@
     "path": "Camino",
     "progress": "Progreso",
     "profile": "Perfil"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "PASO 1 DE 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Conoce al coach silencioso para tus antojos",
+      "sub": "Tres minutos y tendrás un plan de 90 días para tu cuerpo, tus disparadores y el momento en que tu mano busca el azúcar.",
+      "cta": "Empezar",
+      "sign_in_prompt": "¿Ya caminando?",
+      "sign_in_link": "Iniciar sesión",
+      "a11y_sign_in": "Iniciar sesión en cuenta existente"
+    },
+    "quiz": {
+      "step_of_15": "PASO {{n}} DE 15",
+      "a11y_back": "Atrás",
+      "a11y_skip_name": "Saltar nombre"
+    },
+    "quiz_goal": {
+      "eyebrow": "TU OBJETIVO",
+      "hero": "¿Cuál es la forma de tu objetivo?",
+      "sub": "Elige lo que te encaje. Puedes cambiarlo después.",
+      "opt_quit_title": "Dejar por completo",
+      "opt_quit_body": "Cero azúcar añadido, por mis razones.",
+      "opt_reduce_title": "Reducir gradualmente",
+      "opt_reduce_body": "Menos azúcar, con más frecuencia, mejor ánimo."
+    },
+    "quiz_motivation": {
+      "eyebrow": "TU MOTIVACIÓN",
+      "hero": "¿Qué te trae aquí?",
+      "sub": "Marca lo que sientas verdadero. Varios pueden.",
+      "opt_health": "Mi salud me lo pide",
+      "opt_energy": "Quiero energía más limpia",
+      "opt_body": "Mi cuerpo se siente distinto",
+      "opt_cost": "Me cuesta demasiado",
+      "opt_charge": "Solo quiero sentirme al mando"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "TU ENFOQUE",
+      "hero": "¿Cómo quieres avanzar?",
+      "sub": "Ambos funcionan. No hay respuesta incorrecta.",
+      "opt_quit_title": "Dejar de golpe",
+      "opt_quit_body": "Cero azúcar añadido desde el día uno. Quiero el reset.",
+      "opt_reduce_title": "Reducir despacio",
+      "opt_reduce_body": "Bajar semana a semana. Construir el hábito."
+    },
+    "quiz_peak": {
+      "eyebrow": "VENTANA DE PICO",
+      "hero": "¿Cuándo golpea más fuerte?",
+      "sub": "La ventana que cuidaremos por ti.",
+      "chip_morning": "MAÑANA",
+      "chip_afternoon": "TARDE",
+      "chip_evening": "NOCHE",
+      "chip_night": "MADRUGADA",
+      "time_eyebrow": "HORA TÍPICA",
+      "time_hint": "Cuidaremos la hora alrededor de esto"
+    },
+    "quiz_triggers": {
+      "eyebrow": "TUS DISPARADORES",
+      "hero": "¿Qué tiende a dispararlo?",
+      "sub": "Marca lo que te resuene."
+    },
+    "quiz_consumption": {
+      "eyebrow": "TU CONSUMO",
+      "hero": "¿Cuánto azúcar pasa por tu semana?",
+      "sub": "Sé honesto. Solo tú lo ves.",
+      "level_little": "Un poco",
+      "level_little_hint": "Apenas se nota la mayoría de días",
+      "level_moderate": "Moderada",
+      "level_moderate_hint": "Aparece, no abruma",
+      "level_alot": "Mucho",
+      "level_alot_hint": "Visitas frecuentes y ruidosas",
+      "level_great": "Muchísimo",
+      "level_great_hint": "Casi todas las tardes, casi todos los días",
+      "level_runs": "Me marca el día",
+      "level_runs_hint": "El azúcar planea las horas"
+    },
+    "quiz_past": {
+      "eyebrow": "TU HISTORIA",
+      "hero": "¿Ya intentaste dejarlo?",
+      "sub": "Todo lo que has probado es información.",
+      "opt_first_title": "Es mi primer intento real",
+      "opt_first_body": "Empezando de cero.",
+      "opt_short_title": "Algunas veces, corto",
+      "opt_short_body": "Días, no semanas.",
+      "opt_longer_title": "Una o dos veces, más largo",
+      "opt_longer_body": "Semanas, hasta meses.",
+      "opt_many_title": "Muchas veces",
+      "opt_many_body": "He entrado y salido."
+    },
+    "quiz_work": {
+      "eyebrow": "TUS DÍAS",
+      "hero": "¿Dónde pasas tus días?",
+      "sub": "El contexto moldea los antojos que cuidaremos.",
+      "opt_office": "Oficina",
+      "opt_home": "Casa",
+      "opt_feet": "De pie",
+      "opt_mobile": "En movimiento"
+    },
+    "quiz_name": {
+      "eyebrow": "UNA ÚLTIMA COSA",
+      "hero": "¿Cómo te llamamos?",
+      "sub": "Opcional. Lo mantendremos suave y personal.",
+      "placeholder": "Tu nombre",
+      "a11y_first_name": "Tu nombre",
+      "a11y_hint": "Opcional. Pulsa Listo o Continuar."
+    }
   }
 }

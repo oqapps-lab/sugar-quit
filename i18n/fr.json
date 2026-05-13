@@ -197,5 +197,111 @@
     "path": "Chemin",
     "progress": "Progrès",
     "profile": "Profil"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "ÉTAPE 1 SUR 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Le coach silencieux pour tes envies",
+      "sub": "Trois minutes, et tu auras un plan de 90 jours pour ton corps, tes déclencheurs et le moment où ta main cherche le sucre.",
+      "cta": "Commencer",
+      "sign_in_prompt": "Déjà en chemin ?",
+      "sign_in_link": "Connexion",
+      "a11y_sign_in": "Se connecter au compte existant"
+    },
+    "quiz": {
+      "step_of_15": "ÉTAPE {{n}} SUR 15",
+      "a11y_back": "Retour",
+      "a11y_skip_name": "Passer le nom"
+    },
+    "quiz_goal": {
+      "eyebrow": "TON OBJECTIF",
+      "hero": "Quelle est la forme de ton objectif ?",
+      "sub": "Choisis ce qui te convient. Modifiable plus tard.",
+      "opt_quit_title": "Arrêter complètement",
+      "opt_quit_body": "Zéro sucre ajouté, pour mes raisons.",
+      "opt_reduce_title": "Réduire progressivement",
+      "opt_reduce_body": "Moins de sucre, plus souvent, meilleure humeur."
+    },
+    "quiz_motivation": {
+      "eyebrow": "TA MOTIVATION",
+      "hero": "Qu'est-ce qui t'amène ici ?",
+      "sub": "Choisis tout ce qui résonne. Plusieurs possibles.",
+      "opt_health": "Ma santé me le demande",
+      "opt_energy": "Je veux une énergie plus claire",
+      "opt_body": "Mon corps se sent différent",
+      "opt_cost": "Ça me coûte trop",
+      "opt_charge": "Je veux juste reprendre le contrôle"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "TON APPROCHE",
+      "hero": "Comment veux-tu avancer ?",
+      "sub": "Les deux marchent. Pas de mauvaise réponse.",
+      "opt_quit_title": "Arrêter d'un coup",
+      "opt_quit_body": "Zéro sucre ajouté dès jour un. Je veux le reset.",
+      "opt_reduce_title": "Réduire doucement",
+      "opt_reduce_body": "Semaine après semaine. Construis l'habitude."
+    },
+    "quiz_peak": {
+      "eyebrow": "FENÊTRE DE POINTE",
+      "hero": "Quand est-ce le plus fort ?",
+      "sub": "La fenêtre qu'on surveillera pour toi.",
+      "chip_morning": "MATIN",
+      "chip_afternoon": "APRÈS-MIDI",
+      "chip_evening": "SOIR",
+      "chip_night": "NUIT",
+      "time_eyebrow": "HEURE TYPIQUE",
+      "time_hint": "On surveillera l'heure autour de ça"
+    },
+    "quiz_triggers": {
+      "eyebrow": "TES DÉCLENCHEURS",
+      "hero": "Qu'est-ce qui déclenche d'habitude ?",
+      "sub": "Coche ce qui sonne juste."
+    },
+    "quiz_consumption": {
+      "eyebrow": "TA CONSOMMATION",
+      "hero": "Combien de sucre traverse ta semaine ?",
+      "sub": "Sois honnête. Toi seul le vois.",
+      "level_little": "Un peu",
+      "level_little_hint": "À peine perceptible la plupart du temps",
+      "level_moderate": "Modérée",
+      "level_moderate_hint": "Présent, pas écrasant",
+      "level_alot": "Beaucoup",
+      "level_alot_hint": "Visites bruyantes régulières",
+      "level_great": "Énormément",
+      "level_great_hint": "La plupart des après-midis, la plupart des jours",
+      "level_runs": "Ça mène ma journée",
+      "level_runs_hint": "Le sucre planifie les heures"
+    },
+    "quiz_past": {
+      "eyebrow": "TON HISTORIQUE",
+      "hero": "As-tu déjà essayé d'arrêter ?",
+      "sub": "Tout ce que tu as essayé est de l'info.",
+      "opt_first_title": "C'est ma première vraie tentative",
+      "opt_first_body": "Tout neuf.",
+      "opt_short_title": "Quelques fois, court",
+      "opt_short_body": "Des jours, pas des semaines.",
+      "opt_longer_title": "Une ou deux fois, plus long",
+      "opt_longer_body": "Des semaines, voire des mois.",
+      "opt_many_title": "Plusieurs fois",
+      "opt_many_body": "Allers-retours."
+    },
+    "quiz_work": {
+      "eyebrow": "TES JOURNÉES",
+      "hero": "Où passes-tu tes journées ?",
+      "sub": "Le contexte façonne les envies qu'on surveillera.",
+      "opt_office": "Bureau",
+      "opt_home": "Maison",
+      "opt_feet": "Debout",
+      "opt_mobile": "En déplacement"
+    },
+    "quiz_name": {
+      "eyebrow": "UNE DERNIÈRE CHOSE",
+      "hero": "Comment t'appeler ?",
+      "sub": "Optionnel. On garde ça doux et personnel.",
+      "placeholder": "Ton prénom",
+      "a11y_first_name": "Ton prénom",
+      "a11y_hint": "Optionnel. Appuie sur Terminé ou Continuer."
+    }
   }
 }

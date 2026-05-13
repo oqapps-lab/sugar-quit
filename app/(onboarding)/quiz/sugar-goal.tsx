@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore, type Goal } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.4 Quiz: Sugar Goal — "How do you want to move?" (single-select, 2 options).
@@ -21,8 +22,8 @@ export default function QuizSugarGoal() {
 
   // Tint must NOT be 'peach' for unselected — that's our selected-state color.
   const options: { key: Goal; title: string; body: string; tint: 'default' | 'mint' }[] = [
-    { key: 'quit',   title: 'Quit cold turkey', body: 'No added sugar from day one. I want the reset.' , tint: 'default' },
-    { key: 'reduce', title: 'Reduce slowly',    body: 'Step it down week by week. Build the habit.'    , tint: 'mint' },
+    { key: 'quit',   title: t('onboarding.quiz_sugar_goal.opt_quit_title'), body: t('onboarding.quiz_sugar_goal.opt_quit_body') , tint: 'default' },
+    { key: 'reduce', title: t('onboarding.quiz_sugar_goal.opt_reduce_title'),    body: t('onboarding.quiz_sugar_goal.opt_reduce_body')    , tint: 'mint' },
   ];
 
   const pick = (key: Goal) => {
@@ -42,14 +43,14 @@ export default function QuizSugarGoal() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 4 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '4' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR APPROACH</Text>
-        <Text style={styles.hero}>How do you want to move?</Text>
-        <Text style={styles.sub}>Both work. There's no wrong answer.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_sugar_goal.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_sugar_goal.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_sugar_goal.sub')}</Text>
 
         <View style={styles.optionsCol}>
           {options.map((o) => {
@@ -74,7 +75,7 @@ export default function QuizSugarGoal() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={handleContinue}
           disabled={!selected}

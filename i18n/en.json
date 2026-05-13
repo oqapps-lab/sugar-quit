@@ -197,5 +197,111 @@
     "social": "Social pressure",
     "emotion": "Emotions",
     "night": "Late-night"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "STEP 1 OF 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Meet the quiet coach for your cravings",
+      "sub": "Three minutes, and you'll have a 90-day plan for your body, your triggers, and the moment your hand reaches for sugar.",
+      "cta": "Begin",
+      "sign_in_prompt": "Already walking?",
+      "sign_in_link": "Sign in",
+      "a11y_sign_in": "Sign in to existing account"
+    },
+    "quiz": {
+      "step_of_15": "STEP {{n}} OF 15",
+      "a11y_back": "Back",
+      "a11y_skip_name": "Skip name"
+    },
+    "quiz_goal": {
+      "eyebrow": "YOUR GOAL",
+      "hero": "What's the shape of your goal?",
+      "sub": "Choose what fits. You can change this later.",
+      "opt_quit_title": "Quit completely",
+      "opt_quit_body": "Zero added sugar, for my reasons.",
+      "opt_reduce_title": "Reduce gradually",
+      "opt_reduce_body": "Less sugar, more often, better mood."
+    },
+    "quiz_motivation": {
+      "eyebrow": "YOUR MOTIVATION",
+      "hero": "What's pulling you here?",
+      "sub": "Pick any that feel true. Choose more than one.",
+      "opt_health": "Health is asking me to",
+      "opt_energy": "I want clearer energy",
+      "opt_body": "My body feels different",
+      "opt_cost": "It's costing too much",
+      "opt_charge": "I just want to feel in charge"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "YOUR APPROACH",
+      "hero": "How do you want to move?",
+      "sub": "Both work. There's no wrong answer.",
+      "opt_quit_title": "Quit cold turkey",
+      "opt_quit_body": "No added sugar from day one. I want the reset.",
+      "opt_reduce_title": "Reduce slowly",
+      "opt_reduce_body": "Step it down week by week. Build the habit."
+    },
+    "quiz_peak": {
+      "eyebrow": "PEAK WINDOW",
+      "hero": "When does it hit hardest?",
+      "sub": "The window we'll watch for you.",
+      "chip_morning": "MORNING",
+      "chip_afternoon": "AFTERNOON",
+      "chip_evening": "EVENING",
+      "chip_night": "NIGHT",
+      "time_eyebrow": "TYPICAL TIME",
+      "time_hint": "We'll watch the hour around this"
+    },
+    "quiz_triggers": {
+      "eyebrow": "YOUR TRIGGERS",
+      "hero": "What tends to set it off?",
+      "sub": "Pick any that ring true."
+    },
+    "quiz_consumption": {
+      "eyebrow": "YOUR INTAKE",
+      "hero": "How much sugar runs through your week?",
+      "sub": "Be honest. Only you see this.",
+      "level_little": "A little",
+      "level_little_hint": "Barely registers most days",
+      "level_moderate": "Moderate",
+      "level_moderate_hint": "Shows up, not overwhelming",
+      "level_alot": "A lot",
+      "level_alot_hint": "Regular loud visits",
+      "level_great": "A great deal",
+      "level_great_hint": "Most afternoons, most days",
+      "level_runs": "It runs my day",
+      "level_runs_hint": "The sugar plans the hours"
+    },
+    "quiz_past": {
+      "eyebrow": "YOUR HISTORY",
+      "hero": "Have you tried to quit before?",
+      "sub": "Everything you've tried is information.",
+      "opt_first_title": "This is my first real try",
+      "opt_first_body": "Starting fresh.",
+      "opt_short_title": "A few times, short",
+      "opt_short_body": "Days, not weeks.",
+      "opt_longer_title": "Once or twice, longer",
+      "opt_longer_body": "Weeks, even months.",
+      "opt_many_title": "Many times",
+      "opt_many_body": "Cycled in and out."
+    },
+    "quiz_work": {
+      "eyebrow": "YOUR DAYS",
+      "hero": "Where do you spend your days?",
+      "sub": "Context shapes the cravings we'll watch for.",
+      "opt_office": "Office",
+      "opt_home": "Home",
+      "opt_feet": "On my feet",
+      "opt_mobile": "Mobile"
+    },
+    "quiz_name": {
+      "eyebrow": "ONE LAST THING",
+      "hero": "What should we call you?",
+      "sub": "Optional. We'll keep it soft and personal.",
+      "placeholder": "Your first name",
+      "a11y_first_name": "Your first name",
+      "a11y_hint": "Optional. Press Done or Continue to proceed."
+    }
   }
 }

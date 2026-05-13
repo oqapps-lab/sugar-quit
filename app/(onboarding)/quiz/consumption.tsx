@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore, type Consumption } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.8 Quiz: Consumption — 5-level scale.
@@ -22,11 +23,11 @@ export default function QuizConsumption() {
   useFocusEffect(useCallback(() => { setSelected(stored); }, [stored]));
 
   const levels: { key: Consumption; title: string; hint: string }[] = [
-    { key: 'little',   title: 'A little',        hint: 'Barely registers most days' },
-    { key: 'moderate', title: 'Moderate',        hint: 'Shows up, not overwhelming' },
-    { key: 'alot',     title: 'A lot',           hint: 'Regular loud visits' },
-    { key: 'great',    title: 'A great deal',    hint: 'Most afternoons, most days' },
-    { key: 'runs',     title: 'It runs my day',  hint: 'The sugar plans the hours' },
+    { key: 'little',   title: t('onboarding.quiz_consumption.level_little'),        hint: t('onboarding.quiz_consumption.level_little_hint') },
+    { key: 'moderate', title: t('onboarding.quiz_consumption.level_moderate'),        hint: t('onboarding.quiz_consumption.level_moderate_hint') },
+    { key: 'alot',     title: t('onboarding.quiz_consumption.level_alot'),           hint: t('onboarding.quiz_consumption.level_alot_hint') },
+    { key: 'great',    title: t('onboarding.quiz_consumption.level_great'),    hint: t('onboarding.quiz_consumption.level_great_hint') },
+    { key: 'runs',     title: t('onboarding.quiz_consumption.level_runs'),  hint: t('onboarding.quiz_consumption.level_runs_hint') },
   ];
 
   const pick = (key: Consumption) => {
@@ -46,14 +47,14 @@ export default function QuizConsumption() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 8 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '8' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR INTAKE</Text>
-        <Text style={styles.hero}>How much sugar runs through your week?</Text>
-        <Text style={styles.sub}>Be honest. Only you see this.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_consumption.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_consumption.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_consumption.sub')}</Text>
 
         <View style={styles.optionsCol}>
           {levels.map((l, i) => {
@@ -88,7 +89,7 @@ export default function QuizConsumption() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={handleContinue}
           disabled={!selected}

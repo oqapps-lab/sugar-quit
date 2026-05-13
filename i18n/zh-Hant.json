@@ -197,5 +197,111 @@
     "path": "路徑",
     "progress": "進度",
     "profile": "個人"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "15 步驟之 1 · ~3 分鐘",
+      "eyebrow": "SUGAR QUIT",
+      "title": "認識為你渴望存在的安靜教練",
+      "sub": "三分鐘,你就有一個 90 天的方案 — 為你的身體、你的觸發、你伸手拿糖的那一刻。",
+      "cta": "開始",
+      "sign_in_prompt": "已經在走?",
+      "sign_in_link": "登入",
+      "a11y_sign_in": "登入現有帳號"
+    },
+    "quiz": {
+      "step_of_15": "15 步驟之 {{n}}",
+      "a11y_back": "返回",
+      "a11y_skip_name": "略過姓名"
+    },
+    "quiz_goal": {
+      "eyebrow": "你的目標",
+      "hero": "你的目標是什麼樣子?",
+      "sub": "選擇符合的。之後可以更改。",
+      "opt_quit_title": "完全戒除",
+      "opt_quit_body": "零添加糖,為了我自己。",
+      "opt_reduce_title": "逐步減少",
+      "opt_reduce_body": "少糖、更常、心情更好。"
+    },
+    "quiz_motivation": {
+      "eyebrow": "你的動機",
+      "hero": "是什麼把你帶到這?",
+      "sub": "勾選感覺真實的。可多選。",
+      "opt_health": "健康在要求",
+      "opt_energy": "我想要更清晰的能量",
+      "opt_body": "我的身體感覺不一樣了",
+      "opt_cost": "代價太大了",
+      "opt_charge": "我只想掌握主導權"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "你的方法",
+      "hero": "你想怎麼前進?",
+      "sub": "兩者都有用,沒有對錯。",
+      "opt_quit_title": "一刀切戒除",
+      "opt_quit_body": "從第一天起零添加糖。我想要重置。",
+      "opt_reduce_title": "慢慢減少",
+      "opt_reduce_body": "一週一週地減。建立習慣。"
+    },
+    "quiz_peak": {
+      "eyebrow": "高峰時段",
+      "hero": "什麼時候最猛烈?",
+      "sub": "我們會為你守候的時段。",
+      "chip_morning": "早晨",
+      "chip_afternoon": "下午",
+      "chip_evening": "傍晚",
+      "chip_night": "深夜",
+      "time_eyebrow": "通常時間",
+      "time_hint": "我們會留意這個時段前後"
+    },
+    "quiz_triggers": {
+      "eyebrow": "你的觸發",
+      "hero": "通常什麼會引發?",
+      "sub": "勾選符合的。"
+    },
+    "quiz_consumption": {
+      "eyebrow": "你的攝取",
+      "hero": "一週流過你的糖有多少?",
+      "sub": "誠實。只有你看得到。",
+      "level_little": "一點點",
+      "level_little_hint": "大部分時候幾乎不察覺",
+      "level_moderate": "中等",
+      "level_moderate_hint": "會出現,但不會壓垮你",
+      "level_alot": "很多",
+      "level_alot_hint": "頻繁且強烈的造訪",
+      "level_great": "非常多",
+      "level_great_hint": "幾乎每天下午",
+      "level_runs": "它主宰我的一天",
+      "level_runs_hint": "糖規劃了時間"
+    },
+    "quiz_past": {
+      "eyebrow": "你的過去",
+      "hero": "以前試過戒嗎?",
+      "sub": "你嘗試過的一切都是資訊。",
+      "opt_first_title": "這是我第一次認真嘗試",
+      "opt_first_body": "全新開始。",
+      "opt_short_title": "幾次,短時間",
+      "opt_short_body": "幾天,不是幾週。",
+      "opt_longer_title": "一兩次,較長",
+      "opt_longer_body": "幾週,甚至幾個月。",
+      "opt_many_title": "很多次",
+      "opt_many_body": "進進出出。"
+    },
+    "quiz_work": {
+      "eyebrow": "你的日常",
+      "hero": "你的日子在哪裡度過?",
+      "sub": "情境塑造我們守候的渴望。",
+      "opt_office": "辦公室",
+      "opt_home": "家",
+      "opt_feet": "站著工作",
+      "opt_mobile": "流動"
+    },
+    "quiz_name": {
+      "eyebrow": "最後一件事",
+      "hero": "我們該怎麼稱呼你?",
+      "sub": "選填。我們會保持輕柔和個人化。",
+      "placeholder": "你的名字",
+      "a11y_first_name": "你的名字",
+      "a11y_hint": "選填。按完成或繼續。"
+    }
   }
 }

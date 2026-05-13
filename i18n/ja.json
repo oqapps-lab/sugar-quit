@@ -197,5 +197,111 @@
     "path": "パス",
     "progress": "進捗",
     "profile": "プロフィール"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "ステップ1/15 · 約3分",
+      "eyebrow": "SUGAR QUIT",
+      "title": "渇望に寄り添う静かなコーチ",
+      "sub": "3分で、あなたの体・トリガー・砂糖に手が伸びる瞬間のための90日プランが完成。",
+      "cta": "はじめる",
+      "sign_in_prompt": "もう歩んでる?",
+      "sign_in_link": "サインイン",
+      "a11y_sign_in": "既存アカウントでサインイン"
+    },
+    "quiz": {
+      "step_of_15": "ステップ{{n}}/15",
+      "a11y_back": "戻る",
+      "a11y_skip_name": "名前をスキップ"
+    },
+    "quiz_goal": {
+      "eyebrow": "あなたの目標",
+      "hero": "あなたの目標の形は?",
+      "sub": "自分に合うものを。後から変更できます。",
+      "opt_quit_title": "完全にやめる",
+      "opt_quit_body": "添加糖ゼロ。自分のために。",
+      "opt_reduce_title": "ゆっくり減らす",
+      "opt_reduce_body": "砂糖を減らし、頻度を増やし、気分も上向き。"
+    },
+    "quiz_motivation": {
+      "eyebrow": "あなたの動機",
+      "hero": "何があなたをここに引き寄せた?",
+      "sub": "しっくりくるものを。複数選択可。",
+      "opt_health": "健康がそれを求めている",
+      "opt_energy": "もっとクリアなエネルギーが欲しい",
+      "opt_body": "体の感じが変わってきた",
+      "opt_cost": "代償が大きすぎる",
+      "opt_charge": "自分で舵を取りたい"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "あなたの進め方",
+      "hero": "どう進めたい?",
+      "sub": "どちらでもOK。正解はない。",
+      "opt_quit_title": "きっぱりやめる",
+      "opt_quit_body": "初日から添加糖なし。リセットしたい。",
+      "opt_reduce_title": "ゆっくり減らす",
+      "opt_reduce_body": "週ごとに少しずつ。習慣を作る。"
+    },
+    "quiz_peak": {
+      "eyebrow": "ピーク時間帯",
+      "hero": "いちばんつらい時間は?",
+      "sub": "あなたのために見守る時間帯。",
+      "chip_morning": "朝",
+      "chip_afternoon": "午後",
+      "chip_evening": "夕方",
+      "chip_night": "深夜",
+      "time_eyebrow": "目安の時刻",
+      "time_hint": "この時間帯を中心に見守ります"
+    },
+    "quiz_triggers": {
+      "eyebrow": "あなたのトリガー",
+      "hero": "何がきっかけになりがち?",
+      "sub": "当てはまるものを。"
+    },
+    "quiz_consumption": {
+      "eyebrow": "あなたの摂取量",
+      "hero": "あなたの一週間にどれくらいの砂糖が流れている?",
+      "sub": "正直に。あなただけが見ます。",
+      "level_little": "少し",
+      "level_little_hint": "ほとんど目立たない日が多い",
+      "level_moderate": "中くらい",
+      "level_moderate_hint": "出てくるけど、圧倒はしない",
+      "level_alot": "たくさん",
+      "level_alot_hint": "頻繁に強く訪れる",
+      "level_great": "かなり",
+      "level_great_hint": "ほぼ毎日の午後",
+      "level_runs": "一日を支配される",
+      "level_runs_hint": "砂糖が時間割を決める"
+    },
+    "quiz_past": {
+      "eyebrow": "あなたの履歴",
+      "hero": "前にも辞めようとした?",
+      "sub": "これまで試したことすべてが情報。",
+      "opt_first_title": "これが本気の初挑戦",
+      "opt_first_body": "ゼロから始める。",
+      "opt_short_title": "何度か、短く",
+      "opt_short_body": "何日か。週単位ではない。",
+      "opt_longer_title": "1〜2回、長めに",
+      "opt_longer_body": "何週間、何ヶ月も。",
+      "opt_many_title": "何度も",
+      "opt_many_body": "出たり入ったり。"
+    },
+    "quiz_work": {
+      "eyebrow": "あなたの日々",
+      "hero": "どこで日々を過ごす?",
+      "sub": "文脈が、見守る渇望の形を作る。",
+      "opt_office": "オフィス",
+      "opt_home": "自宅",
+      "opt_feet": "立ち仕事",
+      "opt_mobile": "移動"
+    },
+    "quiz_name": {
+      "eyebrow": "最後にひとつ",
+      "hero": "なんと呼びましょう?",
+      "sub": "任意。やさしく、パーソナルに保ちます。",
+      "placeholder": "あなたの名前",
+      "a11y_first_name": "あなたの名前",
+      "a11y_hint": "任意。完了または続行を押して進む。"
+    }
   }
 }

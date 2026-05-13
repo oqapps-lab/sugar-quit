@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 type GoalOption = 'quit' | 'reduce';
 
@@ -27,8 +28,8 @@ export default function QuizGoal() {
   const [selected, setSelected] = useState<GoalOption | null>(null);
 
   const options: { key: GoalOption; title: string; body: string }[] = [
-    { key: 'quit',    title: 'Quit completely',  body: 'Zero added sugar, for my reasons.' },
-    { key: 'reduce',  title: 'Reduce gradually', body: 'Less sugar, more often, better mood.' },
+    { key: 'quit',    title: t('onboarding.quiz_goal.opt_quit_title'),  body: t('onboarding.quiz_goal.opt_quit_body') },
+    { key: 'reduce',  title: t('onboarding.quiz_goal.opt_reduce_title'), body: t('onboarding.quiz_goal.opt_reduce_body') },
   ];
 
   const pick = (key: GoalOption) => {
@@ -48,14 +49,14 @@ export default function QuizGoal() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 2 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '2' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR GOAL</Text>
-        <Text style={styles.hero}>What's the shape of your goal?</Text>
-        <Text style={styles.sub}>Choose what fits. You can change this later.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_goal.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_goal.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_goal.sub')}</Text>
 
         <View style={styles.optionsCol}>
           {options.map((o) => {
@@ -79,7 +80,7 @@ export default function QuizGoal() {
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Continue" variant="onboarding" onPress={handleContinue} disabled={!selected} />
+        <PillCTA label={t('common.continue')} variant="onboarding" onPress={handleContinue} disabled={!selected} />
       </View>
     </AtmosphericGradient>
   );

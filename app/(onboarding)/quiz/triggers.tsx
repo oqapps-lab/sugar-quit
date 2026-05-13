@@ -7,6 +7,7 @@ import { AtmosphericGradient } from '../../../components/ui/AtmosphericGradient'
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.7 Quiz: Triggers — multi-select 6 options.
@@ -17,12 +18,12 @@ export default function QuizTriggers() {
   const [selected, setSelected] = useState<string[]>([]);
 
   const options = [
-    { key: 'stress',   title: 'Stress' },
-    { key: 'boredom',  title: 'Boredom' },
-    { key: 'meals',    title: 'After meals' },
-    { key: 'social',   title: 'Social pressure' },
-    { key: 'emotions', title: 'Emotions' },
-    { key: 'night',    title: 'Late-night' },
+    { key: 'stress',   title: t('triggers.stress') },
+    { key: 'boredom',  title: t('triggers.boredom') },
+    { key: 'meals',    title: t('triggers.meals') },
+    { key: 'social',   title: t('triggers.social') },
+    { key: 'emotions', title: t('triggers.emotion') },
+    { key: 'night',    title: t('triggers.night') },
   ];
 
   const toggle = (key: string) => {
@@ -36,14 +37,14 @@ export default function QuizTriggers() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 7 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '7' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR TRIGGERS</Text>
-        <Text style={styles.hero}>What tends to set it off?</Text>
-        <Text style={styles.sub}>Pick any that ring true.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_triggers.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_triggers.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_triggers.sub')}</Text>
 
         <View style={styles.grid}>
           {options.map((o) => {
@@ -76,7 +77,7 @@ export default function QuizTriggers() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           disabled={selected.length === 0}
           onPress={() => {

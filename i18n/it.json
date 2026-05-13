@@ -197,5 +197,111 @@
     "path": "Percorso",
     "progress": "Progresso",
     "profile": "Profilo"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "PASSO 1 DI 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Incontra il coach silenzioso per le tue voglie",
+      "sub": "Tre minuti e avrai un piano di 90 giorni per il tuo corpo, i tuoi trigger e il momento in cui la mano cerca lo zucchero.",
+      "cta": "Iniziare",
+      "sign_in_prompt": "Già in cammino?",
+      "sign_in_link": "Accedi",
+      "a11y_sign_in": "Accedi al tuo account"
+    },
+    "quiz": {
+      "step_of_15": "PASSO {{n}} DI 15",
+      "a11y_back": "Indietro",
+      "a11y_skip_name": "Salta nome"
+    },
+    "quiz_goal": {
+      "eyebrow": "IL TUO OBIETTIVO",
+      "hero": "Qual è la forma del tuo obiettivo?",
+      "sub": "Scegli ciò che ti calza. Puoi cambiare dopo.",
+      "opt_quit_title": "Smettere del tutto",
+      "opt_quit_body": "Zero zucchero aggiunto, per le mie ragioni.",
+      "opt_reduce_title": "Ridurre gradualmente",
+      "opt_reduce_body": "Meno zucchero, più spesso, umore migliore."
+    },
+    "quiz_motivation": {
+      "eyebrow": "LA TUA MOTIVAZIONE",
+      "hero": "Cosa ti porta qui?",
+      "sub": "Spunta tutto ciò che senti vero. Più di uno.",
+      "opt_health": "La salute me lo chiede",
+      "opt_energy": "Voglio energia più pulita",
+      "opt_body": "Il mio corpo si sente diverso",
+      "opt_cost": "Mi sta costando troppo",
+      "opt_charge": "Voglio solo sentirmi al comando"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "IL TUO APPROCCIO",
+      "hero": "Come vuoi muoverti?",
+      "sub": "Entrambi funzionano. Non c'è risposta sbagliata.",
+      "opt_quit_title": "Smettere di colpo",
+      "opt_quit_body": "Niente zucchero aggiunto dal primo giorno. Voglio il reset.",
+      "opt_reduce_title": "Ridurre lentamente",
+      "opt_reduce_body": "Riduci settimana per settimana. Costruisci l'abitudine."
+    },
+    "quiz_peak": {
+      "eyebrow": "FINESTRA DI PICCO",
+      "hero": "Quando colpisce di più?",
+      "sub": "La finestra che terremo d'occhio per te.",
+      "chip_morning": "MATTINA",
+      "chip_afternoon": "POMERIGGIO",
+      "chip_evening": "SERA",
+      "chip_night": "NOTTE",
+      "time_eyebrow": "ORARIO TIPICO",
+      "time_hint": "Sorvegliamo l'ora intorno a questo"
+    },
+    "quiz_triggers": {
+      "eyebrow": "I TUOI TRIGGER",
+      "hero": "Cosa di solito lo scatena?",
+      "sub": "Spunta ciò che ti suona vero."
+    },
+    "quiz_consumption": {
+      "eyebrow": "IL TUO CONSUMO",
+      "hero": "Quanto zucchero attraversa la tua settimana?",
+      "sub": "Sii onesto. Solo tu lo vedi.",
+      "level_little": "Un po'",
+      "level_little_hint": "Si nota appena la maggior parte dei giorni",
+      "level_moderate": "Moderato",
+      "level_moderate_hint": "Si presenta, ma non travolge",
+      "level_alot": "Tanto",
+      "level_alot_hint": "Visite frequenti e rumorose",
+      "level_great": "Moltissimo",
+      "level_great_hint": "Quasi tutti i pomeriggi, quasi tutti i giorni",
+      "level_runs": "Mi gestisce la giornata",
+      "level_runs_hint": "Lo zucchero pianifica le ore"
+    },
+    "quiz_past": {
+      "eyebrow": "LA TUA STORIA",
+      "hero": "Hai già provato a smettere?",
+      "sub": "Tutto ciò che hai provato è informazione.",
+      "opt_first_title": "È il mio primo vero tentativo",
+      "opt_first_body": "Inizio da zero.",
+      "opt_short_title": "Poche volte, brevi",
+      "opt_short_body": "Giorni, non settimane.",
+      "opt_longer_title": "Una o due volte, più a lungo",
+      "opt_longer_body": "Settimane, anche mesi.",
+      "opt_many_title": "Molte volte",
+      "opt_many_body": "Sono entrato e uscito."
+    },
+    "quiz_work": {
+      "eyebrow": "LE TUE GIORNATE",
+      "hero": "Dove passi le tue giornate?",
+      "sub": "Il contesto modella le voglie che terremo d'occhio.",
+      "opt_office": "Ufficio",
+      "opt_home": "Casa",
+      "opt_feet": "In piedi",
+      "opt_mobile": "In movimento"
+    },
+    "quiz_name": {
+      "eyebrow": "UN'ULTIMA COSA",
+      "hero": "Come ti chiamiamo?",
+      "sub": "Opzionale. Lo terremo morbido e personale.",
+      "placeholder": "Il tuo nome",
+      "a11y_first_name": "Il tuo nome",
+      "a11y_hint": "Opzionale. Premi Fatto o Continua."
+    }
   }
 }

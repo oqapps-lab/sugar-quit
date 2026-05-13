@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 const TIME_BY_KEY: Record<string, string> = {
   morning: '9:00 AM',
@@ -25,10 +26,10 @@ export default function QuizPeakTime() {
   const [selected, setSelected] = useState<string>('afternoon');
 
   const chips = [
-    { key: 'morning',   label: 'MORNING'   },
-    { key: 'afternoon', label: 'AFTERNOON' },
-    { key: 'evening',   label: 'EVENING'   },
-    { key: 'night',     label: 'NIGHT'     },
+    { key: 'morning',   label: t('onboarding.quiz_peak.chip_morning')   },
+    { key: 'afternoon', label: t('onboarding.quiz_peak.chip_afternoon') },
+    { key: 'evening',   label: t('onboarding.quiz_peak.chip_evening')   },
+    { key: 'night',     label: t('onboarding.quiz_peak.chip_night')     },
   ];
 
   const pick = (key: string) => {
@@ -42,14 +43,14 @@ export default function QuizPeakTime() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 6 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '6' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>PEAK WINDOW</Text>
-        <Text style={styles.hero}>When does it hit hardest?</Text>
-        <Text style={styles.sub}>The window we'll watch for you.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_peak.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_peak.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_peak.sub')}</Text>
 
         <View style={styles.chipsRow}>
           {chips.map((c) => {
@@ -70,15 +71,15 @@ export default function QuizPeakTime() {
         </View>
 
         <GlassCard tint="peach" style={styles.timeCard}>
-          <Text style={styles.timeEyebrow}>TYPICAL TIME</Text>
+          <Text style={styles.timeEyebrow}>{t('onboarding.quiz_peak.time_eyebrow')}</Text>
           <Text style={styles.timeBig}>{TIME_BY_KEY[selected] ?? '3:00 PM'}</Text>
-          <Text style={styles.timeHint}>We'll watch the hour around this</Text>
+          <Text style={styles.timeHint}>{t('onboarding.quiz_peak.time_hint')}</Text>
         </GlassCard>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={() => {
             setPeakHour(TIME_BY_KEY[selected] ?? '3:00 PM');

@@ -197,5 +197,111 @@
     "path": "Caminho",
     "progress": "Progresso",
     "profile": "Perfil"
+  },
+  "onboarding": {
+    "welcome": {
+      "step_label": "ETAPA 1 DE 15 · ~3 MIN",
+      "eyebrow": "SUGAR QUIT",
+      "title": "Conheça o coach silencioso para os seus desejos",
+      "sub": "Três minutos e você terá um plano de 90 dias para seu corpo, seus gatilhos e o momento em que sua mão busca o açúcar.",
+      "cta": "Começar",
+      "sign_in_prompt": "Já caminhando?",
+      "sign_in_link": "Entrar",
+      "a11y_sign_in": "Entrar na conta existente"
+    },
+    "quiz": {
+      "step_of_15": "ETAPA {{n}} DE 15",
+      "a11y_back": "Voltar",
+      "a11y_skip_name": "Pular nome"
+    },
+    "quiz_goal": {
+      "eyebrow": "SEU OBJETIVO",
+      "hero": "Qual é a forma do seu objetivo?",
+      "sub": "Escolha o que combina. Pode mudar depois.",
+      "opt_quit_title": "Parar totalmente",
+      "opt_quit_body": "Zero açúcar adicionado, pelas minhas razões.",
+      "opt_reduce_title": "Reduzir aos poucos",
+      "opt_reduce_body": "Menos açúcar, mais vezes, melhor humor."
+    },
+    "quiz_motivation": {
+      "eyebrow": "SUA MOTIVAÇÃO",
+      "hero": "O que te traz aqui?",
+      "sub": "Marque tudo que sente verdadeiro. Mais de um.",
+      "opt_health": "Minha saúde está pedindo",
+      "opt_energy": "Quero energia mais limpa",
+      "opt_body": "Meu corpo está diferente",
+      "opt_cost": "Está custando demais",
+      "opt_charge": "Só quero me sentir no controle"
+    },
+    "quiz_sugar_goal": {
+      "eyebrow": "SUA ABORDAGEM",
+      "hero": "Como quer avançar?",
+      "sub": "Ambos funcionam. Não há resposta errada.",
+      "opt_quit_title": "Parar de uma vez",
+      "opt_quit_body": "Zero açúcar adicionado desde o dia um. Quero o reset.",
+      "opt_reduce_title": "Reduzir devagar",
+      "opt_reduce_body": "Diminuir semana a semana. Construir o hábito."
+    },
+    "quiz_peak": {
+      "eyebrow": "JANELA DE PICO",
+      "hero": "Quando bate mais forte?",
+      "sub": "A janela que vamos vigiar por você.",
+      "chip_morning": "MANHÃ",
+      "chip_afternoon": "TARDE",
+      "chip_evening": "NOITE",
+      "chip_night": "MADRUGADA",
+      "time_eyebrow": "HORÁRIO TÍPICO",
+      "time_hint": "Vigiamos a hora em torno disto"
+    },
+    "quiz_triggers": {
+      "eyebrow": "SEUS GATILHOS",
+      "hero": "O que costuma disparar?",
+      "sub": "Marque tudo que ressoa."
+    },
+    "quiz_consumption": {
+      "eyebrow": "SEU CONSUMO",
+      "hero": "Quanto açúcar passa pela sua semana?",
+      "sub": "Seja honesto. Só você vê.",
+      "level_little": "Um pouco",
+      "level_little_hint": "Mal se nota na maioria dos dias",
+      "level_moderate": "Moderado",
+      "level_moderate_hint": "Aparece, mas não domina",
+      "level_alot": "Muito",
+      "level_alot_hint": "Visitas frequentes e barulhentas",
+      "level_great": "Bastante",
+      "level_great_hint": "Quase todas as tardes, quase todos os dias",
+      "level_runs": "Dita meu dia",
+      "level_runs_hint": "O açúcar planeja as horas"
+    },
+    "quiz_past": {
+      "eyebrow": "SEU HISTÓRICO",
+      "hero": "Já tentou parar antes?",
+      "sub": "Tudo que tentou é informação.",
+      "opt_first_title": "É minha primeira tentativa real",
+      "opt_first_body": "Começando do zero.",
+      "opt_short_title": "Algumas vezes, curto",
+      "opt_short_body": "Dias, não semanas.",
+      "opt_longer_title": "Uma ou duas vezes, mais longo",
+      "opt_longer_body": "Semanas, até meses.",
+      "opt_many_title": "Muitas vezes",
+      "opt_many_body": "Entrei e saí."
+    },
+    "quiz_work": {
+      "eyebrow": "SEUS DIAS",
+      "hero": "Onde você passa seus dias?",
+      "sub": "O contexto molda os desejos que vamos vigiar.",
+      "opt_office": "Escritório",
+      "opt_home": "Em casa",
+      "opt_feet": "Em pé",
+      "opt_mobile": "Em movimento"
+    },
+    "quiz_name": {
+      "eyebrow": "UMA ÚLTIMA COISA",
+      "hero": "Como te chamamos?",
+      "sub": "Opcional. Manteremos suave e pessoal.",
+      "placeholder": "Seu primeiro nome",
+      "a11y_first_name": "Seu primeiro nome",
+      "a11y_hint": "Opcional. Toque em Concluído ou Continuar."
+    }
   }
 }

@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore, type WorkEnvironment } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.11 Quiz: Work Environment — 4 options in 2×2 grid.
@@ -28,10 +29,10 @@ export default function QuizWorkEnvironment() {
   // Unselected tint MUST NOT be 'peach' — that's our selected-state color
   // and creates visual confusion (option looks pre-selected).
   const options: { key: WorkEnvironment; title: string; tint: 'default' | 'mint' }[] = [
-    { key: 'office', title: 'Office',     tint: 'default' },
-    { key: 'home',   title: 'Home',       tint: 'mint' },
-    { key: 'feet',   title: 'On my feet', tint: 'default' },
-    { key: 'mobile', title: 'Mobile',     tint: 'mint' },
+    { key: 'office', title: t('onboarding.quiz_work.opt_office'),     tint: 'default' },
+    { key: 'home',   title: t('onboarding.quiz_work.opt_home'),       tint: 'mint' },
+    { key: 'feet',   title: t('onboarding.quiz_work.opt_feet'), tint: 'default' },
+    { key: 'mobile', title: t('onboarding.quiz_work.opt_mobile'),     tint: 'mint' },
   ];
 
   const pick = (key: WorkEnvironment) => {
@@ -51,14 +52,14 @@ export default function QuizWorkEnvironment() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 11 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '11' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR DAYS</Text>
-        <Text style={styles.hero}>Where do you spend your days?</Text>
-        <Text style={styles.sub}>Context shapes the cravings we'll watch for.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_work.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_work.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_work.sub')}</Text>
 
         <View style={styles.grid}>
           {options.map((o) => {
@@ -89,7 +90,7 @@ export default function QuizWorkEnvironment() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={handleContinue}
           disabled={!selected}

@@ -8,6 +8,7 @@ import { GlassCard } from '../../../components/ui/GlassCard';
 import { PillCTA } from '../../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../../constants/tokens';
 import { useUserStore } from '../../../stores/useUserStore';
+import { t } from '../../../lib/i18n';
 
 /**
  * 1.3 Quiz: Motivation — "What's pulling you here?" (multi-select, min 1).
@@ -21,11 +22,11 @@ export default function QuizMotivation() {
 
   // Tint must NOT be 'peach' for unselected — that's our selected-state color.
   const options = [
-    { key: 'health',   title: 'Health is asking me to',   tint: 'default' as const },
-    { key: 'energy',   title: 'I want clearer energy',    tint: 'mint' as const },
-    { key: 'body',     title: 'My body feels different',  tint: 'default' as const },
-    { key: 'cost',     title: "It's costing too much",    tint: 'mint' as const },
-    { key: 'charge',   title: 'I just want to feel in charge', tint: 'default' as const },
+    { key: 'health',   title: t('onboarding.quiz_motivation.opt_health'),   tint: 'default' as const },
+    { key: 'energy',   title: t('onboarding.quiz_motivation.opt_energy'),    tint: 'mint' as const },
+    { key: 'body',     title: t('onboarding.quiz_motivation.opt_body'),  tint: 'default' as const },
+    { key: 'cost',     title: t('onboarding.quiz_motivation.opt_cost'),    tint: 'mint' as const },
+    { key: 'charge',   title: t('onboarding.quiz_motivation.opt_charge'), tint: 'default' as const },
   ];
 
   const toggle = (key: string) => {
@@ -45,14 +46,14 @@ export default function QuizMotivation() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 3 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '3' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>YOUR MOTIVATION</Text>
-        <Text style={styles.hero}>What's pulling you here?</Text>
-        <Text style={styles.sub}>Pick any that feel true. Choose more than one.</Text>
+        <Text style={styles.eyebrow}>{t('onboarding.quiz_motivation.eyebrow')}</Text>
+        <Text style={styles.hero}>{t('onboarding.quiz_motivation.hero')}</Text>
+        <Text style={styles.sub}>{t('onboarding.quiz_motivation.sub')}</Text>
 
         <View style={styles.optionsCol}>
           {options.map((o) => {
@@ -81,7 +82,7 @@ export default function QuizMotivation() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={handleContinue}
           disabled={selected.length === 0}
