@@ -13,6 +13,7 @@ import { getTiers, purchase, type Tier as AdaptyTier } from '../../lib/adapty';
 import { bootstrapAttribution } from '../../lib/notifications-bootstrap';
 import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
+import { t } from '../../lib/i18n';
 
 type Tier = 'annual' | 'monthly';
 type GlyphVariant = 'lightning' | 'orbit' | 'compass' | 'snowflake';
@@ -27,15 +28,15 @@ export default function Paywall() {
   // Personalize the trigger-prediction benefit so a 9pm-peak user doesn't
   // see "tuned to your 3pm" — the universal "stress eater = afternoon" copy.
   const BENEFITS: { glyph: GlyphVariant; label: string }[] = [
-    { glyph: 'lightning', label: 'Unlimited SOS conversations, any hour' },
-    { glyph: 'orbit',     label: 'Your personalized 90-day program' },
-    { glyph: 'compass',   label: `Trigger prediction tuned to your ${shortPeak(peakHour)}` },
-    { glyph: 'snowflake', label: 'Streak Freeze — one missed day forgiven per week' },
+    { glyph: 'lightning', label: t('onboarding.paywall.b_unlimited_sos') },
+    { glyph: 'orbit',     label: t('onboarding.paywall.b_program') },
+    { glyph: 'compass',   label: t('onboarding.paywall.b_trigger', { peak: shortPeak(peakHour) }) },
+    { glyph: 'snowflake', label: t('onboarding.paywall.b_freeze') },
   ];
   const setPremium = useUserStore((s) => s.setPremium);
   const eyebrow = firstName
-    ? `${firstName.toUpperCase()}, YOUR PLAN IS READY`
-    : 'YOUR PLAN IS READY';
+    ? t('onboarding.paywall.eyebrow_named', { name: firstName.toUpperCase() })
+    : t('onboarding.paywall.eyebrow_unnamed');
 
   // Fetch real Adapty tiers (mock-fallback in Expo Go).
   // Also fire ATT prompt here — user has just completed quiz and seen
@@ -93,7 +94,7 @@ export default function Paywall() {
           onPress={() => router.replace('/(onboarding)/auth')}
           style={styles.closeBtn}
           accessibilityRole="button"
-          accessibilityLabel="Close paywall"
+          accessibilityLabel={t('onboarding.paywall.a11y_close')}
         >
           <Text style={styles.closeX}>×</Text>
         </Pressable>
@@ -120,10 +121,10 @@ export default function Paywall() {
             adjustsFontSizeToFit
             minimumFontScale={0.85}
           >
-            A <Text style={styles.heroAccent}>$0.22</Text> / day decision
+            {t('onboarding.paywall.hero_a')} <Text style={styles.heroAccent}>$0.22</Text> {t('onboarding.paywall.hero_decision')}
           </Text>
           <Text style={styles.heroSub}>
-            Less than the candy bar you already skipped today. Seven days free. Cancel in one tap.
+            {t('onboarding.paywall.hero_sub')}
           </Text>
         </Animated.View>
 
@@ -143,9 +144,9 @@ export default function Paywall() {
         <Animated.View entering={FadeInDown.delay(250).duration(450)} style={styles.testimonial}>
           <Text style={styles.stars}>★ ★ ★ ★ ★</Text>
           <Text style={styles.testimonialText}>
-            "The SOS saved me from the 3pm chocolate. Twice this week."
+            {t('onboarding.paywall.testimonial_text')}
           </Text>
-          <Text style={styles.testimonialAuthor}>Maya · Day 34</Text>
+          <Text style={styles.testimonialAuthor}>{t('onboarding.paywall.testimonial_author')}</Text>
         </Animated.View>
 
         {/* Pricing cards */}
@@ -157,11 +158,11 @@ export default function Paywall() {
             accessibilityState={{ selected: tier === 'annual' }}
             accessibilityLabel={`Annual plan, ${annualPrice}, ${annualPerMo}`}
           >
-            {tier === 'annual' && <View style={styles.bestBadge}><Text style={styles.bestBadgeText}>BEST VALUE</Text></View>}
-            <Text style={styles.priceLabel}>Annual</Text>
+            {tier === 'annual' && <View style={styles.bestBadge}><Text style={styles.bestBadgeText}>{t('onboarding.paywall.best_value')}</Text></View>}
+            <Text style={styles.priceLabel}>{t('onboarding.paywall.annual')}</Text>
             <Text style={styles.priceMain}>{annualPrice}</Text>
             <Text style={styles.pricePerMonth}>{annualPerMo}</Text>
-            <Text style={styles.priceSave}>save 33%</Text>
+            <Text style={styles.priceSave}>{t('onboarding.paywall.save_33')}</Text>
           </Pressable>
 
           <Pressable
@@ -171,10 +172,10 @@ export default function Paywall() {
             accessibilityState={{ selected: tier === 'monthly' }}
             accessibilityLabel={`Monthly plan, ${monthlyPrice} per month`}
           >
-            <Text style={styles.priceLabel}>Monthly</Text>
+            <Text style={styles.priceLabel}>{t('onboarding.paywall.monthly')}</Text>
             <Text style={styles.priceMain}>{monthlyPrice}</Text>
-            <Text style={styles.pricePerMonth}>per month</Text>
-            <Text style={styles.priceSave}>switch anytime</Text>
+            <Text style={styles.pricePerMonth}>{t('onboarding.paywall.per_month')}</Text>
+            <Text style={styles.priceSave}>{t('onboarding.paywall.switch_anytime')}</Text>
           </Pressable>
         </Animated.View>
       </ScrollView>
@@ -182,7 +183,7 @@ export default function Paywall() {
       {/* Sticky CTA footer */}
       <View style={[styles.ctaFooter, { paddingBottom: insets.bottom + spacing.md }]}>
         <PillCTA
-          label={purchasing ? '…' : 'Start 7 days free'}
+          label={purchasing ? '…' : t('onboarding.paywall.cta_start_trial')}
           onPress={onStartTrial}
           disabled={purchasing}
           style={styles.cta}
@@ -190,25 +191,25 @@ export default function Paywall() {
         <View style={styles.trialTimeline}>
           <View style={styles.timelineStep}>
             <View style={[styles.timelineDot, styles.timelineDotActive]} />
-            <Text style={styles.timelineLabel}>Day 1 · Full access</Text>
+            <Text style={styles.timelineLabel}>{t('onboarding.paywall.tl_day1')}</Text>
           </View>
           <View style={styles.timelineDash} />
           <View style={styles.timelineStep}>
             <View style={styles.timelineDot} />
-            <Text style={styles.timelineLabel}>Day 5 · Reminder</Text>
+            <Text style={styles.timelineLabel}>{t('onboarding.paywall.tl_day5')}</Text>
           </View>
           <View style={styles.timelineDash} />
           <View style={styles.timelineStep}>
             <View style={styles.timelineDot} />
-            <Text style={styles.timelineLabel}>Day 7 · Decide</Text>
+            <Text style={styles.timelineLabel}>{t('onboarding.paywall.tl_day7')}</Text>
           </View>
         </View>
         <Pressable
           onPress={() => router.replace('/(onboarding)/auth')}
           accessibilityRole="button"
-          accessibilityLabel="Maybe later, continue without starting trial"
+          accessibilityLabel={t('onboarding.paywall.a11y_maybe_later')}
         >
-          <Text style={styles.maybeLater}>Maybe later</Text>
+          <Text style={styles.maybeLater}>{t('onboarding.paywall.maybe_later')}</Text>
         </Pressable>
       </View>
     </AtmosphericGradient>

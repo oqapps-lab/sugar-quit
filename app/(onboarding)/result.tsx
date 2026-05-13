@@ -9,14 +9,15 @@ import { GlassCard } from '../../components/ui/GlassCard';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { useUserStore } from '../../stores/useUserStore';
+import { t } from '../../lib/i18n';
 
 const TRIGGER_TYPE_BY_KEY: Record<string, string> = {
-  stress: 'Stress Eater',
-  emotions: 'Emotional Eater',
-  boredom: 'Comfort Eater',
-  meals: 'Habit Eater',
-  social: 'Social Eater',
-  night: 'Late-Night Eater',
+  stress: t('onboarding.result.persona_stress'),
+  emotions: t('onboarding.result.persona_emotions'),
+  boredom: t('onboarding.result.persona_boredom'),
+  meals: t('onboarding.result.persona_meals'),
+  social: t('onboarding.result.persona_social'),
+  night: t('onboarding.result.persona_night'),
 };
 
 /**
@@ -34,7 +35,7 @@ export default function ProfileScreen() {
   const peakLabel = peakHour ?? '3:00 PM';
   // Build a sub-headline with the picked time, e.g. "with a 3pm crash"
   const peakHourShort = peakLabel.replace(/(:00 )?(AM|PM)/, '$2').toLowerCase();
-  const subline = `with a ${peakHourShort} crash`;
+  const subline = t('onboarding.result.subline', { peak: peakHourShort });
 
   return (
     <AtmosphericGradient theme="cravingProfile">
@@ -51,7 +52,7 @@ export default function ProfileScreen() {
           <Text style={styles.brandWord}>Sugar Quit</Text>
         </View>
         <Pressable onPress={() => router.back()}>
-          <Text style={styles.skipLabel}>Skip</Text>
+          <Text style={styles.skipLabel}>{t('onboarding.result.skip')}</Text>
         </Pressable>
       </View>
 
@@ -63,15 +64,14 @@ export default function ProfileScreen() {
         <Animated.View entering={FadeInUp.duration(500)} style={styles.heroSection}>
           <View style={styles.heroEyebrowRow}>
             <DecorGlyph variant="flame" size={40} />
-            <Text style={styles.eyebrow}>YOUR CRAVING PROFILE</Text>
+            <Text style={styles.eyebrow}>{t('onboarding.result.eyebrow')}</Text>
           </View>
           <Text style={styles.heroTitle}>
-            You're a <Text style={styles.heroTitleAccent}>{personaName}</Text>
+            {t('onboarding.result.title_lead')} <Text style={styles.heroTitleAccent}>{personaName}</Text>
           </Text>
           <Text style={styles.heroSubtitle}>{subline}</Text>
           <Text style={styles.heroBody}>
-            Your body seeks rapid energy drops to counter cortisol peaks.
-            We'll replace the spike with steady emotional grounding.
+            {t('onboarding.result.hero_body')}
           </Text>
         </Animated.View>
 
@@ -83,12 +83,11 @@ export default function ProfileScreen() {
                 <View style={styles.cardIcon}>
                   <DecorGlyph variant="compass" size={22} />
                 </View>
-                <Text style={styles.cardEyebrow}>PEAK WINDOW</Text>
+                <Text style={styles.cardEyebrow}>{t('onboarding.result.card1_eyebrow')}</Text>
               </View>
               <Text style={styles.cardTitle}>{peakLabel}</Text>
               <Text style={styles.cardBody}>
-                Cortisol dips naturally mid-afternoon. We'll introduce a 2-minute
-                breath protocol right before the craving hits.
+                {t('onboarding.result.card1_body')}
               </Text>
             </GlassCard>
           </Animated.View>
@@ -99,28 +98,26 @@ export default function ProfileScreen() {
                 <View style={styles.cardIconAccent}>
                   <DecorGlyph variant="lightning" size={22} />
                 </View>
-                <Text style={styles.cardEyebrowAccent}>WEEK 1</Text>
+                <Text style={styles.cardEyebrowAccent}>{t('onboarding.result.card2_eyebrow')}</Text>
               </View>
-              <Text style={styles.cardTitleLarge}>Withdrawal, then clarity</Text>
+              <Text style={styles.cardTitleLarge}>{t('onboarding.result.card2_title')}</Text>
               <Text style={styles.cardBody}>
-                The first 4 days are a physiological unbinding. By day 7, the mental
-                fog lifts and the deep fatigue subsides. Expect emotional turbulence,
-                met with soft interventions.
+                {t('onboarding.result.card2_body')}
               </Text>
               <View style={styles.timelineRow}>
                 <View style={styles.timelineDay}>
                   <Text style={styles.timelineDayNumber}>1–4</Text>
-                  <Text style={styles.timelineDayLabel}>unbind</Text>
+                  <Text style={styles.timelineDayLabel}>{t('onboarding.result.timeline_unbind')}</Text>
                 </View>
                 <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
                 <View style={styles.timelineDay}>
                   <Text style={styles.timelineDayNumber}>5–6</Text>
-                  <Text style={styles.timelineDayLabel}>turbulence</Text>
+                  <Text style={styles.timelineDayLabel}>{t('onboarding.result.timeline_turbulence')}</Text>
                 </View>
                 <View style={styles.timelineArrow}><Text style={styles.timelineArrowText}>→</Text></View>
                 <View style={styles.timelineDay}>
                   <Text style={[styles.timelineDayNumber, { color: colors.primary }]}>7</Text>
-                  <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>clarity</Text>
+                  <Text style={[styles.timelineDayLabel, { color: colors.primary }]}>{t('onboarding.result.timeline_clarity')}</Text>
                 </View>
               </View>
             </GlassCard>
@@ -132,12 +129,11 @@ export default function ProfileScreen() {
                 <View style={styles.cardIconMint}>
                   <DecorGlyph variant="heart" size={22} />
                 </View>
-                <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>BY DAY 30</Text>
+                <Text style={[styles.cardEyebrow, { color: colors.tertiary }]}>{t('onboarding.result.card3_eyebrow')}</Text>
               </View>
-              <Text style={styles.cardTitle}>Taste buds reset</Text>
+              <Text style={styles.cardTitle}>{t('onboarding.result.card3_title')}</Text>
               <Text style={styles.cardBody}>
-                Natural foods will taste vibrant again. The compulsion fades into
-                a gentle, manageable whisper.
+                {t('onboarding.result.card3_body')}
               </Text>
             </GlassCard>
           </Animated.View>
@@ -145,7 +141,7 @@ export default function ProfileScreen() {
       </ScrollView>
 
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + spacing.lg }]}>
-        <PillCTA label="Begin the program" onPress={() => router.push('/(onboarding)/paywall')} />
+        <PillCTA label={t('onboarding.result.cta')} onPress={() => router.push('/(onboarding)/paywall')} />
       </View>
     </AtmosphericGradient>
   );

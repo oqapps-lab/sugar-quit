@@ -9,6 +9,7 @@ import { GradientText } from '../../components/ui/GradientText';
 import { PillCTA } from '../../components/ui/PillCTA';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
 import { SOCIAL_PROOF } from '../../constants/copy';
+import { t } from '../../lib/i18n';
 
 /**
  * 1.5 Motivational — "127,000 people have walked this path with us"
@@ -29,7 +30,7 @@ export default function Motivational1() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </Pressable>
-        <Text style={styles.progressLabel}>STEP 5 OF 15</Text>
+        <Text style={styles.progressLabel}>{t('onboarding.quiz.step_of_15', { n: '5' })}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -37,26 +38,19 @@ export default function Motivational1() {
         <Animated.View entering={FadeInUp.duration(400)} style={styles.glyphWrap}>
           <DecorGlyph variant="heart" size={56} />
         </Animated.View>
-        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-          YOU'RE NOT ALONE
-        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>{t('onboarding.motiv1.eyebrow')}</Animated.Text>
         <Animated.View entering={FadeInUp.delay(150).duration(400)}>
           <GradientText style={styles.bigNumber} gradient="heroHorizontal">
             {SOCIAL_PROOF.peopleWalkedCountLabel}
           </GradientText>
         </Animated.View>
-        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.headline}>
-          people have walked this path with us
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(350).duration(400)} style={styles.sub}>
-          Quiet mornings, tough afternoons, softer nights.
-          You're stepping into good company.
-        </Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(250).duration(400)} style={styles.headline}>{t('onboarding.motiv1.headline')}</Animated.Text>
+        <Animated.Text entering={FadeInUp.delay(350).duration(400)} style={styles.sub}>{t('onboarding.motiv1.sub')}</Animated.Text>
       </View>
 
       <Animated.View entering={FadeInDown.delay(400).duration(400)} style={[styles.footer, { paddingBottom: insets.bottom + spacing.lg }]}>
         <PillCTA
-          label="Continue"
+          label={t('common.continue')}
           variant="onboarding"
           onPress={() => router.push('/(onboarding)/quiz/peak-time')}
         />

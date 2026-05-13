@@ -9,6 +9,7 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../const
 import { bootstrapPushPermission, scheduleCravingReminder } from '../../lib/notifications-bootstrap';
 import { shortPeak } from '../../lib/peakHour';
 import { useUserStore } from '../../stores/useUserStore';
+import { t } from '../../lib/i18n';
 
 /**
  * 1.17 Push Permission — framed as a promise, not a permission.
@@ -38,9 +39,9 @@ export default function PushPermission() {
 
       <View style={[styles.root, { paddingTop: insets.top + spacing.xxxl, paddingBottom: insets.bottom + spacing.lg }]}>
         <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
-          <Text style={styles.eyebrow}>THE PROMISE</Text>
-          <Text style={styles.title}>We'll warn you 15 minutes before your {shortPeak(peakHour)}</Text>
-          <Text style={styles.sub}>One push when the pattern predicts a craving. That's it. No spam, ever.</Text>
+          <Text style={styles.eyebrow}>{t('onboarding.push.eyebrow')}</Text>
+          <Text style={styles.title}>{t('onboarding.push.title', { peak: shortPeak(peakHour) })}</Text>
+          <Text style={styles.sub}>{t('onboarding.push.sub')}</Text>
         </Animated.View>
 
         <Animated.View entering={FadeInUp.delay(150).duration(450)} style={styles.illustration}>
@@ -50,20 +51,20 @@ export default function PushPermission() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(250).duration(450)} style={styles.promises}>
-          <PromiseRow text="Only when your pattern predicts a craving" />
-          <PromiseRow text="Max 1 push per day" />
-          <PromiseRow text="Turn off anytime in settings" />
+          <PromiseRow text={t('onboarding.push.promise_1')} />
+          <PromiseRow text={t('onboarding.push.promise_2')} />
+          <PromiseRow text={t('onboarding.push.promise_3')} />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(400).duration(450)} style={styles.footer}>
-          <PillCTA label="Turn on predictions" onPress={turnOn} />
+          <PillCTA label={t('onboarding.push.cta_turn_on')} onPress={turnOn} />
           <Pressable
             onPress={skip}
             style={styles.laterBtn}
             accessibilityRole="button"
-            accessibilityLabel="Maybe later, skip notifications"
+            accessibilityLabel={t('onboarding.push.a11y_skip')}
           >
-            <Text style={styles.laterLabel}>Maybe later</Text>
+            <Text style={styles.laterLabel}>{t('onboarding.push.maybe_later')}</Text>
           </Pressable>
         </Animated.View>
       </View>

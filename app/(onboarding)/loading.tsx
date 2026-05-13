@@ -15,6 +15,7 @@ import { AtmosphericGradient } from '../../components/ui/AtmosphericGradient';
 import { AuraBlob } from '../../components/ui/AuraBlob';
 import { DecorGlyph } from '../../components/ui/DecorGlyph';
 import { colors, fonts, radius, spacing, tracking, typeScale } from '../../constants/tokens';
+import { t } from '../../lib/i18n';
 
 /**
  * 1.13 Loading — "Writing your plan..." auto-advances to result after 4s.
@@ -23,9 +24,9 @@ import { colors, fonts, radius, spacing, tracking, typeScale } from '../../const
 const DURATION_MS = 4000;
 
 const STATUS_LINES = [
-  'Reading your patterns',
-  'Finding your peak window',
-  'Writing your plan',
+  t('onboarding.loading.status_1'),
+  t('onboarding.loading.status_2'),
+  t('onboarding.loading.status_3'),
 ];
 
 export default function LoadingScreen() {
@@ -91,12 +92,8 @@ export default function LoadingScreen() {
             </Animated.View>
           </Animated.View>
 
-          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>
-            ONE MOMENT
-          </Animated.Text>
-          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.headline}>
-            Writing your plan…
-          </Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.eyebrow}>{t('onboarding.loading.eyebrow')}</Animated.Text>
+          <Animated.Text entering={FadeInUp.delay(150).duration(400)} style={styles.headline}>{t('onboarding.loading.headline')}</Animated.Text>
 
           <Animated.View entering={FadeInUp.delay(250).duration(400)} style={styles.progressWrap}>
             <View style={styles.progressTrack}>

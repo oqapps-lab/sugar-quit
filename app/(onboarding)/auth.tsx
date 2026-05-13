@@ -11,6 +11,7 @@ import { colors, fonts, radius, spacing, typeScale } from '../../constants/token
 import { isSupabaseConfigured } from '../../lib/env';
 import { LINKS } from '../../lib/links';
 import { signInWithEmail, signUpWithEmail } from '../../lib/supabase';
+import { t } from '../../lib/i18n';
 
 /**
  * 1.16 Auth — Sign in / Sign up.
@@ -50,7 +51,7 @@ export default function Auth() {
 
   const onSubmit = async () => {
     if (!email.trim() || !password.trim()) {
-      setError('Email and password required');
+      setError(t('auth.error_required'));
       return;
     }
     setSubmitting(true);
@@ -87,8 +88,8 @@ export default function Auth() {
           <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
             <View style={styles.mark} />
             <Text style={styles.brand}>Sugar Quit</Text>
-            <Text style={styles.title}>{isSignUp ? 'Create your account' : 'Welcome back'}</Text>
-            <Text style={styles.sub}>{isSignUp ? 'Save your plan, streak, and SOS history.' : 'Pick up where you left off.'}</Text>
+            <Text style={styles.title}>{isSignUp ? t('auth.email_title_signup') : t('auth.email_title_signin')}</Text>
+            <Text style={styles.sub}>{isSignUp ? t('auth.email_sub_signup') : t('auth.email_sub_signin')}</Text>
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(150).duration(450)} style={styles.formCol}>
@@ -96,7 +97,7 @@ export default function Auth() {
               <TextInput
                 value={email}
                 onChangeText={setEmail}
-                placeholder="email@example.com"
+                placeholder={t('auth.email_placeholder')}
                 placeholderTextColor={colors.outline}
                 selectionColor={colors.primary}
                 cursorColor={colors.primary}
@@ -105,14 +106,14 @@ export default function Auth() {
                 autoCorrect={false}
                 keyboardType="email-address"
                 returnKeyType="next"
-                accessibilityLabel="Email"
+                accessibilityLabel={t('auth.a11y_email')}
               />
             </View>
             <View style={styles.inputWrap}>
               <TextInput
                 value={password}
                 onChangeText={setPassword}
-                placeholder="password"
+                placeholder={t('auth.password_placeholder')}
                 placeholderTextColor={colors.outline}
                 selectionColor={colors.primary}
                 cursorColor={colors.primary}
@@ -122,19 +123,19 @@ export default function Auth() {
                 autoCorrect={false}
                 returnKeyType="done"
                 onSubmitEditing={onSubmit}
-                accessibilityLabel="Password"
+                accessibilityLabel={t('auth.a11y_password')}
               />
             </View>
 
             {error && <Text style={styles.errorText}>{error}</Text>}
             {!isSupabaseConfigured && (
               <Text style={styles.configHint}>
-                Supabase not configured — demo mode (any input continues).
+                {t('auth.config_hint')}
               </Text>
             )}
 
             <PillCTA
-              label={submitting ? '…' : isSignUp ? 'Create account' : 'Sign in'}
+              label={submitting ? '…' : isSignUp ? t('auth.cta_create') : t('auth.cta_signin')}
               onPress={onSubmit}
               disabled={submitting}
             />
@@ -142,40 +143,40 @@ export default function Auth() {
               onPress={() => setIsSignUp((v) => !v)}
               style={styles.toggleBtn}
               accessibilityRole="button"
-              accessibilityLabel={isSignUp ? 'Switch to sign in' : 'Switch to sign up'}
+              accessibilityLabel={isSignUp ? t('auth.a11y_to_signin') : t('auth.a11y_to_signup')}
             >
               <Text style={styles.toggleText}>
-                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
+                {isSignUp ? t('auth.toggle_to_signin') : t('auth.toggle_to_signup')}
               </Text>
             </Pressable>
             <Pressable
               onPress={() => setMode('menu')}
               style={styles.backBtn}
               accessibilityRole="button"
-              accessibilityLabel="Back to other sign-in options"
+              accessibilityLabel={t('auth.a11y_back_options')}
             >
-              <Text style={styles.toggleText}>← Other options</Text>
+              <Text style={styles.toggleText}>{t('auth.back_options')}</Text>
             </Pressable>
           </Animated.View>
 
           <Text style={styles.terms}>
-            By continuing, you agree to our{' '}
+            {t('auth.terms_lead')}{' '}
             <Text
               style={styles.termsLink}
               onPress={() => Linking.openURL(LINKS.termsOfService)}
               accessibilityRole="link"
-              accessibilityLabel="Read Terms of Service"
+              accessibilityLabel={t('auth.a11y_terms')}
             >
-              Terms
+              {t('auth.terms_word')}
             </Text>
-            {' '}and{' '}
+            {' '}{t('auth.terms_and')}{' '}
             <Text
               style={styles.termsLink}
               onPress={() => Linking.openURL(LINKS.privacyPolicy)}
               accessibilityRole="link"
-              accessibilityLabel="Read Privacy Policy"
+              accessibilityLabel={t('auth.a11y_privacy')}
             >
-              Privacy
+              {t('auth.terms_privacy')}
             </Text>
             .
           </Text>
@@ -196,8 +197,8 @@ export default function Auth() {
         <Animated.View entering={FadeInUp.duration(450)} style={styles.hero}>
           <View style={styles.mark} />
           <Text style={styles.brand}>Sugar Quit</Text>
-          <Text style={styles.title} numberOfLines={4}>One last step — keep your plan</Text>
-          <Text style={styles.sub}>Sign in so your plan, streak, and SOS history stay with you.</Text>
+          <Text style={styles.title} numberOfLines={4}>{t('auth.menu_title')}</Text>
+          <Text style={styles.sub}>{t('auth.menu_sub')}</Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(150).duration(450)} style={styles.buttonsCol}>
@@ -205,46 +206,46 @@ export default function Auth() {
             onPress={onApple}
             style={styles.appleBtn}
             accessibilityRole="button"
-            accessibilityLabel="Continue with Apple"
+            accessibilityLabel={t('auth.continue_apple')}
           >
-            <Text style={styles.appleLabel}> Continue with Apple</Text>
+            <Text style={styles.appleLabel}>{' '}{t('auth.continue_apple')}</Text>
           </Pressable>
           <Pressable
             onPress={onGoogle}
             style={styles.googleBtn}
             accessibilityRole="button"
-            accessibilityLabel="Continue with Google"
+            accessibilityLabel={t('auth.continue_google')}
           >
-            <Text style={styles.googleLabel}>G  Continue with Google</Text>
+            <Text style={styles.googleLabel}>G  {t('auth.continue_google')}</Text>
           </Pressable>
           <Pressable
             onPress={onEmail}
             style={styles.emailBtn}
             accessibilityRole="button"
-            accessibilityLabel="Continue with email"
+            accessibilityLabel={t('auth.continue_email')}
           >
-            <Text style={styles.emailLabel}>Continue with email</Text>
+            <Text style={styles.emailLabel}>{t('auth.continue_email')}</Text>
           </Pressable>
         </Animated.View>
 
         <Text style={styles.terms}>
-          By continuing, you agree to our{' '}
+          {t('auth.terms_lead')}{' '}
           <Text
             style={styles.termsLink}
             onPress={() => Linking.openURL(LINKS.termsOfService)}
             accessibilityRole="link"
-            accessibilityLabel="Read Terms of Service"
+            accessibilityLabel={t('auth.a11y_terms')}
           >
-            Terms
+            {t('auth.terms_word')}
           </Text>
-          {' '}and{' '}
+          {' '}{t('auth.terms_and')}{' '}
           <Text
             style={styles.termsLink}
             onPress={() => Linking.openURL(LINKS.privacyPolicy)}
             accessibilityRole="link"
-            accessibilityLabel="Read Privacy Policy"
+            accessibilityLabel={t('auth.a11y_privacy')}
           >
-            Privacy
+            {t('auth.terms_privacy')}
           </Text>
           .
         </Text>
